@@ -165,7 +165,7 @@ public class LogicManagerTest {
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask toBeAdded = helper.adam();
+        FloatingTask toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
         expectedAB.addPerson(toBeAdded);
 
@@ -178,10 +178,52 @@ public class LogicManagerTest {
     }
 
     @Test
+    public void execute_edit_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+
+        FloatingTask toEdit = helper.taskWithTags();
+        FloatingTask toEditCopy = helper.taskWithTags();
+        Title newTitle = new Title("New Title");
+
+        AddressBook expectedAB = new AddressBook();
+        expectedAB.addPerson(toEdit);
+        model.addTask(toEditCopy);
+
+        expectedAB.editTask(toEdit, newTitle, new UniqueTagList());
+
+        // execute command and verify result
+        assertCommandBehavior(helper.generateEditCommand(toEdit, 1, "New Title"),
+                String.format(EditCommand.MESSAGE_SUCCESS, toEdit),
+                expectedAB, expectedAB.getPersonList());
+    }
+
+    @Test
+    public void execute_edit_tags_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+
+        FloatingTask toEdit = helper.taskWithTags();
+        FloatingTask toEditCopy = helper.taskWithTags();
+        UniqueTagList newTagList = new UniqueTagList();
+        newTagList.add(new Tag("tag3"));
+
+        AddressBook expectedAB = new AddressBook();
+        expectedAB.addPerson(toEdit);
+        model.addTask(toEditCopy);
+
+        Title newTitle = null;
+        expectedAB.editTask(toEdit, newTitle, newTagList);
+
+        // execute command and verify result
+        assertCommandBehavior(helper.generateEditCommand(toEdit, 1, ""),
+                String.format(EditCommand.MESSAGE_SUCCESS, toEdit),
+                expectedAB, expectedAB.getPersonList());
+    }
+
+    @Test
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask toBeAdded = helper.adam();
+        FloatingTask toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
         expectedAB.addPerson(toBeAdded);
 
@@ -371,7 +413,7 @@ public class LogicManagerTest {
      */
     class TestDataHelper{
 
-        FloatingTask adam() throws Exception {
+        FloatingTask taskWithTags() throws Exception {
             Title name = new Title("Adam Brown");
             Tag tag1 = new Tag("tag1");
             Tag tag2 = new Tag("tag2");
@@ -403,6 +445,20 @@ public class LogicManagerTest {
 
             UniqueTagList tags = p.getTags();
             for(Tag t: tags){
+                cmd.append(" t/").append(t.tagName);
+            }
+
+            return cmd.toString();
+        }
+
+        String generateEditCommand(FloatingTask p, int index, String title) {
+            StringBuffer cmd = new StringBuffer();
+            
+            cmd.append(String.format("edit %d ", index));
+            cmd.append(title);
+
+            UniqueTagList tags = p.getTags();
+            for (Tag t : tags) {
                 cmd.append(" t/").append(t.tagName);
             }
 
