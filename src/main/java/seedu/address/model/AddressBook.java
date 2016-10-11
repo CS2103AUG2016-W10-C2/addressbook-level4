@@ -88,6 +88,15 @@ public class AddressBook implements ReadOnlyAddressBook {
         syncTagsWithMasterList(task);
         persons.edit(task, newTitle);
     }
+    
+    public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+        persons.mark(task);
+    }
+    
+    public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+        persons.unmark(task);
+    }
+
 
     /**
      * Ensures that every tag in this person:
