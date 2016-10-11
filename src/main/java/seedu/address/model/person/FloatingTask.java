@@ -70,7 +70,6 @@ public class FloatingTask implements Entry {
         return getAsText();
     }
 
-    @Override
     public boolean isSameStateAs(FloatingTask other) {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
