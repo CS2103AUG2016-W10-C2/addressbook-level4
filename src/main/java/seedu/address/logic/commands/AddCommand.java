@@ -5,6 +5,7 @@ import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class AddCommand extends Command {
             + " Buy Banana t/NTUC t/shopping";
 
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This entry already exists in the todo list";
+    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
 
     private final FloatingTask toAdd;
 
@@ -42,6 +43,25 @@ public class AddCommand extends Command {
                 new UniqueTagList(tagSet)
         );
     }
+    
+    /**
+     * Convenience constructor using raw values.
+     *
+     * @throws IllegalValueException if any of the raw values are invalid
+     */
+    // TODO: Implement Add for other types of entry
+    public AddCommand(String title, LocalDateTime deadline, Set<String> tags)
+            throws IllegalValueException {
+        final Set<Tag> tagSet = new HashSet<>();
+        for (String tagName : tags) {
+            tagSet.add(new Tag(tagName));
+        }
+        this.toAdd = new Deadline(
+                new Title(title),
+                deadline,
+                new UniqueTagList(tagSet)
+        );
+    }
 
     @Override
     public CommandResult execute() {
@@ -50,7 +70,7 @@ public class AddCommand extends Command {
             model.addTask(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniquePersonList.DuplicateTaskException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_PERSON);
+            return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
         }
 
     }

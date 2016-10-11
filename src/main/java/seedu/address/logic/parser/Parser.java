@@ -4,6 +4,7 @@ import seedu.address.logic.commands.*;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.exceptions.IllegalValueException;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,8 +29,13 @@ public class Parser {
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-                    + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
-
+            		+ "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags; 
+    
+    private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("(?<title>[^/]+)"
+            		+ "(?<deadlineArguments>(?: deadline/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
+            		+ "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags; 
+    
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s+(?<title>[\\s\\w\\d]+)");
 
@@ -93,15 +99,26 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareAdd(String args) {
-        final Matcher matcher = FLOATING_TASK_DATA_ARGS_FORMAT.matcher(args.trim());
+    	args = args.trim();
+        final Matcher deadlineMatcher = DEADLINE_DATA_ARGS_FORMAT.matcher(args);
+        final Matcher floatingTaskMatcher = FLOATING_TASK_DATA_ARGS_FORMAT.matcher(args);
         // Validate arg string format
-        if (!matcher.matches()) {
+        if (!floatingTaskMatcher.matches() && !deadlineMatcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
-        try {
-            return new AddCommand(matcher.group("title"), getTagsFromArgs(matcher.group("tagArguments")));
-        } catch (IllegalValueException ive) {
-            return new IncorrectCommand(ive.getMessage());
+        if (deadlineMatcher.matches()) {
+        	try {
+        		return new AddCommand(deadlineMatcher.group("title"), getDeadlineFromArgument(deadlineMatcher.group("deadlineArguments")), getTagsFromArgs(deadlineMatcher.group("tagArguments")));
+        	} catch (IllegalValueException ive) {
+                return new IncorrectCommand(ive.getMessage());
+            }
+        	
+        } else {
+        	try {
+                return new AddCommand(floatingTaskMatcher.group("title"), getTagsFromArgs(floatingTaskMatcher.group("tagArguments")));
+            } catch (IllegalValueException ive) {
+                return new IncorrectCommand(ive.getMessage());
+            }
         }
     }
 
@@ -130,7 +147,7 @@ public class Parser {
     }
 
     /**
-     * Extracts the new person's tags from the add command's tag arguments
+     * Extracts the new entry's tags from the add command's tag arguments
      * string. Merges duplicate tag strings.
      */
     private static Set<String> getTagsFromArgs(String tagArguments) throws IllegalValueException {
@@ -141,6 +158,19 @@ public class Parser {
         // replace first delimiter prefix, then split
         final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(" t/"));
         return new HashSet<>(tagStrings);
+    }
+    
+    /**
+     * Extracts the new entry's deadline from the add command's tag arguments
+     * string. Format: YYYY-MM-DD HH:MM
+     */
+    private static LocalDateTime getDeadlineFromArgument(String deadlineArguments) throws IllegalValueException {
+        if (deadlineArguments.isEmpty()) {
+            return LocalDateTime.now();
+        }
+        // remove the tag.
+        final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" deadline/", "").split(" "));
+        return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
 
     /**
