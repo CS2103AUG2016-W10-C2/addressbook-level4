@@ -16,8 +16,10 @@ public class PersonCard extends UiPart{
     private Label name;
     @FXML
     private Label id;
-   @FXML
+    @FXML
     private Label tags;
+    @FXML
+    private Label mark;
 
     private Entry entry;
     private int displayedIndex;
@@ -38,6 +40,7 @@ public class PersonCard extends UiPart{
         name.setText(entry.getTitle().fullTitle);
         id.setText(displayedIndex + ". ");
         tags.setText(entry.tagsString());
+        mark.setText(entry.markString());
     }
 
     public HBox getLayout() {
