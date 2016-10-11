@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -20,8 +21,9 @@ public class FloatingTask implements Entry {
      */
     public FloatingTask(Title title, UniqueTagList tags) {
         assert !CollectionUtil.isAnyNull(title, tags);
-        this.title = title;
-        this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        // protect against changes after constructor.
+        this.title = Title.copy(title);
+        this.tags = new UniqueTagList(tags);
     }
 
     /**

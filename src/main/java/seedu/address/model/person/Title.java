@@ -26,6 +26,15 @@ public class Title {
         }
         this.fullTitle = name;
     }
+    
+    public static Title copy(Title original) {
+    	try {
+        	return new Title(original.fullTitle);
+    	} catch (IllegalValueException ive) {
+    		assert false: "Original Title has empty fullTitle.";
+    	}
+		return null;
+    }
 
     /**
      * Returns true if a given string is a valid person name.
