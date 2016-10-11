@@ -1,12 +1,12 @@
 package seedu.address.model;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.model.person.FloatingTask;
 import seedu.address.model.person.Title;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.person.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.person.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.tag.UniqueTagList;
 
 import java.util.Set;
 
@@ -24,7 +24,8 @@ public interface Model {
     void deleteTask(Entry target) throws UniquePersonList.PersonNotFoundException;
 
     /** Edit the given task */
-    void editTask(Entry task, Title title) throws PersonNotFoundException, DuplicateTaskException;
+    void editTask(Entry task, Title title, UniqueTagList newTags)
+            throws PersonNotFoundException, DuplicateTaskException;
 
     /** Adds the given task */
     void addTask(Entry entry) throws UniquePersonList.DuplicateTaskException;
