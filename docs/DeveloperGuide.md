@@ -389,9 +389,6 @@ MSS
 
 > Windows, Linux, Unix, OS-X
 
-##### Private contact detail
-
-> A contact detail that is not meant to be shared with others
 
 ## Appendix E : Product Survey
 
