@@ -43,12 +43,6 @@ public class TestEntry implements Entry {
     }
 
     @Override
-    public boolean isSameStateAs(Entry other) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public String getAsText() {
         // TODO Auto-generated method stub
         return null;

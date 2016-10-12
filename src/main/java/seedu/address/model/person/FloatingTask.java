@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -20,8 +21,9 @@ public class FloatingTask implements Entry {
      */
     public FloatingTask(Title title, UniqueTagList tags) {
         assert !CollectionUtil.isAnyNull(title, tags);
-        this.title = title;
-        this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        // protect against changes after constructor.
+        this.title = Title.copy(title);
+        this.tags = new UniqueTagList(tags);
     }
 
     /**
@@ -55,8 +57,8 @@ public class FloatingTask implements Entry {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Entry // instanceof handles nulls
-                && this.isSameStateAs((Entry) other));
+                || (other instanceof FloatingTask // instanceof handles nulls
+                && this.isSameStateAs((FloatingTask) other));
     }
 
     @Override
@@ -69,12 +71,12 @@ public class FloatingTask implements Entry {
     public String toString() {
         return getAsText();
     }
-    
-    @Override
-    public boolean isSameStateAs(Entry other) {
+
+    public boolean isSameStateAs(FloatingTask other) {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
-                && other.getTitle().equals(this.getTitle())); 
+                && other.getTitle().equals(this.getTitle())
+                && other.getTags().equals(this.getTags()));
     }
 
     @Override

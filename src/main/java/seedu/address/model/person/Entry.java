@@ -18,11 +18,6 @@ public interface Entry {
     UniqueTagList getTags();
 
     /**
-     * Returns true if both have the same state. (interfaces cannot override .equals)
-     */
-    boolean isSameStateAs(Entry other);
-
-    /**
      * Formats the entry as text, showing all contact details.
      */
     String getAsText();
