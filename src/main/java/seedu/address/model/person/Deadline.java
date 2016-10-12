@@ -19,6 +19,12 @@ public final class Deadline extends FloatingTask{
 		this.deadline = deadline;
 	}
 
+	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked) {
+		super(title, tags, isMarked);
+        assert !CollectionUtil.isAnyNull(deadline);
+		this.deadline = deadline;
+	}
+	
 	public LocalDateTime getDeadline() {
 		return deadline;
 	}

@@ -66,7 +66,7 @@ public class XmlAdaptedEntry {
         if (deadline == null) {
             return new FloatingTask(title, tags, isMarked);
         } else {
-        	return new Deadline(title, deadline, tags);
+        	return new Deadline(title, deadline, tags, isMarked);
         }
     }
 }
