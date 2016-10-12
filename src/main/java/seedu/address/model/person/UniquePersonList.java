@@ -107,7 +107,35 @@ public class UniquePersonList implements Iterable<Entry> {
         }
         internalList.add(toEdit);
     }
+    
+    /**
+     * Mark an entry on the list.
+     * @throws PersonNotFoundException 
+     *             if no such person could be found in the list.
+     * @throws DuplicateTaskException 
+     *             if the task to add is a duplicate of an existing task.
+     */
+    public void mark(Entry toMark) throws PersonNotFoundException, DuplicateTaskException {
+        assert toMark!= null;
+        remove(toMark);
+        toMark.mark();
+        add(toMark);
+    }
 
+    /**
+     * Unmarks an entry on the list.
+     * @throws PersonNotFoundException 
+     *             if no such person could be found in the list.
+     * @throws DuplicateTaskException 
+     *             if the task to add is a duplicate of an existing task.
+     */
+    public void unmark(Entry toUnmark) throws PersonNotFoundException, DuplicateTaskException {
+        assert toUnmark!= null;
+        remove(toUnmark);
+        toUnmark.unmark();
+        add(toUnmark);
+    }
+    
     /**
      * Removes the equivalent person from the list.
      *
@@ -143,4 +171,5 @@ public class UniquePersonList implements Iterable<Entry> {
     public int hashCode() {
         return internalList.hashCode();
     }
+
 }

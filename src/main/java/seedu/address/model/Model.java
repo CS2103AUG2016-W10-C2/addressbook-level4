@@ -39,4 +39,12 @@ public interface Model {
     /** Updates the filter of the filtered person list to filter by the given keywords*/
     void updateFilteredPersonList(Set<String> keywords);
 
+    /** Marks the given task. 
+     * @throws DuplicateTaskException */
+    void markTask(Entry entryToMark) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;
+    
+    /** Unmarks the given task 
+     * @throws  */
+    void unmarkTask(Entry task) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;
+
 }

@@ -15,6 +15,8 @@ public class FloatingTask implements Entry {
     private Title title;
 
     private UniqueTagList tags;
+    
+    private boolean isMarked;
 
     /**
      * Every field must be present and not null.
@@ -24,13 +26,21 @@ public class FloatingTask implements Entry {
         // protect against changes after constructor.
         this.title = Title.copy(title);
         this.tags = new UniqueTagList(tags);
+        this.isMarked = false;
+    }   
+    
+    public FloatingTask(Title title, UniqueTagList tags, boolean isMarked) {
+        assert !CollectionUtil.isAnyNull(title, tags);
+        this.title = Title.copy(title);
+        this.tags = new UniqueTagList(tags);
+        this.isMarked = isMarked;
     }
 
     /**
      * Copy constructor.
      */
     public FloatingTask(Entry source) {
-        this(source.getTitle(), source.getTags());
+        this(source.getTitle(), source.getTags(), source.isMarked());
     }
 
     @Override
@@ -53,7 +63,22 @@ public class FloatingTask implements Entry {
     public void setTags(UniqueTagList replacement) {
         tags.setTags(replacement);
     }
+    
+    @Override
+    public void mark() {
+        this.isMarked = true;
+    }
 
+    @Override
+    public void unmark() {
+        this.isMarked = false;
+    }
+    
+    @Override
+    public boolean isMarked() {
+        return isMarked;
+    }
+    
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
@@ -82,10 +107,16 @@ public class FloatingTask implements Entry {
     @Override
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
+        System.out.println(isMarked());
         builder.append(getTitle())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
+    }
+
+    @Override
+    public String markString() {
+        return isMarked() ? "[X] " : "[ ] ";
     }
 
 }

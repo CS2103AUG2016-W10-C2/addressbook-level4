@@ -58,4 +58,28 @@ public class TestEntry implements Entry {
         // TODO Auto-generated method stub
 
     }
+
+    @Override
+    public boolean isMarked() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void mark() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void unmark() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public String markString() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -87,6 +87,20 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
+    
+    @Override
+    public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+        addressBook.markTask(task);
+        updateFilteredListToShowAll();
+        indicateAddressBookChanged();
+    }
+    
+    @Override
+    public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+        addressBook.unmarkTask(task);
+        updateFilteredListToShowAll();
+        indicateAddressBookChanged();
+    }
 
     //=========== Filtered Person List Accessors ===============================================================
 

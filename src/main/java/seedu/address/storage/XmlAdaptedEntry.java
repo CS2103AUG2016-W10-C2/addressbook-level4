@@ -23,6 +23,9 @@ public class XmlAdaptedEntry {
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
+    
+    @XmlElement
+    private boolean isMarked;
 
     /**
      * No-arg constructor for JAXB use.
@@ -37,6 +40,7 @@ public class XmlAdaptedEntry {
      */
     public XmlAdaptedEntry(Entry source) {
         title = source.getTitle().fullTitle;
+        isMarked = source.isMarked();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -60,7 +64,7 @@ public class XmlAdaptedEntry {
         final Title title = new Title(this.title);
         final UniqueTagList tags = new UniqueTagList(personTags);
         if (deadline == null) {
-            return new FloatingTask(title, tags);
+            return new FloatingTask(title, tags, isMarked);
         } else {
         	return new Deadline(title, deadline, tags);
         }

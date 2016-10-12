@@ -17,10 +17,12 @@ public class PersonCard extends UiPart{
     private Label name;
     @FXML
     private Label id;
-   @FXML
+    @FXML
     private Label tags;
-   @FXML
+    @FXML
     private Label deadline;
+    @FXML
+    private Label mark;
 
     private Entry entry;
     private int displayedIndex;
@@ -44,6 +46,7 @@ public class PersonCard extends UiPart{
         if (entry instanceof Deadline) {
         	deadline.setText("deadline: " + ((Deadline)entry).getDeadline() );
         }
+        mark.setText(entry.markString());
     }
 
     public HBox getLayout() {

@@ -18,6 +18,10 @@ public interface Entry {
     UniqueTagList getTags();
 
     /**
+     * Returns true if entry is marked as completed
+     */
+    boolean isMarked();
+    /**
      * Formats the entry as text, showing all contact details.
      */
     String getAsText();
@@ -45,5 +49,20 @@ public interface Entry {
      * Sets the Title for this Entry
      */
     void setTitle(Title newTitle);
+
+    /**
+     * Marks the entry as completed.
+     */
+    void mark();
+    
+    /**
+     * Unmarks the entry
+     */
+    void unmark();
+
+    /**
+     * Returns a string representation of this Entry's marking
+     */
+    String markString();
 
 }
