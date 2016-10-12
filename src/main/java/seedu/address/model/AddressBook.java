@@ -84,9 +84,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.add(person);
     }
 
-    public void editTask(Entry task, Title newTitle) throws PersonNotFoundException, DuplicateTaskException {
+    public void editTask(Entry task, Title newTitle, UniqueTagList newTags)
+            throws PersonNotFoundException, DuplicateTaskException {
         syncTagsWithMasterList(task);
-        persons.edit(task, newTitle);
+        persons.edit(task, newTitle, newTags);
     }
 
     /**

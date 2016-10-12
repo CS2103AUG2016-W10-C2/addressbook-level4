@@ -1,13 +1,17 @@
 package seedu.address.logic.commands;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Entry;
-import seedu.address.model.person.FloatingTask;
 import seedu.address.model.person.Title;
 import seedu.address.model.person.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.person.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.UniqueTagList;
 
 /*
  * Edit a task's content.
@@ -17,18 +21,28 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits tasks details. " + "Parameters: TASK_ID"
-            + "[TITLE]" + "Example: " + COMMAND_WORD + " 2 Buy bread";
+            + " [TITLE] " + "Example: " + COMMAND_WORD + " 2 Buy bread";
 
     public static final String MESSAGE_SUCCESS = "Edited entry: %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "This entry already exists in the todo list";
 
-    public final int targetIndex;
+    private final int targetIndex;
 
-    public final Title newTitle;
+    private final Title newTitle;
+    private final UniqueTagList newTags;
 
-    public EditCommand(int targetIndex, String title) throws IllegalValueException {
+    public EditCommand(int targetIndex, String title, Set<String> tags) throws IllegalValueException {
         this.targetIndex = targetIndex;
-        this.newTitle = new Title(title);
+        if (title != null && title.length() > 0) {
+            this.newTitle = new Title(title);
+        } else {
+            this.newTitle = null;
+        }
+        final Set<Tag> tagSet = new HashSet<>();
+        for (String tagName : tags) {
+            tagSet.add(new Tag(tagName));
+        }
+        this.newTags = new UniqueTagList(tagSet);
     }
 
     @Override
@@ -43,7 +57,7 @@ public class EditCommand extends Command {
         Entry taskToEdit = lastShownList.get(targetIndex - 1);
         assert model != null;
         try {
-            model.editTask(taskToEdit, newTitle);
+            model.editTask(taskToEdit, newTitle, newTags);
         } catch (PersonNotFoundException e) {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {

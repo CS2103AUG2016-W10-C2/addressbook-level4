@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.model.tag.UniqueTagList;
 import seedu.address.commons.exceptions.DuplicateDataException;
 
 import java.util.*;
@@ -69,21 +70,42 @@ public class UniquePersonList implements Iterable<Entry> {
      *            the entry to be edited
      * @param newTitle
      *            the new title for the entry
+     * @param newTags
+     *            the new tags for the entry
      * @throws PersonNotFoundException
      *             if no such person could be found in the list.
      * @throws DuplicateTaskException
      *             if the task to add is a duplicate of an existing task.
      */
-    public void edit(Entry toEdit, Title newTitle) throws PersonNotFoundException, DuplicateTaskException {
+    public void edit(Entry toEdit, Title newTitle, UniqueTagList newTags)
+            throws PersonNotFoundException, DuplicateTaskException {
         assert toEdit != null;
-        if (contains(toEdit)) {
-            throw new DuplicateTaskException();
+        for (int i = 0; i < internalList.size(); i++) {
+            if (internalList.get(i).getTitle().equals(newTitle)) {
+                throw new DuplicateTaskException();
+            }
         }
+        int target = -1;
+        for (int i = 0; i < internalList.size(); i++) {
+            if (internalList.get(i).equals(toEdit)) {
+                target = i;
+                break;
+            }
+        }
+        if (target == -1) {
+            throw new PersonNotFoundException();
+        }
+
         // TODO: This should be atomic or we should implement notifications for
         // mutations
-        remove(toEdit);
-        toEdit.setTitle(newTitle);
-        add(toEdit);
+        internalList.remove(target);
+        if (newTitle != null) {
+            toEdit.setTitle(newTitle);
+        }
+        if (newTags != null && !newTags.isEmpty()) {
+            toEdit.setTags(newTags);
+        }
+        internalList.add(toEdit);
     }
 
     /**

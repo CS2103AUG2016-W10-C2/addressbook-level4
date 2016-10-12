@@ -138,9 +138,9 @@ public class LogicManagerTest {
     @Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addTask(helper.generatePerson(1));
-        model.addTask(helper.generatePerson(2));
-        model.addTask(helper.generatePerson(3));
+        model.addTask(helper.generateTask(1));
+        model.addTask(helper.generateTask(2));
+        model.addTask(helper.generateTask(3));
 
         assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new AddressBook(), Collections.emptyList());
     }
@@ -150,31 +150,22 @@ public class LogicManagerTest {
     public void execute_add_invalidArgsFormat() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
         assertCommandBehavior(
-                "add Valid Name 12345 e/valid@email.butNoPhonePrefix a/valid, address", expectedMessage);
-        assertCommandBehavior(
-                "add Valid Name p/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
-        assertCommandBehavior(
-                "add Valid Name p/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
+                "add t/NTUC Valid Task", expectedMessage);
     }
 
     @Test
-    public void execute_add_invalidPersonData() throws Exception {
+    public void execute_add_invalidTaskData() throws Exception {
         assertCommandBehavior(
-                "add []\\[;] p/12345 e/valid@e.mail a/valid, address", Title.MESSAGE_NAME_CONSTRAINTS);
+                "add []\\[;]", Title.MESSAGE_NAME_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Name p/not_numbers e/valid@e.mail a/valid, address", Phone.MESSAGE_PHONE_CONSTRAINTS);
-        assertCommandBehavior(
-                "add Valid Name p/12345 e/notAnEmail a/valid, address", Email.MESSAGE_EMAIL_CONSTRAINTS);
-        assertCommandBehavior(
-                "add Valid Name p/12345 e/valid@e.mail a/valid, address t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
-
+                "add Valid Task t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 
     @Test
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask toBeAdded = helper.adam();
+        FloatingTask toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
         expectedAB.addPerson(toBeAdded);
 
@@ -187,10 +178,52 @@ public class LogicManagerTest {
     }
 
     @Test
+    public void execute_edit_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+
+        FloatingTask toEdit = helper.taskWithTags();
+        FloatingTask toEditCopy = helper.taskWithTags();
+        Title newTitle = new Title("New Title");
+
+        AddressBook expectedAB = new AddressBook();
+        expectedAB.addPerson(toEdit);
+        model.addTask(toEditCopy);
+
+        expectedAB.editTask(toEdit, newTitle, new UniqueTagList());
+
+        // execute command and verify result
+        assertCommandBehavior(helper.generateEditCommand(toEdit, 1, "New Title"),
+                String.format(EditCommand.MESSAGE_SUCCESS, toEdit),
+                expectedAB, expectedAB.getPersonList());
+    }
+
+    @Test
+    public void execute_edit_tags_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+
+        FloatingTask toEdit = helper.taskWithTags();
+        FloatingTask toEditCopy = helper.taskWithTags();
+        UniqueTagList newTagList = new UniqueTagList();
+        newTagList.add(new Tag("tag3"));
+
+        AddressBook expectedAB = new AddressBook();
+        expectedAB.addPerson(toEdit);
+        model.addTask(toEditCopy);
+
+        Title newTitle = null;
+        expectedAB.editTask(toEdit, newTitle, newTagList);
+
+        // execute command and verify result
+        assertCommandBehavior(helper.generateEditCommand(toEdit, 1, ""),
+                String.format(EditCommand.MESSAGE_SUCCESS, toEdit),
+                expectedAB, expectedAB.getPersonList());
+    }
+
+    @Test
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask toBeAdded = helper.adam();
+        FloatingTask toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
         expectedAB.addPerson(toBeAdded);
 
@@ -380,7 +413,7 @@ public class LogicManagerTest {
      */
     class TestDataHelper{
 
-        FloatingTask adam() throws Exception {
+        FloatingTask taskWithTags() throws Exception {
             Title name = new Title("Adam Brown");
             Tag tag1 = new Tag("tag1");
             Tag tag2 = new Tag("tag2");
@@ -395,7 +428,7 @@ public class LogicManagerTest {
          *
          * @param seed used to generate the person data field values
          */
-        FloatingTask generatePerson(int seed) throws Exception {
+        FloatingTask generateTask(int seed) throws Exception {
             return new FloatingTask(
                     new Title("Person " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1)))
@@ -412,6 +445,20 @@ public class LogicManagerTest {
 
             UniqueTagList tags = p.getTags();
             for(Tag t: tags){
+                cmd.append(" t/").append(t.tagName);
+            }
+
+            return cmd.toString();
+        }
+
+        String generateEditCommand(FloatingTask p, int index, String title) {
+            StringBuffer cmd = new StringBuffer();
+            
+            cmd.append(String.format("edit %d ", index));
+            cmd.append(title);
+
+            UniqueTagList tags = p.getTags();
+            for (Tag t : tags) {
                 cmd.append(" t/").append(t.tagName);
             }
 
@@ -476,7 +523,7 @@ public class LogicManagerTest {
         List<FloatingTask> generatePersonList(int numGenerated) throws Exception{
             List<FloatingTask> persons = new ArrayList<>();
             for(int i = 1; i <= numGenerated; i++){
-                persons.add(generatePerson(i));
+                persons.add(generateTask(i));
             }
             return persons;
         }
