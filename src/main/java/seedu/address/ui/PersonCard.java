@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import seedu.address.model.person.Deadline;
 import seedu.address.model.person.Entry;
 
 public class PersonCard extends UiPart{
@@ -18,6 +19,8 @@ public class PersonCard extends UiPart{
     private Label id;
    @FXML
     private Label tags;
+   @FXML
+    private Label deadline;
 
     private Entry entry;
     private int displayedIndex;
@@ -38,6 +41,9 @@ public class PersonCard extends UiPart{
         name.setText(entry.getTitle().fullTitle);
         id.setText(displayedIndex + ". ");
         tags.setText(entry.tagsString());
+        if (entry instanceof Deadline) {
+        	deadline.setText("deadline: " + ((Deadline)entry).getDeadline() );
+        }
     }
 
     public HBox getLayout() {
