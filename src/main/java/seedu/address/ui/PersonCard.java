@@ -43,6 +43,8 @@ public class PersonCard extends UiPart{
         tags.setText(entry.tagsString());
         if (entry instanceof Deadline) {
         	deadline.setText("deadline: " + ((Deadline)entry).getDeadline() );
+        } else {
+        	deadline.setText("");
         }
     }
 
