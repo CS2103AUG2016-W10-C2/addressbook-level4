@@ -9,7 +9,7 @@ import seedu.address.model.task.Entry;
 
 public class TaskCard extends UiPart{
 
-    private static final String FXML = "PersonListCard.fxml";
+    private static final String FXML = "TaskListCard.fxml";
 
     @FXML
     private HBox cardPane;
