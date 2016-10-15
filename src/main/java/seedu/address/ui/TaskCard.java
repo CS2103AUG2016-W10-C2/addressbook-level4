@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
 
-public class PersonCard extends UiPart{
+public class TaskCard extends UiPart{
 
     private static final String FXML = "PersonListCard.fxml";
 
@@ -27,12 +27,12 @@ public class PersonCard extends UiPart{
     private Entry entry;
     private int displayedIndex;
 
-    public PersonCard(){
+    public TaskCard(){
 
     }
 
-    public static PersonCard load(Entry person, int displayedIndex){
-        PersonCard card = new PersonCard();
+    public static TaskCard load(Entry person, int displayedIndex){
+        TaskCard card = new TaskCard();
         card.entry = person;
         card.displayedIndex = displayedIndex;
         return UiPartLoader.loadUiPart(card);
