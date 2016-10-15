@@ -1,12 +1,15 @@
 package seedu.address.model.task;
 
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Callback;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.commons.exceptions.DuplicateDataException;
 
-import java.util.*;
+import java.util.Iterator;
+
 
 /**
  * A list of persons that enforces uniqueness between its elements and does not allow nulls.
@@ -33,7 +36,13 @@ public class UniquePersonList implements Iterable<Entry> {
      */
     public static class PersonNotFoundException extends Exception {}
 
-    private final ObservableList<Entry> internalList = FXCollections.observableArrayList();
+    private final ObservableList<Entry> internalList = FXCollections.observableArrayList(
+            new Callback<Entry, Observable[]>() {
+        @Override
+        public Observable[] call(Entry entry) {
+            return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty()};
+        }
+    });
 
     /**
      * Constructs empty PersonList.
@@ -95,17 +104,12 @@ public class UniquePersonList implements Iterable<Entry> {
         if (target == -1) {
             throw new PersonNotFoundException();
         }
-
-        // TODO: This should be atomic or we should implement notifications for
-        // mutations
-        internalList.remove(target);
         if (newTitle != null) {
             toEdit.setTitle(newTitle);
         }
         if (newTags != null && !newTags.isEmpty()) {
             toEdit.setTags(newTags);
         }
-        internalList.add(toEdit);
     }
     
     /**
