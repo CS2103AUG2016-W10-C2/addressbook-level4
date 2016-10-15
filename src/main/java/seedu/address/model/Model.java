@@ -1,11 +1,11 @@
 package seedu.address.model;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.model.person.Title;
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.UniquePersonList;
-import seedu.address.model.person.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.person.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.Title;
+import seedu.address.model.task.Entry;
+import seedu.address.model.task.UniquePersonList;
+import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
+import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.Set;
@@ -30,13 +30,13 @@ public interface Model {
     /** Adds the given task */
     void addTask(Entry entry) throws UniquePersonList.DuplicateTaskException;
 
-    /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
+    /** Returns the filtered task list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<Entry> getFilteredPersonList();
 
-    /** Updates the filter of the filtered person list to show all persons */
+    /** Updates the filter of the filtered task list to show all persons */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered person list to filter by the given keywords*/
+    /** Updates the filter of the filtered task list to filter by the given keywords*/
     void updateFilteredPersonList(Set<String> keywords);
 
     /** Marks the given task. 

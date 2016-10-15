@@ -1,12 +1,12 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.person.FloatingTask;
-import seedu.address.model.person.Title;
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.UniquePersonList;
-import seedu.address.model.person.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.person.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.FloatingTask;
+import seedu.address.model.task.Title;
+import seedu.address.model.task.Entry;
+import seedu.address.model.task.UniquePersonList;
+import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
+import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -70,14 +70,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         resetData(newData.getPersonList(), newData.getTagList());
     }
 
-//// person-level operations
+//// task-level operations
 
     /**
-     * Adds a person to the address book.
-     * Also checks the new person's tags and updates {@link #tags} with any new tags found,
-     * and updates the Tag objects in the person to point to those in {@link #tags}.
+     * Adds a task to the address book.
+     * Also checks the new task's tags and updates {@link #tags} with any new tags found,
+     * and updates the Tag objects in the task to point to those in {@link #tags}.
      *
-     * @throws UniquePersonList.DuplicateTaskException if an equivalent person already exists.
+     * @throws UniquePersonList.DuplicateTaskException if an equivalent task already exists.
      */
     public void addPerson(Entry person) throws UniquePersonList.DuplicateTaskException {
         syncTagsWithMasterList(person);
@@ -100,7 +100,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
 
     /**
-     * Ensures that every tag in this person:
+     * Ensures that every tag in this task:
      *  - exists in the master list {@link #tags}
      *  - points to a Tag object in the master list
      */
@@ -114,7 +114,7 @@ public class AddressBook implements ReadOnlyAddressBook {
             masterTagObjects.put(tag, tag);
         }
 
-        // Rebuild the list of person tags using references from the master list
+        // Rebuild the list of task tags using references from the master list
         final Set<Tag> commonTagReferences = new HashSet<>();
         for (Tag tag : personTags) {
             commonTagReferences.add(masterTagObjects.get(tag));

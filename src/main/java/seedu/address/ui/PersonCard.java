@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import seedu.address.model.person.Deadline;
-import seedu.address.model.person.Entry;
+import seedu.address.model.task.Deadline;
+import seedu.address.model.task.Entry;
 
 public class PersonCard extends UiPart{
 

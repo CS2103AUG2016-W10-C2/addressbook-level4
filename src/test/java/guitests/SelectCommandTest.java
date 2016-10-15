@@ -1,7 +1,7 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.address.model.person.Entry;
+import seedu.address.model.task.Entry;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,11 +14,11 @@ public class SelectCommandTest extends AddressBookGuiTest {
         assertSelectionInvalid(10); //invalid index
         assertNoPersonSelected();
 
-        assertSelectionSuccess(1); //first person in the list
+        assertSelectionSuccess(1); //first task in the list
         int personCount = td.getTypicalPersons().length;
-        assertSelectionSuccess(personCount); //last person in the list
+        assertSelectionSuccess(personCount); //last task in the list
         int middleIndex = personCount / 2;
-        assertSelectionSuccess(middleIndex); //a person in the middle of the list
+        assertSelectionSuccess(middleIndex); //a task in the middle of the list
 
         assertSelectionInvalid(personCount + 1); //invalid index
         assertPersonSelected(middleIndex); //assert previous selection remains
@@ -35,7 +35,7 @@ public class SelectCommandTest extends AddressBookGuiTest {
 
     private void assertSelectionInvalid(int index) {
         commandBox.runCommand("select " + index);
-        assertResultMessage("The person index provided is invalid");
+        assertResultMessage("The task index provided is invalid");
     }
 
     private void assertSelectionSuccess(int index) {
