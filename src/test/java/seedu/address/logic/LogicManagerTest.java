@@ -343,15 +343,29 @@ public class LogicManagerTest {
                 expectedAB.getPersonList());
     }
 
-
     @Test
-    public void execute_find_invalidArgsFormat() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE);
-        assertCommandBehavior("find ", expectedMessage);
+    public void execute_list_showAllEntries() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE);
+        
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask pTarget1 = helper.generatePersonWithName("bla bla KEY bla");
+        FloatingTask pTarget2 = helper.generatePersonWithName("bla KEY bla bceofeia");
+        FloatingTask p1 = helper.generatePersonWithName("KE Y");
+        FloatingTask p2 = helper.generatePersonWithName("KEYKEYKEY sduauo");
+        
+        List<FloatingTask> fourPersons = helper.generatePersonList(p1, pTarget1, p2, pTarget2);
+        AddressBook expectedAB = helper.generateAddressBook(fourPersons);
+        List<FloatingTask> expectedList = helper.generatePersonList(p1, pTarget1, p2, pTarget2);
+        helper.addToModel(model, fourPersons);
+
+        assertCommandBehavior("list",
+                ListCommand.MESSAGE_SUCCESS,
+                expectedAB,
+                expectedList);
     }
 
     @Test
-    public void execute_find_onlyMatchesFullWordsInNames() throws Exception {
+    public void execute_list_onlyMatchesFullWordsInNames() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         FloatingTask pTarget1 = helper.generatePersonWithName("bla bla KEY bla");
         FloatingTask pTarget2 = helper.generatePersonWithName("bla KEY bla bceofeia");
@@ -363,14 +377,14 @@ public class LogicManagerTest {
         List<FloatingTask> expectedList = helper.generatePersonList(pTarget1, pTarget2);
         helper.addToModel(model, fourPersons);
 
-        assertCommandBehavior("find KEY",
+        assertCommandBehavior("list KEY",
                 Command.getMessageForPersonListShownSummary(expectedList.size()),
                 expectedAB,
                 expectedList);
     }
 
     @Test
-    public void execute_find_isNotCaseSensitive() throws Exception {
+    public void execute_list_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         FloatingTask p1 = helper.generatePersonWithName("bla bla KEY bla");
         FloatingTask p2 = helper.generatePersonWithName("bla KEY bla bceofeia");
@@ -382,14 +396,14 @@ public class LogicManagerTest {
         List<FloatingTask> expectedList = fourPersons;
         helper.addToModel(model, fourPersons);
 
-        assertCommandBehavior("find KEY",
+        assertCommandBehavior("list KEY",
                 Command.getMessageForPersonListShownSummary(expectedList.size()),
                 expectedAB,
                 expectedList);
     }
 
     @Test
-    public void execute_find_matchesIfAnyKeywordPresent() throws Exception {
+    public void execute_list_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         FloatingTask pTarget1 = helper.generatePersonWithName("bla bla KEY bla");
         FloatingTask pTarget2 = helper.generatePersonWithName("bla rAnDoM bla bceofeia");
@@ -401,7 +415,7 @@ public class LogicManagerTest {
         List<FloatingTask> expectedList = helper.generatePersonList(pTarget1, pTarget2, pTarget3);
         helper.addToModel(model, fourPersons);
 
-        assertCommandBehavior("find key rAnDoM",
+        assertCommandBehavior("list key rAnDoM",
                 Command.getMessageForPersonListShownSummary(expectedList.size()),
                 expectedAB,
                 expectedList);
