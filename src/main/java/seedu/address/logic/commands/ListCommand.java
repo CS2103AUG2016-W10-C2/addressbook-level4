@@ -11,7 +11,7 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all entries";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose titles contain any of "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": List all entries whose titles contain any of "
             + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
