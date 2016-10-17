@@ -35,7 +35,7 @@ public class SelectCommandTest extends AddressBookGuiTest {
 
     private void assertSelectionInvalid(int index) {
         commandBox.runCommand("select " + index);
-        assertResultMessage("The task index provided is invalid");
+        assertResultMessage("The entry index provided is invalid");
     }
 
     private void assertSelectionSuccess(int index) {
