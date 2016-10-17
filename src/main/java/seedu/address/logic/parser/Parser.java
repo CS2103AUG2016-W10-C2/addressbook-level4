@@ -269,6 +269,11 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareList(String args) {
+        // Guard statement
+        if (args.isEmpty()) {
+            return new ListCommand(new HashSet<>());
+        }
+        
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
@@ -277,7 +282,7 @@ public class Parser {
         // keywords delimited by whitespace
         final String[] keywords = matcher.group("keywords").split("\\s+");
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-        return new FindCommand(keywordSet);
+        return new ListCommand(keywordSet);
     }
 
 }
