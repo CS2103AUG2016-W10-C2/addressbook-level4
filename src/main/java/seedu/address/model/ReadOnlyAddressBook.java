@@ -1,8 +1,8 @@
 package seedu.address.model;
 
 
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.task.Entry;
+import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 

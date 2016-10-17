@@ -6,10 +6,10 @@ import java.util.Set;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.Title;
-import seedu.address.model.person.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.person.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.Entry;
+import seedu.address.model.task.Title;
+import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
+import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 

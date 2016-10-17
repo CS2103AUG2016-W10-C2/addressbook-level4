@@ -4,8 +4,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.task.Entry;
+import seedu.address.model.task.UniquePersonList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

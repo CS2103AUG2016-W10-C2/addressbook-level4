@@ -3,8 +3,8 @@ package seedu.address.testutil;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.AddressBook;
-import seedu.address.model.person.FloatingTask;
-import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.task.FloatingTask;
+import seedu.address.model.task.UniquePersonList;
 
 /**
  * A utility class to help with building Addressbook objects.

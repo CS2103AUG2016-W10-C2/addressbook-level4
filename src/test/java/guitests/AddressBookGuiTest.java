@@ -11,7 +11,7 @@ import org.testfx.api.FxToolkit;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.model.AddressBook;
-import seedu.address.model.person.Entry;
+import seedu.address.model.task.Entry;
 import seedu.address.testutil.TestUtil;
 import seedu.address.testutil.TypicalTestPersons;
 
@@ -95,14 +95,14 @@ public abstract class AddressBookGuiTest {
     }
 
     /**
-     * Asserts the person shown in the card is same as the given person
+     * Asserts the task shown in the card is same as the given task
      */
     public void assertMatching(Entry person, PersonCardHandle card) {
         assertTrue(TestUtil.compareCardAndPerson(card, person));
     }
 
     /**
-     * Asserts the size of the person list is equal to the given number.
+     * Asserts the size of the task list is equal to the given number.
      */
     protected void assertListSize(int size) {
         int numberOfPeople = personListPanel.getNumberOfPeople();

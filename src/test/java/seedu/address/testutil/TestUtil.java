@@ -17,7 +17,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.XmlUtil;
 import seedu.address.model.AddressBook;
-import seedu.address.model.person.*;
+import seedu.address.model.task.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.storage.XmlSerializableAddressBook;
@@ -286,7 +286,7 @@ public class TestUtil {
 
 
     /**
-     * Returns a copy of the list with the person at specified index removed.
+     * Returns a copy of the list with the task at specified index removed.
      * @param list original list to copy from
      * @param targetIndexInOneIndexedFormat e.g. if the first element to be removed, 1 should be given as index.
      */
@@ -295,10 +295,10 @@ public class TestUtil {
     }
 
     /**
-     * Replaces persons[i] with a person.
+     * Replaces persons[i] with a task.
      * @param persons The array of persons.
-     * @param person The replacement person
-     * @param index The index of the person to be replaced.
+     * @param person The replacement task
+     * @param index The index of the task to be replaced.
      * @return
      */
     public static TestEntry[] replacePersonFromList(TestEntry[] persons, TestEntry person, int index) {
