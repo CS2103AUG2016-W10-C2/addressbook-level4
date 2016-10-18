@@ -29,7 +29,7 @@ public class Parser {
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<tagArguments>(?: t/[^/]+)*)" // comma separated tags;
+            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags;
                     + "(?<desc>(?: desc/[^/]*)?)");
 
     private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
