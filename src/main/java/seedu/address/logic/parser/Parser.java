@@ -88,10 +88,10 @@ public class Parser {
             return prepareUnmark(arguments);
             
         case TagCommand.COMMAND_WORD:
-            return perpareTag(arguments);
+            return prepareTag(arguments);
             
         case UntagCommand.COMMAND_WORD:
-            return perpareUntag(arguments);
+            return prepareUntag(arguments);
 
         case ListCommand.COMMAND_WORD:
             return prepareList(arguments);
@@ -256,7 +256,7 @@ public class Parser {
     /**
      * Parses arguments in the context of the tag task command.
      */
-    private Command perpareTag(String args) {
+    private Command prepareTag(String args) {
         final Matcher matcher = TAG_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
@@ -281,7 +281,7 @@ public class Parser {
     /**
      * Parses arguments in the context of the untag task command.
      */
-    private Command perpareUntag(String args) {
+    private Command prepareUntag(String args) {
         final Matcher matcher = UNTAG_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
