@@ -48,7 +48,7 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            model.updateFilteredPersonList(keywords);
+            model.updateFilteredEntryListByKeywords(keywords);
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
         }
     }

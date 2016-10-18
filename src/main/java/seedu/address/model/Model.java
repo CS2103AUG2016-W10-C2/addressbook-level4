@@ -37,7 +37,7 @@ public interface Model {
     void updateFilteredListToShowAll();
 
     /** Updates the filter of the filtered task list to filter by the given keywords*/
-    void updateFilteredPersonList(Set<String> keywords);
+    void updateFilteredEntryListByKeywords(Set<String> keywords);
 
     /** Marks the given task. 
      * @throws DuplicateTaskException */
