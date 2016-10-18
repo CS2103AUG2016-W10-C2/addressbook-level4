@@ -12,6 +12,7 @@ import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.task.Update;
 
 import java.util.Set;
 import java.util.logging.Logger;
@@ -80,9 +81,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void editTask(Entry task, Title newTitle, UniqueTagList newTags)
+    public synchronized void editTask(Update update)
             throws PersonNotFoundException, DuplicateTaskException {
-        addressBook.editTask(task, newTitle, newTags);
+        addressBook.editTask(update);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }

@@ -7,6 +7,7 @@ import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.task.Update;
 
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public interface Model {
     void deleteTask(Entry target) throws UniquePersonList.PersonNotFoundException;
 
     /** Edit the given task */
-    void editTask(Entry task, Title title, UniqueTagList newTags)
+    void editTask(Update update)
             throws PersonNotFoundException, DuplicateTaskException;
 
     /** Adds the given task */

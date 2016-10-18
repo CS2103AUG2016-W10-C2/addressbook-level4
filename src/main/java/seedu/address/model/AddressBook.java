@@ -1,10 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.task.FloatingTask;
-import seedu.address.model.task.Title;
-import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList;
+import seedu.address.model.task.*;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -84,10 +81,13 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.add(person);
     }
 
-    public void editTask(Entry task, Title newTitle, UniqueTagList newTags)
+    public void editTask(Update update)
             throws PersonNotFoundException, DuplicateTaskException {
-        syncTagsWithMasterList(task);
-        persons.edit(task, newTitle, newTags);
+        Entry toEdit = update.getTask();
+        syncTagsWithMasterList(toEdit);
+        persons.updateTitle(toEdit, update.getNewTitle());
+        persons.updateTags(toEdit, update.getNewTags());
+        persons.updateDescription(toEdit, update.getNewDescription());
     }
     
     public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
