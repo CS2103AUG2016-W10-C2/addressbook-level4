@@ -1,5 +1,7 @@
 package seedu.address.testutil;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.*;
 
@@ -8,25 +10,41 @@ import seedu.address.model.task.*;
  */
 public class TestEntry implements Entry {
 
-    private Title title;
-    private UniqueTagList tags;
+    private ObjectProperty<Title> title;
+    private ObjectProperty<UniqueTagList> tags;
 
     public TestEntry() {
-        tags = new UniqueTagList();
+        title = new SimpleObjectProperty<>();
+        tags = new SimpleObjectProperty<>(new UniqueTagList());
     }
-
-    public void setName(Title name) {
-        this.title = name;
-    }
-
 
     @Override
     public Title getTitle() {
+        return title.get();
+    }
+
+    @Override
+    public void setTitle(Title newTitle) {
+        title.set(newTitle);
+    }
+
+    @Override
+    public ObjectProperty<Title> titleObjectProperty() {
         return title;
     }
 
     @Override
     public UniqueTagList getTags() {
+        return tags.get();
+    }
+
+    @Override
+    public void setTags(UniqueTagList uniqueTagList) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
         return tags;
     }
 
@@ -46,17 +64,6 @@ public class TestEntry implements Entry {
     public String getAsText() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public void setTags(UniqueTagList uniqueTagList) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void setTitle(Title newTitle) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

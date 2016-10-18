@@ -1,5 +1,7 @@
 package seedu.address.model.task;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -11,9 +13,9 @@ import java.util.Objects;
  */
 public class FloatingTask implements Entry {
 
-    private Title title;
+    private ObjectProperty<Title> title;
 
-    private UniqueTagList tags;
+    private ObjectProperty<UniqueTagList> tags;
     
     private boolean isMarked;
 
@@ -23,15 +25,13 @@ public class FloatingTask implements Entry {
     public FloatingTask(Title title, UniqueTagList tags) {
         assert !CollectionUtil.isAnyNull(title, tags);
         // protect against changes after constructor.
-        this.title = Title.copy(title);
-        this.tags = new UniqueTagList(tags);
+        this.title = new SimpleObjectProperty<>(Title.copy(title));
+        this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = false;
     }   
     
     public FloatingTask(Title title, UniqueTagList tags, boolean isMarked) {
-        assert !CollectionUtil.isAnyNull(title, tags);
-        this.title = Title.copy(title);
-        this.tags = new UniqueTagList(tags);
+        this(title, tags);
         this.isMarked = isMarked;
     }
 
@@ -43,24 +43,36 @@ public class FloatingTask implements Entry {
     }
 
     @Override
-    public Title getTitle() {
-        return title;
-    }
-
-    public void setTitle(Title newTitle) {
-        this.title = newTitle;
+    public final Title getTitle() {
+        return title.get();
     }
 
     @Override
-    public UniqueTagList getTags() {
-        return new UniqueTagList(tags);
+    public final void setTitle(Title newTitle) {
+        this.title.set(newTitle);
+    }
+
+    @Override
+    public ObjectProperty<Title> titleObjectProperty() {
+        return title;
+    }
+
+    @Override
+    public final UniqueTagList getTags() {
+        return new UniqueTagList(tags.get());
     }
 
     /**
      * Replaces this task's tags with the tags in the argument tag list.
      */
-    public void setTags(UniqueTagList replacement) {
-        tags.setTags(replacement);
+    @Override
+    public final void setTags(UniqueTagList newTags) {
+        tags.set(new UniqueTagList(newTags));
+    }
+
+    @Override
+    public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
+        return tags;
     }
     
     @Override
