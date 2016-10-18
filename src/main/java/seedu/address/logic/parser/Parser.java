@@ -312,11 +312,11 @@ public class Parser {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 
-        // keywords delimited by whitespace
-        final String[] keywords = matcher.group("keywords").split("\\s+");
         try {
             final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
             final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+            // keywords delimited by whitespace
+            final String[] keywords = matcher.group("keywords").split("\\s+");
             
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
             
