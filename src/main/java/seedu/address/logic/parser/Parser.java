@@ -316,9 +316,10 @@ public class Parser {
             final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
             final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
             // keywords delimited by whitespace
-            final String[] keywords = matcher.group("keywords").trim().split("\\s+");
-            
-            final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+            String[] keywords = matcher.group("keywords").trim().split("\\s+");
+
+            Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+            keywordSet.removeIf(s -> s.equals(""));
             
             ListCommand listCommand = new ListCommand(keywordSet);
             listCommand.setStartDate(startDate);
