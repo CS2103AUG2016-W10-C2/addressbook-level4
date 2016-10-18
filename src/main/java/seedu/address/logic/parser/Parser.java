@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
+import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
 
 /**
  * Parses user input.
@@ -24,10 +26,11 @@ public class Parser {
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
+    // TODO: Use tokenizer for these
     private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*?)" // one or more keywords separated by whitespace
-                    + "(?<startDate>(?: /st \\d{4}-\\d{1,2}-\\d{1,2})?)"
-                    + "(?<endDate>(?: /end \\d{4}-\\d{1,2}-\\d{1,2})?)"); 
+            Pattern.compile("(?<startDate>(?:" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
+                    + "(?<endDate>(?: " + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
+                    + "(?<keywords>(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
