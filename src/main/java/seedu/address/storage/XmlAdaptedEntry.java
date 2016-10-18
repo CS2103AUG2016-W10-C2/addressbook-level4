@@ -23,7 +23,7 @@ public class XmlAdaptedEntry {
     private String description;
 
     @XmlElement
-    private LocalDateTime deadline;
+    private String deadline;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -52,7 +52,7 @@ public class XmlAdaptedEntry {
         }
         
         if (source instanceof Deadline) {
-        	deadline = ((Deadline)source).getDeadline();
+        	deadline = ((Deadline)source).getDeadline().toString();
         }
     }
 
@@ -71,7 +71,7 @@ public class XmlAdaptedEntry {
         if (deadline == null) {
             return new FloatingTask(title, tags, isMarked, description);
         } else {
-        	return new Deadline(title, deadline, tags, isMarked);
+        	return new Deadline(title, LocalDateTime.parse(deadline), tags, isMarked);
         }
     }
 }
