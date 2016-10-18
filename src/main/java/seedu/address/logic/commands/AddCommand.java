@@ -63,6 +63,14 @@ public class AddCommand extends Command {
         );
     }
 
+    public AddCommand(String title, Set<String> tags, String description) throws IllegalValueException {
+        final Set<Tag> tagSet = new HashSet<>();
+        for (String tagName : tags) {
+            tagSet.add(new Tag(tagName));
+        }
+        this.toAdd = new FloatingTask(new Title(title), new UniqueTagList(tagSet), false, description);
+    }
+
     @Override
     public CommandResult execute() {
         assert model != null;
