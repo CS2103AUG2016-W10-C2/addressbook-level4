@@ -34,8 +34,9 @@ public class Parser {
 
     private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<deadlineArguments>(?: deadline/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
-            		+ "(?<tagArguments>(?: t/[^/]+)?)"); // comma separated tags; 
+            		+ "(?<deadlineArguments>(?: dl/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
+            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags; 
+            		+ "(?<desc>(?: desc/[^/]*)?)");
     
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
@@ -126,7 +127,7 @@ public class Parser {
         }
         if (deadlineMatcher.matches()) {
         	try {
-        		return new AddCommand(deadlineMatcher.group("title"), getDeadlineFromArgument(deadlineMatcher.group("deadlineArguments")), getTagsFromArgs(deadlineMatcher.group("tagArguments")));
+        		return new AddCommand(deadlineMatcher.group("title"), getDeadlineFromArgument(deadlineMatcher.group("deadlineArguments")), getTagsFromArgs(deadlineMatcher.group("tagArguments")), getDescriptionFromArgs(deadlineMatcher.group("desc")));
         	} catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
@@ -202,7 +203,7 @@ public class Parser {
             return LocalDateTime.now();
         }
         // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" deadline/", "").split(" "));
+        final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" dl/", "").split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
 
