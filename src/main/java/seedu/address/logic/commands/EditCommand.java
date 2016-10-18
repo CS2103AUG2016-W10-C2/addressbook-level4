@@ -12,6 +12,7 @@ import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.task.Update;
 
 /*
  * Edit a task's content.
@@ -28,21 +29,30 @@ public class EditCommand extends Command {
 
     private final int targetIndex;
 
-    private final Title newTitle;
-    private final UniqueTagList newTags;
+    private final Update update;
 
-    public EditCommand(int targetIndex, String title, Set<String> tags) throws IllegalValueException {
+    public EditCommand(int targetIndex, String title, Set<String> tags, String description) throws IllegalValueException {
         this.targetIndex = targetIndex;
-        if (title != null && title.length() > 0) {
-            this.newTitle = new Title(title);
-        } else {
-            this.newTitle = null;
+
+        Title newTitle = null;
+        if (title != null && !title.isEmpty()) {
+            newTitle = new Title(title);
         }
-        final Set<Tag> tagSet = new HashSet<>();
-        for (String tagName : tags) {
-            tagSet.add(new Tag(tagName));
+
+        UniqueTagList newTags = null;
+        if (tags != null && !tags.isEmpty()) {
+            final Set<Tag> tagSet = new HashSet<>();
+            for (String tagName : tags) {
+                tagSet.add(new Tag(tagName));
+            }
+            newTags = new UniqueTagList(tagSet);
         }
-        this.newTags = new UniqueTagList(tagSet);
+
+        String newDescription = null;
+        if (description != null && !description.isEmpty()) {
+            newDescription = description;
+        }
+        this.update = new Update(newTitle, newTags, newDescription);
     }
 
     @Override
@@ -53,11 +63,12 @@ public class EditCommand extends Command {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
-        
+
         Entry taskToEdit = lastShownList.get(targetIndex - 1);
+        update.setTask(taskToEdit);
         assert model != null;
         try {
-            model.editTask(taskToEdit, newTitle, newTags);
+            model.editTask(update);
         } catch (PersonNotFoundException e) {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {
