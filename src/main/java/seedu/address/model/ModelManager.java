@@ -10,6 +10,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Deadline;
+import seedu.address.model.task.FloatingTask;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
@@ -198,12 +199,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(Entry entry) {
             // Don't include FloatingTasks, which have no deadline
-            try {
-                if (entry.getClass() == Class.forName("FloatingTask")) {
-                    return false;
-                }
-            } catch (ClassNotFoundException cnfe) {
-                System.err.println(cnfe);
+            if (entry.getClass().getName() == "FloatingTask") {
                 return false;
             }
              
@@ -229,12 +225,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(Entry entry) {
             // Don't include FloatingTasks, which have no deadline
-            try {
-                if (entry.getClass() == Class.forName("FloatingTask")) {
-                    return false;
-                }
-            } catch (ClassNotFoundException cnfe) {
-                System.err.println(cnfe);
+            if (entry.getClass().getName() == "FloatingTask") {
                 return false;
             }
              
