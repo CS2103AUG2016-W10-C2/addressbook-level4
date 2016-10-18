@@ -28,9 +28,9 @@ public class Parser {
 
     // TODO: Use tokenizer for these
     private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<startDate>(?:\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
-                    + "(?<endDate>(?:\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
-                    + "(?<keywords>(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
+            Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
@@ -187,7 +187,7 @@ public class Parser {
      * string. Format: YYYY-MM-DD
      */
     private static LocalDateTime getStartDateFromArgument(String dateTime) throws IllegalValueException {
-        if (dateTime.isEmpty()) {
+        if (dateTime == null || dateTime.isEmpty()) {
             return null;
         }
         
@@ -201,7 +201,7 @@ public class Parser {
      * string. Format: YYYY-MM-DD
      */
     private static LocalDateTime getEndDateFromArgument(String dateTime) throws IllegalValueException {
-        if (dateTime.isEmpty()) {
+        if (dateTime == null || dateTime.isEmpty()) {
             return null;
         }
         
@@ -316,7 +316,7 @@ public class Parser {
             final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
             final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
             // keywords delimited by whitespace
-            final String[] keywords = matcher.group("keywords").split("\\s+");
+            final String[] keywords = matcher.group("keywords").trim().split("\\s+");
             
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
             
