@@ -11,7 +11,9 @@ import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
 import java.util.Set;
 import java.util.logging.Logger;
@@ -115,6 +117,10 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    @Override
+    public void addTag(Tag tag) throws DuplicateTagException {
+        addressBook.addTag(tag);
+    }
     //=========== Filtered Person List Accessors ===============================================================
 
     @Override

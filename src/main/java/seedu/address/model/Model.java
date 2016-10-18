@@ -6,7 +6,9 @@ import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
 import java.util.Set;
 
@@ -29,6 +31,10 @@ public interface Model {
 
     /** Adds the given task */
     void addTask(Entry entry) throws UniquePersonList.DuplicateTaskException;
+    
+    /** Adds the given tag 
+     * @throws DuplicateTagException */
+    void addTag(Tag tag) throws DuplicateTagException;
 
     /** Returns the filtered task list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<Entry> getFilteredPersonList();
