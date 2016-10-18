@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
+
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
@@ -8,6 +9,7 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Deadline;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
@@ -121,12 +123,12 @@ public class ModelManager extends ComponentManager implements Model {
     
     @Override
     public void updateFilteredEntryListByStartDate(LocalDateTime startDate) {
-        
+        updateFilteredPersonList(new PredicateExpression(new DateAfterQualifier(startDate)));
     }
     
     @Override
     public void updateFilteredEntryListByEndDate(LocalDateTime endDate) {
-        
+        updateFilteredPersonList(new PredicateExpression(new DateBeforeQualifier(endDate)));
     }
 
     private void updateFilteredPersonList(Expression expression) {
@@ -182,6 +184,68 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public String toString() {
             return "name=" + String.join(", ", nameKeyWords);
+        }
+    }
+    
+    private class DateAfterQualifier implements Qualifier {
+        private LocalDateTime startDate;
+
+        DateAfterQualifier(LocalDateTime startDate) {
+            this.startDate = startDate;
+        }
+
+        // TODO: Change this when we introduce Events
+        @Override
+        public boolean run(Entry entry) {
+            // Don't include FloatingTasks, which have no deadline
+            try {
+                if (entry.getClass() == Class.forName("FloatingTask")) {
+                    return false;
+                }
+            } catch (ClassNotFoundException cnfe) {
+                System.err.println(cnfe);
+                return false;
+            }
+             
+            // Deadline
+            Deadline deadline = (Deadline) entry;
+            return deadline.getDeadline().compareTo(startDate) >= 0;
+        }
+
+        @Override
+        public String toString() {
+            return "Due after: " + startDate.toString();
+        }
+    }
+    
+    private class DateBeforeQualifier implements Qualifier {
+        private LocalDateTime endDate;
+
+        DateBeforeQualifier(LocalDateTime endDate) {
+            this.endDate = endDate;
+        }
+
+        // TODO: Change this when we introduce Events
+        @Override
+        public boolean run(Entry entry) {
+            // Don't include FloatingTasks, which have no deadline
+            try {
+                if (entry.getClass() == Class.forName("FloatingTask")) {
+                    return false;
+                }
+            } catch (ClassNotFoundException cnfe) {
+                System.err.println(cnfe);
+                return false;
+            }
+             
+            // Deadline
+            Deadline deadline = (Deadline) entry;
+            return deadline.getDeadline().compareTo(endDate) <= 0;
+        }
+
+        @Override
+        public String toString() {
+            return "Due before: " + endDate.toString();
         }
     }
 
