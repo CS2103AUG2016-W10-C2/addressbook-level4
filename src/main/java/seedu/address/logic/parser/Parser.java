@@ -24,8 +24,10 @@ public class Parser {
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
-    private static final Pattern KEYWORDS_ARGS_FORMAT =
-            Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
+    private static final Pattern LIST_ARGS_FORMAT =
+            Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*?)" // one or more keywords separated by whitespace
+                    + "(?<startDate>(?: /st \\d{4}-\\d{1,2}-\\d{1,2})?)"
+                    + "(?<endDate>(?: /end \\d{4}-\\d{1,2}-\\d{1,2})?)"); 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
@@ -274,7 +276,7 @@ public class Parser {
             return new ListCommand(new HashSet<>());
         }
         
-        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+        final Matcher matcher = LIST_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
