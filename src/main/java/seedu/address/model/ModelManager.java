@@ -199,7 +199,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(Entry entry) {
             // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getName() == "FloatingTask") {
+            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
                 return false;
             }
              
@@ -225,7 +225,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(Entry entry) {
             // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getName() == "FloatingTask") {
+            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
                 return false;
             }
              
