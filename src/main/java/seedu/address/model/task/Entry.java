@@ -1,5 +1,7 @@
 package seedu.address.model.task;
 
+import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
 import seedu.address.model.tag.UniqueTagList;
 
 /**
@@ -12,10 +14,27 @@ public interface Entry {
     Title getTitle();
 
     /**
+     * Sets the Title for this Entry
+     */
+    void setTitle(Title newTitle);
+
+    /**
+     * Get TitleObjectProperty for this entry
+     */
+    Observable titleObjectProperty();
+
+    /**
      * The returned TagList is a deep copy of the internal TagList,
      * changes on the returned list will not affect the task's internal tags.
      */
     UniqueTagList getTags();
+
+    /**
+     * Sets the Tags for this Entry
+     */
+    void setTags(UniqueTagList uniqueTagList);
+
+    Observable uniqueTagListObjectProperty();
 
     /**
      * Returns true if entry is marked as completed
@@ -40,15 +59,7 @@ public interface Entry {
         }
     }
 
-    /**
-     * Sets the Tags for this Entry
-     */
-    void setTags(UniqueTagList uniqueTagList);
 
-    /**
-     * Sets the Title for this Entry
-     */
-    void setTitle(Title newTitle);
 
     /**
      * Marks the entry as completed.

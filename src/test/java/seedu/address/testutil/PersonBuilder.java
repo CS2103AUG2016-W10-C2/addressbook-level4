@@ -15,8 +15,8 @@ public class PersonBuilder {
         this.person = new TestEntry();
     }
 
-    public PersonBuilder withName(String name) throws IllegalValueException {
-        this.person.setName(new Title(name));
+    public PersonBuilder withName(String title) throws IllegalValueException {
+        this.person.setTitle(new Title(title));
         return this;
     }
 
