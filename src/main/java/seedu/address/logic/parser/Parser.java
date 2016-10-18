@@ -183,18 +183,6 @@ public class Parser {
     }
     
     /**
-     * Parse LocalDateTime from an input string
-     * string. Format: YYYY-MM-DD
-     */
-    private static LocalDateTime getDateFromArgument(String dateTime) throws IllegalValueException {
-        assert !dateTime.isEmpty();
-        
-        // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(dateTime.replaceFirst(" deadline/", "").split(" "));
-        return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
-    }
-    
-    /**
      * Parse LocalDateTime of start date from an input string
      * string. Format: YYYY-MM-DD
      */
@@ -204,8 +192,8 @@ public class Parser {
         }
         
         // remove the tag.
-        final String cleanedString = dateTime.replaceFirst(" /st", "") + "T" + "00:00:00";
-        return getDateFromArgument(cleanedString);
+        final String cleanedString = dateTime.trim().replaceFirst(AFTER_FLAG, "") + "T" + "00:00:00";
+        return LocalDateTime.parse(cleanedString);
     }
     
     /**
@@ -218,8 +206,8 @@ public class Parser {
         }
         
         // remove the tag.
-        final String cleanedString = dateTime.replaceFirst(" /end", "") + "T" + "23:59:59";
-        return getDateFromArgument(cleanedString);
+        final String cleanedString = dateTime.trim().replaceFirst(BEFORE_FLAG, "") + "T" + "23:59:59";
+        return LocalDateTime.parse(cleanedString);
     }
 
     /**
