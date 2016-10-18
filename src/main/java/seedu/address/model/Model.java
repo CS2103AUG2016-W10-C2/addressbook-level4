@@ -10,6 +10,7 @@ import seedu.address.model.tag.UniqueTagList;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * The API of the Model component.
@@ -37,14 +38,8 @@ public interface Model {
     /** Updates the filter of the filtered task list to show all persons */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered task list to filter by the given keywords*/
-    void updateFilteredEntryListByKeywords(Set<String> keywords);
-
-    /** Updates the filter of the filtered task list to filter by the given startDate*/
-    void updateFilteredEntryListByStartDate(LocalDateTime startDate);
-    
-    /** Updates the filter of the filtered task list to filter by the given endDate*/
-    void updateFilteredEntryListByEndDate(LocalDateTime endDate);
+    /** Updates the filter of the filtered task list*/
+    void updateFilteredEntryListPredicate(Predicate<Entry> predicate);
     
     /** Marks the given task. 
      * @throws DuplicateTaskException */
