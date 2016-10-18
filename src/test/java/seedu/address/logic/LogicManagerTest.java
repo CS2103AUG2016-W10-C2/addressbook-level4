@@ -189,7 +189,9 @@ public class LogicManagerTest {
         expectedAB.addPerson(toEdit);
         model.addTask(toEditCopy);
 
-        expectedAB.editTask(toEdit, newTitle, new UniqueTagList());
+        Update update = new Update(newTitle, null, null);
+        update.setTask(toEdit);
+        expectedAB.editTask(update);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateEditCommand(toEdit, 1, "New Title"),
@@ -211,7 +213,9 @@ public class LogicManagerTest {
         model.addTask(toEditCopy);
 
         Title newTitle = null;
-        expectedAB.editTask(toEdit, newTitle, newTagList);
+        Update update = new Update(newTitle, newTagList, "");
+        update.setTask(toEdit);
+        expectedAB.editTask(update);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateEditCommand(toEdit, 1, ""),
