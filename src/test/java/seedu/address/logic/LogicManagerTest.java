@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -107,11 +108,9 @@ public class LogicManagerTest {
 
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
-
         //Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedShownList, model.getFilteredPersonList());
-
         //Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedAddressBook, model.getAddressBook());
         assertEquals(expectedAddressBook, latestSavedAddressBook);
@@ -233,7 +232,7 @@ public class LogicManagerTest {
 
         // setup starting state
         model.addTask(toBeAdded); // task already in internal address book
-
+        
         // execute command and verify result
         assertCommandBehavior(
                 helper.generateAddCommand(toBeAdded),
@@ -425,6 +424,160 @@ public class LogicManagerTest {
                 expectedList);
     }
 
+    @Test
+    public void execute_tagInvalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE);
+        assertIncorrectIndexFormatBehaviorForCommand("tag", expectedMessage);
+    }
+
+    @Test
+    public void execute_tagInvalidTagFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(Tag.MESSAGE_TAG_CONSTRAINTS);
+        
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+
+        List<FloatingTask> expectedList = helper.generateEntryList(t1);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        
+        assertCommandBehavior("tag 1 **", expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_tag_withoutTagnameArgs() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        FloatingTask t1Copy = helper.generateTask(1);
+        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
+        
+        assertCommandBehavior("tag 1", expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_tag_allowAlphanumericSpaceUnderscore() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        
+        Tag tag1 = new Tag("tag10");
+        Tag tag2 = new Tag("tag_10");
+        Tag tag3 = new Tag("tag 10");
+        UniqueTagList tags = new UniqueTagList(tag1, tag2, tag3);
+        
+        FloatingTask t1Copy = helper.generateTask(1);
+        t1Copy.addTags(tags);
+        
+        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
+        assertCommandBehavior(helper.generateTagCommand(tags, 1),
+                expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_tag_allowAddExistingTags() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("tag2");
+        Tag tag3 = new Tag("tag3");
+        UniqueTagList tags = new UniqueTagList(tag1, tag2, tag3);
+        
+        FloatingTask t1Copy = helper.generateTask(1);
+        t1Copy.addTags(tags);
+        
+        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
+        assertCommandBehavior(helper.generateTagCommand(tags, 1),
+                expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_untagInvalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE);
+        assertIncorrectIndexFormatBehaviorForCommand("untag", expectedMessage);
+    }
+
+    @Test
+    public void execute_untagInvalidTagFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(Tag.MESSAGE_TAG_CONSTRAINTS);
+        
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+
+        List<FloatingTask> expectedList = helper.generateEntryList(t1);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        
+        assertCommandBehavior("untag 1 **", expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_untag_withoutTagnameArgs() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        FloatingTask t1Copy = helper.generateTask(1);
+        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
+        
+        assertCommandBehavior("untag 1", expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_untag_allowAlphanumericSpaceUnderscore() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("tag_1");
+        Tag tag3 = new Tag("tag 1");
+        UniqueTagList tags = new UniqueTagList(tag1, tag2, tag3);
+                
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        FloatingTask t1Copy = helper.generateTask(1);
+        t1Copy.removeTags(tags);
+        
+        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
+        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
+        assertCommandBehavior(helper.generateUntagCommand(tags, 1),
+                expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_untag_allowRemoveNonExistentTags() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        FloatingTask t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        Tag tag1 = new Tag("tag1");
+        Tag tag3 = new Tag("tag3");  // Does not exist
+        UniqueTagList tags = new UniqueTagList(tag1, tag3);
+        
+        FloatingTask t1Copy = helper.generateTask(1);
+        t1Copy.removeTags(tags);
+        
+        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        AddressBook expectedAB = helper.generateAddressBook(expectedList);
+        helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
+        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
+        assertCommandBehavior(helper.generateUntagCommand(tags, 1),
+                expectedMessage, expectedAB, expectedList);
+    }
 
     /**
      * A utility class to generate test data.
@@ -462,8 +615,13 @@ public class LogicManagerTest {
             cmd.append(p.getTitle().toString());
 
             UniqueTagList tags = p.getTags();
-            for(Tag t: tags){
-                cmd.append(" t/").append(t.tagName);
+
+            if (!tags.isEmpty()){
+                StringJoiner joiner = new StringJoiner(",");
+                for (Tag t : tags) {
+                    joiner.add(t.tagName);
+                }
+                cmd.append(" t/").append(joiner.toString());
             }
 
             return cmd.toString();
@@ -476,11 +634,58 @@ public class LogicManagerTest {
             cmd.append(title);
 
             UniqueTagList tags = p.getTags();
-            for (Tag t : tags) {
-                cmd.append(" t/").append(t.tagName);
+            if (!tags.isEmpty()){
+                StringJoiner joiner = new StringJoiner(",");
+                for (Tag t : tags) {
+                    joiner.add(t.tagName);
+                }
+                cmd.append(" t/").append(joiner.toString());
             }
-
             return cmd.toString();
+        }
+        
+        /** Generates the tag command based on the given tag and index*/
+        String generateTagCommand(UniqueTagList tags, int index) {
+            StringBuffer cmd = new StringBuffer();
+            
+            cmd.append(String.format("tag %d ", index));
+            
+            StringJoiner joiner = new StringJoiner(",");
+            for (Tag t : tags) {
+                joiner.add(t.tagName);
+            }
+            
+            cmd.append(joiner.toString());
+            
+            return cmd.toString().replaceAll(",$", "");
+        }
+        
+        /** Generates the tag command based on the given tag and index*/
+        String generateTagCommand(FloatingTask p, int index) {
+            UniqueTagList tags = p.getTags();
+            return generateTagCommand(tags, index);
+        }
+        
+        /** Generates the untag command based on the given tag and index*/
+        String generateUntagCommand(UniqueTagList tags, int index) {
+            StringBuffer cmd = new StringBuffer();
+            
+            cmd.append(String.format("untag %d ", index));
+            
+            StringJoiner joiner = new StringJoiner(",");
+            for (Tag t : tags) {
+                joiner.add(t.tagName);
+            }
+            
+            cmd.append(joiner.toString());
+            
+            return cmd.toString().replaceAll(",$", "");
+        }
+
+        /** Generates the untag command based on the given tag and index*/
+        String generateUntagCommand(FloatingTask p, int index) {
+            UniqueTagList tags = p.getTags();
+            return generateUntagCommand(tags, index);
         }
 
         /**
@@ -519,6 +724,15 @@ public class LogicManagerTest {
         }
 
         /**
+         * Adds the given list of Tags to the given AddressBook
+         */
+        void addToAddressBook(AddressBook addressBook, UniqueTagList tagsToAdd) throws Exception{
+            for(Tag t: tagsToAdd){
+                addressBook.addTag(t);
+            }
+        }
+
+        /**
          * Adds auto-generated Person objects to the given model
          * @param model The model to which the Persons will be added
          */
@@ -532,6 +746,15 @@ public class LogicManagerTest {
         void addToModel(Model model, List<FloatingTask> personsToAdd) throws Exception{
             for(FloatingTask p: personsToAdd){
                 model.addTask(p);
+            }
+        }
+
+        /**
+         * Adds the given list of tags to the given model
+         */
+        void addToModel(Model model, UniqueTagList tagList) throws Exception{
+            for(Tag t: tagList){
+                model.addTag(t);
             }
         }
 

@@ -29,18 +29,24 @@ public class Parser {
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<tagArguments>(?: t/[^/]+)*)" // variable number of tags
+            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags;
                     + "(?<desc>(?: desc/[^/]*)?)");
 
     private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
             		+ "(?<deadlineArguments>(?: deadline/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
-            		+ "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags; 
+            		+ "(?<tagArguments>(?: t/[^/]+)?)"); // comma separated tags; 
     
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
                     + "(?<tagArguments>(?: t/[^/]+)*)"
                     + "(?<desc>(?: desc/[^/]*)?)");
+
+    private static final Pattern TAG_ARGS_FORMAT = Pattern
+            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
+    
+    private static final Pattern UNTAG_ARGS_FORMAT = Pattern
+            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
 
     public Parser() {
     }
@@ -82,6 +88,12 @@ public class Parser {
             
         case UnmarkCommand.COMMAND_WORD:
             return prepareUnmark(arguments);
+            
+        case TagCommand.COMMAND_WORD:
+            return prepareTag(arguments);
+            
+        case UntagCommand.COMMAND_WORD:
+            return prepareUntag(arguments);
 
         case ListCommand.COMMAND_WORD:
             return prepareList(arguments);
@@ -138,7 +150,7 @@ public class Parser {
             return Collections.emptySet();
         }
         // replace first delimiter prefix, then split
-        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(" t/"));
+        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(",\\s?"));
         return new HashSet<>(tagStrings);
     }
 
@@ -243,6 +255,56 @@ public class Parser {
         return new UnmarkCommand(index.get());
     }
 
+    /**
+     * Parses arguments in the context of the tag task command.
+     */
+    private Command prepareTag(String args) {
+        final Matcher matcher = TAG_ARGS_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        }
+        
+        Optional<Integer> targetIndex = parseIndex(matcher.group("targetIndex"));
+        if (!targetIndex.isPresent()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        }
+        String tagArg = matcher.group("tagArguments");
+        Collection<String> tagStrings = Collections.emptySet();
+        if (!tagArg.isEmpty()) {
+            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
+        }
+        try {
+            return new TagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
+    }
+    
+    /**
+     * Parses arguments in the context of the untag task command.
+     */
+    private Command prepareUntag(String args) {
+        final Matcher matcher = UNTAG_ARGS_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
+        }
+        
+        Optional<Integer> targetIndex = parseIndex(matcher.group("targetIndex"));
+        if (!targetIndex.isPresent()) {
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
+        }
+        String tagArg = matcher.group("tagArguments");
+        Collection<String> tagStrings = Collections.emptySet();
+        if (!tagArg.isEmpty()) {
+            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
+        }
+        try {
+            return new UntagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
+    }
+    
     /**
      * Parses arguments in the context of the select task command.
      *

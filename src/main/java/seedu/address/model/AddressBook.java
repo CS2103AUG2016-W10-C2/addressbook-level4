@@ -135,6 +135,16 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
     }
+    
+
+    public void tagTask(Entry taskToTag, UniqueTagList newTags) {
+        taskToTag.addTags(newTags);
+        syncTagsWithMasterList(taskToTag);
+    }
+
+    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) {
+        taskToUntag.removeTags(tagsToRemove);
+    }
 
 //// util methods
 

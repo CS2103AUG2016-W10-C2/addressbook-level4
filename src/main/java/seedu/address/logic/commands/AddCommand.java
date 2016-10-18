@@ -17,9 +17,9 @@ public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a floating task to the list. "
-            + "Parameters: TITLE [t/TAG]...\n"
+            + "Parameters: TITLE [t/TAG1,TAG2...] [desc/DESCRIPTION]\n"
             + "Example: " + COMMAND_WORD
-            + " Buy Banana t/NTUC t/shopping";
+            + " Buy Banana t/NTUC,shopping desc/Bananas are yummy";
 
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";

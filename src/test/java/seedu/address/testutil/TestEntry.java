@@ -113,4 +113,16 @@ public class TestEntry implements Entry {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public void addTags(UniqueTagList uniqueTagList) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void removeTags(UniqueTagList tagsToRemove) {
+        // TODO Auto-generated method stub
+        
+    }
 }

@@ -9,8 +9,9 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class Tag {
 
-    public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should only contain "
+                                                        +"alphanumeric characters, space and underscore";
+    public static final String TAG_VALIDATION_REGEX = "[\\p{Alnum}\\s_]+";
 
     public String tagName;
 
