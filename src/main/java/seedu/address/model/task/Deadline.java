@@ -3,34 +3,41 @@ package seedu.address.model.task;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
 public final class Deadline extends FloatingTask{
-	private Title title;
-
-    private UniqueTagList tags;
-
-    private LocalDateTime deadline;
+    protected ObjectProperty<LocalDateTime> deadline;
 
 	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags) {
-		super(title, tags);
-        assert !CollectionUtil.isAnyNull(deadline);
-		this.deadline = deadline;
+		this(title, deadline, tags, false);
 	}
 
 	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked) {
 		super(title, tags, isMarked);
         assert !CollectionUtil.isAnyNull(deadline);
-		this.deadline = deadline;
+		this.deadline = new SimpleObjectProperty<>(deadline);
 	}
 	
+	public Deadline(Entry entry) {
+		super(entry);
+		assert entry instanceof Deadline;
+		this.deadline  = new SimpleObjectProperty<>(((Deadline)entry).getDeadline());
+	}
+
 	public LocalDateTime getDeadline() {
-		return deadline;
+		return deadline.get();
 	}
 
 	public void setDeadline(LocalDateTime deadline) {
-		this.deadline = deadline;
+		this.deadline.set(deadline);
+	}
+	
+	@Override
+	public ObjectProperty<LocalDateTime> deadlineObjectProperty() {
+		return deadline;
 	}
 
 	@Override

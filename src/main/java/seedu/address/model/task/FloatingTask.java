@@ -15,11 +15,11 @@ import java.util.Objects;
  */
 public class FloatingTask implements Entry {
 
-    private ObjectProperty<Title> title;
+    protected ObjectProperty<Title> title;
 
-    private ObjectProperty<UniqueTagList> tags;
+    protected ObjectProperty<UniqueTagList> tags;
 
-    private boolean isMarked;
+    protected boolean isMarked;
 
     protected StringProperty description;
 

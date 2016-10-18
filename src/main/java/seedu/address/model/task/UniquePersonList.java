@@ -40,7 +40,11 @@ public class UniquePersonList implements Iterable<Entry> {
             new Callback<Entry, Observable[]>() {
         @Override
         public Observable[] call(Entry entry) {
-            return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
+        	if (entry instanceof Deadline) {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty()};
+        	} else {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
+        	}
         }
     });
 

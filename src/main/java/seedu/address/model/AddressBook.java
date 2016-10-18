@@ -1,14 +1,18 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.task.*;
+import seedu.address.model.task.FloatingTask;
+import seedu.address.model.task.Title;
+import seedu.address.model.task.Deadline;
+import seedu.address.model.task.Entry;
+import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Wraps all data at the address-book level
@@ -58,8 +62,19 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.tags.getInternalList().setAll(tags);
     }
 
-    public void resetData(Collection<? extends Entry> newPersons, Collection<Tag> newTags) {
-        setPersons(newPersons.stream().map(FloatingTask::new).collect(Collectors.toList()));
+    public void resetData(Collection<? extends Entry> newEntries, Collection<Tag> newTags) {
+    	ArrayList<Entry> copyList = new ArrayList<>();
+    	for (Entry entry : newEntries) {
+    		Entry copy;
+    		if (entry instanceof Deadline) {
+    			copy = new Deadline(entry);
+    		} else {
+    			copy = new FloatingTask(entry);
+    		}
+    		copyList.add(copy);
+    	}
+        // setPersons(newEntries.stream().map(FloatingTask::new).collect(Collectors.toList()));
+        setPersons(copyList);
         setTags(newTags);
     }
 

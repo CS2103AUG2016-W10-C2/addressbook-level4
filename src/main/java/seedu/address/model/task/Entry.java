@@ -66,6 +66,13 @@ public interface Entry {
      * Get the descriptionProperty for this Entry
      */
     Observable descriptionProperty();
+    
+    /**
+     * Get the deadlineProperty for this Entry
+     */
+    default Observable deadlineObjectProperty() {
+    	return null;
+    }
 
     /**
      * Returns true if Entry is marked as completed
