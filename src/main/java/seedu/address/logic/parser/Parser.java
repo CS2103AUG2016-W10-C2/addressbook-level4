@@ -40,10 +40,10 @@ public class Parser {
             .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)" + "(?<tagArguments>(?: t/[^/]+)?)");
 
     private static final Pattern TAG_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s(?<tagArguments>(?:[^/]+))");
+            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
     
     private static final Pattern UNTAG_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s(?<tagArguments>(?:[^/]+))");
+            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
 
     public Parser() {
     }
@@ -251,8 +251,11 @@ public class Parser {
         if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
         }
-        
-        final Collection<String> tagStrings = Arrays.asList(matcher.group("tagArguments").split(",\\s?"));
+        String tagArg = matcher.group("tagArguments");
+        Collection<String> tagStrings = Collections.emptySet();
+        if (!tagArg.isEmpty()) {
+            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
+        }
         try {
             return new TagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
         } catch (IllegalValueException ive) {
@@ -273,8 +276,11 @@ public class Parser {
         if (!targetIndex.isPresent()) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
         }
-        
-        final Collection<String> tagStrings = Arrays.asList(matcher.group("tagArguments").split(",\\s?"));
+        String tagArg = matcher.group("tagArguments");
+        Collection<String> tagStrings = Collections.emptySet();
+        if (!tagArg.isEmpty()) {
+            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
+        }
         try {
             return new UntagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
         } catch (IllegalValueException ive) {
