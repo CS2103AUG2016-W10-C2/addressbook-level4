@@ -2,6 +2,10 @@ package seedu.address.logic.commands;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.function.Predicate;
+
+import seedu.address.model.PredicateBuilder;
+import seedu.address.model.task.Entry;
 
 /**
  * Lists all persons in the address book to the user.
@@ -23,6 +27,8 @@ public class ListCommand extends Command {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     
+    private PredicateBuilder predicateBuilder;
+    
     public ListCommand() {}
     
     /**
@@ -31,6 +37,7 @@ public class ListCommand extends Command {
      */
     public ListCommand(Set<String> keywords) {
         this.keywords = keywords;
+        this.predicateBuilder = new PredicateBuilder();
     }
     
     public void setKeywords(Set<String> keywords) {
@@ -50,15 +57,8 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            if (!keywords.isEmpty()) {
-                model.updateFilteredEntryListByKeywords(keywords);
-            }
-            if (startDate != null) {
-                model.updateFilteredEntryListByStartDate(startDate);
-            }
-            if (endDate != null) {
-                model.updateFilteredEntryListByEndDate(endDate);
-            }
+            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, startDate, endDate);
+            model.updateFilteredEntryListPredicate(predicate);
             
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
         }
