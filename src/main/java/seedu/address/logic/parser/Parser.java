@@ -29,8 +29,9 @@ public class Parser {
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<tagArguments>(?: t/[^/]+)?)"); // comma separated tags; 
-    
+            		+ "(?<tagArguments>(?: t/[^/]+)*)" // comma separated tags;
+                    + "(?<desc>(?: desc/[^/]*)?)");
+
     private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
             		+ "(?<deadlineArguments>(?: deadline/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
@@ -130,7 +131,7 @@ public class Parser {
         	
         } else {
         	try {
-                return new AddCommand(floatingTaskMatcher.group("title"), getTagsFromArgs(floatingTaskMatcher.group("tagArguments")));
+                return new AddCommand(floatingTaskMatcher.group("title"), getTagsFromArgs(floatingTaskMatcher.group("tagArguments")), getDescriptionFromArgs(floatingTaskMatcher.group("desc")));
             } catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
@@ -149,6 +150,20 @@ public class Parser {
         // replace first delimiter prefix, then split
         final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(",\\s?"));
         return new HashSet<>(tagStrings);
+    }
+
+    /**
+     * Extracts the description from the add command's description argument
+     */
+    private static String getDescriptionFromArgs(String descriptionArguments) throws IllegalValueException {
+        if (descriptionArguments == null || descriptionArguments.isEmpty()) {
+            return "";
+        }
+        String[] descriptionStrings = descriptionArguments.split("/");
+        if (descriptionStrings.length != 2) {
+            throw new IllegalValueException("Command should contain only 1 'desc/' flag");
+        }
+        return descriptionStrings[1];
     }
 
     /**

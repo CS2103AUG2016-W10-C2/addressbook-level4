@@ -23,6 +23,8 @@ public class TaskCard extends UiPart{
     private Label deadline;
     @FXML
     private Label mark;
+    @FXML
+    private Label description;
 
     private Entry entry;
     private int displayedIndex;
@@ -43,6 +45,7 @@ public class TaskCard extends UiPart{
         name.setText(entry.getTitle().fullTitle);
         id.setText(displayedIndex + ". ");
         tags.setText(entry.tagsString());
+        description.setText(entry.getDescription());
         if (entry instanceof Deadline) {
         	deadline.setText("deadline: " + ((Deadline)entry).getDeadline() );
         } else {

@@ -11,6 +11,9 @@ import seedu.address.model.tag.UniqueTagList;
  */
 public interface Entry {
 
+    /**
+     * Get the Title for this Entry
+     */
     Title getTitle();
 
     /**
@@ -19,7 +22,7 @@ public interface Entry {
     void setTitle(Title newTitle);
 
     /**
-     * Get TitleObjectProperty for this entry
+     * Get the titleObjectProperty for this Entry
      */
     Observable titleObjectProperty();
 
@@ -44,14 +47,32 @@ public interface Entry {
      */
     void removeTags(UniqueTagList tagsToRemove);
     
+    /**
+     * Get the uniqueTagListObjectProperty for this Entry
+     */
     Observable uniqueTagListObjectProperty();
 
     /**
-     * Returns true if entry is marked as completed
+     * Get the description for this Entry
+     */
+    String getDescription();
+
+    /**
+     * Set the description for this Entry
+     */
+    void setDescription(String newDescription);
+
+    /**
+     * Get the descriptionProperty for this Entry
+     */
+    Observable descriptionProperty();
+
+    /**
+     * Returns true if Entry is marked as completed
      */
     boolean isMarked();
     /**
-     * Formats the entry as text, showing all contact details.
+     * Formats the Entry as text, showing all contact details.
      */
     String getAsText();
 
