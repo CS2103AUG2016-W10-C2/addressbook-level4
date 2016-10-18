@@ -17,9 +17,11 @@ public class ListCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Listed all entries";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": List all entries whose titles contain any of "
-            + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+            + "the specified keywords (case-sensitive), or with deadlines before/after certain dates"
+            + "and displays them as a list with index numbers.\n"
+            + "Parameters: [after/YYYY-MM-DD] [before/YYYY-MM-DD] [KEYWORDS]\n"
+            + "Example: " + COMMAND_WORD + " after/2016-10-10 alice bob charlie";
+
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
     
