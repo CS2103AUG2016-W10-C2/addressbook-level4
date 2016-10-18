@@ -48,7 +48,16 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            model.updateFilteredEntryListByKeywords(keywords);
+            if (!keywords.isEmpty()) {
+                model.updateFilteredEntryListByKeywords(keywords);
+            }
+            if (startDate != null) {
+                model.updateFilteredEntryListByStartDate(startDate);
+            }
+            if (endDate != null) {
+                model.updateFilteredEntryListByEndDate(endDate);
+            }
+            
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
         }
     }
