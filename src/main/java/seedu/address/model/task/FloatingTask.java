@@ -169,9 +169,15 @@ public class FloatingTask implements Entry {
     @Override
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getTitle())
-                .append(" Tags: ");
-        getTags().forEach(builder::append);
+        builder.append(getTitle());
+        if (!getTags().isEmpty()) {
+            builder.append(" Tags: ");
+            getTags().forEach(builder::append);
+        }
+        if (!getDescription().isEmpty()) {
+            builder.append(" Description: ");
+            builder.append(getDescription());
+        }
         return builder.toString();
     }
 
