@@ -29,15 +29,15 @@ public class Parser {
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags; 
+            		+ "(?<tagArguments>(?: t/[^/]+)?)"); // comma separated tags; 
     
     private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
             		+ "(?<deadlineArguments>(?: deadline/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
-            		+ "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags; 
+            		+ "(?<tagArguments>(?: t/[^/]+)?)"); // comma separated tags; 
     
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)" + "(?<tagArguments>(?: t/[^/]+)*)");
+            .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)" + "(?<tagArguments>(?: t/[^/]+)?)");
 
     private static final Pattern TAG_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s(?<tagArguments>(?:[^/]+))");
@@ -147,7 +147,7 @@ public class Parser {
             return Collections.emptySet();
         }
         // replace first delimiter prefix, then split
-        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(" t/"));
+        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(",\\s?"));
         return new HashSet<>(tagStrings);
     }
 
