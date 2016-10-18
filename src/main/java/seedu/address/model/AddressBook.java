@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList persons;
+    private final UniquePersonList entries;
     private final UniqueTagList tags;
 
     {
-        persons = new UniquePersonList();
+        entries = new UniquePersonList();
         tags = new UniqueTagList();
     }
 
@@ -47,11 +47,11 @@ public class AddressBook implements ReadOnlyAddressBook {
 //// list overwrite operations
 
     public ObservableList<Entry> getPersons() {
-        return persons.getInternalList();
+        return entries.getInternalList();
     }
 
     public void setPersons(List<Entry> persons) {
-        this.persons.getInternalList().setAll(persons);
+        this.entries.getInternalList().setAll(persons);
     }
 
     public void setTags(Collection<Tag> tags) {
@@ -76,26 +76,26 @@ public class AddressBook implements ReadOnlyAddressBook {
      *
      * @throws UniquePersonList.DuplicateTaskException if an equivalent task already exists.
      */
-    public void addPerson(Entry person) throws UniquePersonList.DuplicateTaskException {
+    public void addTask(Entry person) throws UniquePersonList.DuplicateTaskException {
         syncTagsWithMasterList(person);
-        persons.add(person);
+        entries.add(person);
     }
 
     public void editTask(Update update)
             throws PersonNotFoundException, DuplicateTaskException {
         Entry toEdit = update.getTask();
         syncTagsWithMasterList(toEdit);
-        persons.updateTitle(toEdit, update.getNewTitle());
-        persons.updateTags(toEdit, update.getNewTags());
-        persons.updateDescription(toEdit, update.getNewDescription());
+        entries.updateTitle(toEdit, update.getNewTitle());
+        entries.updateTags(toEdit, update.getNewTags());
+        entries.updateDescription(toEdit, update.getNewDescription());
     }
     
     public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
-        persons.mark(task);
+        entries.mark(task);
     }
     
     public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
-        persons.unmark(task);
+        entries.unmark(task);
     }
 
 
@@ -123,7 +123,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     public boolean removePerson(Entry key) throws UniquePersonList.PersonNotFoundException {
-        if (persons.remove(key)) {
+        if (entries.remove(key)) {
             return true;
         } else {
             throw new UniquePersonList.PersonNotFoundException();
@@ -150,13 +150,13 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return persons.getInternalList().size() + " persons, " + tags.getInternalList().size() +  " tags";
+        return entries.getInternalList().size() + " persons, " + tags.getInternalList().size() +  " tags";
         // TODO: refine later
     }
 
     @Override
     public List<Entry> getPersonList() {
-        return Collections.unmodifiableList(persons.getInternalList());
+        return Collections.unmodifiableList(entries.getInternalList());
     }
 
     @Override
@@ -166,7 +166,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public UniquePersonList getUniquePersonList() {
-        return this.persons;
+        return this.entries;
     }
 
     @Override
@@ -179,14 +179,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof AddressBook // instanceof handles nulls
-                && this.persons.equals(((AddressBook) other).persons)
+                && this.entries.equals(((AddressBook) other).entries)
                 && this.tags.equals(((AddressBook) other).tags));
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(persons, tags);
+        return Objects.hash(entries, tags);
     }
 
 }

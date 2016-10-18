@@ -166,7 +166,7 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         FloatingTask toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
-        expectedAB.addPerson(toBeAdded);
+        expectedAB.addTask(toBeAdded);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
@@ -185,7 +185,7 @@ public class LogicManagerTest {
         Title newTitle = new Title("New Title");
 
         AddressBook expectedAB = new AddressBook();
-        expectedAB.addPerson(toEdit);
+        expectedAB.addTask(toEdit);
         model.addTask(toEditCopy);
 
         Update update = new Update(newTitle, null, null);
@@ -208,7 +208,7 @@ public class LogicManagerTest {
         newTagList.add(new Tag("tag3"));
 
         AddressBook expectedAB = new AddressBook();
-        expectedAB.addPerson(toEdit);
+        expectedAB.addTask(toEdit);
         model.addTask(toEditCopy);
 
         Title newTitle = null;
@@ -228,7 +228,7 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         FloatingTask toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
-        expectedAB.addPerson(toBeAdded);
+        expectedAB.addTask(toBeAdded);
 
         // setup starting state
         model.addTask(toBeAdded); // task already in internal address book
@@ -719,7 +719,7 @@ public class LogicManagerTest {
          */
         void addToAddressBook(AddressBook addressBook, List<FloatingTask> personsToAdd) throws Exception{
             for(FloatingTask p: personsToAdd){
-                addressBook.addPerson(p);
+                addressBook.addTask(p);
             }
         }
 
