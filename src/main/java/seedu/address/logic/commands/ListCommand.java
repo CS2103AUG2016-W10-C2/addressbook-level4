@@ -45,7 +45,7 @@ public class ListCommand extends Command {
     
     @Override
     public CommandResult execute() {
-        if (keywords == null || keywords.isEmpty()) {
+        if (isListAll()) {
             return showAll();
         } else {
             model.updateFilteredPersonList(keywords);
@@ -56,5 +56,15 @@ public class ListCommand extends Command {
     private CommandResult showAll() {
         model.updateFilteredListToShowAll();
         return new CommandResult(MESSAGE_SUCCESS);
+    }
+    
+    /**
+     * Return whether this list command is a "list all"
+     * 
+     */
+    private boolean isListAll() {
+        return (keywords == null || keywords.isEmpty())
+                && startDate == null
+                && endDate == null;
     }
 }
