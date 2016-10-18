@@ -11,7 +11,7 @@ public class Tag {
 
     public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should only contain "
                                                         +"alphanumeric characters, space and underscore";
-    public static final String TAG_VALIDATION_REGEX = "[\\p{Alnum}\\s_]+";
+    public static final String TAG_VALIDATION_REGEX = "^(?!\\s)[\\p{Alnum}\\s_]+(?<!\\s)$";
 
     public String tagName;
 
