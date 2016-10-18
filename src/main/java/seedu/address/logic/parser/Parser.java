@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
+import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
 
 /**
  * Parses user input.
@@ -24,8 +26,11 @@ public class Parser {
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
-    private static final Pattern KEYWORDS_ARGS_FORMAT =
-            Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
+    // TODO: Use tokenizer for these
+    private static final Pattern LIST_ARGS_FORMAT =
+            Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
@@ -205,6 +210,34 @@ public class Parser {
         final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" deadline/", "").split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
+    
+    /**
+     * Parse LocalDateTime of start date from an input string
+     * string. Format: YYYY-MM-DD
+     */
+    private static LocalDateTime getStartDateFromArgument(String dateTime) throws IllegalValueException {
+        if (dateTime == null || dateTime.isEmpty()) {
+            return null;
+        }
+        
+        // remove the tag.
+        final String cleanedString = dateTime.trim().replaceFirst(AFTER_FLAG, "") + "T" + "00:00:00";
+        return LocalDateTime.parse(cleanedString);
+    }
+    
+    /**
+     * Parse LocalDateTime of end start from an input string
+     * string. Format: YYYY-MM-DD
+     */
+    private static LocalDateTime getEndDateFromArgument(String dateTime) throws IllegalValueException {
+        if (dateTime == null || dateTime.isEmpty()) {
+            return null;
+        }
+        
+        // remove the tag.
+        final String cleanedString = dateTime.trim().replaceFirst(BEFORE_FLAG, "") + "T" + "23:59:59";
+        return LocalDateTime.parse(cleanedString);
+    }
 
     /**
      * Parses arguments in the context of the delete task command.
@@ -350,18 +383,31 @@ public class Parser {
     private Command prepareList(String args) {
         // Guard statement
         if (args.isEmpty()) {
-            return new ListCommand(new HashSet<>());
+            return new ListCommand();
         }
         
-        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+        final Matcher matcher = LIST_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 
-        // keywords delimited by whitespace
-        final String[] keywords = matcher.group("keywords").split("\\s+");
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-        return new ListCommand(keywordSet);
+        try {
+            final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
+            final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+            // keywords delimited by whitespace
+            String[] keywords = matcher.group("keywords").trim().split("\\s+");
+
+            Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+            keywordSet.removeIf(s -> s.equals(""));
+            
+            ListCommand listCommand = new ListCommand(keywordSet);
+            listCommand.setStartDate(startDate);
+            listCommand.setEndDate(endDate);
+            
+            return listCommand;
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
     }
 
 }

@@ -10,7 +10,9 @@ import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
+import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * The API of the Model component.
@@ -42,9 +44,9 @@ public interface Model {
     /** Updates the filter of the filtered task list to show all persons */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered task list to filter by the given keywords*/
-    void updateFilteredPersonList(Set<String> keywords);
-
+    /** Updates the filter of the filtered task list*/
+    void updateFilteredEntryListPredicate(Predicate<Entry> predicate);
+    
     /** Marks the given task. 
      * @throws DuplicateTaskException */
     void markTask(Entry entryToMark) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;
