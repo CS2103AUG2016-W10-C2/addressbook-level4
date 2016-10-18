@@ -38,7 +38,9 @@ public class Parser {
             		+ "(?<tagArguments>(?: t/[^/]+)?)"); // comma separated tags; 
     
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)" + "(?<tagArguments>(?: t/[^/]+)?)");
+            .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
+                    + "(?<tagArguments>(?: t/[^/]+)*)"
+                    + "(?<desc>(?: desc/[^/]*)?)");
 
     private static final Pattern TAG_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
@@ -184,7 +186,7 @@ public class Parser {
             }
             try {
                 return new EditCommand(index.get(), matcher.group("title"),
-                        getTagsFromArgs(matcher.group("tagArguments")));
+                        getTagsFromArgs(matcher.group("tagArguments")), getDescriptionFromArgs(matcher.group("desc")));
             } catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
