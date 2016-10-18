@@ -54,21 +54,22 @@ No tasks to display.
 
 | Command |Format |
 | --- | --- |
-|add|`add <task_name> [-st <start> -end <end> | -d <deadline>] [-t <tags>]  [-r <recurrence>] [-desc <description>]`|
-|list|`list [-f [start=<start_value>] [end=<end_value>] [deadline=<deadline_value>][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
-|tag|`tag [-d] <task_id> <tag_name> [, <tag_name> …]`|
-|edit|`edit <task_id> [-st <start> -end <end> | -d <deadline>] [-t <tags>]  [-r <recurrence>] [-desc <description>]`|
+|add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [t/<tags>]  [r/<recurrence>] [desc/<description>]`|
+|list|`list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
+|tag|`tag <task_id> <tag_name> [, <tag_name> …]`|
+|untag|`untag <task_id> <tag_name> [, <tag_name> …]`|
+|edit|`edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [/t <tags>] [/r <recurrence>] [/desc <description>]`|
 |delete|`delete <task_id>`|
-|mark|`mark [-d] <task_id>`|
+|mark|`mark <task_id>`|
+|unmark|`unmark <task_id>`|
 |show|`show <task_id>`|
 |help|`help [<command>]`|
 |config|`config [option=value ...]`|
 
-
 ## Commands
 
 ```
-add <entry_name> [-st <start> -end <end> | -d <deadline>] [-t <tags>]  [-r <recurrence>] [-desc <description>]
+add <task_name> [st/<start> end/<end> | dl/<deadline>] [t/<tags>]  [r/<recurrence>] [desc/<description>]
 ```
 
 > Add event or deadline
@@ -76,12 +77,13 @@ add <entry_name> [-st <start> -end <end> | -d <deadline>] [-t <tags>]  [-r <recu
 > Examples:
 
 
-> - `add CS2103T Lecture -st 1/1/2016:1400 -end 1/1/2016:16:30 -r weekly -t ‘rocks’`
+> - `add CS2103T Lecture st/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly t/‘rocks’`
 
-> - `add CS2105 Assignment 1 -d 1/1/2016:1400`
+> - `add CS2105 Assignment 1 dl/2016-10-10 10:00`
+
 
 ```
-list [-f [start=<start_value>] [end=<end_value>] [deadline=<deadline_value>] [tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]
+list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]
 ```
 
 > List all or filtered entries
@@ -90,10 +92,11 @@ list [-f [start=<start_value>] [end=<end_value>] [deadline=<deadline_value>] [ta
 
 > - `list`
 
-> - `list -f start=06/09/2016 recurrence=everyday`
+> - `list after/2016-10-10`
+
 
 ```
-tag [-d] <entry_id> <tag_name> [, <tag_name> …]
+tag <task_id> <tag_name> [, <tag_name> …]
 ```
 
 > Add tag(s) to a particular entry with a specified id
@@ -102,14 +105,15 @@ tag [-d] <entry_id> <tag_name> [, <tag_name> …]
 
 > - `tag 123 ‘CS2103T’, ‘rocks’`
 
-> Delete tag(s) from a particular entry with a specified id and the -d flag
+> Delete tag(s) from a particular entry with a specified id using `untag`
 
-> - `tag -d 123 ‘rocks’`
+> - `untag 123 ‘rocks’`
 
 > Duplicated tags will only be added once
 
+
 ```
-edit <entry_id> [-st <start> -end <end> | -d <deadline>] [-t <tags>]  [-r <recurrence>] [-desc <description>]
+edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [/t <tags>] [/r <recurrence>] [/desc <description>]
 ```
 
 >  Edit the entry with the specified entry id.
@@ -118,9 +122,10 @@ edit <entry_id> [-st <start> -end <end> | -d <deadline>] [-t <tags>]  [-r <recur
 
 > Examples:
 
-> - `edit 3 -t school`
+> - `edit 3 school`
 
-> - `edit 13 -r yearly`
+> - `edit 13 t/yearly`
+
 
 ```
 delete <entry_id>
@@ -133,17 +138,19 @@ delete <entry_id>
 
 > - `Delete 42`
 
+
 ```
 mark [-d] <entry_id>
 ```
 
-> Check or uncheck a entry as completed.
+> Check (or uncheck, for `unmark`) a entry as completed.
 
 > `list` should be executed before this command to obtain a entry id.
 
 > Examples:
 
 > - `mark 42`
+
 
 ```
 show <entry_id>
@@ -152,6 +159,7 @@ show <entry_id>
 
 > `list` should be executed before this command to obtain a entry id.
 
+
 ```
 help [<command>]
 ```
@@ -159,6 +167,7 @@ help [<command>]
 > Show available commands and how to use them
 
 > Help is also shown if you enter an incorrect command e.g. abcd
+
 
 ```
 config [option=value ...]

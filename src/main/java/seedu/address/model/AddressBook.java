@@ -3,15 +3,16 @@ package seedu.address.model;
 import javafx.collections.ObservableList;
 import seedu.address.model.task.FloatingTask;
 import seedu.address.model.task.Title;
+import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Wraps all data at the address-book level
@@ -19,11 +20,11 @@ import java.util.stream.Collectors;
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList persons;
+    private final UniquePersonList entries;
     private final UniqueTagList tags;
 
     {
-        persons = new UniquePersonList();
+        entries = new UniquePersonList();
         tags = new UniqueTagList();
     }
 
@@ -50,19 +51,30 @@ public class AddressBook implements ReadOnlyAddressBook {
 //// list overwrite operations
 
     public ObservableList<Entry> getPersons() {
-        return persons.getInternalList();
+        return entries.getInternalList();
     }
 
     public void setPersons(List<Entry> persons) {
-        this.persons.getInternalList().setAll(persons);
+        this.entries.getInternalList().setAll(persons);
     }
 
     public void setTags(Collection<Tag> tags) {
         this.tags.getInternalList().setAll(tags);
     }
 
-    public void resetData(Collection<? extends Entry> newPersons, Collection<Tag> newTags) {
-        setPersons(newPersons.stream().map(FloatingTask::new).collect(Collectors.toList()));
+    public void resetData(Collection<? extends Entry> newEntries, Collection<Tag> newTags) {
+    	ArrayList<Entry> copyList = new ArrayList<>();
+    	for (Entry entry : newEntries) {
+    		Entry copy;
+    		if (entry instanceof Deadline) {
+    			copy = new Deadline(entry);
+    		} else {
+    			copy = new FloatingTask(entry);
+    		}
+    		copyList.add(copy);
+    	}
+        // setPersons(newEntries.stream().map(FloatingTask::new).collect(Collectors.toList()));
+        setPersons(copyList);
         setTags(newTags);
     }
 
@@ -79,23 +91,26 @@ public class AddressBook implements ReadOnlyAddressBook {
      *
      * @throws UniquePersonList.DuplicateTaskException if an equivalent task already exists.
      */
-    public void addPerson(Entry person) throws UniquePersonList.DuplicateTaskException {
+    public void addTask(Entry person) throws UniquePersonList.DuplicateTaskException {
         syncTagsWithMasterList(person);
-        persons.add(person);
+        entries.add(person);
     }
 
-    public void editTask(Entry task, Title newTitle, UniqueTagList newTags)
+    public void editTask(Update update)
             throws PersonNotFoundException, DuplicateTaskException {
-        syncTagsWithMasterList(task);
-        persons.edit(task, newTitle, newTags);
+        Entry toEdit = update.getTask();
+        syncTagsWithMasterList(toEdit);
+        entries.updateTitle(toEdit, update.getNewTitle());
+        entries.updateTags(toEdit, update.getNewTags());
+        entries.updateDescription(toEdit, update.getNewDescription());
     }
     
     public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
-        persons.mark(task);
+        entries.mark(task);
     }
     
     public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
-        persons.unmark(task);
+        entries.unmark(task);
     }
 
 
@@ -123,7 +138,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     public boolean removePerson(Entry key) throws UniquePersonList.PersonNotFoundException {
-        if (persons.remove(key)) {
+        if (entries.remove(key)) {
             return true;
         } else {
             throw new UniquePersonList.PersonNotFoundException();
@@ -135,18 +150,28 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
     }
+    
+
+    public void tagTask(Entry taskToTag, UniqueTagList newTags) {
+        taskToTag.addTags(newTags);
+        syncTagsWithMasterList(taskToTag);
+    }
+
+    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) {
+        taskToUntag.removeTags(tagsToRemove);
+    }
 
 //// util methods
 
     @Override
     public String toString() {
-        return persons.getInternalList().size() + " persons, " + tags.getInternalList().size() +  " tags";
+        return entries.getInternalList().size() + " persons, " + tags.getInternalList().size() +  " tags";
         // TODO: refine later
     }
 
     @Override
     public List<Entry> getPersonList() {
-        return Collections.unmodifiableList(persons.getInternalList());
+        return Collections.unmodifiableList(entries.getInternalList());
     }
 
     @Override
@@ -156,7 +181,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public UniquePersonList getUniquePersonList() {
-        return this.persons;
+        return this.entries;
     }
 
     @Override
@@ -169,14 +194,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof AddressBook // instanceof handles nulls
-                && this.persons.equals(((AddressBook) other).persons)
+                && this.entries.equals(((AddressBook) other).entries)
                 && this.tags.equals(((AddressBook) other).tags));
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(persons, tags);
+        return Objects.hash(entries, tags);
     }
 
 }

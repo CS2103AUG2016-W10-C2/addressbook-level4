@@ -40,7 +40,11 @@ public class UniquePersonList implements Iterable<Entry> {
             new Callback<Entry, Observable[]>() {
         @Override
         public Observable[] call(Entry entry) {
-            return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty()};
+        	if (entry instanceof Deadline) {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty()};
+        	} else {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
+        	}
         }
     });
 
@@ -73,42 +77,70 @@ public class UniquePersonList implements Iterable<Entry> {
     }
 
     /**
-     * Edit an entry on the list.
-     * 
+     * Update the Title of the given Entry, if the given argument is not null
      * @param toEdit
-     *            the entry to be edited
+     *          the Task to be edited
      * @param newTitle
-     *            the new title for the entry
-     * @param newTags
-     *            the new tags for the entry
-     * @throws PersonNotFoundException
-     *             if no such task could be found in the list.
+     *          the new Title for the Task
      * @throws DuplicateTaskException
-     *             if the task to add is a duplicate of an existing task.
+     *          if an existing Task already has the same Title as the one specified
+     * @throws PersonNotFoundException
+     *          if the Task to be edited cannot be found
      */
-    public void edit(Entry toEdit, Title newTitle, UniqueTagList newTags)
-            throws PersonNotFoundException, DuplicateTaskException {
+    public void updateTitle(Entry toEdit, Title newTitle) throws DuplicateTaskException, PersonNotFoundException {
         assert toEdit != null;
         for (int i = 0; i < internalList.size(); i++) {
             if (internalList.get(i).getTitle().equals(newTitle)) {
                 throw new DuplicateTaskException();
             }
         }
-        int target = -1;
-        for (int i = 0; i < internalList.size(); i++) {
-            if (internalList.get(i).equals(toEdit)) {
-                target = i;
-                break;
-            }
-        }
-        if (target == -1) {
+
+        if (!contains(toEdit)) {
             throw new PersonNotFoundException();
         }
+
         if (newTitle != null) {
             toEdit.setTitle(newTitle);
         }
-        if (newTags != null && !newTags.isEmpty()) {
+    }
+
+    /**
+     * Update the Tags of the given Entry, if the given argument is not null
+     * @param toEdit
+     *          the Task to be Edited
+     * @param newTags
+     *          the new Tags for the Task
+     * @throws PersonNotFoundException
+     *          if the Task to be edited cannot be found
+     */
+    public void updateTags(Entry toEdit, UniqueTagList newTags) throws PersonNotFoundException {
+        assert toEdit != null;
+        if (!contains(toEdit)) {
+            throw new PersonNotFoundException();
+        }
+
+        if (newTags != null) {
             toEdit.setTags(newTags);
+        }
+    }
+
+    /**
+     * Update the Description of the given Entry, if the given argument is not null
+     * @param toEdit
+     *          the Task to be Edited
+     * @param newDescription
+     *          the new description for the Task
+     * @throws PersonNotFoundException
+     *          if the Task to be edited cannot be found
+     */
+    public void updateDescription(Entry toEdit, String newDescription) throws PersonNotFoundException {
+        assert toEdit != null;
+        if (!contains(toEdit)) {
+            throw new PersonNotFoundException();
+        }
+
+        if (newDescription != null) {
+            toEdit.setDescription(newDescription);
         }
     }
     

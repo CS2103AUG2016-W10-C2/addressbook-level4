@@ -2,6 +2,8 @@ package seedu.address.model.task;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -13,33 +15,39 @@ import java.util.Objects;
  */
 public class FloatingTask implements Entry {
 
-    private ObjectProperty<Title> title;
+    protected ObjectProperty<Title> title;
 
-    private ObjectProperty<UniqueTagList> tags;
-    
-    private boolean isMarked;
+    protected ObjectProperty<UniqueTagList> tags;
+
+    protected boolean isMarked;
+
+    protected StringProperty description;
+
+    public FloatingTask(Title title, UniqueTagList tags, boolean isMarked, String description) {
+        assert !CollectionUtil.isAnyNull(title, tags, description);
+        this.title = new SimpleObjectProperty<>(Title.copy(title));
+        this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        this.isMarked = isMarked;
+        this.description = new SimpleStringProperty(description);
+    }
 
     /**
      * Every field must be present and not null.
      */
     public FloatingTask(Title title, UniqueTagList tags) {
-        assert !CollectionUtil.isAnyNull(title, tags);
-        // protect against changes after constructor.
-        this.title = new SimpleObjectProperty<>(Title.copy(title));
-        this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
-        this.isMarked = false;
-    }   
+        this(title, tags, false, "");
+    }
     
     public FloatingTask(Title title, UniqueTagList tags, boolean isMarked) {
-        this(title, tags);
-        this.isMarked = isMarked;
+        this(title, tags, isMarked, "");
     }
+
 
     /**
      * Copy constructor.
      */
     public FloatingTask(Entry source) {
-        this(source.getTitle(), source.getTags(), source.isMarked());
+        this(source.getTitle(), source.getTags(), source.isMarked(), source.getDescription());
     }
 
     @Override
@@ -49,7 +57,7 @@ public class FloatingTask implements Entry {
 
     @Override
     public final void setTitle(Title newTitle) {
-        this.title.set(newTitle);
+        title.set(newTitle);
     }
 
     @Override
@@ -69,11 +77,54 @@ public class FloatingTask implements Entry {
     public final void setTags(UniqueTagList newTags) {
         tags.set(new UniqueTagList(newTags));
     }
+    
+    /**
+     * Adds every tag from the argument tag list that does not yet exist in this entry's tag list.
+     */
+    @Override
+    public void addTags(UniqueTagList uniqueTagList) {
+        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
+        updatedTagList.mergeFrom(uniqueTagList);
+        tags.set(updatedTagList);
+    }
+    
+    /**
+     * Remove every tag from the argument tag list that exists in this entry's tag list.
+     */
+    @Override
+    public void removeTags(UniqueTagList tagsToRemove) {
+        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
+        updatedTagList.removeFrom(tagsToRemove);
+        tags.set(updatedTagList);
+    }
 
     @Override
     public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
         return tags;
     }
+
+    @Override
+    public final String getDescription() {
+        if (description == null){
+            return "";
+        }
+        return description.get();
+    }
+
+    @Override
+    public final void setDescription(String newDescription) {
+        if (description == null) {
+            description = new SimpleStringProperty(newDescription);
+            return;
+        }
+        description.set(newDescription);
+    }
+
+    @Override
+    public StringProperty descriptionProperty() {
+        return description;
+    }
+
     
     @Override
     public void mark() {
@@ -118,9 +169,15 @@ public class FloatingTask implements Entry {
     @Override
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getTitle())
-                .append(" Tags: ");
-        getTags().forEach(builder::append);
+        builder.append(getTitle());
+        if (!getTags().isEmpty()) {
+            builder.append(" Tags: ");
+            getTags().forEach(builder::append);
+        }
+        if (!getDescription().isEmpty()) {
+            builder.append(" Description: ");
+            builder.append(getDescription());
+        }
         return builder.toString();
     }
 

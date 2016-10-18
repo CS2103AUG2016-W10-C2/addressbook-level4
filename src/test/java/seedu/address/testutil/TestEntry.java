@@ -1,7 +1,10 @@
 package seedu.address.testutil;
 
+import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.*;
 
@@ -12,10 +15,12 @@ public class TestEntry implements Entry {
 
     private ObjectProperty<Title> title;
     private ObjectProperty<UniqueTagList> tags;
+    private StringProperty description;
 
     public TestEntry() {
         title = new SimpleObjectProperty<>();
         tags = new SimpleObjectProperty<>(new UniqueTagList());
+        description = new SimpleStringProperty("");
     }
 
     @Override
@@ -46,6 +51,25 @@ public class TestEntry implements Entry {
     @Override
     public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
         return tags;
+    }
+
+    @Override
+    public String getDescription() {
+        return description.get();
+    }
+
+    @Override
+    public void setDescription(String newDescription) {
+        if (description == null) {
+            description = new SimpleStringProperty(newDescription);
+            return;
+        }
+        description.set(newDescription);
+    }
+
+    @Override
+    public Observable descriptionProperty() {
+        return description;
     }
 
     @Override
@@ -88,5 +112,17 @@ public class TestEntry implements Entry {
     public String markString() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void addTags(UniqueTagList uniqueTagList) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void removeTags(UniqueTagList tagsToRemove) {
+        // TODO Auto-generated method stub
+        
     }
 }

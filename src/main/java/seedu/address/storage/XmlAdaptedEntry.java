@@ -18,8 +18,12 @@ public class XmlAdaptedEntry {
 
     @XmlElement(required = true)
     private String title;
+
     @XmlElement
-    private LocalDateTime deadline;
+    private String description;
+
+    @XmlElement
+    private String deadline;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -40,6 +44,7 @@ public class XmlAdaptedEntry {
      */
     public XmlAdaptedEntry(Entry source) {
         title = source.getTitle().fullTitle;
+        description = source.getDescription();
         isMarked = source.isMarked();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
@@ -47,7 +52,7 @@ public class XmlAdaptedEntry {
         }
         
         if (source instanceof Deadline) {
-        	deadline = ((Deadline)source).getDeadline();
+        	deadline = ((Deadline)source).getDeadline().toString();
         }
     }
 
@@ -64,9 +69,9 @@ public class XmlAdaptedEntry {
         final Title title = new Title(this.title);
         final UniqueTagList tags = new UniqueTagList(personTags);
         if (deadline == null) {
-            return new FloatingTask(title, tags, isMarked);
+            return new FloatingTask(title, tags, isMarked, description);
         } else {
-        	return new Deadline(title, deadline, tags, isMarked);
+        	return new Deadline(title, LocalDateTime.parse(deadline), tags, isMarked);
         }
     }
 }
