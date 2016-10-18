@@ -147,7 +147,6 @@ public class Parser {
         if (descriptionArguments == null || descriptionArguments.isEmpty()) {
             return "";
         }
-        System.out.printf("Args:%s\n", descriptionArguments);
         String[] descriptionStrings = descriptionArguments.split("/");
         if (descriptionStrings.length != 2) {
             throw new IllegalValueException("Command should contain only 1 'desc/' flag");
