@@ -8,6 +8,7 @@ import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.UniqueTagList;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -39,6 +40,12 @@ public interface Model {
     /** Updates the filter of the filtered task list to filter by the given keywords*/
     void updateFilteredEntryListByKeywords(Set<String> keywords);
 
+    /** Updates the filter of the filtered task list to filter by the given startDate*/
+    void updateFilteredEntryListByStartDate(LocalDateTime startDate);
+    
+    /** Updates the filter of the filtered task list to filter by the given endDate*/
+    void updateFilteredEntryListByEndDate(LocalDateTime endDate);
+    
     /** Marks the given task. 
      * @throws DuplicateTaskException */
     void markTask(Entry entryToMark) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;

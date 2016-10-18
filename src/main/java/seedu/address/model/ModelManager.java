@@ -13,6 +13,7 @@ import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.UniqueTagList;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -116,6 +117,16 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredEntryListByKeywords(Set<String> keywords){
         updateFilteredPersonList(new PredicateExpression(new NameQualifier(keywords)));
+    }
+    
+    @Override
+    public void updateFilteredEntryListByStartDate(LocalDateTime startDate) {
+        
+    }
+    
+    @Override
+    public void updateFilteredEntryListByEndDate(LocalDateTime endDate) {
+        
     }
 
     private void updateFilteredPersonList(Expression expression) {
