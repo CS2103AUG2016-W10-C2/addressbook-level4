@@ -28,8 +28,8 @@ public class Parser {
 
     // TODO: Use tokenizer for these
     private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<startDate>(?:" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
-                    + "(?<endDate>(?: " + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
+            Pattern.compile("(?<startDate>(?:\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
+                    + "(?<endDate>(?:\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
                     + "(?<keywords>(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
