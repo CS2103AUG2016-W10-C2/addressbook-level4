@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -16,15 +17,35 @@ public class ListCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
     
-    private final Set<String> keywords;
+    private Set<String> keywords;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     
+    public ListCommand() {}
+    
+    /**
+     * Convenient constructor
+     * @param keywords
+     */
     public ListCommand(Set<String> keywords) {
         this.keywords = keywords;
     }
     
+    public void setKeywords(Set<String> keywords) {
+        this.keywords = keywords;
+    }
+    
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+    
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+    
     @Override
     public CommandResult execute() {
-        if (keywords.isEmpty()) {
+        if (keywords == null || keywords.isEmpty()) {
             return showAll();
         } else {
             model.updateFilteredPersonList(keywords);

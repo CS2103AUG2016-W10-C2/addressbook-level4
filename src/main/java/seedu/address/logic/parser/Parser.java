@@ -313,7 +313,7 @@ public class Parser {
     private Command prepareList(String args) {
         // Guard statement
         if (args.isEmpty()) {
-            return new ListCommand(new HashSet<>());
+            return new ListCommand();
         }
         
         final Matcher matcher = LIST_ARGS_FORMAT.matcher(args.trim());
@@ -328,7 +328,12 @@ public class Parser {
             final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
             
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-            return new ListCommand(keywordSet);
+            
+            ListCommand listCommand = new ListCommand(keywordSet);
+            listCommand.setStartDate(startDate);
+            listCommand.setEndDate(endDate);
+            
+            return listCommand;
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
