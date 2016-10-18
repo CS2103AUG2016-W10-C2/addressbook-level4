@@ -33,7 +33,17 @@ public interface Entry {
      * Sets the Tags for this Entry
      */
     void setTags(UniqueTagList uniqueTagList);
+    
+    /**
+     * Add tags for this entry
+     */
+    void addTags(UniqueTagList uniqueTagList);
 
+    /**
+     * Remove tags for this entry
+     */
+    void removeTags(UniqueTagList tagsToRemove);
+    
     Observable uniqueTagListObjectProperty();
 
     /**

@@ -97,6 +97,18 @@ public class UniqueTagList implements Iterable<Tag> {
             }
         }
     }
+    
+    /**
+     * Remove every tag from the argument list that exists in this list.
+     */
+    public void removeFrom(UniqueTagList tags) {
+        final Set<Tag> alreadyInside = this.toSet();
+        for (Tag tag : tags) {
+            if (alreadyInside.contains(tag)) {
+                internalList.remove(tag);
+            }
+        }
+    }
 
     /**
      * Returns true if the list contains an equivalent Tag as the given argument.

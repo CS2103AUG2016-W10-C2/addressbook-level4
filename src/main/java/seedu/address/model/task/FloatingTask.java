@@ -69,6 +69,26 @@ public class FloatingTask implements Entry {
     public final void setTags(UniqueTagList newTags) {
         tags.set(new UniqueTagList(newTags));
     }
+    
+    /**
+     * Adds every tag from the argument tag list that does not yet exist in this entry's tag list.
+     */
+    @Override
+    public void addTags(UniqueTagList uniqueTagList) {
+        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
+        updatedTagList.mergeFrom(uniqueTagList);
+        tags.set(updatedTagList);
+    }
+    
+    /**
+     * Remove every tag from the argument tag list that exists in this entry's tag list.
+     */
+    @Override
+    public void removeTags(UniqueTagList tagsToRemove) {
+        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
+        updatedTagList.removeFrom(tagsToRemove);
+        tags.set(updatedTagList);
+    }
 
     @Override
     public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {

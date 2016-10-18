@@ -47,4 +47,12 @@ public interface Model {
      * @throws  */
     void unmarkTask(Entry task) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;
 
+    /** Add tags to task
+     */
+    void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) throws PersonNotFoundException;
+
+    /** Remove tags from task
+     */
+    void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws PersonNotFoundException;
+
 }

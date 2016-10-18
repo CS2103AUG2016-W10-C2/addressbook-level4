@@ -101,6 +101,20 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    @Override
+    public void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) {
+        addressBook.tagTask(taskToTag, tagsToAdd);
+        updateFilteredListToShowAll();
+        indicateAddressBookChanged();
+    }
+
+    @Override
+    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws PersonNotFoundException {
+        addressBook.untagTask(taskToUntag, tagsToRemove);
+        updateFilteredListToShowAll();
+        indicateAddressBookChanged();
+    }
+
     //=========== Filtered Person List Accessors ===============================================================
 
     @Override
