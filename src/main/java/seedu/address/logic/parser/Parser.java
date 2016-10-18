@@ -178,6 +178,46 @@ public class Parser {
         final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" deadline/", "").split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
+    
+    /**
+     * Parse LocalDateTime from an input string
+     * string. Format: YYYY-MM-DD
+     */
+    private static LocalDateTime getDateFromArgument(String dateTime) throws IllegalValueException {
+        assert !dateTime.isEmpty();
+        
+        // remove the tag.
+        final List<String> cleanedStrings = Arrays.asList(dateTime.replaceFirst(" deadline/", "").split(" "));
+        return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
+    }
+    
+    /**
+     * Parse LocalDateTime of start date from an input string
+     * string. Format: YYYY-MM-DD
+     */
+    private static LocalDateTime getStartDateFromArgument(String dateTime) throws IllegalValueException {
+        if (dateTime.isEmpty()) {
+            return null;
+        }
+        
+        // remove the tag.
+        final String cleanedString = dateTime.replaceFirst(" /st", "") + "T" + "00:00:00";
+        return getDateFromArgument(cleanedString);
+    }
+    
+    /**
+     * Parse LocalDateTime of end start from an input string
+     * string. Format: YYYY-MM-DD
+     */
+    private static LocalDateTime getEndDateFromArgument(String dateTime) throws IllegalValueException {
+        if (dateTime.isEmpty()) {
+            return null;
+        }
+        
+        // remove the tag.
+        final String cleanedString = dateTime.replaceFirst(" /end", "") + "T" + "23:59:59";
+        return getDateFromArgument(cleanedString);
+    }
 
     /**
      * Parses arguments in the context of the delete task command.
@@ -283,8 +323,15 @@ public class Parser {
 
         // keywords delimited by whitespace
         final String[] keywords = matcher.group("keywords").split("\\s+");
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-        return new ListCommand(keywordSet);
+        try {
+            final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
+            final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+            
+            final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+            return new ListCommand(keywordSet);
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
     }
 
 }
