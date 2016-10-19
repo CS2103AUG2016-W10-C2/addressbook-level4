@@ -93,12 +93,6 @@ public class TestEntry implements Entry {
     }
 
     @Override
-    public String getAsText() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public boolean isMarked() {
         // TODO Auto-generated method stub
         return false;
