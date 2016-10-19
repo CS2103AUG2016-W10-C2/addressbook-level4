@@ -1,6 +1,7 @@
 package guitests;
 
 import org.junit.Test;
+import seedu.address.commons.core.Messages;
 import seedu.address.testutil.TestEntry;
 import seedu.address.testutil.TestUtil;
 
@@ -29,7 +30,7 @@ public class DeleteCommandTest extends AddressBookGuiTest {
 
         //invalid index
         commandBox.runCommand("delete " + currentList.length + 1);
-        assertResultMessage("The task index provided is invalid");
+        assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
 
     }
 
