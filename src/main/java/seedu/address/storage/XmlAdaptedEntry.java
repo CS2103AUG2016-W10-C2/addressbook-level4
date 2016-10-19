@@ -20,7 +20,7 @@ public class XmlAdaptedEntry {
     private String title;
 
     @XmlElement
-    private String description;
+    private String description = "";
 
     @XmlElement
     private String deadline;
