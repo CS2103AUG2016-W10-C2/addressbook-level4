@@ -81,7 +81,19 @@ public interface Entry {
     /**
      * Formats the Entry as text, showing all contact details.
      */
-    String getAsText();
+    default String getAsText() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(getTitle());
+        if (!getTags().isEmpty()) {
+            builder.append(" Tags: ");
+            getTags().forEach(builder::append);
+        }
+        if (!getDescription().isEmpty()) {
+            builder.append(" Description: ");
+            builder.append(getDescription());
+        }
+        return builder.toString();
+    }
 
     /**
      * Returns a string representation of this Entry's tags
