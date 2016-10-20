@@ -386,7 +386,7 @@ public class Parser {
             String endDateString = matcher.group("endDate");
             
             if (onDateString != null && (startDateString != null || endDateString != null)) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
             
             // keywords delimited by whitespace
