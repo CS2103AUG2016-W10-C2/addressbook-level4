@@ -31,6 +31,7 @@ public class ListCommand extends Command {
     private Set<String> keywords;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private LocalDateTime onDate;
     
     private PredicateBuilder predicateBuilder;
     
@@ -57,6 +58,10 @@ public class ListCommand extends Command {
         this.endDate = endDate;
     }
     
+    public void setOnDate(LocalDateTime onDate) {
+        this.onDate = onDate;
+    }
+    
     @Override
     public CommandResult execute() {
         if (isListAll()) {
@@ -81,6 +86,7 @@ public class ListCommand extends Command {
     private boolean isListAll() {
         return (keywords == null || keywords.isEmpty())
                 && startDate == null
-                && endDate == null;
+                && endDate == null
+                && onDate == null;
     }
 }
