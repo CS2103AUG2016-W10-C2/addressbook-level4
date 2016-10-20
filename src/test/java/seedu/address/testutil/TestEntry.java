@@ -5,8 +5,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.*;
+
+import java.util.StringJoiner;
 
 /**
  * A mutable task object. For testing only.
@@ -80,14 +83,13 @@ public class TestEntry implements Entry {
     public String getAddCommand() {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().fullTitle + " ");
-        this.getTags().getInternalList().stream().forEach(s -> sb.append("t/" + s.tagName + " "));
+        if (!this.getTags().isEmpty()) {
+            sb.append("t/");
+        }
+        StringJoiner sj = new StringJoiner(",");
+        this.getTags().getInternalList().stream().forEach(s -> sj.add(s.tagName));
+        sb.append(sj.toString());
         return sb.toString();
-    }
-
-    @Override
-    public String getAsText() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

@@ -24,7 +24,7 @@ $ list
 You can edit a task with the following command:
 
 ```
-$ edit 0 -d 3 October
+$ edit 0 deadline/ 3 October
 [ ] Get groceries, due: 3 October
 ```
 
@@ -58,7 +58,7 @@ No tasks to display.
 |list|`list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
 |tag|`tag <task_id> <tag_name> [, <tag_name> …]`|
 |untag|`untag <task_id> <tag_name> [, <tag_name> …]`|
-|edit|`edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [/t <tags>] [/r <recurrence>] [/desc <description>]`|
+|edit|`edit <task_id> [new title] [st/ <start> end/ <end> | deadline/ <deadline>] [t/ <tags>...] [r/ <recurrence>] [desc/ <description>]`|
 |delete|`delete <task_id>`|
 |mark|`mark <task_id>`|
 |unmark|`unmark <task_id>`|

@@ -11,12 +11,12 @@ import seedu.address.model.tag.UniqueTagList;
 public final class Deadline extends FloatingTask{
     protected ObjectProperty<LocalDateTime> deadline;
 
-	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags) {
-		this(title, deadline, tags, false);
+	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, String desc) {
+		this(title, deadline, tags, false, desc);
 	}
 
-	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked) {
-		super(title, tags, isMarked);
+	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String desc) {
+		super(title, tags, isMarked, desc);
         assert !CollectionUtil.isAnyNull(deadline);
 		this.deadline = new SimpleObjectProperty<>(deadline);
 	}

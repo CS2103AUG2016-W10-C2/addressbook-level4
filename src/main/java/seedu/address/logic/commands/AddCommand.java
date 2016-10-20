@@ -50,7 +50,7 @@ public class AddCommand extends Command {
      * @throws IllegalValueException if any of the raw values are invalid
      */
     // TODO: Implement Add for other types of entry
-    public AddCommand(String title, LocalDateTime deadline, Set<String> tags)
+    public AddCommand(String title, LocalDateTime deadline, Set<String> tags, String description)
             throws IllegalValueException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
@@ -59,7 +59,8 @@ public class AddCommand extends Command {
         this.toAdd = new Deadline(
                 new Title(title),
                 deadline,
-                new UniqueTagList(tagSet)
+                new UniqueTagList(tagSet),
+                description
         );
     }
 
