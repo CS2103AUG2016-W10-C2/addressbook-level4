@@ -13,6 +13,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
+import static seedu.address.logic.commands.ListCommand.ON_FLAG;
 
 /**
  * Parses user input.
@@ -28,8 +29,9 @@ public class Parser {
 
     // TODO: Use tokenizer for these
     private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+            Pattern.compile("((?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
+                    + "|((?<onDate>\\s*" + ON_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
                     + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes

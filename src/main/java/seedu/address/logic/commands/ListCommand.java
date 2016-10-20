@@ -24,6 +24,7 @@ public class ListCommand extends Command {
 
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
+    public static final String ON_FLAG = "on/";
     
     private Set<String> keywords;
     private LocalDateTime startDate;
