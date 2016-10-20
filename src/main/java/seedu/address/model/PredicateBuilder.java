@@ -9,17 +9,22 @@ import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
 
 public class PredicateBuilder {
-    public Predicate<Entry> buildPredicate(Set<String> keywords, LocalDateTime startDate, LocalDateTime endDate) {
+    public Predicate<Entry> buildPredicate(Set<String> keywords, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
         }
-        if (startDate != null) {
-            pred = pred.and(buildAfterPredicate(startDate));
-        }
-        if (endDate != null) {
-            pred = pred.and(buildBeforePredicate(endDate));
+        
+        if (onDate != null) {
+            pred = pred.and(buildOnPredicate(onDate));
+        } else {
+            if (startDate != null) {
+                pred = pred.and(buildAfterPredicate(startDate));
+            }
+            if (endDate != null) {
+                pred = pred.and(buildBeforePredicate(endDate));
+            }
         }
         
         return pred;
@@ -36,6 +41,10 @@ public class PredicateBuilder {
     
     private Predicate<Entry> buildAfterPredicate(LocalDateTime startDate) {
         return new PredicateExpression(new DateAfterQualifier(startDate))::satisfies;
+    }
+    
+    private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
+        return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
     //========== Inner classes/interfaces used for filtering ==================================================
 
@@ -138,6 +147,35 @@ public class PredicateBuilder {
         @Override
         public String toString() {
             return "Due before: " + endDate.toString();
+        }
+    }
+    
+    private class DateOnQualifier implements Qualifier {
+        private LocalDateTime onDate;
+
+        DateOnQualifier(LocalDateTime onDate) {
+            this.onDate = onDate;
+        }
+
+        // TODO: Change this when we introduce Events
+        @Override
+        public boolean run(Entry entry) {
+            // Don't include FloatingTasks, which have no deadline
+            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
+                return false;
+            }
+             
+            // Deadline
+            Deadline deadline = (Deadline) entry;
+            LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
+            
+            return (deadline.getDeadline().compareTo(onDate) <= 0)
+                    && (deadline.getDeadline().compareTo(beginningOfDay) >= 0);
+        }
+
+        @Override
+        public String toString() {
+            return "Due on: " + onDate.toString();
         }
     }
 }
