@@ -29,9 +29,9 @@ public class Parser {
 
     // TODO: Use tokenizer for these
     private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("((?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
-                    + "|((?<onDate>\\s*" + ON_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?)"
+            Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<onDate>\\s*" + ON_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
                     + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
@@ -395,8 +395,14 @@ public class Parser {
         }
 
         try {
-            final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
-            final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+            String onDateString = matcher.group("onDate");
+            String startDateString = matcher.group("startDate");
+            String endDateString = matcher.group("endDate");
+            
+            if (onDateString != null && (startDateString != null || endDateString != null)) {
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+            }
+            
             // keywords delimited by whitespace
             String[] keywords = matcher.group("keywords").trim().split("\\s+");
 
@@ -404,8 +410,22 @@ public class Parser {
             keywordSet.removeIf(s -> s.equals(""));
             
             ListCommand listCommand = new ListCommand(keywordSet);
-            listCommand.setStartDate(startDate);
-            listCommand.setEndDate(endDate);
+            
+            if (onDateString == null) {
+                final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
+                final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+                
+                if (startDate.isAfter(endDate)) {
+                    return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
+                }
+                
+                listCommand.setStartDate(startDate);
+                listCommand.setEndDate(endDate);
+            } else {
+                final LocalDateTime onDate = getEndDateFromArgument(matcher.group("onDate"));
+                
+                listCommand.setEndDate(onDate);
+            }
             
             return listCommand;
         } catch (IllegalValueException ive) {

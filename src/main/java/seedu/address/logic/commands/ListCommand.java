@@ -21,6 +21,8 @@ public class ListCommand extends Command {
             + "and displays them as a list with index numbers.\n"
             + "Parameters: [after/YYYY-MM-DD] [before/YYYY-MM-DD] [KEYWORDS]\n"
             + "Example: " + COMMAND_WORD + " after/2016-10-10 alice bob charlie";
+    
+    public static final String MESSAGE_INVALID_DATE = "Invalid dates given.";
 
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
