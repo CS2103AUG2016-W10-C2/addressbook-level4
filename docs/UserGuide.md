@@ -55,7 +55,7 @@ No tasks to display.
 | Command |Format |
 | --- | --- |
 |add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [t/<tags>]  [r/<recurrence>] [desc/<description>]`|
-|list|`list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
+|list|`list [[[after/<date>] [before/<date>] | [on/<date>]][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
 |tag|`tag <task_id> <tag_name> [, <tag_name> …]`|
 |untag|`untag <task_id> <tag_name> [, <tag_name> …]`|
 |edit|`edit <task_id> [new title] [st/ <start> end/ <end> | deadline/ <deadline>] [t/ <tags>...] [r/ <recurrence>] [desc/ <description>]`|
