@@ -1,4 +1,4 @@
-Schindler's
+PriorityQ
 ==============================
 - [About Us](about-us)
 - [User Stories](user-stories)
@@ -48,7 +48,7 @@ Actors: User
 MSS
 
 1. User request to create a new entry without specifying the start and/or end date and deadline
-2. TodoList add that particular floating task into database and save it
+2. QriorityQ add that particular floating task into database and save it
 
   Use Case Ends
 
@@ -59,7 +59,7 @@ Actors: User
 MSS
 
 1. User request to create a new entry while specifying the start and/or end date but not deadline
-2. TodoList add that particular floating task into database and save it
+2. QriorityQ add that particular floating task into database and save it
 
   Use Case Ends
 
@@ -70,7 +70,7 @@ Actors: User
 MSS
 
 1. User request to create a new entry while specifying the deadline but no start and/or end date
-2. TodoList add that particular deadline into database and save it
+2. QriorityQ add that particular deadline into database and save it
 
   Use Case Ends
 
@@ -81,14 +81,14 @@ Actors: User
 MSS
 
 1. User requests to delete an entry with a specified id
-2. TodoList deletes the entry
+2. QriorityQ deletes the entry
 
   Use Case Ends
 
 *Extensions*
 
 1a. Entry with the specified id does not exist
-> 1a1. TodoList warns the user the entry with the specified id does not exist
+> 1a1. QriorityQ warns the user the entry with the specified id does not exist
 > 
 > Use Case Ends
 
@@ -99,7 +99,7 @@ Actors: User
 MSS
 
 1. User requests to list all entries
-2. TodoList shows a list of entries, sorted by date (oldest first)
+2. QriorityQ shows a list of entries, sorted by date (oldest first)
 
   Use Case Ends
 
@@ -110,7 +110,7 @@ Actors: User
 MSS
 
 1. User requests to list entries with some filters
-2. TodoList shows a list of entries that satisfies the filters, sorted by date (oldest first)
+2. QriorityQ shows a list of entries that satisfies the filters, sorted by date (oldest first)
 
   Use Case Ends
 
@@ -128,6 +128,6 @@ MSS
 *Extensions*
 
 2a. User attempts to add an invalid tag
->2a1. TodoList tells the user that the tag name is invalid
+>2a1. QriorityQ tells the user that the tag name is invalid
 >
 >Use Case Ends
