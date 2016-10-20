@@ -215,33 +215,19 @@ public class Parser {
     }
     
     /**
-     * Parse LocalDateTime of start date from an input string
+     * Parse LocalDateTime from an input string
      * string. Format: YYYY-MM-DD
      */
-    private static LocalDateTime getStartDateFromArgument(String dateTime) throws IllegalValueException {
+    private static LocalDateTime getLocalDateTimeFromArgument(String dateTime, String flag, String time) throws IllegalValueException {
         if (dateTime == null || dateTime.isEmpty()) {
             return null;
         }
         
         // remove the tag.
-        final String cleanedString = dateTime.trim().replaceFirst(AFTER_FLAG, "") + "T" + "00:00:00";
+        final String cleanedString = dateTime.trim().replaceFirst(flag, "") + "T" + time;
         return LocalDateTime.parse(cleanedString);
     }
     
-    /**
-     * Parse LocalDateTime of end start from an input string
-     * string. Format: YYYY-MM-DD
-     */
-    private static LocalDateTime getEndDateFromArgument(String dateTime) throws IllegalValueException {
-        if (dateTime == null || dateTime.isEmpty()) {
-            return null;
-        }
-        
-        // remove the tag.
-        final String cleanedString = dateTime.trim().replaceFirst(BEFORE_FLAG, "") + "T" + "23:59:59";
-        return LocalDateTime.parse(cleanedString);
-    }
-
     /**
      * Parses arguments in the context of the delete task command.
      *
@@ -412,19 +398,19 @@ public class Parser {
             ListCommand listCommand = new ListCommand(keywordSet);
             
             if (onDateString == null) {
-                final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
-                final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+                final LocalDateTime startDate = getLocalDateTimeFromArgument(matcher.group("startDate"), AFTER_FLAG, "00:00:00");
+                final LocalDateTime endDate = getLocalDateTimeFromArgument(matcher.group("endDate"), BEFORE_FLAG, "23:59:59");
                 
-                if (startDate.isAfter(endDate)) {
+                if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
                 }
                 
                 listCommand.setStartDate(startDate);
                 listCommand.setEndDate(endDate);
             } else {
-                final LocalDateTime onDate = getEndDateFromArgument(matcher.group("onDate"));
+                final LocalDateTime onDate = getLocalDateTimeFromArgument(matcher.group("onDate"), ON_FLAG, "23:59:59");
                 
-                listCommand.setEndDate(onDate);
+                listCommand.setOnDate(onDate);
             }
             
             return listCommand;
