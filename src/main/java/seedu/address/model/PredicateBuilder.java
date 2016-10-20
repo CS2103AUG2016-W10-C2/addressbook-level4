@@ -8,7 +8,20 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
 
+/**
+ * Supports chaining of predicates for the `list` command
+ * @author joeleba
+ *
+ */
 public class PredicateBuilder {
+    /**
+     * Return a chained Predicate from all the conditions indicated in params
+     * @param keywords
+     * @param startDate
+     * @param endDate
+     * @param onDate
+     * @return pred the chained Predicate
+     */
     public Predicate<Entry> buildPredicate(Set<String> keywords, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
