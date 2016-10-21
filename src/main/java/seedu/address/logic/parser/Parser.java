@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.ArgumentTokenizer.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -28,11 +29,12 @@ public class Parser {
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
     // TODO: Use tokenizer for these
+    private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
+    private static final Prefix endDatePrefix = new Prefix(BEFORE_FLAG);
+    private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
+
     private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<onDate>\\s*" + ON_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
+            Pattern.compile("(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
@@ -218,13 +220,13 @@ public class Parser {
      * Parse LocalDateTime from an input string
      * string. Format: YYYY-MM-DD
      */
-    private static LocalDateTime getLocalDateTimeFromArgument(String dateTime, String flag, String time) throws IllegalValueException {
-        if (dateTime == null || dateTime.isEmpty()) {
+    private static LocalDateTime getLocalDateTimeFromArgument(Optional<String> dateTimeOptional, String time) throws IllegalValueException {
+        if (!dateTimeOptional.isPresent()) {
             return null;
         }
         
         // remove the tag.
-        final String cleanedString = dateTime.trim().replaceFirst(flag, "") + "T" + time;
+        final String cleanedString = dateTimeOptional.get() + "T" + time;
         return LocalDateTime.parse(cleanedString);
     }
     
@@ -375,31 +377,34 @@ public class Parser {
             return new ListCommand();
         }
         
-        final Matcher matcher = LIST_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
-        }
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix);
+        argsTokenizer.tokenize(args);
 
         try {
-            String onDateString = matcher.group("onDate");
-            String startDateString = matcher.group("startDate");
-            String endDateString = matcher.group("endDate");
-            
-            if (onDateString != null && (startDateString != null || endDateString != null)) {
+            ListCommand listCommand = new ListCommand();
+
+            // keywords delimited by whitespace
+            Optional<String> keywordsString = argsTokenizer.getPreamble();
+            if (keywordsString.isPresent()) {
+                String[] keywords = keywordsString.get().split("\\s+");
+
+                Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+                keywordSet.removeIf(s -> s.equals(""));
+                listCommand.setKeywords(keywordSet);
+            }
+
+            Optional<String> onDateStringOptional = argsTokenizer.getValue(onDatePrefix);
+            Optional<String> startDateStringOptional = argsTokenizer.getValue(startDatePrefix);
+            Optional<String> endDateStringOptional = argsTokenizer.getValue(endDatePrefix);
+
+            // Ranged search and specific-day search should be mutually exclusive
+            if (onDateStringOptional.isPresent() && (startDateStringOptional.isPresent() || endDateStringOptional.isPresent())) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
             
-            // keywords delimited by whitespace
-            String[] keywords = matcher.group("keywords").trim().split("\\s+");
-
-            Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-            keywordSet.removeIf(s -> s.equals(""));
-            
-            ListCommand listCommand = new ListCommand(keywordSet);
-            
-            if (onDateString == null) {
-                final LocalDateTime startDate = getLocalDateTimeFromArgument(matcher.group("startDate"), AFTER_FLAG, "00:00:00");
-                final LocalDateTime endDate = getLocalDateTimeFromArgument(matcher.group("endDate"), BEFORE_FLAG, "23:59:59");
+            if (!onDateStringOptional.isPresent()) {
+                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateStringOptional, "00:00:00");
+                final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateStringOptional, "23:59:59");
                 
                 if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
@@ -408,7 +413,7 @@ public class Parser {
                 listCommand.setStartDate(startDate);
                 listCommand.setEndDate(endDate);
             } else {
-                final LocalDateTime onDate = getLocalDateTimeFromArgument(matcher.group("onDate"), ON_FLAG, "23:59:59");
+                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateStringOptional, "23:59:59");
                 
                 listCommand.setOnDate(onDate);
             }
