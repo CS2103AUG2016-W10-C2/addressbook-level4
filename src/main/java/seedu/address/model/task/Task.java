@@ -31,7 +31,11 @@ public class Task implements Entry {
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
         this.description = new SimpleStringProperty(description);
-        this.deadline = new SimpleObjectProperty<>(deadline);
+        if (deadline != null) {
+            this.deadline = new SimpleObjectProperty<>(deadline);
+        } else {
+        	this.deadline = new SimpleObjectProperty<>();
+        }
     }
 
     /**
@@ -40,7 +44,7 @@ public class Task implements Entry {
     public Task(Title title, UniqueTagList tags) {
         this(title, null, tags, false, "");
     }
-    
+
     public Task(Title title, UniqueTagList tags, boolean isMarked) {
         this(title, null, tags, isMarked, "");
     }
@@ -51,6 +55,9 @@ public class Task implements Entry {
      */
     public Task(Entry source) {
         this(source.getTitle(), null, source.getTags(), source.isMarked(), source.getDescription());
+        if (source instanceof Task) {
+        	setDeadline(((Task)source).getDeadline()) ;
+        }
     }
 
     @Override
@@ -80,7 +87,7 @@ public class Task implements Entry {
     public final void setTags(UniqueTagList newTags) {
         tags.set(new UniqueTagList(newTags));
     }
-    
+
     /**
      * Adds every tag from the argument tag list that does not yet exist in this entry's tag list.
      */
@@ -90,7 +97,7 @@ public class Task implements Entry {
         updatedTagList.mergeFrom(uniqueTagList);
         tags.set(updatedTagList);
     }
-    
+
     /**
      * Remove every tag from the argument tag list that exists in this entry's tag list.
      */
@@ -105,13 +112,18 @@ public class Task implements Entry {
     public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
         return tags;
     }
-    
+
     public LocalDateTime getDeadline() {
 		return deadline.get();
 	}
 
 	public void setDeadline(LocalDateTime deadline) {
 		this.deadline.set(deadline);
+	}
+
+	@Override
+	public ObjectProperty<LocalDateTime> deadlineObjectProperty() {
+		return deadline;
 	}
 
     @Override
@@ -136,7 +148,7 @@ public class Task implements Entry {
         return description;
     }
 
-    
+
     @Override
     public void mark() {
         this.isMarked.set(true);
@@ -146,7 +158,7 @@ public class Task implements Entry {
     public void unmark() {
         this.isMarked.set(false);
     }
-    
+
     @Override
     public boolean isMarked() {
         return isMarked.get();
@@ -156,7 +168,7 @@ public class Task implements Entry {
     public Observable isMarkProperty() {
         return isMarked;
     }
-    
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
@@ -193,6 +205,11 @@ public class Task implements Entry {
         if (!getDescription().isEmpty()) {
             builder.append(" Description: ");
             builder.append(getDescription());
+        }
+
+        if (getDeadline() != null) {
+        	builder.append(" Deadline: ");
+        	builder.append(getDeadline().toString());
         }
         return builder.toString();
     }

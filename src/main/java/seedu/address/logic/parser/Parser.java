@@ -176,7 +176,7 @@ public class Parser {
        if (title.isEmpty()) {
            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
        }
-       
+
        if (argsTokenizer.getValue(deadlinePrefix).isPresent()) {
     	   try {
     		   return new AddCommand(title,
@@ -196,7 +196,7 @@ public class Parser {
     		   return new IncorrectCommand(ive.getMessage());
     	   }
        }
-       
+
    }
 
    /**

@@ -1,10 +1,12 @@
 package seedu.address.ui;
 
+import java.time.LocalDateTime;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import seedu.address.model.task.Deadline;
+import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 
 public class TaskCard extends UiPart{
@@ -46,10 +48,14 @@ public class TaskCard extends UiPart{
         id.setText(displayedIndex + ". ");
         tags.setText(entry.tagsString());
         description.setText(entry.getDescription());
-        if (entry instanceof Deadline) {
-        	deadline.setText("deadline: " + ((Deadline)entry).getDeadline() );
-        } else {
-        	deadline.setText("");
+        if (entry instanceof Task) {
+        	Task task = (Task) entry;
+        	if (task.getDeadline() != null) {
+            	deadline.setText("deadline: " + task.getDeadline() );
+        	}
+        	else {
+            	deadline.setText("");
+        	}
         }
         mark.setText(entry.markString());
     }

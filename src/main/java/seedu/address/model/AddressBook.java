@@ -13,6 +13,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Wraps all data at the address-book level
@@ -54,8 +55,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         return entries.getInternalList();
     }
 
-    public void setPersons(List<Entry> persons) {
-        this.entries.getInternalList().setAll(persons);
+    public void setEntries(List<Entry> entries) {
+        this.entries.getInternalList().setAll(entries);
     }
 
     public void setTags(Collection<Tag> tags) {
@@ -63,7 +64,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     public void resetData(Collection<? extends Entry> newEntries, Collection<Tag> newTags) {
-    	ArrayList<Entry> copyList = new ArrayList<>();
+    	/* ArrayList<Entry> copyList = new ArrayList<>();
     	for (Entry entry : newEntries) {
     		Entry copy;
     		if (entry instanceof Deadline) {
@@ -73,8 +74,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     		}
     		copyList.add(copy);
     	}
-        // setPersons(newEntries.stream().map(FloatingTask::new).collect(Collectors.toList()));
-        setPersons(copyList);
+        setPersons(copyList); */
+    	setEntries(newEntries.stream().map(Task::new).collect(Collectors.toList()));
         setTags(newTags);
     }
 
