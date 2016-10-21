@@ -33,9 +33,6 @@ public class Parser {
     private static final Prefix endDatePrefix = new Prefix(BEFORE_FLAG);
     private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
 
-    private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace
-
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
             		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags;
