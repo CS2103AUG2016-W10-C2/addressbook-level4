@@ -120,7 +120,12 @@ public interface Entry {
      * Unmarks the entry
      */
     void unmark();
-
+    
+    /**
+     * Get the isMarkProperty for this Entry
+     */
+    Observable isMarkProperty();
+    
     /**
      * Returns a string representation of this Entry's marking
      */

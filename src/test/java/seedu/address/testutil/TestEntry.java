@@ -1,7 +1,9 @@
 package seedu.address.testutil;
 
 import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -19,11 +21,13 @@ public class TestEntry implements Entry {
     private ObjectProperty<Title> title;
     private ObjectProperty<UniqueTagList> tags;
     private StringProperty description;
-
+    protected BooleanProperty isMarked;
+    
     public TestEntry() {
         title = new SimpleObjectProperty<>();
         tags = new SimpleObjectProperty<>(new UniqueTagList());
         description = new SimpleStringProperty("");
+        isMarked = new SimpleBooleanProperty(false);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class TestEntry implements Entry {
 
     @Override
     public void setTags(UniqueTagList uniqueTagList) {
-        // TODO Auto-generated method stub
+        tags.set(new UniqueTagList(uniqueTagList));
     }
 
     @Override
@@ -93,38 +97,42 @@ public class TestEntry implements Entry {
     }
 
     @Override
-    public boolean isMarked() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public void mark() {
-        // TODO Auto-generated method stub
-        
+        this.isMarked.set(true);
     }
 
     @Override
     public void unmark() {
-        // TODO Auto-generated method stub
-        
+        this.isMarked.set(false);
+    }
+    
+    @Override
+    public boolean isMarked() {
+        return isMarked.get();
     }
 
     @Override
-    public String markString() {
-        // TODO Auto-generated method stub
-        return null;
+    public Observable isMarkProperty() {
+        return isMarked;
     }
 
     @Override
     public void addTags(UniqueTagList uniqueTagList) {
-        // TODO Auto-generated method stub
-        
+        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
+        updatedTagList.mergeFrom(uniqueTagList);
+        tags.set(updatedTagList);
+    }
+    
+    @Override
+    public void removeTags(UniqueTagList tagsToRemove) {
+        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
+        updatedTagList.removeFrom(tagsToRemove);
+        tags.set(updatedTagList);
     }
 
     @Override
-    public void removeTags(UniqueTagList tagsToRemove) {
-        // TODO Auto-generated method stub
-        
+    public String markString() {
+        return isMarked() ? "[X] " : "[ ] ";
     }
+
 }
