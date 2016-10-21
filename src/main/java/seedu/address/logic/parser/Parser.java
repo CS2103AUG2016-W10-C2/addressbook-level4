@@ -216,13 +216,13 @@ public class Parser {
      * Parse LocalDateTime from an input string
      * string. Format: YYYY-MM-DD
      */
-    private static LocalDateTime getLocalDateTimeFromArgument(Optional<String> dateTimeOptional, String time) throws IllegalValueException {
-        if (!dateTimeOptional.isPresent()) {
+    private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString, String time) throws IllegalValueException {
+        if (dateTimeString.isEmpty()) {
             return null;
         }
         
         // remove the tag.
-        final String cleanedString = dateTimeOptional.get() + "T" + time;
+        final String cleanedString = dateTimeString + "T" + time;
         return LocalDateTime.parse(cleanedString);
     }
     
@@ -383,18 +383,18 @@ public class Parser {
                 listCommand.setKeywords(keywordSet);
             }
 
-            Optional<String> onDateStringOptional = argsTokenizer.getValue(onDatePrefix);
-            Optional<String> startDateStringOptional = argsTokenizer.getValue(startDatePrefix);
-            Optional<String> endDateStringOptional = argsTokenizer.getValue(endDatePrefix);
+            String onDateString = unwrapStringOptional(argsTokenizer.getValue(onDatePrefix));
+            String startDateString = unwrapStringOptional(argsTokenizer.getValue(startDatePrefix));
+            String endDateString = unwrapStringOptional(argsTokenizer.getValue(endDatePrefix));
 
             // Ranged search and specific-day search should be mutually exclusive
-            if (onDateStringOptional.isPresent() && (startDateStringOptional.isPresent() || endDateStringOptional.isPresent())) {
+            if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
             
-            if (!onDateStringOptional.isPresent()) {
-                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateStringOptional, "00:00:00");
-                final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateStringOptional, "23:59:59");
+            if (onDateString.isEmpty()) {
+                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString, "00:00:00");
+                final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString, "23:59:59");
                 
                 if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
@@ -403,7 +403,7 @@ public class Parser {
                 listCommand.setStartDate(startDate);
                 listCommand.setEndDate(endDate);
             } else {
-                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateStringOptional, "23:59:59");
+                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString, "23:59:59");
                 
                 listCommand.setOnDate(onDate);
             }
