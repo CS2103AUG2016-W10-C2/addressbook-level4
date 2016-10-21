@@ -41,9 +41,12 @@ public class UniquePersonList implements Iterable<Entry> {
         @Override
         public Observable[] call(Entry entry) {
         	if (entry instanceof Deadline) {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty()};
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(),
+                                          entry.deadlineObjectProperty(), entry.descriptionProperty(),
+                                          entry.isMarkProperty()};
         	} else {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(),
+                                          entry.descriptionProperty(), entry.isMarkProperty()};
         	}
         }
     });
@@ -153,9 +156,10 @@ public class UniquePersonList implements Iterable<Entry> {
      */
     public void mark(Entry toMark) throws PersonNotFoundException, DuplicateTaskException {
         assert toMark!= null;
-        remove(toMark);
+        if (!contains(toMark)) {
+            throw new PersonNotFoundException();
+        }
         toMark.mark();
-        add(toMark);
     }
 
     /**
@@ -167,9 +171,10 @@ public class UniquePersonList implements Iterable<Entry> {
      */
     public void unmark(Entry toUnmark) throws PersonNotFoundException, DuplicateTaskException {
         assert toUnmark!= null;
-        remove(toUnmark);
+        if (!contains(toUnmark)) {
+            throw new PersonNotFoundException();
+        }
         toUnmark.unmark();
-        add(toUnmark);
     }
     
     /**

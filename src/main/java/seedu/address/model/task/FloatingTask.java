@@ -1,6 +1,9 @@
 package seedu.address.model.task;
 
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -19,7 +22,7 @@ public class FloatingTask implements Entry {
 
     protected ObjectProperty<UniqueTagList> tags;
 
-    protected boolean isMarked;
+    protected BooleanProperty isMarked;
 
     protected StringProperty description;
 
@@ -27,7 +30,7 @@ public class FloatingTask implements Entry {
         assert !CollectionUtil.isAnyNull(title, tags, description);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
-        this.isMarked = isMarked;
+        this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
         this.description = new SimpleStringProperty(description);
     }
 
@@ -128,16 +131,21 @@ public class FloatingTask implements Entry {
     
     @Override
     public void mark() {
-        this.isMarked = true;
+        this.isMarked.set(true);
     }
 
     @Override
     public void unmark() {
-        this.isMarked = false;
+        this.isMarked.set(false);
     }
     
     @Override
     public boolean isMarked() {
+        return isMarked.get();
+    }
+
+    @Override
+    public Observable isMarkProperty() {
         return isMarked;
     }
     
