@@ -163,10 +163,21 @@ public class Parser {
      */
     private static String getDescriptionFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         if (argsTokenizer.hasMultiple(descPrefix)) {
-            throw new IllegalValueException("Command should contain only 1 'desc/' flag");
+            throw new IllegalValueException("Command should contain only 1 " + DESC_FLAG + " flag");
         }
 
         return unwrapStringOptional(argsTokenizer.getValue(descPrefix));
+    }
+
+    /**
+     * Extracts the title from the command's title argument
+     */
+    private static String getTitleFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        if (argsTokenizer.hasMultiple(titlePrefix)) {
+            throw new IllegalValueException("Command should contain only 1 " + TITLE_FLAG + "flag");
+        }
+
+        return unwrapStringOptional(argsTokenizer.getValue(titlePrefix));
     }
 
     /**
@@ -177,20 +188,23 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareEdit(String args) {
-        final Matcher matcher = EDIT_TASK_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, deadlinePrefix, tagPrefix, descPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        // Validate arg string format
+        String idString = unwrapStringOptional(argsTokenizer.getPreamble());
+        Optional<Integer> index = parseIndex(idString);
+        if (!index.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-        } else {
-            Optional<Integer> index = parseIndex(matcher.group("targetIndex"));
-            if (!index.isPresent()) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-            }
-            try {
-                return new EditCommand(index.get(), matcher.group("title"),
-                        getTagsFromArgs(matcher.group("tagArguments")), getDescriptionFromArgs(matcher.group("desc")));
-            } catch (IllegalValueException ive) {
-                return new IncorrectCommand(ive.getMessage());
-            }
+        }
+
+        try {
+            return new EditCommand(index.get(),
+                getTitleFromArgs(argsTokenizer),
+                getTagsFromArgs(argsTokenizer),
+                getDescriptionFromArgs(argsTokenizer));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
         }
     }
     
