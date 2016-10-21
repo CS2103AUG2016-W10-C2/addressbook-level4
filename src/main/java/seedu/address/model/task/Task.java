@@ -22,7 +22,7 @@ public class Task implements Entry {
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
-    private ObjectProperty<LocalDateTime> deadline;
+    protected ObjectProperty<LocalDateTime> deadline;
     protected StringProperty description;
 
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
