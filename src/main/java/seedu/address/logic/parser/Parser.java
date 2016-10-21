@@ -130,22 +130,29 @@ public class Parser {
      */
     private Command prepareAdd(String args) {
     	args = args.trim();
-        final Matcher deadlineMatcher = DEADLINE_DATA_ARGS_FORMAT.matcher(args);
-        final Matcher floatingTaskMatcher = FLOATING_TASK_DATA_ARGS_FORMAT.matcher(args);
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
+
         // Validate arg string format
-        if (!floatingTaskMatcher.matches() && !deadlineMatcher.matches()) {
+        String title = unwrapStringOptional(argsTokenizer.getPreamble());
+        if (title.isEmpty()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
-        if (deadlineMatcher.matches()) {
+
+        if (argsTokenizer.getValue(deadlinePrefix).isPresent()) {
         	try {
-        		return new AddCommand(deadlineMatcher.group("title"), getDeadlineFromArgument(deadlineMatcher.group("deadlineArguments")), getTagsFromArgs(deadlineMatcher.group("tagArguments")), getDescriptionFromArgs(deadlineMatcher.group("desc")));
+        		return new AddCommand(title,
+                    getDeadlineFromArgument(argsTokenizer),
+                    getTagsFromArgs(argsTokenizer),
+                    getDescriptionFromArgs(argsTokenizer));
         	} catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
-        	
+
         } else {
         	try {
-                return new AddCommand(floatingTaskMatcher.group("title"), getTagsFromArgs(floatingTaskMatcher.group("tagArguments")), getDescriptionFromArgs(floatingTaskMatcher.group("desc")));
+                return new AddCommand(title,
+                    getTagsFromArgs(argsTokenizer),
+                    getDescriptionFromArgs(argsTokenizer));
             } catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
