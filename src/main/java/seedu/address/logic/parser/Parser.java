@@ -13,6 +13,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
+import static seedu.address.logic.commands.ListCommand.ON_FLAG;
 
 /**
  * Parses user input.
@@ -30,6 +31,7 @@ public class Parser {
     private static final Pattern LIST_ARGS_FORMAT =
             Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
                     + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?<onDate>\\s*" + ON_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
                     + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
@@ -213,33 +215,19 @@ public class Parser {
     }
     
     /**
-     * Parse LocalDateTime of start date from an input string
+     * Parse LocalDateTime from an input string
      * string. Format: YYYY-MM-DD
      */
-    private static LocalDateTime getStartDateFromArgument(String dateTime) throws IllegalValueException {
+    private static LocalDateTime getLocalDateTimeFromArgument(String dateTime, String flag, String time) throws IllegalValueException {
         if (dateTime == null || dateTime.isEmpty()) {
             return null;
         }
         
         // remove the tag.
-        final String cleanedString = dateTime.trim().replaceFirst(AFTER_FLAG, "") + "T" + "00:00:00";
+        final String cleanedString = dateTime.trim().replaceFirst(flag, "") + "T" + time;
         return LocalDateTime.parse(cleanedString);
     }
     
-    /**
-     * Parse LocalDateTime of end start from an input string
-     * string. Format: YYYY-MM-DD
-     */
-    private static LocalDateTime getEndDateFromArgument(String dateTime) throws IllegalValueException {
-        if (dateTime == null || dateTime.isEmpty()) {
-            return null;
-        }
-        
-        // remove the tag.
-        final String cleanedString = dateTime.trim().replaceFirst(BEFORE_FLAG, "") + "T" + "23:59:59";
-        return LocalDateTime.parse(cleanedString);
-    }
-
     /**
      * Parses arguments in the context of the delete task command.
      *
@@ -393,8 +381,14 @@ public class Parser {
         }
 
         try {
-            final LocalDateTime startDate = getStartDateFromArgument(matcher.group("startDate"));
-            final LocalDateTime endDate = getEndDateFromArgument(matcher.group("endDate"));
+            String onDateString = matcher.group("onDate");
+            String startDateString = matcher.group("startDate");
+            String endDateString = matcher.group("endDate");
+            
+            if (onDateString != null && (startDateString != null || endDateString != null)) {
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
+            }
+            
             // keywords delimited by whitespace
             String[] keywords = matcher.group("keywords").trim().split("\\s+");
 
@@ -402,8 +396,22 @@ public class Parser {
             keywordSet.removeIf(s -> s.equals(""));
             
             ListCommand listCommand = new ListCommand(keywordSet);
-            listCommand.setStartDate(startDate);
-            listCommand.setEndDate(endDate);
+            
+            if (onDateString == null) {
+                final LocalDateTime startDate = getLocalDateTimeFromArgument(matcher.group("startDate"), AFTER_FLAG, "00:00:00");
+                final LocalDateTime endDate = getLocalDateTimeFromArgument(matcher.group("endDate"), BEFORE_FLAG, "23:59:59");
+                
+                if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+                    return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
+                }
+                
+                listCommand.setStartDate(startDate);
+                listCommand.setEndDate(endDate);
+            } else {
+                final LocalDateTime onDate = getLocalDateTimeFromArgument(matcher.group("onDate"), ON_FLAG, "23:59:59");
+                
+                listCommand.setOnDate(onDate);
+            }
             
             return listCommand;
         } catch (IllegalValueException ive) {
