@@ -124,7 +124,7 @@ public interface Entry {
     /**
      * Get the isMarkProperty for this Entry
      */
-    Observable isMarkProperty();
+    Observable isMarkedProperty();
     
     /**
      * Returns a string representation of this Entry's marking
