@@ -12,9 +12,7 @@ import java.util.regex.Pattern;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.address.logic.commands.AddCommand.DEADLINE_FLAG;
-import static seedu.address.logic.commands.AddCommand.DESC_FLAG;
-import static seedu.address.logic.commands.AddCommand.TAG_FLAG;
+import static seedu.address.logic.commands.AddCommand.*;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
 import static seedu.address.logic.commands.ListCommand.ON_FLAG;
