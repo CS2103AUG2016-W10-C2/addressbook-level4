@@ -36,18 +36,7 @@ public class Parser {
     private static final Prefix deadlinePrefix = new Prefix(DEADLINE_FLAG);
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
-
-
-    private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags;
-                    + "(?<desc>(?: desc/[^/]*)?)");
-
-    private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<deadlineArguments>(?: dl/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
-            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags; 
-            		+ "(?<desc>(?: desc/[^/]*)?)");
+    
     
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
