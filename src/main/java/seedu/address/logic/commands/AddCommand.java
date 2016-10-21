@@ -52,7 +52,7 @@ public class AddCommand extends Command {
                 description
         );
     }
-    
+
     /**
      * Convenience constructor using raw values.
      *

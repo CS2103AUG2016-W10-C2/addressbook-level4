@@ -36,7 +36,7 @@ public interface Entry {
      * Sets the Tags for this Entry
      */
     void setTags(UniqueTagList uniqueTagList);
-    
+
     /**
      * Add tags for this entry
      */
@@ -46,7 +46,7 @@ public interface Entry {
      * Remove tags for this entry
      */
     void removeTags(UniqueTagList tagsToRemove);
-    
+
     /**
      * Get the uniqueTagListObjectProperty for this Entry
      */
@@ -66,12 +66,12 @@ public interface Entry {
      * Get the descriptionProperty for this Entry
      */
     Observable descriptionProperty();
-    
+
     /**
      * Get the deadlineProperty for this Entry
      */
     default Observable deadlineObjectProperty() {
-    	return null;
+        return null;
     }
 
     /**
@@ -115,17 +115,17 @@ public interface Entry {
      * Marks the entry as completed.
      */
     void mark();
-    
+
     /**
      * Unmarks the entry
      */
     void unmark();
-    
+
     /**
      * Get the isMarkProperty for this Entry
      */
     Observable isMarkedProperty();
-    
+
     /**
      * Returns a string representation of this Entry's marking
      */

@@ -34,7 +34,7 @@ public class Task implements Entry {
         if (deadline != null) {
             this.deadline = new SimpleObjectProperty<>(deadline);
         } else {
-        	this.deadline = new SimpleObjectProperty<>();
+            this.deadline = new SimpleObjectProperty<>();
         }
     }
 
@@ -56,7 +56,7 @@ public class Task implements Entry {
     public Task(Entry source) {
         this(source.getTitle(), null, source.getTags(), source.isMarked(), source.getDescription());
         if (source instanceof Task) {
-        	setDeadline(((Task)source).getDeadline()) ;
+            setDeadline(((Task)source).getDeadline()) ;
         }
     }
 
@@ -114,17 +114,17 @@ public class Task implements Entry {
     }
 
     public LocalDateTime getDeadline() {
-		return deadline.get();
-	}
+        return deadline.get();
+    }
 
-	public void setDeadline(LocalDateTime deadline) {
-		this.deadline.set(deadline);
-	}
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline.set(deadline);
+    }
 
-	@Override
-	public ObjectProperty<LocalDateTime> deadlineObjectProperty() {
-		return deadline;
-	}
+    @Override
+    public ObjectProperty<LocalDateTime> deadlineObjectProperty() {
+        return deadline;
+    }
 
     @Override
     public final String getDescription() {
@@ -208,8 +208,8 @@ public class Task implements Entry {
         }
 
         if (getDeadline() != null) {
-        	builder.append(" Deadline: ");
-        	builder.append(getDeadline().toString());
+            builder.append(" Deadline: ");
+            builder.append(getDeadline().toString());
         }
         return builder.toString();
     }

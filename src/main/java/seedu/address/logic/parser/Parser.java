@@ -178,23 +178,23 @@ public class Parser {
        }
 
        if (argsTokenizer.getValue(deadlinePrefix).isPresent()) {
-    	   try {
-    		   return new AddCommand(title,
-    				   getDeadlineFromArgument(argsTokenizer),
-    				   getTagsFromArgs(argsTokenizer),
-    				   getDescriptionFromArgs(argsTokenizer));
-    	   } catch (IllegalValueException ive) {
-    		   return new IncorrectCommand(ive.getMessage());
+           try {
+               return new AddCommand(title,
+                       getDeadlineFromArgument(argsTokenizer),
+                       getTagsFromArgs(argsTokenizer),
+                       getDescriptionFromArgs(argsTokenizer));
+           } catch (IllegalValueException ive) {
+               return new IncorrectCommand(ive.getMessage());
            }
        }
        else {
-    	   try {
-    		   return new AddCommand(title,
-    				   getTagsFromArgs(argsTokenizer),
-    				   getDescriptionFromArgs(argsTokenizer));
-    	   } catch (IllegalValueException ive) {
-    		   return new IncorrectCommand(ive.getMessage());
-    	   }
+           try {
+               return new AddCommand(title,
+                       getTagsFromArgs(argsTokenizer),
+                       getDescriptionFromArgs(argsTokenizer));
+           } catch (IllegalValueException ive) {
+               return new IncorrectCommand(ive.getMessage());
+           }
        }
 
    }

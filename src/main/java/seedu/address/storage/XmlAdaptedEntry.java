@@ -27,7 +27,7 @@ public class XmlAdaptedEntry {
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
-    
+
     @XmlElement
     private boolean isMarked;
 
@@ -50,10 +50,10 @@ public class XmlAdaptedEntry {
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
-        
+
         if (source instanceof Task) {
-        	LocalDateTime deadlineTime = ((Task)source).getDeadline();
-        	deadline = deadlineTime == null ? "" : deadlineTime.toString();
+            LocalDateTime deadlineTime = ((Task)source).getDeadline();
+            deadline = deadlineTime == null ? "" : deadlineTime.toString();
         }
     }
 
@@ -74,7 +74,7 @@ public class XmlAdaptedEntry {
         /*if (deadline != null) {
             return new Task(title, null, tags, isMarked, description);
         } else {
-        	return new Deadline(title, LocalDateTime.parse(deadline), tags, isMarked, description);
+            return new Deadline(title, LocalDateTime.parse(deadline), tags, isMarked, description);
         }*/
     }
 }

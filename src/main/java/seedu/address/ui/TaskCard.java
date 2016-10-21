@@ -49,13 +49,13 @@ public class TaskCard extends UiPart{
         tags.setText(entry.tagsString());
         description.setText(entry.getDescription());
         if (entry instanceof Task) {
-        	Task task = (Task) entry;
-        	if (task.getDeadline() != null) {
-            	deadline.setText("deadline: " + task.getDeadline() );
-        	}
-        	else {
-            	deadline.setText("");
-        	}
+            Task task = (Task) entry;
+            if (task.getDeadline() != null) {
+                deadline.setText("deadline: " + task.getDeadline() );
+            }
+            else {
+                deadline.setText("");
+            }
         }
         mark.setText(entry.markString());
     }
