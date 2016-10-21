@@ -34,19 +34,10 @@ public class ListCommand extends Command {
     private LocalDateTime endDate;
     private LocalDateTime onDate;
     
-    private PredicateBuilder predicateBuilder;
+    private final PredicateBuilder predicateBuilder = new PredicateBuilder();
     
     public ListCommand() {}
-    
-    /**
-     * Convenient constructor
-     * @param keywords
-     */
-    public ListCommand(Set<String> keywords) {
-        this.keywords = keywords;
-        this.predicateBuilder = new PredicateBuilder();
-    }
-    
+
     public void setKeywords(Set<String> keywords) {
         this.keywords = keywords;
     }
