@@ -171,15 +171,12 @@ public class Parser {
     /**
      * Extracts the description from the add command's description argument
      */
-    private static String getDescriptionFromArgs(String descriptionArguments) throws IllegalValueException {
-        if (descriptionArguments == null || descriptionArguments.isEmpty()) {
-            return "";
-        }
-        String[] descriptionStrings = descriptionArguments.split("/");
-        if (descriptionStrings.length != 2) {
+    private static String getDescriptionFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        if (argsTokenizer.hasMultiple(descPrefix)) {
             throw new IllegalValueException("Command should contain only 1 'desc/' flag");
         }
-        return descriptionStrings[1];
+
+        return unwrapStringOptional(argsTokenizer.getValue(descPrefix));
     }
 
     /**
