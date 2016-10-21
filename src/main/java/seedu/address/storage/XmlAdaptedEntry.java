@@ -69,7 +69,7 @@ public class XmlAdaptedEntry {
         final Title title = new Title(this.title);
         final UniqueTagList tags = new UniqueTagList(personTags);
         if (deadline == null) {
-            return new FloatingTask(title, tags, isMarked, description);
+            return new Task(title, null, tags, isMarked, description);
         } else {
         	return new Deadline(title, LocalDateTime.parse(deadline), tags, isMarked, description);
         }

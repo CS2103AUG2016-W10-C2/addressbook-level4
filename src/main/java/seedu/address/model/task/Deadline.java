@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
-public final class Deadline extends FloatingTask{
+public final class Deadline extends Task{
     protected ObjectProperty<LocalDateTime> deadline;
 
 	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, String desc) {
@@ -16,7 +16,7 @@ public final class Deadline extends FloatingTask{
 	}
 
 	public Deadline(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String desc) {
-		super(title, tags, isMarked, desc);
+		super(title, null, tags, isMarked, desc);
         assert !CollectionUtil.isAnyNull(deadline);
 		this.deadline = new SimpleObjectProperty<>(deadline);
 	}

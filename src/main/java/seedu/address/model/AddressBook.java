@@ -1,7 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.task.FloatingTask;
+import seedu.address.model.task.Task;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
@@ -69,7 +69,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     		if (entry instanceof Deadline) {
     			copy = new Deadline(entry);
     		} else {
-    			copy = new FloatingTask(entry);
+    			copy = new Task(entry);
     		}
     		copyList.add(copy);
     	}

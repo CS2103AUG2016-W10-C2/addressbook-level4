@@ -60,20 +60,20 @@ public class TestUtil {
      */
     public static String SANDBOX_FOLDER = FileUtil.getPath("./src/test/data/sandbox/");
 
-    public static final FloatingTask[] samplePersonData = getSamplePersonData();
+    public static final Task[] samplePersonData = getSamplePersonData();
 
-    private static FloatingTask[] getSamplePersonData() {
+    private static Task[] getSamplePersonData() {
         try {
-            return new FloatingTask[]{
-                    new FloatingTask(new Title("Ali Muster"), new UniqueTagList()),
-                    new FloatingTask(new Title("Boris Mueller"), new UniqueTagList()),
-                    new FloatingTask(new Title("Carl Kurz"), new UniqueTagList()),
-                    new FloatingTask(new Title("Daniel Meier"), new UniqueTagList()),
-                    new FloatingTask(new Title("Elle Meyer"), new UniqueTagList()),
-                    new FloatingTask(new Title("Fiona Kunz"), new UniqueTagList()),
-                    new FloatingTask(new Title("George Best"), new UniqueTagList()),
-                    new FloatingTask(new Title("Hoon Meier"), new UniqueTagList()),
-                    new FloatingTask(new Title("Ida Mueller"), new UniqueTagList())
+            return new Task[]{
+                    new Task(new Title("Ali Muster"), new UniqueTagList()),
+                    new Task(new Title("Boris Mueller"), new UniqueTagList()),
+                    new Task(new Title("Carl Kurz"), new UniqueTagList()),
+                    new Task(new Title("Daniel Meier"), new UniqueTagList()),
+                    new Task(new Title("Elle Meyer"), new UniqueTagList()),
+                    new Task(new Title("Fiona Kunz"), new UniqueTagList()),
+                    new Task(new Title("George Best"), new UniqueTagList()),
+                    new Task(new Title("Hoon Meier"), new UniqueTagList()),
+                    new Task(new Title("Ida Mueller"), new UniqueTagList())
             };
         } catch (IllegalValueException e) {
             assert false;
@@ -97,7 +97,7 @@ public class TestUtil {
         }
     }
 
-    public static List<FloatingTask> generateSamplePersonData() {
+    public static List<Task> generateSamplePersonData() {
         return Arrays.asList(samplePersonData);
     }
 

@@ -10,47 +10,47 @@ import javafx.beans.property.StringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * Represents a Floating Task in the Task Manager. Guarantees: details are
  * present and not null, field values are validated.
  */
-public class FloatingTask implements Entry {
+public class Task implements Entry {
 
     protected ObjectProperty<Title> title;
-
     protected ObjectProperty<UniqueTagList> tags;
-
     protected BooleanProperty isMarked;
-
+    private ObjectProperty<LocalDateTime> deadline;
     protected StringProperty description;
 
-    public FloatingTask(Title title, UniqueTagList tags, boolean isMarked, String description) {
+    public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
         this.description = new SimpleStringProperty(description);
+        this.deadline = new SimpleObjectProperty<>(deadline);
     }
 
     /**
      * Every field must be present and not null.
      */
-    public FloatingTask(Title title, UniqueTagList tags) {
-        this(title, tags, false, "");
+    public Task(Title title, UniqueTagList tags) {
+        this(title, null, tags, false, "");
     }
     
-    public FloatingTask(Title title, UniqueTagList tags, boolean isMarked) {
-        this(title, tags, isMarked, "");
+    public Task(Title title, UniqueTagList tags, boolean isMarked) {
+        this(title, null, tags, isMarked, "");
     }
 
 
     /**
      * Copy constructor.
      */
-    public FloatingTask(Entry source) {
-        this(source.getTitle(), source.getTags(), source.isMarked(), source.getDescription());
+    public Task(Entry source) {
+        this(source.getTitle(), null, source.getTags(), source.isMarked(), source.getDescription());
     }
 
     @Override
@@ -105,6 +105,14 @@ public class FloatingTask implements Entry {
     public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
         return tags;
     }
+    
+    public LocalDateTime getDeadline() {
+		return deadline.get();
+	}
+
+	public void setDeadline(LocalDateTime deadline) {
+		this.deadline.set(deadline);
+	}
 
     @Override
     public final String getDescription() {
@@ -152,8 +160,8 @@ public class FloatingTask implements Entry {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof FloatingTask // instanceof handles nulls
-                && this.isSameStateAs((FloatingTask) other));
+                || (other instanceof Task // instanceof handles nulls
+                && this.isSameStateAs((Task) other));
     }
 
     @Override
@@ -167,11 +175,11 @@ public class FloatingTask implements Entry {
         return getAsText();
     }
 
-    public boolean isSameStateAs(FloatingTask other) {
+    public boolean isSameStateAs(Task other) {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
-                && other.getTitle().equals(this.getTitle())
-                && other.getTags().equals(this.getTags()));
+                && other.getAsText().equals(this.getAsText())
+                && other.isMarked() == this.isMarked());
     }
 
     @Override

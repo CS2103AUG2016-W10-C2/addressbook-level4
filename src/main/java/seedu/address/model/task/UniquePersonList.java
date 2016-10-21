@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  * Supports a minimal set of list operations.
  *
- * @see FloatingTask#equals(Object)
+ * @see Task#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
 public class UniquePersonList implements Iterable<Entry> {

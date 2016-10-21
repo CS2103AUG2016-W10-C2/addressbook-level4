@@ -166,7 +166,7 @@ public class LogicManagerTest {
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask toBeAdded = helper.taskWithTags();
+        Task toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
         expectedAB.addTask(toBeAdded);
 
@@ -182,8 +182,8 @@ public class LogicManagerTest {
     public void execute_edit_successful() throws Exception {
         TestDataHelper helper = new TestDataHelper();
 
-        FloatingTask toEdit = helper.taskWithTags();
-        FloatingTask toEditCopy = helper.taskWithTags();
+        Task toEdit = helper.taskWithTags();
+        Task toEditCopy = helper.taskWithTags();
         Title newTitle = new Title("New Title");
 
         AddressBook expectedAB = new AddressBook();
@@ -204,8 +204,8 @@ public class LogicManagerTest {
     public void execute_edit_tags_successful() throws Exception {
         TestDataHelper helper = new TestDataHelper();
 
-        FloatingTask toEdit = helper.taskWithTags();
-        FloatingTask toEditCopy = helper.taskWithTags();
+        Task toEdit = helper.taskWithTags();
+        Task toEditCopy = helper.taskWithTags();
         UniqueTagList newTagList = new UniqueTagList();
         newTagList.add(new Tag("tag3"));
 
@@ -228,7 +228,7 @@ public class LogicManagerTest {
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask toBeAdded = helper.taskWithTags();
+        Task toBeAdded = helper.taskWithTags();
         AddressBook expectedAB = new AddressBook();
         expectedAB.addTask(toBeAdded);
 
@@ -283,11 +283,11 @@ public class LogicManagerTest {
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
-        List<FloatingTask> entryList = helper.generateEntreList(2);
+        List<Task> entryList = helper.generateEntreList(2);
 
         // set AB state to 2 entries
         model.resetData(new AddressBook());
-        for (FloatingTask p : entryList) {
+        for (Task p : entryList) {
             model.addTask(p);
         }
 
@@ -308,7 +308,7 @@ public class LogicManagerTest {
     @Test
     public void execute_select_jumpsToCorrectPerson() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<FloatingTask> threePersons = helper.generateEntreList(3);
+        List<Task> threePersons = helper.generateEntreList(3);
 
         AddressBook expectedAB = helper.generateAddressBook(threePersons);
         helper.addToModel(model, threePersons);
@@ -336,7 +336,7 @@ public class LogicManagerTest {
     @Test
     public void execute_delete_removesCorrectPerson() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<FloatingTask> threePersons = helper.generateEntreList(3);
+        List<Task> threePersons = helper.generateEntreList(3);
 
         AddressBook expectedAB = helper.generateAddressBook(threePersons);
         expectedAB.removePerson(threePersons.get(1));
@@ -353,14 +353,14 @@ public class LogicManagerTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE);
         
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
-        FloatingTask pTarget2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
-        FloatingTask p1 = helper.generateEntryWithTitle("KE Y");
-        FloatingTask p2 = helper.generateEntryWithTitle("KEYKEYKEY sduauo");
+        Task pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
+        Task pTarget2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
+        Task p1 = helper.generateEntryWithTitle("KE Y");
+        Task p2 = helper.generateEntryWithTitle("KEYKEYKEY sduauo");
         
-        List<FloatingTask> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
+        List<Task> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         AddressBook expectedAB = helper.generateAddressBook(fourPersons);
-        List<FloatingTask> expectedList = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
+        List<Task> expectedList = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list",
@@ -372,14 +372,14 @@ public class LogicManagerTest {
     @Test
     public void execute_list_onlyMatchesFullWordsInNames() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
-        FloatingTask pTarget2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
-        FloatingTask p1 = helper.generateEntryWithTitle("KE Y");
-        FloatingTask p2 = helper.generateEntryWithTitle("KEYKEYKEY sduauo");
+        Task pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
+        Task pTarget2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
+        Task p1 = helper.generateEntryWithTitle("KE Y");
+        Task p2 = helper.generateEntryWithTitle("KEYKEYKEY sduauo");
 
-        List<FloatingTask> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
+        List<Task> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         AddressBook expectedAB = helper.generateAddressBook(fourPersons);
-        List<FloatingTask> expectedList = helper.generateEntryList(pTarget1, pTarget2);
+        List<Task> expectedList = helper.generateEntryList(pTarget1, pTarget2);
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list KEY",
@@ -391,14 +391,14 @@ public class LogicManagerTest {
     @Test
     public void execute_list_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask p1 = helper.generateEntryWithTitle("bla bla KEY bla");
-        FloatingTask p2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
-        FloatingTask p3 = helper.generateEntryWithTitle("key key");
-        FloatingTask p4 = helper.generateEntryWithTitle("KEy sduauo");
+        Task p1 = helper.generateEntryWithTitle("bla bla KEY bla");
+        Task p2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
+        Task p3 = helper.generateEntryWithTitle("key key");
+        Task p4 = helper.generateEntryWithTitle("KEy sduauo");
 
-        List<FloatingTask> fourPersons = helper.generateEntryList(p3, p1, p4, p2);
+        List<Task> fourPersons = helper.generateEntryList(p3, p1, p4, p2);
         AddressBook expectedAB = helper.generateAddressBook(fourPersons);
-        List<FloatingTask> expectedList = fourPersons;
+        List<Task> expectedList = fourPersons;
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list KEY",
@@ -410,14 +410,14 @@ public class LogicManagerTest {
     @Test
     public void execute_list_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
-        FloatingTask pTarget2 = helper.generateEntryWithTitle("bla rAnDoM bla bceofeia");
-        FloatingTask pTarget3 = helper.generateEntryWithTitle("key key");
-        FloatingTask p1 = helper.generateEntryWithTitle("sduauo");
+        Task pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
+        Task pTarget2 = helper.generateEntryWithTitle("bla rAnDoM bla bceofeia");
+        Task pTarget3 = helper.generateEntryWithTitle("key key");
+        Task p1 = helper.generateEntryWithTitle("sduauo");
 
-        List<FloatingTask> fourPersons = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
+        List<Task> fourPersons = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
         AddressBook expectedAB = helper.generateAddressBook(fourPersons);
-        List<FloatingTask> expectedList = helper.generateEntryList(pTarget1, pTarget2, pTarget3);
+        List<Task> expectedList = helper.generateEntryList(pTarget1, pTarget2, pTarget3);
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list key rAnDoM",
@@ -437,10 +437,10 @@ public class LogicManagerTest {
         String expectedMessage = String.format(Tag.MESSAGE_TAG_CONSTRAINTS);
         
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
 
-        List<FloatingTask> expectedList = helper.generateEntryList(t1);
+        List<Task> expectedList = helper.generateEntryList(t1);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         
         assertCommandBehavior("tag 1 " + TAG_FLAG + "**", expectedMessage, expectedAB, expectedList);
@@ -449,11 +449,11 @@ public class LogicManagerTest {
     @Test
     public void execute_tag_withoutTagnameArgs() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
-        FloatingTask t1Copy = helper.generateTask(1);
-        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        Task t1Copy = helper.generateTask(1);
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
         
@@ -463,7 +463,7 @@ public class LogicManagerTest {
     @Test
     public void execute_tag_allowAlphanumericSpaceUnderscore() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
         
@@ -472,10 +472,10 @@ public class LogicManagerTest {
         Tag tag3 = new Tag("tag 10");
         UniqueTagList tags = new UniqueTagList(tag1, tag2, tag3);
         
-        FloatingTask t1Copy = helper.generateTask(1);
+        Task t1Copy = helper.generateTask(1);
         t1Copy.addTags(tags);
         
-        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
@@ -485,7 +485,7 @@ public class LogicManagerTest {
     @Test
     public void execute_tag_allowAddExistingTags() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
         Tag tag1 = new Tag("tag1");
@@ -493,10 +493,10 @@ public class LogicManagerTest {
         Tag tag3 = new Tag("tag3");
         UniqueTagList tags = new UniqueTagList(tag1, tag2, tag3);
         
-        FloatingTask t1Copy = helper.generateTask(1);
+        Task t1Copy = helper.generateTask(1);
         t1Copy.addTags(tags);
         
-        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
@@ -514,10 +514,10 @@ public class LogicManagerTest {
         String expectedMessage = String.format(Tag.MESSAGE_TAG_CONSTRAINTS);
         
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
 
-        List<FloatingTask> expectedList = helper.generateEntryList(t1);
+        List<Task> expectedList = helper.generateEntryList(t1);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         
         assertCommandBehavior("untag 1 " + TAG_FLAG + "**", expectedMessage, expectedAB, expectedList);
@@ -526,11 +526,11 @@ public class LogicManagerTest {
     @Test
     public void execute_untag_withoutTagnameArgs() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
-        FloatingTask t1Copy = helper.generateTask(1);
-        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        Task t1Copy = helper.generateTask(1);
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
         
@@ -546,13 +546,13 @@ public class LogicManagerTest {
         Tag tag3 = new Tag("tag 1");
         UniqueTagList tags = new UniqueTagList(tag1, tag2, tag3);
                 
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
-        FloatingTask t1Copy = helper.generateTask(1);
+        Task t1Copy = helper.generateTask(1);
         t1Copy.removeTags(tags);
         
-        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
         String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
@@ -563,17 +563,17 @@ public class LogicManagerTest {
     @Test
     public void execute_untag_allowRemoveNonExistentTags() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        FloatingTask t1 = helper.generateTask(1);
+        Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
         Tag tag1 = new Tag("tag1");
         Tag tag3 = new Tag("tag3");  // Does not exist
         UniqueTagList tags = new UniqueTagList(tag1, tag3);
         
-        FloatingTask t1Copy = helper.generateTask(1);
+        Task t1Copy = helper.generateTask(1);
         t1Copy.removeTags(tags);
         
-        List<FloatingTask> expectedList = helper.generateEntryList(t1Copy);
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
         String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
@@ -586,12 +586,12 @@ public class LogicManagerTest {
      */
     class TestDataHelper{
 
-        FloatingTask taskWithTags() throws Exception {
+        Task taskWithTags() throws Exception {
             Title name = new Title("Adam Brown");
             Tag tag1 = new Tag("tag1");
             Tag tag2 = new Tag("tag2");
             UniqueTagList tags = new UniqueTagList(tag1, tag2);
-            return new FloatingTask(name, tags);
+            return new Task(name, tags);
         }
 
         /**
@@ -601,15 +601,15 @@ public class LogicManagerTest {
          *
          * @param seed used to generate the task data field values
          */
-        FloatingTask generateTask(int seed) throws Exception {
-            return new FloatingTask(
+        Task generateTask(int seed) throws Exception {
+            return new Task(
                     new Title("Person " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1)))
             );
         }
 
         /** Generates the correct add command based on the task given */
-        String generateAddCommand(FloatingTask p) {
+        String generateAddCommand(Task p) {
             StringBuffer cmd = new StringBuffer();
 
             cmd.append("add ");
@@ -627,7 +627,7 @@ public class LogicManagerTest {
             return cmd.toString();
         }
 
-        String generateEditCommand(FloatingTask p, int index, String title) {
+        String generateEditCommand(Task p, int index, String title) {
             StringBuffer cmd = new StringBuffer();
             
             cmd.append(String.format("edit %d ", index));
@@ -656,7 +656,7 @@ public class LogicManagerTest {
         }
         
         /** Generates the tag command based on the given tag and index*/
-        String generateTagCommand(FloatingTask p, int index) {
+        String generateTagCommand(Task p, int index) {
             UniqueTagList tags = p.getTags();
             return generateTagCommand(tags, index);
         }
@@ -675,7 +675,7 @@ public class LogicManagerTest {
         }
 
         /** Generates the untag command based on the given tag and index*/
-        String generateUntagCommand(FloatingTask p, int index) {
+        String generateUntagCommand(Task p, int index) {
             UniqueTagList tags = p.getTags();
             return generateUntagCommand(tags, index);
         }
@@ -692,7 +692,7 @@ public class LogicManagerTest {
         /**
          * Generates an AddressBook based on the list of Persons given.
          */
-        AddressBook generateAddressBook(List<FloatingTask> persons) throws Exception{
+        AddressBook generateAddressBook(List<Task> persons) throws Exception{
             AddressBook addressBook = new AddressBook();
             addToAddressBook(addressBook, persons);
             return addressBook;
@@ -709,8 +709,8 @@ public class LogicManagerTest {
         /**
          * Adds the given list of Persons to the given AddressBook
          */
-        void addToAddressBook(AddressBook addressBook, List<FloatingTask> personsToAdd) throws Exception{
-            for(FloatingTask p: personsToAdd){
+        void addToAddressBook(AddressBook addressBook, List<Task> personsToAdd) throws Exception{
+            for(Task p: personsToAdd){
                 addressBook.addTask(p);
             }
         }
@@ -735,8 +735,8 @@ public class LogicManagerTest {
         /**
          * Adds the given list of Persons to the given model
          */
-        void addToModel(Model model, List<FloatingTask> personsToAdd) throws Exception{
-            for(FloatingTask p: personsToAdd){
+        void addToModel(Model model, List<Task> personsToAdd) throws Exception{
+            for(Task p: personsToAdd){
                 model.addTask(p);
             }
         }
@@ -753,23 +753,23 @@ public class LogicManagerTest {
         /**
          * Generates a list of Persons based on the flags.
          */
-        List<FloatingTask> generateEntreList(int numGenerated) throws Exception{
-            List<FloatingTask> entries = new ArrayList<>();
+        List<Task> generateEntreList(int numGenerated) throws Exception{
+            List<Task> entries = new ArrayList<>();
             for(int i = 1; i <= numGenerated; i++){
                 entries.add(generateTask(i));
             }
             return entries;
         }
 
-        List<FloatingTask> generateEntryList(FloatingTask... entries) {
+        List<Task> generateEntryList(Task... entries) {
             return Arrays.asList(entries);
         }
 
         /**
          * Generates a Person object with given name. Other fields will have some dummy values.
          */
-        FloatingTask generateEntryWithTitle(String title) throws Exception {
-            return new FloatingTask(
+        Task generateEntryWithTitle(String title) throws Exception {
+            return new Task(
                     new Title(title),
                     new UniqueTagList(new Tag("tag"))
             );
