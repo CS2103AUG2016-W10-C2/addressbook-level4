@@ -8,6 +8,7 @@ import seedu.address.model.tag.UniqueTagList;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Adds a task to the address book.
@@ -23,6 +24,11 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
+    public static final String DEADLINE_FLAG = "dl/";
+    public static final String TAG_FLAG = "#";
+    public static final String DESC_FLAG = "desc/";
+    public static final String WRONG_DATE_TIME_INPUT = "Wrong date format supplied. The correct format is YYYY-MM-DD HH:mm";
+    public static final Pattern DATE_TIME_FORMAT = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}");
 
     private final FloatingTask toAdd;
 

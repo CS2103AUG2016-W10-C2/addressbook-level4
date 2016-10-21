@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.ArgumentTokenizer.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -11,6 +12,8 @@ import java.util.regex.Pattern;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.AddCommand.*;
+import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
 import static seedu.address.logic.commands.ListCommand.ON_FLAG;
@@ -27,37 +30,16 @@ public class Parser {
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
-    // TODO: Use tokenizer for these
-    private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<startDate>\\s*" + AFTER_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<endDate>\\s*" + BEFORE_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<onDate>\\s*" + ON_FLAG + "\\d{4}-\\d{1,2}-\\d{1,2})?"
-                    + "(?<keywords>\\s*\\S*(?:\\s+\\S+)*)"); // zero or more keywords separated by whitespace 
+    // TODO: Use PrettyTime to parse dates
+    private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
+    private static final Prefix endDatePrefix = new Prefix(BEFORE_FLAG);
+    private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
+    private static final Prefix deadlinePrefix = new Prefix(DEADLINE_FLAG);
+    private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
+    private static final Prefix descPrefix = new Prefix(DESC_FLAG);
+    private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
 
-    private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags;
-                    + "(?<desc>(?: desc/[^/]*)?)");
-
-    private static final Pattern DEADLINE_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<title>[^/]+)"
-            		+ "(?<deadlineArguments>(?: dl/\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}))" // Date time format: DD/MM/YYYY/HH:MM
-            		+ "(?<tagArguments>(?: t/[^/]+)?)" // comma separated tags; 
-            		+ "(?<desc>(?: desc/[^/]*)?)");
-    
-    private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
-                    + "(?<tagArguments>(?: t/[^/]+)*)"
-                    + "(?<desc>(?: desc/[^/]*)?)");
-
-    private static final Pattern TAG_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
-    
-    private static final Pattern UNTAG_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
-
-    public Parser() {
-    }
+    public Parser() {}
 
     /**
      * Parses user input into command for execution.
@@ -125,23 +107,30 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareAdd(String args) {
-    	args = args.trim();
-        final Matcher deadlineMatcher = DEADLINE_DATA_ARGS_FORMAT.matcher(args);
-        final Matcher floatingTaskMatcher = FLOATING_TASK_DATA_ARGS_FORMAT.matcher(args);
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
+        argsTokenizer.tokenize(args.trim());
+
         // Validate arg string format
-        if (!floatingTaskMatcher.matches() && !deadlineMatcher.matches()) {
+        String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
+        if (title.isEmpty()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
-        if (deadlineMatcher.matches()) {
+
+        if (argsTokenizer.getValue(deadlinePrefix).isPresent()) {
         	try {
-        		return new AddCommand(deadlineMatcher.group("title"), getDeadlineFromArgument(deadlineMatcher.group("deadlineArguments")), getTagsFromArgs(deadlineMatcher.group("tagArguments")), getDescriptionFromArgs(deadlineMatcher.group("desc")));
+        		return new AddCommand(title,
+                    getDeadlineFromArgument(argsTokenizer),
+                    getTagsFromArgs(argsTokenizer),
+                    getDescriptionFromArgs(argsTokenizer));
         	} catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
-        	
+
         } else {
         	try {
-                return new AddCommand(floatingTaskMatcher.group("title"), getTagsFromArgs(floatingTaskMatcher.group("tagArguments")), getDescriptionFromArgs(floatingTaskMatcher.group("desc")));
+                return new AddCommand(title,
+                    getTagsFromArgs(argsTokenizer),
+                    getDescriptionFromArgs(argsTokenizer));
             } catch (IllegalValueException ive) {
                 return new IncorrectCommand(ive.getMessage());
             }
@@ -152,28 +141,30 @@ public class Parser {
      * Extracts the new task's tags from the add command's tag arguments
      * string. Merges duplicate tag strings.
      */
-    private static Set<String> getTagsFromArgs(String tagArguments) throws IllegalValueException {
-        // no tags
-        if (tagArguments.isEmpty()) {
-            return Collections.emptySet();
-        }
-        // replace first delimiter prefix, then split
-        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(",\\s?"));
-        return new HashSet<>(tagStrings);
+    private static Set<String> getTagsFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        return unwrapOptionalStringCollectionOrEmpty(argsTokenizer.getAllValues(tagPrefix));
     }
 
     /**
      * Extracts the description from the add command's description argument
      */
-    private static String getDescriptionFromArgs(String descriptionArguments) throws IllegalValueException {
-        if (descriptionArguments == null || descriptionArguments.isEmpty()) {
-            return "";
+    private static String getDescriptionFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        if (argsTokenizer.hasMultiple(descPrefix)) {
+            throw new IllegalValueException("Command should contain only 1 " + DESC_FLAG + " flag");
         }
-        String[] descriptionStrings = descriptionArguments.split("/");
-        if (descriptionStrings.length != 2) {
-            throw new IllegalValueException("Command should contain only 1 'desc/' flag");
+
+        return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(descPrefix));
+    }
+
+    /**
+     * Extracts the title from the command's title argument
+     */
+    private static String getTitleFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        if (argsTokenizer.hasMultiple(titlePrefix)) {
+            throw new IllegalValueException("Command should contain only 1 " + TITLE_FLAG + "flag");
         }
-        return descriptionStrings[1];
+
+        return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(titlePrefix));
     }
 
     /**
@@ -184,20 +175,23 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareEdit(String args) {
-        final Matcher matcher = EDIT_TASK_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, deadlinePrefix, tagPrefix, descPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        // Validate arg string format
+        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
+        Optional<Integer> index = parseIndex(idString);
+        if (!index.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-        } else {
-            Optional<Integer> index = parseIndex(matcher.group("targetIndex"));
-            if (!index.isPresent()) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-            }
-            try {
-                return new EditCommand(index.get(), matcher.group("title"),
-                        getTagsFromArgs(matcher.group("tagArguments")), getDescriptionFromArgs(matcher.group("desc")));
-            } catch (IllegalValueException ive) {
-                return new IncorrectCommand(ive.getMessage());
-            }
+        }
+
+        try {
+            return new EditCommand(index.get(),
+                getTitleFromArgs(argsTokenizer),
+                getTagsFromArgs(argsTokenizer),
+                getDescriptionFromArgs(argsTokenizer));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
         }
     }
     
@@ -205,12 +199,16 @@ public class Parser {
      * Extracts the new entry's deadline from the add command's tag arguments
      * string. Format: YYYY-MM-DD HH:MM
      */
-    private static LocalDateTime getDeadlineFromArgument(String deadlineArguments) throws IllegalValueException {
-        if (deadlineArguments.isEmpty()) {
-            return LocalDateTime.now();
+    private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
+
+        Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
+        if (!matcher.matches()) {
+            throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
         }
+
         // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" dl/", "").split(" "));
+        final List<String> cleanedStrings = Arrays.asList(deadline.split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
     
@@ -218,13 +216,13 @@ public class Parser {
      * Parse LocalDateTime from an input string
      * string. Format: YYYY-MM-DD
      */
-    private static LocalDateTime getLocalDateTimeFromArgument(String dateTime, String flag, String time) throws IllegalValueException {
-        if (dateTime == null || dateTime.isEmpty()) {
+    private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString, String time) throws IllegalValueException {
+        if (dateTimeString.isEmpty()) {
             return null;
         }
         
         // remove the tag.
-        final String cleanedString = dateTime.trim().replaceFirst(flag, "") + "T" + time;
+        final String cleanedString = dateTimeString + "T" + time;
         return LocalDateTime.parse(cleanedString);
     }
     
@@ -281,22 +279,19 @@ public class Parser {
      * Parses arguments in the context of the tag task command.
      */
     private Command prepareTag(String args) {
-        final Matcher matcher = TAG_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
-        }
-        
-        Optional<Integer> targetIndex = parseIndex(matcher.group("targetIndex"));
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(tagPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        // Validate arg string format
+        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
+        Optional<Integer> targetIndex = parseIndex(idString);
         if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
         }
-        String tagArg = matcher.group("tagArguments");
-        Collection<String> tagStrings = Collections.emptySet();
-        if (!tagArg.isEmpty()) {
-            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
-        }
+
         try {
-            return new TagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
+            Set<String> tagStrings = getTagsFromArgs(argsTokenizer);
+            return new TagCommand(targetIndex.get(), tagStrings);
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
@@ -306,22 +301,19 @@ public class Parser {
      * Parses arguments in the context of the untag task command.
      */
     private Command prepareUntag(String args) {
-        final Matcher matcher = UNTAG_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(tagPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        // Validate arg string format
+        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
+        Optional<Integer> targetIndex = parseIndex(idString);
+        if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
         }
-        
-        Optional<Integer> targetIndex = parseIndex(matcher.group("targetIndex"));
-        if (!targetIndex.isPresent()) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
-        }
-        String tagArg = matcher.group("tagArguments");
-        Collection<String> tagStrings = Collections.emptySet();
-        if (!tagArg.isEmpty()) {
-            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
-        }
+
         try {
-            return new UntagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
+            Set<String> tagStrings = getTagsFromArgs(argsTokenizer);
+            return new UntagCommand(targetIndex.get(), tagStrings);
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
@@ -375,31 +367,34 @@ public class Parser {
             return new ListCommand();
         }
         
-        final Matcher matcher = LIST_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
-        }
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix);
+        argsTokenizer.tokenize(args);
 
         try {
-            String onDateString = matcher.group("onDate");
-            String startDateString = matcher.group("startDate");
-            String endDateString = matcher.group("endDate");
-            
-            if (onDateString != null && (startDateString != null || endDateString != null)) {
+            ListCommand listCommand = new ListCommand();
+
+            // keywords delimited by whitespace
+            Optional<String> keywordsString = argsTokenizer.getPreamble();
+            if (keywordsString.isPresent()) {
+                String[] keywords = keywordsString.get().split("\\s+");
+
+                Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+                keywordSet.removeIf(s -> s.equals(""));
+                listCommand.setKeywords(keywordSet);
+            }
+
+            String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
+            String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
+            String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
+
+            // Ranged search and specific-day search should be mutually exclusive
+            if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
             
-            // keywords delimited by whitespace
-            String[] keywords = matcher.group("keywords").trim().split("\\s+");
-
-            Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-            keywordSet.removeIf(s -> s.equals(""));
-            
-            ListCommand listCommand = new ListCommand(keywordSet);
-            
-            if (onDateString == null) {
-                final LocalDateTime startDate = getLocalDateTimeFromArgument(matcher.group("startDate"), AFTER_FLAG, "00:00:00");
-                final LocalDateTime endDate = getLocalDateTimeFromArgument(matcher.group("endDate"), BEFORE_FLAG, "23:59:59");
+            if (onDateString.isEmpty()) {
+                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString, "00:00:00");
+                final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString, "23:59:59");
                 
                 if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
@@ -408,7 +403,7 @@ public class Parser {
                 listCommand.setStartDate(startDate);
                 listCommand.setEndDate(endDate);
             } else {
-                final LocalDateTime onDate = getLocalDateTimeFromArgument(matcher.group("onDate"), ON_FLAG, "23:59:59");
+                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString, "23:59:59");
                 
                 listCommand.setOnDate(onDate);
             }
@@ -416,6 +411,22 @@ public class Parser {
             return listCommand;
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
+        }
+    }
+
+    private static String unwrapOptionalStringOrEmpty(Optional<String> optional) {
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return "";
+        }
+    }
+
+    private static Set<String> unwrapOptionalStringCollectionOrEmpty(Optional<List<String>> optional) {
+        if (optional.isPresent()) {
+            return new HashSet<String>(optional.get());
+        } else {
+            return Collections.emptySet();
         }
     }
 

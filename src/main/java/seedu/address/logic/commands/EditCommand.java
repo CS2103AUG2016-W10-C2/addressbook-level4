@@ -26,6 +26,7 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Edited entry: %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "This entry already exists in the todo list";
+    public static final String TITLE_FLAG = "title/";
 
     private final int targetIndex;
 

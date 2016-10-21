@@ -54,11 +54,11 @@ No tasks to display.
 
 | Command |Format |
 | --- | --- |
-|add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [t/<tags>]  [r/<recurrence>] [desc/<description>]`|
+|add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence>] [desc/<description>]`|
 |list|`list [[[after/<date>] [before/<date>] | [on/<date>]][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
-|tag|`tag <task_id> <tag_name> [, <tag_name> …]`|
-|untag|`untag <task_id> <tag_name> [, <tag_name> …]`|
-|edit|`edit <task_id> [new title] [st/ <start> end/ <end> | deadline/ <deadline>] [t/ <tags>...] [r/ <recurrence>] [desc/ <description>]`|
+|tag|`tag <task_id> #<tag_name> [#<tag_name> …]`|
+|untag|`untag <task_id> #<tag_name> [#<tag_name> …]`|
+|edit|`edit <task_id> [title/ new title] [st/ <start> end/ <end> | deadline/ <deadline>] [t/ <tags>...] [r/ <recurrence>] [desc/ <description>]`|
 |delete|`delete <task_id>`|
 |mark|`mark <task_id>`|
 |unmark|`unmark <task_id>`|
@@ -69,7 +69,7 @@ No tasks to display.
 ## Commands
 
 ```
-add <task_name> [st/<start> end/<end> | dl/<deadline>] [t/<tags>]  [r/<recurrence>] [desc/<description>]
+add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence>] [desc/<description>]
 ```
 
 > Add event or deadline
@@ -77,7 +77,7 @@ add <task_name> [st/<start> end/<end> | dl/<deadline>] [t/<tags>]  [r/<recurrenc
 > Examples:
 
 
-> - `add CS2103T Lecture st/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly t/‘rocks’`
+> - `add CS2103T Lecture st/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly #rocks`
 
 > - `add CS2105 Assignment 1 dl/2016-10-10 10:00`
 
@@ -96,24 +96,24 @@ list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [r
 
 
 ```
-tag <task_id> <tag_name> [, <tag_name> …]
+tag <task_id> #<tag_name> [#<tag_name> …]
 ```
 
 > Add tag(s) to a particular entry with a specified id
 
 > Examples:
 
-> - `tag 123 ‘CS2103T’, ‘rocks’`
+> - `tag 123 #CS2103T #rocks`
 
 > Delete tag(s) from a particular entry with a specified id using `untag`
 
-> - `untag 123 ‘rocks’`
+> - `untag 123 #rocks`
 
 > Duplicated tags will only be added once
 
 
 ```
-edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [/t <tags>] [/r <recurrence>] [/desc <description>]
+edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [#<tags>] [/r <recurrence>] [/desc <description>]
 ```
 
 >  Edit the entry with the specified entry id.
@@ -124,7 +124,7 @@ edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [/t <tags>]
 
 > - `edit 3 school`
 
-> - `edit 13 t/yearly`
+> - `edit 13 #yearly`
 
 
 ```
@@ -140,7 +140,7 @@ delete <entry_id>
 
 
 ```
-mark [-d] <entry_id>
+mark <entry_id>
 ```
 
 > Check (or uncheck, for `unmark`) a entry as completed.
@@ -150,6 +150,8 @@ mark [-d] <entry_id>
 > Examples:
 
 > - `mark 42`
+
+> - `unmark 42`
 
 
 ```
