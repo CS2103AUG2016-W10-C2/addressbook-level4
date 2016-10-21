@@ -118,8 +118,8 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareAdd(String args) {
-    	args = args.trim();
         ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
+        argsTokenizer.tokenize(args.trim());
 
         // Validate arg string format
         String title = unwrapStringOptional(argsTokenizer.getPreamble());
