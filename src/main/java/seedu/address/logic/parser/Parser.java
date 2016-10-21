@@ -111,7 +111,7 @@ public class Parser {
         argsTokenizer.tokenize(args.trim());
 
         // Validate arg string format
-        String title = unwrapStringOptional(argsTokenizer.getPreamble());
+        String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
         if (title.isEmpty()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -142,7 +142,7 @@ public class Parser {
      * string. Merges duplicate tag strings.
      */
     private static Set<String> getTagsFromArgs(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
-        return unwrapStringCollectionOptional(argsTokenizer.getAllValues(tagPrefix));
+        return unwrapOptionalStringCollectionOrEmpty(argsTokenizer.getAllValues(tagPrefix));
     }
 
     /**
@@ -153,7 +153,7 @@ public class Parser {
             throw new IllegalValueException("Command should contain only 1 " + DESC_FLAG + " flag");
         }
 
-        return unwrapStringOptional(argsTokenizer.getValue(descPrefix));
+        return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(descPrefix));
     }
 
     /**
@@ -164,7 +164,7 @@ public class Parser {
             throw new IllegalValueException("Command should contain only 1 " + TITLE_FLAG + "flag");
         }
 
-        return unwrapStringOptional(argsTokenizer.getValue(titlePrefix));
+        return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(titlePrefix));
     }
 
     /**
@@ -179,7 +179,7 @@ public class Parser {
         argsTokenizer.tokenize(args.trim());
 
         // Validate arg string format
-        String idString = unwrapStringOptional(argsTokenizer.getPreamble());
+        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
         Optional<Integer> index = parseIndex(idString);
         if (!index.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
@@ -200,7 +200,7 @@ public class Parser {
      * string. Format: YYYY-MM-DD HH:MM
      */
     private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
-        String deadline = unwrapStringOptional(argsTokenizer.getValue(deadlinePrefix));
+        String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
 
         Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
         if (!matcher.matches()) {
@@ -283,7 +283,7 @@ public class Parser {
         argsTokenizer.tokenize(args.trim());
 
         // Validate arg string format
-        String idString = unwrapStringOptional(argsTokenizer.getPreamble());
+        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
         Optional<Integer> targetIndex = parseIndex(idString);
         if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
@@ -305,7 +305,7 @@ public class Parser {
         argsTokenizer.tokenize(args.trim());
 
         // Validate arg string format
-        String idString = unwrapStringOptional(argsTokenizer.getPreamble());
+        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
         Optional<Integer> targetIndex = parseIndex(idString);
         if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
@@ -383,9 +383,9 @@ public class Parser {
                 listCommand.setKeywords(keywordSet);
             }
 
-            String onDateString = unwrapStringOptional(argsTokenizer.getValue(onDatePrefix));
-            String startDateString = unwrapStringOptional(argsTokenizer.getValue(startDatePrefix));
-            String endDateString = unwrapStringOptional(argsTokenizer.getValue(endDatePrefix));
+            String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
+            String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
+            String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
 
             // Ranged search and specific-day search should be mutually exclusive
             if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
@@ -414,7 +414,7 @@ public class Parser {
         }
     }
 
-    private static String unwrapStringOptional(Optional<String> optional) {
+    private static String unwrapOptionalStringOrEmpty(Optional<String> optional) {
         if (optional.isPresent()) {
             return optional.get();
         } else {
@@ -422,9 +422,9 @@ public class Parser {
         }
     }
 
-    private static Set<String> unwrapStringCollectionOptional(Optional<List<String>> optional) {
+    private static Set<String> unwrapOptionalStringCollectionOrEmpty(Optional<List<String>> optional) {
         if (optional.isPresent()) {
-            return new HashSet(optional.get());
+            return new HashSet<String>(optional.get());
         } else {
             return Collections.emptySet();
         }
