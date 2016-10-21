@@ -29,6 +29,8 @@ import java.util.StringJoiner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.*;
+import static seedu.address.logic.commands.AddCommand.TAG_FLAG;
+import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
 
 public class LogicManagerTest {
 
@@ -149,7 +151,7 @@ public class LogicManagerTest {
     public void execute_add_invalidArgsFormat() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
         assertCommandBehavior(
-                "add t/NTUC Valid Task", expectedMessage);
+                "add " + TAG_FLAG + "NTUC Valid Task", expectedMessage);
     }
 
     @Test
@@ -157,7 +159,7 @@ public class LogicManagerTest {
         assertCommandBehavior(
                 "add []\\[;]", Title.MESSAGE_NAME_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Task t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
+                "add Valid Task " + TAG_FLAG + "invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 
     @Test
@@ -441,7 +443,7 @@ public class LogicManagerTest {
         List<FloatingTask> expectedList = helper.generateEntryList(t1);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         
-        assertCommandBehavior("tag 1 **", expectedMessage, expectedAB, expectedList);
+        assertCommandBehavior("tag 1 " + TAG_FLAG + "**", expectedMessage, expectedAB, expectedList);
     }
 
     @Test
@@ -518,7 +520,7 @@ public class LogicManagerTest {
         List<FloatingTask> expectedList = helper.generateEntryList(t1);
         AddressBook expectedAB = helper.generateAddressBook(expectedList);
         
-        assertCommandBehavior("untag 1 **", expectedMessage, expectedAB, expectedList);
+        assertCommandBehavior("untag 1 " + TAG_FLAG + "**", expectedMessage, expectedAB, expectedList);
     }
 
     @Test
@@ -617,11 +619,9 @@ public class LogicManagerTest {
             UniqueTagList tags = p.getTags();
 
             if (!tags.isEmpty()){
-                StringJoiner joiner = new StringJoiner(",");
                 for (Tag t : tags) {
-                    joiner.add(t.tagName);
+                    cmd.append(" " + TAG_FLAG).append(t.tagName);
                 }
-                cmd.append(" t/").append(joiner.toString());
             }
 
             return cmd.toString();
@@ -631,15 +631,13 @@ public class LogicManagerTest {
             StringBuffer cmd = new StringBuffer();
             
             cmd.append(String.format("edit %d ", index));
-            cmd.append(title);
+            cmd.append(TITLE_FLAG).append(title);
 
             UniqueTagList tags = p.getTags();
             if (!tags.isEmpty()){
-                StringJoiner joiner = new StringJoiner(",");
                 for (Tag t : tags) {
-                    joiner.add(t.tagName);
+                    cmd.append(" " + TAG_FLAG).append(t.tagName);
                 }
-                cmd.append(" t/").append(joiner.toString());
             }
             return cmd.toString();
         }
@@ -649,15 +647,12 @@ public class LogicManagerTest {
             StringBuffer cmd = new StringBuffer();
             
             cmd.append(String.format("tag %d ", index));
-            
-            StringJoiner joiner = new StringJoiner(",");
+
             for (Tag t : tags) {
-                joiner.add(t.tagName);
+                cmd.append(" " + TAG_FLAG).append(t.tagName);
             }
             
-            cmd.append(joiner.toString());
-            
-            return cmd.toString().replaceAll(",$", "");
+            return cmd.toString();
         }
         
         /** Generates the tag command based on the given tag and index*/
@@ -672,14 +667,11 @@ public class LogicManagerTest {
             
             cmd.append(String.format("untag %d ", index));
             
-            StringJoiner joiner = new StringJoiner(",");
             for (Tag t : tags) {
-                joiner.add(t.tagName);
+                cmd.append(" " + TAG_FLAG).append(t.tagName);
             }
             
-            cmd.append(joiner.toString());
-            
-            return cmd.toString().replaceAll(",$", "");
+            return cmd.toString();
         }
 
         /** Generates the untag command based on the given tag and index*/
