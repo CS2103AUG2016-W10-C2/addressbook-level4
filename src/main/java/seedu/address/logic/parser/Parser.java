@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.AddCommand.*;
+import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
 import static seedu.address.logic.commands.ListCommand.ON_FLAG;
@@ -36,7 +37,8 @@ public class Parser {
     private static final Prefix deadlinePrefix = new Prefix(DEADLINE_FLAG);
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
-    
+    private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
+
     
     private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
