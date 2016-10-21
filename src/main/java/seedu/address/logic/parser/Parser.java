@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.AddCommand.DEADLINE_FLAG;
+import static seedu.address.logic.commands.AddCommand.DESC_FLAG;
+import static seedu.address.logic.commands.AddCommand.TAG_FLAG;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
 import static seedu.address.logic.commands.ListCommand.ON_FLAG;
@@ -28,10 +31,14 @@ public class Parser {
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
-    // TODO: Use tokenizer for these
+    // TODO: Use PrettyTime to parse dates
     private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
     private static final Prefix endDatePrefix = new Prefix(BEFORE_FLAG);
     private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
+    private static final Prefix deadlinePrefix = new Prefix(DEADLINE_FLAG);
+    private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
+    private static final Prefix descPrefix = new Prefix(DESC_FLAG);
+
 
     private static final Pattern FLOATING_TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"

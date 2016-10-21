@@ -23,6 +23,9 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
+    public static final String DEADLINE_FLAG = "dl/";
+    public static final String TAG_FLAG = "#";
+    public static final String DESC_FLAG = "desc/";
 
     private final FloatingTask toAdd;
 
