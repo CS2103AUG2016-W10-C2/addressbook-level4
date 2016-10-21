@@ -39,20 +39,7 @@ public class Parser {
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
 
-    
-    private static final Pattern EDIT_TASK_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<title>[\\s\\w\\d]*)"
-                    + "(?<tagArguments>(?: t/[^/]+)*)"
-                    + "(?<desc>(?: desc/[^/]*)?)");
-
-    private static final Pattern TAG_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
-    
-    private static final Pattern UNTAG_ARGS_FORMAT = Pattern
-            .compile("(?<targetIndex>\\d+)\\s*(?<tagArguments>(?:[^/]*))");
-
-    public Parser() {
-    }
+    public Parser() {}
 
     /**
      * Parses user input into command for execution.
