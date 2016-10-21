@@ -428,4 +428,20 @@ public class Parser {
         }
     }
 
+    private String unwrapStringOptional(Optional<String> optional) {
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return "";
+        }
+    }
+
+    private Set<String> unwrapStringCollectionOptional(Optional<List<String>> optional) {
+        if (optional.isPresent()) {
+            return new HashSet(optional.get());
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
 }
