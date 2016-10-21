@@ -11,6 +11,8 @@ import seedu.address.model.task.*;
 
 import java.util.StringJoiner;
 
+import static seedu.address.logic.commands.AddCommand.TAG_FLAG;
+
 /**
  * A mutable task object. For testing only.
  */
@@ -84,7 +86,7 @@ public class TestEntry implements Entry {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + this.getTitle().fullTitle + " ");
         if (!this.getTags().isEmpty()) {
-            sb.append("t/");
+            sb.append(TAG_FLAG);
         }
         StringJoiner sj = new StringJoiner(",");
         this.getTags().getInternalList().stream().forEach(s -> sj.add(s.tagName));
