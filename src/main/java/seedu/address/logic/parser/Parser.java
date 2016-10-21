@@ -428,7 +428,7 @@ public class Parser {
         }
     }
 
-    private String unwrapStringOptional(Optional<String> optional) {
+    private static String unwrapStringOptional(Optional<String> optional) {
         if (optional.isPresent()) {
             return optional.get();
         } else {
@@ -436,7 +436,7 @@ public class Parser {
         }
     }
 
-    private Set<String> unwrapStringCollectionOptional(Optional<List<String>> optional) {
+    private static Set<String> unwrapStringCollectionOptional(Optional<List<String>> optional) {
         if (optional.isPresent()) {
             return new HashSet(optional.get());
         } else {
