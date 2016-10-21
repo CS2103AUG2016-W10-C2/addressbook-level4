@@ -128,6 +128,15 @@ public class ArgumentTokenizer {
         }
     }
 
+    /**
+     * Returns true if the prefix appeared more than once in the arguments
+     */
+    public boolean hasMultiple(Prefix prefix) {
+        Optional<List<String>> allOccurences = getAllValues(prefix);
+
+        return allOccurences.isPresent() && allOccurences.get().size() > 1;
+    }
+
     private void resetTokenizerState() {
         this.tokenizedArguments.clear();
     }
