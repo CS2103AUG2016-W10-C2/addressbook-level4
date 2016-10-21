@@ -200,12 +200,16 @@ public class Parser {
      * Extracts the new entry's deadline from the add command's tag arguments
      * string. Format: YYYY-MM-DD HH:MM
      */
-    private static LocalDateTime getDeadlineFromArgument(String deadlineArguments) throws IllegalValueException {
-        if (deadlineArguments.isEmpty()) {
-            return LocalDateTime.now();
+    private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        String deadline = unwrapStringOptional(argsTokenizer.getValue(deadlinePrefix));
+
+        Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
+        if (!matcher.matches()) {
+            throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
         }
+
         // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(deadlineArguments.replaceFirst(" dl/", "").split(" "));
+        final List<String> cleanedStrings = Arrays.asList(deadline.split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
     
