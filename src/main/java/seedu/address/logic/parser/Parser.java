@@ -279,22 +279,19 @@ public class Parser {
      * Parses arguments in the context of the tag task command.
      */
     private Command prepareTag(String args) {
-        final Matcher matcher = TAG_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
-        }
-        
-        Optional<Integer> targetIndex = parseIndex(matcher.group("targetIndex"));
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(tagPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        // Validate arg string format
+        String idString = unwrapStringOptional(argsTokenizer.getPreamble());
+        Optional<Integer> targetIndex = parseIndex(idString);
         if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
         }
-        String tagArg = matcher.group("tagArguments");
-        Collection<String> tagStrings = Collections.emptySet();
-        if (!tagArg.isEmpty()) {
-            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
-        }
+
         try {
-            return new TagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
+            Set<String> tagStrings = getTagsFromArgs(argsTokenizer);
+            return new TagCommand(targetIndex.get(), tagStrings);
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
@@ -304,22 +301,19 @@ public class Parser {
      * Parses arguments in the context of the untag task command.
      */
     private Command prepareUntag(String args) {
-        final Matcher matcher = UNTAG_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(tagPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        // Validate arg string format
+        String idString = unwrapStringOptional(argsTokenizer.getPreamble());
+        Optional<Integer> targetIndex = parseIndex(idString);
+        if (!targetIndex.isPresent()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
         }
-        
-        Optional<Integer> targetIndex = parseIndex(matcher.group("targetIndex"));
-        if (!targetIndex.isPresent()) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
-        }
-        String tagArg = matcher.group("tagArguments");
-        Collection<String> tagStrings = Collections.emptySet();
-        if (!tagArg.isEmpty()) {
-            tagStrings = Arrays.asList(tagArg.split(",\\s?"));
-        }
+
         try {
-            return new UntagCommand(targetIndex.get() ,new HashSet<>(tagStrings));
+            Set<String> tagStrings = getTagsFromArgs(argsTokenizer);
+            return new UntagCommand(targetIndex.get(), tagStrings);
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
