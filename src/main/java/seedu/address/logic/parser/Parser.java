@@ -5,10 +5,13 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.ArgumentTokenizer.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -38,6 +41,8 @@ public class Parser {
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
+    private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
+    private static final DateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
 
     public Parser() {}
 
@@ -139,15 +144,19 @@ public class Parser {
         if (deadline.isEmpty()) {
         	return null;
         }
-        
-        Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
-        if (!matcher.matches()) {
-            throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
+
+        List<Date> possibleDates = prettyTimeParser.parse(deadline);
+
+        if (possibleDates.size() > 1) {
+            throw new IllegalValueException(String.format(WRONG_DATE_TIME_INPUT, possibleDates.toString()));
+        } else if (possibleDates.size() < 1) {
+            throw new IllegalValueException(String.format(UNABLE_TO_PARSE_DATE_TIME_INPUT, deadline));
         }
 
-        // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(deadline.split(" "));
-        return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
+        Date parsed = possibleDates.get(0);
+
+        String formatted = dateFormat.format(parsed);
+        return LocalDateTime.parse(formatted);
     }
 
     /**

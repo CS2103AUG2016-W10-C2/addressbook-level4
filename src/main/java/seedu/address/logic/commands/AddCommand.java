@@ -17,8 +17,8 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a floating task to the list. "
-            + "Parameters: TITLE [t/TAG1,TAG2...] [desc/DESCRIPTION]\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to the list. "
+            + "Parameters: TITLE [dl/DATE TIME][t/TAG1,TAG2...] [desc/DESCRIPTION]\n"
             + "Example: " + COMMAND_WORD
             + " Buy Banana t/NTUC,shopping desc/Bananas are yummy";
 
@@ -27,8 +27,9 @@ public class AddCommand extends Command {
     public static final String DEADLINE_FLAG = "dl/";
     public static final String TAG_FLAG = "#";
     public static final String DESC_FLAG = "desc/";
-    public static final String WRONG_DATE_TIME_INPUT = "Wrong date format supplied. The correct format is YYYY-MM-DD HH:mm";
-    public static final Pattern DATE_TIME_FORMAT = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}");
+    public static final String WRONG_DATE_TIME_INPUT = "I'm confused. My best guesses: %s";
+    public static final String UNABLE_TO_PARSE_DATE_TIME_INPUT = "I'm confused. What do you mean by %s?";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     private final Task toAdd;
 
