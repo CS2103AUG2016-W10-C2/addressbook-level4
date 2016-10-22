@@ -29,7 +29,6 @@ public class AddCommand extends Command {
     public static final String DESC_FLAG = "desc/";
     public static final String WRONG_DATE_TIME_INPUT = "I'm confused. My best guesses: %s";
     public static final String UNABLE_TO_PARSE_DATE_TIME_INPUT = "I'm confused. What do you mean by %s?";
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     private final Task toAdd;
 

@@ -32,6 +32,8 @@ public class Parser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     // TODO: Use PrettyTime to parse dates
     private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
@@ -42,7 +44,8 @@ public class Parser {
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
-    private static final DateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
+    private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
+    private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
     public Parser() {}
 
@@ -155,7 +158,7 @@ public class Parser {
 
         Date parsed = possibleDates.get(0);
 
-        String formatted = dateFormat.format(parsed);
+        String formatted = dateTimeFormat.format(parsed);
         return LocalDateTime.parse(formatted);
     }
 
@@ -168,9 +171,19 @@ public class Parser {
             return null;
         }
 
-        // remove the tag.
-        final String cleanedString = dateTimeString + "T" + time;
-        return LocalDateTime.parse(cleanedString);
+        List<Date> possibleDates = prettyTimeParser.parse(dateTimeString);
+
+        if (possibleDates.size() > 1) {
+            throw new IllegalValueException(String.format(WRONG_DATE_TIME_INPUT, possibleDates.toString()));
+        } else if (possibleDates.size() < 1) {
+            throw new IllegalValueException(String.format(UNABLE_TO_PARSE_DATE_TIME_INPUT, dateTimeString));
+        }
+
+        Date parsed = possibleDates.get(0);
+
+        String formatted = dateFormat.format(parsed);
+        formatted = formatted + "T" + time;
+        return LocalDateTime.parse(formatted);
     }
 
     /**
