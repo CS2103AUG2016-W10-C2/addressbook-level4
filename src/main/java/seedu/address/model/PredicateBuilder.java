@@ -1,11 +1,13 @@
 package seedu.address.model;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Event;
 import seedu.address.model.task.Task;
 
 /**
@@ -118,24 +120,24 @@ public class PredicateBuilder {
             this.startDate = startDate;
         }
 
-        // TODO: Change this when we introduce Events
+    	//@@author A0126539Y
         @Override
         public boolean run(Entry entry) {
-            String entryClass = entry.getClass().getSimpleName();
-
-            switch(entryClass) {
-                case "Task":
-                    Task task = (Task) entry;
-                    if (task.getDeadline() == null) {
-                        return false;
-                    } else {
-                        return task.getDeadline().compareTo(startDate) >= 0;
-                    }
-
-                default:
-                    return false;
-            }
+        	if (entry instanceof Task) {
+        		Task task = (Task)entry;
+        		if (task.getDeadline() == null) {
+        			return false;
+        		}
+                return task.getDeadline().compareTo(startDate) >= 0;
+        	}
+        	if (entry instanceof Event) {
+        		Event event = (Event)entry;
+        		return event.getStartTime().compareTo(startDate) >= 0;
+        	}
+        	
+        	return false;
         }
+        //@@author A0126539Y
 
         @Override
         public String toString() {
@@ -149,25 +151,25 @@ public class PredicateBuilder {
         DateBeforeQualifier(LocalDateTime endDate) {
             this.endDate = endDate;
         }
-
-        // TODO: Change this when we introduce Events
+        
+        //@@author A0126539Y
         @Override
         public boolean run(Entry entry) {
-            String entryClass = entry.getClass().getSimpleName();
-
-            switch(entryClass) {
-                case "Task":
-                    Task task = (Task) entry;
-                    if (task.getDeadline() == null) {
-                        return false;
-                    } else {
-                        return task.getDeadline().compareTo(endDate) <= 0;
-                    }
-
-                default:
-                    return false;
-            }
+        	if (entry instanceof Task) {
+        		Task task = (Task)entry;
+        		if (task.getDeadline() == null) {
+        			return false;
+        		}
+                return task.getDeadline().compareTo(endDate) <= 0;
+        	}
+        	if (entry instanceof Event) {
+        		Event event = (Event)entry;
+        		return event.getStartTime().compareTo(endDate) <= 0;
+        	}
+        	
+        	return false;
         }
+        //@@author
 
         @Override
         public String toString() {
@@ -181,28 +183,29 @@ public class PredicateBuilder {
         DateOnQualifier(LocalDateTime onDate) {
             this.onDate = onDate;
         }
-
-        // TODO: Change this when we introduce Events
+        
+        //@@author A0126539Y
         @Override
         public boolean run(Entry entry) {
-            String entryClass = entry.getClass().getSimpleName();
+            LocalDateTime beginningOfDay = onDate.truncatedTo(ChronoUnit.DAYS);
+            LocalDateTime endOfDay = onDate.truncatedTo(ChronoUnit.DAYS).plusDays(1);
 
-            switch(entryClass) {
-                case "Task":
-                    Task task = (Task) entry;
-                    if (task.getDeadline() == null) {
-                        return false;
-                    } else {
-                        LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
-
-                        return (task.getDeadline().compareTo(onDate) <= 0)
-                            && (task.getDeadline().compareTo(beginningOfDay) >= 0);
-                    }
-
-                default:
-                    return false;
-            }
+        	if (entry instanceof Task) {
+        		Task task = (Task)entry;
+        		if (task.getDeadline() == null) {
+        			return false;
+        		}
+                return task.getDeadline().compareTo(beginningOfDay) >= 0 && task.getDeadline().compareTo(endOfDay) <= 0;
+        	}
+        	
+        	if (entry instanceof Event) {
+        		Event event = (Event)entry;
+                return event.getStartTime().compareTo(beginningOfDay) >= 0 && event.getEndTime().compareTo(endOfDay) <= 0;
+        	}
+        	
+        	return false;
         }
+        //@@author
 
         @Override
         public String toString() {

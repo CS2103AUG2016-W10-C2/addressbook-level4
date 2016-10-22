@@ -92,8 +92,13 @@ public class Task extends Entry {
 
     @Override
     public String getAsText() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append(getTitle());
+        final StringBuilder builder = new StringBuilder()
+        		.append(getTitle());
+        if (getDeadline() != null) {
+            builder.append(" Deadline: ");
+            builder.append(getDeadline().toString());
+        }
+        
         if (!getTags().isEmpty()) {
             builder.append(" Tags: ");
             getTags().forEach(builder::append);
@@ -103,10 +108,6 @@ public class Task extends Entry {
             builder.append(getDescription());
         }
 
-        if (getDeadline() != null) {
-            builder.append(" Deadline: ");
-            builder.append(getDeadline().toString());
-        }
         return builder.toString();
     }
 
