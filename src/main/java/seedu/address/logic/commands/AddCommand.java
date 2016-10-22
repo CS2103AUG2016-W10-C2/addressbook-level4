@@ -44,10 +44,10 @@ public class AddCommand extends Command {
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-        
+
         //@@author A0126539Y
         if (startTime != null && endTime != null) {
-        	this.toAdd = new Event(
+            this.toAdd = new Event(
                     new Title(title),
                     startTime,
                     endTime,
@@ -57,7 +57,7 @@ public class AddCommand extends Command {
             );
         }
         else if (startTime == null){
-        	this.toAdd = new Task(
+            this.toAdd = new Task(
                     new Title(title),
                     endTime,
                     new UniqueTagList(tagSet),

@@ -18,11 +18,11 @@ import seedu.address.model.tag.UniqueTagList;
  * values are validated.
  */
 public abstract class Entry {
-	protected ObjectProperty<Title> title;
+    protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
     protected StringProperty description;
-    
+
     /**
      * Get the Title for this Entry
      */
@@ -41,7 +41,7 @@ public abstract class Entry {
      * Get the titleObjectProperty for this Entry
      */
     public final ObjectProperty<Title> titleObjectProperty() {
-    	return title;
+        return title;
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class Entry {
     public final boolean isMarked() {
         return isMarked.get();
     }
-    
+
     /**
      * Marks the entry as completed.
      */
@@ -145,7 +145,7 @@ public abstract class Entry {
     public final String markString() {
         return isMarked() ? "[X] " : "[ ] ";
     }
-    
+
     /**
      * Formats the Entry as text, showing all contact details.
      */

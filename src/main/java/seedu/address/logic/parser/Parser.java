@@ -129,18 +129,18 @@ public class Parser {
 
         return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(titlePrefix));
     }
-    
+
     /**
      * Extracts the new entry's startTime from the add command's tag arguments
      * string. Format: YYYY-MM-DD HH:MM
      */
     private static LocalDateTime getStartTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         String startTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startPrefix));
-        
+
         if (startTime.isEmpty()) {
-        	return null;
+            return null;
         }
-        
+
         Matcher matcher = DATE_TIME_FORMAT.matcher(startTime);
         if (!matcher.matches()) {
             throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
@@ -150,18 +150,18 @@ public class Parser {
         final List<String> cleanedStrings = Arrays.asList(startTime.split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
-    
+
     /**
      * Extracts the new entry's endTime from the add command's tag arguments
      * string. Format: YYYY-MM-DD HH:MM
      */
     private static LocalDateTime getEndTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         String endTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endPrefix));
-        
+
         if (endTime.isEmpty()) {
-        	return null;
+            return null;
         }
-        
+
         Matcher matcher = DATE_TIME_FORMAT.matcher(endTime);
         if (!matcher.matches()) {
             throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
@@ -201,10 +201,10 @@ public class Parser {
        if (title.isEmpty()) {
            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
        }
- 
+
        try {
            return new AddCommand(title,
-        		   getStartTimeFromArgument(argsTokenizer),
+                   getStartTimeFromArgument(argsTokenizer),
                    getEndTimeFromArgument(argsTokenizer),
                    getTagsFromArgs(argsTokenizer),
                    getDescriptionFromArgs(argsTokenizer));

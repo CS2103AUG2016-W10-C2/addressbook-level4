@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Task extends Entry {
 
     protected ObjectProperty<LocalDateTime> deadline;
-    
+
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
@@ -57,7 +57,7 @@ public class Task extends Entry {
     public void setDeadline(LocalDateTime deadline) {
         this.deadline.set(deadline);
     }
-    
+
     public ObjectProperty<LocalDateTime> deadlineObjectProperty() {
         return deadline;
     }
@@ -90,12 +90,12 @@ public class Task extends Entry {
     @Override
     public String getAsText() {
         final StringBuilder builder = new StringBuilder()
-        		.append(getTitle());
+                .append(getTitle());
         if (getDeadline() != null) {
             builder.append(" Deadline: ");
             builder.append(getDeadline().toString());
         }
-        
+
         if (!getTags().isEmpty()) {
             builder.append(" Tags: ");
             getTags().forEach(builder::append);

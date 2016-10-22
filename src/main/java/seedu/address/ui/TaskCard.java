@@ -61,15 +61,15 @@ public class TaskCard extends UiPart{
             else {
                 deadline.setText("");
             }
-        	startTime.setText("");
-        	endTime.setText("");
+            startTime.setText("");
+            endTime.setText("");
         }
 
         if (entry instanceof Event) {
-        	Event event = (Event)entry;
-        	startTime.setText("Start time: " + event.getStartTime().toString());
-        	endTime.setText("End time: " + event.getEndTime().toString());
-        	deadline.setText("");
+            Event event = (Event)entry;
+            startTime.setText("Start time: " + event.getStartTime().toString());
+            endTime.setText("End time: " + event.getEndTime().toString());
+            deadline.setText("");
         }
         mark.setText(entry.markString());
     }
