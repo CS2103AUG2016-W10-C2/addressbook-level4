@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
 import seedu.address.logic.Logic;
@@ -19,9 +21,10 @@ public class CommandBox extends UiPart {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private static final String FXML = "CommandBox.fxml";
 
-    private AnchorPane placeHolderPane;
-    private AnchorPane commandPane;
-    private ResultDisplay resultDisplay;
+    private Pane placeHolderPane;
+    private HBox commandPane;
+    private StatusDisplay resultDisplay;
+
     String previousCommandTest;
 
     private Logic logic;
@@ -30,15 +33,15 @@ public class CommandBox extends UiPart {
     private TextField commandTextField;
     private CommandResult mostRecentResult;
 
-    public static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
-            ResultDisplay resultDisplay, Logic logic) {
+    public static CommandBox load(Stage primaryStage, Pane commandBoxPlaceholder,
+            StatusDisplay resultDisplay, Logic logic) {
         CommandBox commandBox = UiPartLoader.loadUiPart(primaryStage, commandBoxPlaceholder, new CommandBox());
         commandBox.configure(resultDisplay, logic);
         commandBox.addToPlaceholder();
         return commandBox;
     }
 
-    public void configure(ResultDisplay resultDisplay, Logic logic) {
+    public void configure(StatusDisplay resultDisplay, Logic logic) {
         this.resultDisplay = resultDisplay;
         this.logic = logic;
         registerAsAnEventHandler(this);
@@ -53,7 +56,7 @@ public class CommandBox extends UiPart {
 
     @Override
     public void setNode(Node node) {
-        commandPane = (AnchorPane) node;
+        commandPane = (HBox) node;
     }
 
     @Override
@@ -62,7 +65,7 @@ public class CommandBox extends UiPart {
     }
 
     @Override
-    public void setPlaceholder(AnchorPane pane) {
+    public void setPlaceholder(Pane pane) {
         this.placeHolderPane = pane;
     }
 
