@@ -53,7 +53,8 @@ public class XmlAdaptedEntry {
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
-
+        
+        //@@author A0126539Y
         if (source instanceof Task) {
             LocalDateTime deadlineTime = ((Task)source).getDeadline();
             end = deadlineTime == null ? "" : deadlineTime.toString();
@@ -64,6 +65,7 @@ public class XmlAdaptedEntry {
         	start = event.getStartTime().toString();
         	end=  event.getEndTime().toString();
         }
+        //@@author
     }
 
     /**
@@ -78,7 +80,8 @@ public class XmlAdaptedEntry {
         }
         final Title title = new Title(this.title);
         final UniqueTagList tags = new UniqueTagList(personTags);
-        //@@author A0126539Y
+        
+        // @@author A0126539Y
         LocalDateTime startTime = start == null || start.isEmpty() ? null : LocalDateTime.parse(start);
         LocalDateTime endTime = end.isEmpty() ? null : LocalDateTime.parse(end);
 

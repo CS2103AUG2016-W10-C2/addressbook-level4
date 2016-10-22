@@ -14,6 +14,7 @@ import java.util.Objects;
  * Represents a Floating Task in the Task Manager. Guarantees: details are
  * present and not null, field values are validated.
  */
+//@@author A0126539Y
 public class Task extends Entry {
 
     protected ObjectProperty<LocalDateTime> deadline;

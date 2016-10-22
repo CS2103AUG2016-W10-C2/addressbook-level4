@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
+//@@author A0126539Y
 public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> startTime;
     protected ObjectProperty<LocalDateTime> endTime;

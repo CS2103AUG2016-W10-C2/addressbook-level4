@@ -45,6 +45,7 @@ public class AddCommand extends Command {
             tagSet.add(new Tag(tagName));
         }
         
+        //@@author A0126539Y
         if (startTime != null && endTime != null) {
         	this.toAdd = new Event(
                     new Title(title),
@@ -66,7 +67,7 @@ public class AddCommand extends Command {
         } else {
             throw new IllegalValueException(MESSAGE_USAGE);
         }
-        
+        //@@author
     }
 
     @Override
