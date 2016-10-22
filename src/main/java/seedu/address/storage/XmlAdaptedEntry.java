@@ -23,7 +23,7 @@ public class XmlAdaptedEntry {
     private String description = "";
 
     @XmlElement
-    private String deadline;
+    private String deadline = "";
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();

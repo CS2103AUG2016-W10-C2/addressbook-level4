@@ -21,8 +21,8 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the TaskManager */
+    ReadOnlyAddressBook getTaskManager();
 
     /** Deletes the given task. */
     void deleteTask(Entry target) throws UniquePersonList.PersonNotFoundException;

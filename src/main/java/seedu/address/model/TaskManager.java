@@ -2,8 +2,6 @@ package seedu.address.model;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.task.Task;
-import seedu.address.model.task.Title;
-import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
@@ -16,10 +14,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the TaskManager level
  * Duplicates are not allowed (by .equals comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class TaskManager implements ReadOnlyAddressBook {
 
     private final UniquePersonList entries;
     private final UniqueTagList tags;
@@ -29,24 +27,24 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags = new UniqueTagList();
     }
 
-    public AddressBook() {}
+    public TaskManager() {}
 
     /**
      * Persons and Tags are copied into this addressbook
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public TaskManager(ReadOnlyAddressBook toBeCopied) {
         this(toBeCopied.getUniquePersonList(), toBeCopied.getUniqueTagList());
     }
 
     /**
      * Persons and Tags are copied into this addressbook
      */
-    public AddressBook(UniquePersonList persons, UniqueTagList tags) {
+    public TaskManager(UniquePersonList persons, UniqueTagList tags) {
         resetData(persons.getInternalList(), tags.getInternalList());
     }
 
     public static ReadOnlyAddressBook getEmptyAddressBook() {
-        return new AddressBook();
+        return new TaskManager();
     }
 
 //// list overwrite operations
@@ -194,9 +192,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddressBook // instanceof handles nulls
-                && this.entries.equals(((AddressBook) other).entries)
-                && this.tags.equals(((AddressBook) other).tags));
+                || (other instanceof TaskManager // instanceof handles nulls
+                && this.entries.equals(((TaskManager) other).entries)
+                && this.tags.equals(((TaskManager) other).tags));
     }
 
     @Override
