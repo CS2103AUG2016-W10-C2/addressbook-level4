@@ -13,17 +13,17 @@ public class TypicalTestPersons {
 
     public TypicalTestPersons() {
         try {
-            alice =  new PersonBuilder().withName("Alice Pauline").withTags("friends").build();
-            benson = new PersonBuilder().withName("Benson Meier").withTags("owesMoney", "friends").build();
-            carl = new PersonBuilder().withName("Carl Kurz").build();
-            daniel = new PersonBuilder().withName("Daniel Meier").build();
-            elle = new PersonBuilder().withName("Elle Meyer").build();
-            fiona = new PersonBuilder().withName("Fiona Kunz").build();
-            george = new PersonBuilder().withName("George Best").build();
+            alice =  new EntryBuilder().withTitle("Alice Pauline").withTags("friends").build();
+            benson = new EntryBuilder().withTitle("Benson Meier").withTags("owesMoney", "friends").build();
+            carl = new EntryBuilder().withTitle("Carl Kurz").build();
+            daniel = new EntryBuilder().withTitle("Daniel Meier").build();
+            elle = new EntryBuilder().withTitle("Elle Meyer").build();
+            fiona = new EntryBuilder().withTitle("Fiona Kunz").build();
+            george = new EntryBuilder().withTitle("George Best").build();
 
             //Manually added
-            hoon = new PersonBuilder().withName("Hoon Meier").build();
-            ida = new PersonBuilder().withName("Ida Mueller").build();
+            hoon = new EntryBuilder().withTitle("Hoon Meier").build();
+            ida = new EntryBuilder().withTitle("Ida Mueller").build();
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "not possible";

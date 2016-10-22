@@ -5,12 +5,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.util.StringUtil;
-import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Task;
 
 /**
  * Supports chaining of predicates for the `list` command
- * @author joeleba
+ * @@author A0127828W
  *
  */
 public class PredicateBuilder {
@@ -121,14 +121,20 @@ public class PredicateBuilder {
         // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            String entryClass = entry.getClass().getSimpleName();
+
+            switch(entryClass) {
+                case "Task":
+                    Task task = (Task) entry;
+                    if (task.getDeadline() == null) {
+                        return false;
+                    } else {
+                        return task.getDeadline().compareTo(startDate) >= 0;
+                    }
+
+                default:
+                    return false;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            return deadline.getDeadline().compareTo(startDate) >= 0;
         }
 
         @Override
@@ -147,14 +153,20 @@ public class PredicateBuilder {
         // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            String entryClass = entry.getClass().getSimpleName();
+
+            switch(entryClass) {
+                case "Task":
+                    Task task = (Task) entry;
+                    if (task.getDeadline() == null) {
+                        return false;
+                    } else {
+                        return task.getDeadline().compareTo(endDate) <= 0;
+                    }
+
+                default:
+                    return false;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            return deadline.getDeadline().compareTo(endDate) <= 0;
         }
 
         @Override
@@ -173,17 +185,23 @@ public class PredicateBuilder {
         // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            String entryClass = entry.getClass().getSimpleName();
+
+            switch(entryClass) {
+                case "Task":
+                    Task task = (Task) entry;
+                    if (task.getDeadline() == null) {
+                        return false;
+                    } else {
+                        LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
+
+                        return (task.getDeadline().compareTo(onDate) <= 0)
+                            && (task.getDeadline().compareTo(beginningOfDay) >= 0);
+                    }
+
+                default:
+                    return false;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
-            
-            return (deadline.getDeadline().compareTo(onDate) <= 0)
-                    && (deadline.getDeadline().compareTo(beginningOfDay) >= 0);
         }
 
         @Override
