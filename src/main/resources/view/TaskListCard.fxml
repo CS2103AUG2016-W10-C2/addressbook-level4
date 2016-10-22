@@ -12,45 +12,45 @@
     <children>
         <GridPane HBox.hgrow="ALWAYS">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0"/>
             </columnConstraints>
             <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="236.0" spacing="5">
-                      <children>
-                          <HBox>
-                              <Label fx:id="id" styleClass="cell_big_label" text="1.">
-                        <HBox.margin>
-                           <Insets />
-                        </HBox.margin>
-                     </Label>
-                              <Label fx:id="mark" styleClass="cell_big_label" text="[]" />
-                              <Label fx:id="name" styleClass="cell_big_label" text="\$first" />
-                             <Label fx:id="deadline" styleClass="cell_small_label" text="\$deadline">
-                        <font>
-                           <Font size="11.0" />
-                        </font>
-                     </Label>
-                             <Label fx:id="tags" styleClass="cell_small_label" text="\$tags">
-                        <font>
-                           <Font size="11.0" />
-                        </font>
-                     </Label>
-                     <padding>
-                        <Insets left="20.0" top="10.0" />
-                     </padding>
-                          </HBox>
-                      </children>
-                  </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-               <children>
-                  <Label fx:id="description" text="\$description" translateX="20.0" translateY="10.0" />
-               </children>
-            </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="236.0" spacing="5">
+                    <children>
+                        <HBox>
+                            <Label fx:id="id" styleClass="cell_big_label" text="1.">
+                                <HBox.margin>
+                                    <Insets/>
+                                </HBox.margin>
+                            </Label>
+                            <Label fx:id="mark" styleClass="cell_big_label" text="[]"/>
+                            <Label fx:id="name" styleClass="cell_big_label" text="\$first"/>
+                            <Label fx:id="deadline" styleClass="cell_small_label" text="\$deadline">
+                                <font>
+                                    <Font size="11.0"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="tags" styleClass="cell_small_label" text="\$tags">
+                                <font>
+                                    <Font size="11.0"/>
+                                </font>
+                            </Label>
+                            <padding>
+                                <Insets left="20.0" top="10.0"/>
+                            </padding>
+                        </HBox>
+                    </children>
+                </HBox>
+                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                    <children>
+                        <Label fx:id="description" text="\$description" translateX="20.0" translateY="10.0"/>
+                    </children>
+                </HBox>
             </children>
-         <rowConstraints>
-            <RowConstraints maxHeight="101.0" minHeight="39.0" prefHeight="44.0" />
-            <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="71.0" />
-         </rowConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="101.0" minHeight="39.0" prefHeight="44.0"/>
+                <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="71.0"/>
+            </rowConstraints>
         </GridPane>
     </children>
 </HBox>
