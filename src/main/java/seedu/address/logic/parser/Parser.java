@@ -135,7 +135,11 @@ public class Parser {
      */
     private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
-
+        
+        if (deadline.isEmpty()) {
+        	return null;
+        }
+        
         Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
         if (!matcher.matches()) {
             throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
@@ -177,26 +181,14 @@ public class Parser {
            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
        }
 
-       if (argsTokenizer.getValue(deadlinePrefix).isPresent()) {
-           try {
-               return new AddCommand(title,
-                       getDeadlineFromArgument(argsTokenizer),
-                       getTagsFromArgs(argsTokenizer),
-                       getDescriptionFromArgs(argsTokenizer));
-           } catch (IllegalValueException ive) {
-               return new IncorrectCommand(ive.getMessage());
-           }
+       try {
+           return new AddCommand(title,
+                   getDeadlineFromArgument(argsTokenizer),
+                   getTagsFromArgs(argsTokenizer),
+                   getDescriptionFromArgs(argsTokenizer));
+       } catch (IllegalValueException ive) {
+           return new IncorrectCommand(ive.getMessage());
        }
-       else {
-           try {
-               return new AddCommand(title,
-                       getTagsFromArgs(argsTokenizer),
-                       getDescriptionFromArgs(argsTokenizer));
-           } catch (IllegalValueException ive) {
-               return new IncorrectCommand(ive.getMessage());
-           }
-       }
-
    }
 
    /**
