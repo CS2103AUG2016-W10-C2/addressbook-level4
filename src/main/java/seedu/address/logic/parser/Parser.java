@@ -381,7 +381,7 @@ public class Parser {
             String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
             Set<String> tags = getTagsFromArgs(argsTokenizer);
 
-            if (tags.isEmpty()) {
+            if (!tags.isEmpty()) {
                 listCommand.setTags(tags);
             }
 
