@@ -139,7 +139,9 @@ public class Parser {
 
     /**
      * Extracts the new entry's deadline from the add command's tag arguments
-     * string. Format: YYYY-MM-DD HH:MM
+     * string.
+     *
+     * @@author A0127828W
      */
     private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
@@ -164,7 +166,9 @@ public class Parser {
 
     /**
      * Parse LocalDateTime from an input string
-     * string. Format: YYYY-MM-DD
+     * string.
+     * 
+     * @@author A0127828W
      */
     private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString, String time) throws IllegalValueException {
         if (dateTimeString.isEmpty()) {
@@ -371,6 +375,8 @@ public class Parser {
 
     /**
      * Parses arguments in the context of the list task command.
+     *
+     * @@author A0127828W
      *
      * @param args
      *            full command args string
