@@ -69,7 +69,10 @@ public class XmlAdaptedEntry {
         }
         final Title title = new Title(this.title);
         final UniqueTagList tags = new UniqueTagList(personTags);
-        LocalDateTime deadlineTime = deadline.isEmpty() ? null : LocalDateTime.parse(deadline);
+        LocalDateTime deadlineTime = null;
+        if (deadline != null && !deadline.isEmpty()) {
+            deadlineTime = LocalDateTime.parse(deadline);
+        }
         return new Task(title, deadlineTime, tags, isMarked, description);
         /*if (deadline != null) {
             return new Task(title, null, tags, isMarked, description);
