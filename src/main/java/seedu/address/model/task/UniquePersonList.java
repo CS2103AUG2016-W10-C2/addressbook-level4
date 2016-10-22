@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  * Supports a minimal set of list operations.
  *
- * @see FloatingTask#equals(Object)
+ * @see Task#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
 public class UniquePersonList implements Iterable<Entry> {
@@ -40,14 +40,12 @@ public class UniquePersonList implements Iterable<Entry> {
             new Callback<Entry, Observable[]>() {
         @Override
         public Observable[] call(Entry entry) {
-        	if (entry instanceof Deadline) {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(),
-                                          entry.deadlineObjectProperty(), entry.descriptionProperty(),
-                                          entry.isMarkProperty()};
-        	} else {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(),
-                                          entry.descriptionProperty(), entry.isMarkProperty()};
-        	}
+            return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+            /*if (entry instanceof Deadline) {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty()};
+            } else {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
+            }*/
         }
     });
 
@@ -146,12 +144,12 @@ public class UniquePersonList implements Iterable<Entry> {
             toEdit.setDescription(newDescription);
         }
     }
-    
+
     /**
      * Mark an entry on the list.
-     * @throws PersonNotFoundException 
+     * @throws PersonNotFoundException
      *             if no such task could be found in the list.
-     * @throws DuplicateTaskException 
+     * @throws DuplicateTaskException
      *             if the task to add is a duplicate of an existing task.
      */
     public void mark(Entry toMark) throws PersonNotFoundException, DuplicateTaskException {
@@ -164,9 +162,9 @@ public class UniquePersonList implements Iterable<Entry> {
 
     /**
      * Unmarks an entry on the list.
-     * @throws PersonNotFoundException 
+     * @throws PersonNotFoundException
      *             if no such task could be found in the list.
-     * @throws DuplicateTaskException 
+     * @throws DuplicateTaskException
      *             if the task to add is a duplicate of an existing task.
      */
     public void unmark(Entry toUnmark) throws PersonNotFoundException, DuplicateTaskException {
@@ -176,7 +174,7 @@ public class UniquePersonList implements Iterable<Entry> {
         }
         toUnmark.unmark();
     }
-    
+
     /**
      * Removes the equivalent task from the list.
      *

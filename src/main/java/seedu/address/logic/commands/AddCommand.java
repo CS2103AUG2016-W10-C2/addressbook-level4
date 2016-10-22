@@ -30,26 +30,8 @@ public class AddCommand extends Command {
     public static final String WRONG_DATE_TIME_INPUT = "Wrong date format supplied. The correct format is YYYY-MM-DD HH:mm";
     public static final Pattern DATE_TIME_FORMAT = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}");
 
-    private final FloatingTask toAdd;
+    private final Task toAdd;
 
-    /**
-     * Convenience constructor using raw values.
-     *
-     * @throws IllegalValueException if any of the raw values are invalid
-     */
-    // TODO: Implement Add for other types of entry
-    public AddCommand(String title, Set<String> tags)
-            throws IllegalValueException {
-        final Set<Tag> tagSet = new HashSet<>();
-        for (String tagName : tags) {
-            tagSet.add(new Tag(tagName));
-        }
-        this.toAdd = new FloatingTask(
-                new Title(title),
-                new UniqueTagList(tagSet)
-        );
-    }
-    
     /**
      * Convenience constructor using raw values.
      *
@@ -62,20 +44,41 @@ public class AddCommand extends Command {
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
+        this.toAdd = new Task(
+                new Title(title),
+                deadline,
+                new UniqueTagList(tagSet),
+                false,
+                description
+        );
+    }
+
+    /**
+     * Convenience constructor using raw values.
+     *
+     * @throws IllegalValueException if any of the raw values are invalid
+     */
+    // TODO: Implement Add for other types of entry
+    /* public AddCommand(String title, LocalDateTime deadline, Set<String> tags, String description)
+            throws IllegalValueException {
+        final Set<Tag> tagSet = new HashSet<>();
+        for (String tagName : tags) {
+            tagSet.add(new Tag(tagName));
+        }
         this.toAdd = new Deadline(
                 new Title(title),
                 deadline,
                 new UniqueTagList(tagSet),
                 description
         );
-    }
+    } */
 
     public AddCommand(String title, Set<String> tags, String description) throws IllegalValueException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-        this.toAdd = new FloatingTask(new Title(title), new UniqueTagList(tagSet), false, description);
+        this.toAdd = new Task(new Title(title), null, new UniqueTagList(tagSet), false, description);
     }
 
     @Override

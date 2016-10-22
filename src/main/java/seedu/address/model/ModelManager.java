@@ -9,7 +9,7 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Deadline;
-import seedu.address.model.task.FloatingTask;
+import seedu.address.model.task.Task;
 import seedu.address.model.task.UniquePersonList;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;

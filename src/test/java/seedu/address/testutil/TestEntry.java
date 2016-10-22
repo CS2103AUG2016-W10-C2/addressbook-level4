@@ -111,7 +111,7 @@ public class TestEntry implements Entry {
     }
 
     @Override
-    public Observable isMarkProperty() {
+    public Observable isMarkedProperty() {
         return isMarked;
     }
 

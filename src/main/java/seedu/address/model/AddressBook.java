@@ -1,7 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.task.FloatingTask;
+import seedu.address.model.task.Task;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
@@ -13,6 +13,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Wraps all data at the address-book level
@@ -54,8 +55,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         return entries.getInternalList();
     }
 
-    public void setPersons(List<Entry> persons) {
-        this.entries.getInternalList().setAll(persons);
+    public void setEntries(List<Entry> entries) {
+        this.entries.getInternalList().setAll(entries);
     }
 
     public void setTags(Collection<Tag> tags) {
@@ -63,18 +64,18 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     public void resetData(Collection<? extends Entry> newEntries, Collection<Tag> newTags) {
-    	ArrayList<Entry> copyList = new ArrayList<>();
-    	for (Entry entry : newEntries) {
-    		Entry copy;
-    		if (entry instanceof Deadline) {
-    			copy = new Deadline(entry);
-    		} else {
-    			copy = new FloatingTask(entry);
-    		}
-    		copyList.add(copy);
-    	}
-        // setPersons(newEntries.stream().map(FloatingTask::new).collect(Collectors.toList()));
-        setPersons(copyList);
+        /* ArrayList<Entry> copyList = new ArrayList<>();
+        for (Entry entry : newEntries) {
+            Entry copy;
+            if (entry instanceof Deadline) {
+                copy = new Deadline(entry);
+            } else {
+                copy = new Task(entry);
+            }
+            copyList.add(copy);
+        }
+        setPersons(copyList); */
+        setEntries(newEntries.stream().map(Task::new).collect(Collectors.toList()));
         setTags(newTags);
     }
 
@@ -104,11 +105,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         entries.updateTags(toEdit, update.getNewTags());
         entries.updateDescription(toEdit, update.getNewDescription());
     }
-    
+
     public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
         entries.mark(task);
     }
-    
+
     public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
         entries.unmark(task);
     }
@@ -150,7 +151,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
     }
-    
+
 
     public void tagTask(Entry taskToTag, UniqueTagList newTags) {
         taskToTag.addTags(newTags);

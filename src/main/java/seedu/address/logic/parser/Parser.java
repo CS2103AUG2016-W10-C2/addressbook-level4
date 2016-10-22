@@ -75,13 +75,13 @@ public class Parser {
 
         case MarkCommand.COMMAND_WORD:
             return prepareMark(arguments);
-            
+
         case UnmarkCommand.COMMAND_WORD:
             return prepareUnmark(arguments);
-            
+
         case TagCommand.COMMAND_WORD:
             return prepareTag(arguments);
-            
+
         case UntagCommand.COMMAND_WORD:
             return prepareUntag(arguments);
 
@@ -96,44 +96,6 @@ public class Parser {
 
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
-        }
-    }
-
-    /**
-     * Parses arguments in the context of the add task command.
-     *
-     * @param args
-     *            full command args string
-     * @return the prepared command
-     */
-    private Command prepareAdd(String args) {
-        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
-        argsTokenizer.tokenize(args.trim());
-
-        // Validate arg string format
-        String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
-        if (title.isEmpty()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-
-        if (argsTokenizer.getValue(deadlinePrefix).isPresent()) {
-        	try {
-        		return new AddCommand(title,
-                    getDeadlineFromArgument(argsTokenizer),
-                    getTagsFromArgs(argsTokenizer),
-                    getDescriptionFromArgs(argsTokenizer));
-        	} catch (IllegalValueException ive) {
-                return new IncorrectCommand(ive.getMessage());
-            }
-
-        } else {
-        	try {
-                return new AddCommand(title,
-                    getTagsFromArgs(argsTokenizer),
-                    getDescriptionFromArgs(argsTokenizer));
-            } catch (IllegalValueException ive) {
-                return new IncorrectCommand(ive.getMessage());
-            }
         }
     }
 
@@ -168,40 +130,16 @@ public class Parser {
     }
 
     /**
-     * Parses arguments in the context of the edit task command.
-     * 
-     * @param args
-     *            full command args string
-     * @return the prepared command
-     */
-    private Command prepareEdit(String args) {
-        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, deadlinePrefix, tagPrefix, descPrefix);
-        argsTokenizer.tokenize(args.trim());
-
-        // Validate arg string format
-        String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
-        Optional<Integer> index = parseIndex(idString);
-        if (!index.isPresent()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-        }
-
-        try {
-            return new EditCommand(index.get(),
-                getTitleFromArgs(argsTokenizer),
-                getTagsFromArgs(argsTokenizer),
-                getDescriptionFromArgs(argsTokenizer));
-        } catch (IllegalValueException ive) {
-            return new IncorrectCommand(ive.getMessage());
-        }
-    }
-    
-    /**
      * Extracts the new entry's deadline from the add command's tag arguments
      * string. Format: YYYY-MM-DD HH:MM
      */
     private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
-
+        
+        if (deadline.isEmpty()) {
+        	return null;
+        }
+        
         Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
         if (!matcher.matches()) {
             throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
@@ -211,7 +149,7 @@ public class Parser {
         final List<String> cleanedStrings = Arrays.asList(deadline.split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
-    
+
     /**
      * Parse LocalDateTime from an input string
      * string. Format: YYYY-MM-DD
@@ -220,12 +158,67 @@ public class Parser {
         if (dateTimeString.isEmpty()) {
             return null;
         }
-        
+
         // remove the tag.
         final String cleanedString = dateTimeString + "T" + time;
         return LocalDateTime.parse(cleanedString);
     }
-    
+
+    /**
+    * Parses arguments in the context of the add task command.
+    *
+    * @param args
+    *            full command args string
+    * @return the prepared command
+    */
+   private Command prepareAdd(String args) {
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
+       argsTokenizer.tokenize(args.trim());
+
+       // Validate arg string format
+       String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
+       if (title.isEmpty()) {
+           return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+       }
+
+       try {
+           return new AddCommand(title,
+                   getDeadlineFromArgument(argsTokenizer),
+                   getTagsFromArgs(argsTokenizer),
+                   getDescriptionFromArgs(argsTokenizer));
+       } catch (IllegalValueException ive) {
+           return new IncorrectCommand(ive.getMessage());
+       }
+   }
+
+   /**
+    * Parses arguments in the context of the edit task command.
+    *
+    * @param args
+    *            full command args string
+    * @return the prepared command
+    */
+   private Command prepareEdit(String args) {
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, deadlinePrefix, tagPrefix, descPrefix);
+       argsTokenizer.tokenize(args.trim());
+
+       // Validate arg string format
+       String idString = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
+       Optional<Integer> index = parseIndex(idString);
+       if (!index.isPresent()) {
+           return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+       }
+
+       try {
+           return new EditCommand(index.get(),
+               getTitleFromArgs(argsTokenizer),
+               getTagsFromArgs(argsTokenizer),
+               getDescriptionFromArgs(argsTokenizer));
+       } catch (IllegalValueException ive) {
+           return new IncorrectCommand(ive.getMessage());
+       }
+   }
+
     /**
      * Parses arguments in the context of the delete task command.
      *
@@ -258,7 +251,7 @@ public class Parser {
 
         return new MarkCommand(index.get());
     }
-    
+
     /**
      * Parses arguments in the context of the unmark task command.
      *
@@ -296,7 +289,7 @@ public class Parser {
             return new IncorrectCommand(ive.getMessage());
         }
     }
-    
+
     /**
      * Parses arguments in the context of the untag task command.
      */
@@ -318,7 +311,7 @@ public class Parser {
             return new IncorrectCommand(ive.getMessage());
         }
     }
-    
+
     /**
      * Parses arguments in the context of the select task command.
      *
@@ -366,7 +359,7 @@ public class Parser {
         if (args.isEmpty()) {
             return new ListCommand();
         }
-        
+
         final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix);
         argsTokenizer.tokenize(args);
 
@@ -391,23 +384,23 @@ public class Parser {
             if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
-            
+
             if (onDateString.isEmpty()) {
                 final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString, "00:00:00");
                 final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString, "23:59:59");
-                
+
                 if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
                 }
-                
+
                 listCommand.setStartDate(startDate);
                 listCommand.setEndDate(endDate);
             } else {
                 final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString, "23:59:59");
-                
+
                 listCommand.setOnDate(onDate);
             }
-            
+
             return listCommand;
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
