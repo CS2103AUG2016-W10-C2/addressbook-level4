@@ -55,7 +55,7 @@ No tasks to display.
 | Command |Format |
 | --- | --- |
 |add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence>] [desc/<description>]`|
-|list|`list [[[after/<date>] [before/<date>] | [on/<date>]][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
+|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
 |tag|`tag <task_id> #<tag_name> [#<tag_name> …]`|
 |untag|`untag <task_id> #<tag_name> [#<tag_name> …]`|
 |edit|`edit <task_id> [title/ new title] [st/ <start> end/ <end> | deadline/ <deadline>] [t/ <tags>...] [r/ <recurrence>] [desc/ <description>]`|
@@ -83,7 +83,7 @@ add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence
 
 
 ```
-list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]
+list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]
 ```
 
 > List all or filtered entries
@@ -93,6 +93,8 @@ list [[after/<date>] [before/<date>] [on/<date>][tags=<comma_separated_tags>] [r
 > - `list`
 
 > - `list after/2016-10-10`
+
+> - `list buy banana #groceries`
 
 
 ```
