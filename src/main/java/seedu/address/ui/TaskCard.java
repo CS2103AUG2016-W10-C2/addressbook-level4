@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 
@@ -16,17 +17,17 @@ public class TaskCard extends UiPart{
     @FXML
     private HBox cardPane;
     @FXML
-    private Label name;
+    private Text name;
     @FXML
-    private Label id;
+    private Text id;
     @FXML
-    private Label tags;
+    private Text tags;
     @FXML
-    private Label deadline;
+    private Text deadline;
     @FXML
-    private Label mark;
+    private Text mark;
     @FXML
-    private Label description;
+    private Text description;
 
     private Entry entry;
     private int displayedIndex;
@@ -51,7 +52,7 @@ public class TaskCard extends UiPart{
         if (entry instanceof Task) {
             Task task = (Task) entry;
             if (task.getDeadline() != null) {
-                deadline.setText("deadline: " + task.getDeadline() );
+                deadline.setText("due: " + task.getDeadline() );
             }
             else {
                 deadline.setText("");
