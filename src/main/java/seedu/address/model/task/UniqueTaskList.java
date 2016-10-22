@@ -19,7 +19,7 @@ import java.util.Iterator;
  * @see Task#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
-public class UniquePersonList implements Iterable<Entry> {
+public class UniqueTaskList implements Iterable<Entry> {
 
     /**
      * Signals that an operation would have violated the 'no duplicates' property of the list.
@@ -34,7 +34,7 @@ public class UniquePersonList implements Iterable<Entry> {
      * Signals that an operation targeting a specified task in the list would fail because
      * there is no such matching task in the list.
      */
-    public static class PersonNotFoundException extends Exception {}
+    public static class EntryNotFoundException extends Exception {}
 
     private final ObservableList<Entry> internalList = FXCollections.observableArrayList(
             new Callback<Entry, Observable[]>() {
@@ -52,7 +52,7 @@ public class UniquePersonList implements Iterable<Entry> {
     /**
      * Constructs empty PersonList.
      */
-    public UniquePersonList() {}
+    public UniqueTaskList() {}
 
     /**
      * Returns true if the list contains an equivalent task as the given argument.
@@ -69,12 +69,12 @@ public class UniquePersonList implements Iterable<Entry> {
      *             if the task to add is a duplicate of an existing task in the
      *             list.
      */
-    public void add(Entry person) throws DuplicateTaskException {
-        assert person != null;
-        if (contains(person)) {
+    public void add(Entry entry) throws DuplicateTaskException {
+        assert entry != null;
+        if (contains(entry)) {
             throw new DuplicateTaskException();
         }
-        internalList.add(person);
+        internalList.add(entry);
     }
 
     /**
@@ -85,10 +85,10 @@ public class UniquePersonList implements Iterable<Entry> {
      *          the new Title for the Task
      * @throws DuplicateTaskException
      *          if an existing Task already has the same Title as the one specified
-     * @throws PersonNotFoundException
+     * @throws EntryNotFoundException
      *          if the Task to be edited cannot be found
      */
-    public void updateTitle(Entry toEdit, Title newTitle) throws DuplicateTaskException, PersonNotFoundException {
+    public void updateTitle(Entry toEdit, Title newTitle) throws DuplicateTaskException, EntryNotFoundException {
         assert toEdit != null;
         for (int i = 0; i < internalList.size(); i++) {
             if (internalList.get(i).getTitle().equals(newTitle)) {
@@ -97,7 +97,7 @@ public class UniquePersonList implements Iterable<Entry> {
         }
 
         if (!contains(toEdit)) {
-            throw new PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
 
         if (newTitle != null) {
@@ -111,13 +111,13 @@ public class UniquePersonList implements Iterable<Entry> {
      *          the Task to be Edited
      * @param newTags
      *          the new Tags for the Task
-     * @throws PersonNotFoundException
+     * @throws EntryNotFoundException
      *          if the Task to be edited cannot be found
      */
-    public void updateTags(Entry toEdit, UniqueTagList newTags) throws PersonNotFoundException {
+    public void updateTags(Entry toEdit, UniqueTagList newTags) throws EntryNotFoundException {
         assert toEdit != null;
         if (!contains(toEdit)) {
-            throw new PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
 
         if (newTags != null) {
@@ -131,13 +131,13 @@ public class UniquePersonList implements Iterable<Entry> {
      *          the Task to be Edited
      * @param newDescription
      *          the new description for the Task
-     * @throws PersonNotFoundException
+     * @throws EntryNotFoundException
      *          if the Task to be edited cannot be found
      */
-    public void updateDescription(Entry toEdit, String newDescription) throws PersonNotFoundException {
+    public void updateDescription(Entry toEdit, String newDescription) throws EntryNotFoundException {
         assert toEdit != null;
         if (!contains(toEdit)) {
-            throw new PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
 
         if (newDescription != null) {
@@ -147,30 +147,30 @@ public class UniquePersonList implements Iterable<Entry> {
 
     /**
      * Mark an entry on the list.
-     * @throws PersonNotFoundException
+     * @throws EntryNotFoundException
      *             if no such task could be found in the list.
      * @throws DuplicateTaskException
      *             if the task to add is a duplicate of an existing task.
      */
-    public void mark(Entry toMark) throws PersonNotFoundException, DuplicateTaskException {
+    public void mark(Entry toMark) throws EntryNotFoundException, DuplicateTaskException {
         assert toMark!= null;
         if (!contains(toMark)) {
-            throw new PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
         toMark.mark();
     }
 
     /**
      * Unmarks an entry on the list.
-     * @throws PersonNotFoundException
+     * @throws EntryNotFoundException
      *             if no such task could be found in the list.
      * @throws DuplicateTaskException
      *             if the task to add is a duplicate of an existing task.
      */
-    public void unmark(Entry toUnmark) throws PersonNotFoundException, DuplicateTaskException {
+    public void unmark(Entry toUnmark) throws EntryNotFoundException, DuplicateTaskException {
         assert toUnmark!= null;
         if (!contains(toUnmark)) {
-            throw new PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
         toUnmark.unmark();
     }
@@ -178,13 +178,13 @@ public class UniquePersonList implements Iterable<Entry> {
     /**
      * Removes the equivalent task from the list.
      *
-     * @throws PersonNotFoundException if no such task could be found in the list.
+     * @throws EntryNotFoundException if no such task could be found in the list.
      */
-    public boolean remove(Entry toRemove) throws PersonNotFoundException {
+    public boolean remove(Entry toRemove) throws EntryNotFoundException {
         assert toRemove != null;
         final boolean personFoundAndDeleted = internalList.remove(toRemove);
         if (!personFoundAndDeleted) {
-            throw new PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
         return personFoundAndDeleted;
     }
@@ -201,9 +201,9 @@ public class UniquePersonList implements Iterable<Entry> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof UniquePersonList // instanceof handles nulls
+                || (other instanceof UniqueTaskList // instanceof handles nulls
                 && this.internalList.equals(
-                ((UniquePersonList) other).internalList));
+                ((UniqueTaskList) other).internalList));
     }
 
     @Override

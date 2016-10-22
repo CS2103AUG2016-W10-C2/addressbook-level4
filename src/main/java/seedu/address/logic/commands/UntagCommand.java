@@ -7,7 +7,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -52,7 +52,7 @@ public class UntagCommand extends Command {
 
         try {
             model.untagTask(taskToUntag, tagsToRemove);
-        } catch (PersonNotFoundException e) {
+        } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         }
         return new CommandResult(String.format(MESSAGE_SUCCESS, taskToUntag));
