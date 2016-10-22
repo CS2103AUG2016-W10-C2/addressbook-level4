@@ -11,6 +11,7 @@ import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -24,6 +25,8 @@ public class Task implements Entry {
     protected BooleanProperty isMarked;
     protected ObjectProperty<LocalDateTime> deadline;
     protected StringProperty description;
+
+    private static final DateTimeFormatter displayDeadlineFormatter = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description);
@@ -115,6 +118,16 @@ public class Task implements Entry {
 
     public LocalDateTime getDeadline() {
         return deadline.get();
+    }
+
+    public String getDeadLineDisplay() {
+        LocalDateTime deadline = this.deadline.get();
+
+        if (deadline == null) {
+            return "";
+        } else {
+            return deadline.format(displayDeadlineFormatter);
+        }
     }
 
     public void setDeadline(LocalDateTime deadline) {
