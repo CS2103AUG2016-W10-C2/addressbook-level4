@@ -4,7 +4,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 public class UnmarkCommand extends Command {
     public static final String COMMAND_WORD = "unmark";
@@ -38,7 +38,7 @@ public class UnmarkCommand extends Command {
 
         try {
             model.unmarkTask(entryToUnmark);
-        } catch (PersonNotFoundException pnfe) {
+        } catch (EntryNotFoundException pnfe) {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {
             // TODO Auto-generated catch block

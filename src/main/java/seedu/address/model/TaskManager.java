@@ -5,7 +5,7 @@ import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -49,7 +49,7 @@ public class TaskManager implements ReadOnlyTaskManager {
 
 //// list overwrite operations
 
-    public ObservableList<Entry> getPersons() {
+    public ObservableList<Entry> getEntries() {
         return entries.getInternalList();
     }
 
@@ -90,13 +90,13 @@ public class TaskManager implements ReadOnlyTaskManager {
      *
      * @throws UniqueTaskList.DuplicateTaskException if an equivalent task already exists.
      */
-    public void addTask(Entry person) throws UniqueTaskList.DuplicateTaskException {
-        syncTagsWithMasterList(person);
-        entries.add(person);
+    public void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException {
+        syncTagsWithMasterList(entry);
+        entries.add(entry);
     }
 
     public void editTask(Update update)
-            throws PersonNotFoundException, DuplicateTaskException {
+            throws EntryNotFoundException, DuplicateTaskException {
         Entry toEdit = update.getTask();
         syncTagsWithMasterList(toEdit);
         entries.updateTitle(toEdit, update.getNewTitle());
@@ -104,11 +104,11 @@ public class TaskManager implements ReadOnlyTaskManager {
         entries.updateDescription(toEdit, update.getNewDescription());
     }
 
-    public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void markTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
         entries.mark(task);
     }
 
-    public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void unmarkTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
         entries.unmark(task);
     }
 
@@ -118,8 +118,8 @@ public class TaskManager implements ReadOnlyTaskManager {
      *  - exists in the master list {@link #tags}
      *  - points to a Tag object in the master list
      */
-    private void syncTagsWithMasterList(Entry person) {
-        final UniqueTagList personTags = person.getTags();
+    private void syncTagsWithMasterList(Entry entry) {
+        final UniqueTagList personTags = entry.getTags();
         tags.mergeFrom(personTags);
 
         // Create map with values = tag object references in the master list
@@ -133,14 +133,14 @@ public class TaskManager implements ReadOnlyTaskManager {
         for (Tag tag : personTags) {
             commonTagReferences.add(masterTagObjects.get(tag));
         }
-        person.setTags(new UniqueTagList(commonTagReferences));
+        entry.setTags(new UniqueTagList(commonTagReferences));
     }
 
-    public boolean removePerson(Entry key) throws UniqueTaskList.PersonNotFoundException {
+    public boolean removeEntry(Entry key) throws EntryNotFoundException {
         if (entries.remove(key)) {
             return true;
         } else {
-            throw new UniqueTaskList.PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
     }
 

@@ -4,7 +4,7 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
@@ -23,11 +23,11 @@ public interface Model {
     ReadOnlyTaskManager getTaskManager();
 
     /** Deletes the given task. */
-    void deleteTask(Entry target) throws UniqueTaskList.PersonNotFoundException;
+    void deleteTask(Entry target) throws EntryNotFoundException;
 
     /** Edit the given task */
     void editTask(Update update)
-            throws PersonNotFoundException, DuplicateTaskException;
+            throws EntryNotFoundException, DuplicateTaskException;
 
     /** Adds the given task */
     void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException;
@@ -47,18 +47,18 @@ public interface Model {
     
     /** Marks the given task. 
      * @throws DuplicateTaskException */
-    void markTask(Entry entryToMark) throws UniqueTaskList.PersonNotFoundException, DuplicateTaskException;
+    void markTask(Entry entryToMark) throws EntryNotFoundException, DuplicateTaskException;
     
     /** Unmarks the given task 
      * @throws  */
-    void unmarkTask(Entry task) throws UniqueTaskList.PersonNotFoundException, DuplicateTaskException;
+    void unmarkTask(Entry task) throws EntryNotFoundException, DuplicateTaskException;
 
     /** Add tags to task
      */
-    void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) throws PersonNotFoundException;
+    void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) throws EntryNotFoundException;
 
     /** Remove tags from task
      */
-    void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws PersonNotFoundException;
+    void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException;
 
 }

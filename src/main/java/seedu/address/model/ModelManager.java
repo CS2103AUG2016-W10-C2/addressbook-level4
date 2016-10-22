@@ -9,7 +9,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
@@ -40,7 +40,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
 
         taskManager = new TaskManager(src);
-        filteredPersons = new FilteredList<>(taskManager.getPersons());
+        filteredPersons = new FilteredList<>(taskManager.getEntries());
     }
 
     public ModelManager() {
@@ -49,7 +49,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
-        filteredPersons = new FilteredList<>(taskManager.getPersons());
+        filteredPersons = new FilteredList<>(taskManager.getEntries());
     }
 
     @Override
@@ -68,8 +68,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deleteTask(Entry target) throws PersonNotFoundException {
-        taskManager.removePerson(target);
+    public synchronized void deleteTask(Entry target) throws EntryNotFoundException {
+        taskManager.removeEntry(target);
         indicateAddressBookChanged();
     }
 
@@ -82,21 +82,21 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void editTask(Update update)
-            throws PersonNotFoundException, DuplicateTaskException {
+            throws EntryNotFoundException, DuplicateTaskException {
         taskManager.editTask(update);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
     
     @Override
-    public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void markTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
         taskManager.markTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
     
     @Override
-    public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void unmarkTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
         taskManager.unmarkTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
@@ -110,7 +110,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws PersonNotFoundException {
+    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException {
         taskManager.untagTask(taskToUntag, tagsToRemove);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
