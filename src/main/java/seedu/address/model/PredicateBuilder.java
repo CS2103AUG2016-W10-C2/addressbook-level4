@@ -113,6 +113,7 @@ public class PredicateBuilder {
         }
     }
 
+    //@@author A0126539Y
     private class DateAfterQualifier implements Qualifier {
         private LocalDateTime startDate;
 
@@ -120,7 +121,6 @@ public class PredicateBuilder {
             this.startDate = startDate;
         }
 
-        //@@author A0126539Y
         @Override
         public boolean run(Entry entry) {
             if (entry instanceof Task) {
@@ -137,7 +137,6 @@ public class PredicateBuilder {
 
             return false;
         }
-        //@@author A0126539Y
 
         @Override
         public String toString() {
@@ -152,7 +151,6 @@ public class PredicateBuilder {
             this.endDate = endDate;
         }
 
-        //@@author A0126539Y
         @Override
         public boolean run(Entry entry) {
             if (entry instanceof Task) {
@@ -169,7 +167,6 @@ public class PredicateBuilder {
 
             return false;
         }
-        //@@author
 
         @Override
         public String toString() {
@@ -184,7 +181,6 @@ public class PredicateBuilder {
             this.onDate = onDate;
         }
 
-        //@@author A0126539Y
         @Override
         public boolean run(Entry entry) {
             LocalDateTime beginningOfDay = onDate.truncatedTo(ChronoUnit.DAYS);
@@ -205,11 +201,11 @@ public class PredicateBuilder {
 
             return false;
         }
-        //@@author
 
         @Override
         public String toString() {
             return "Due on: " + onDate.toString();
         }
     }
+    //@@author
 }

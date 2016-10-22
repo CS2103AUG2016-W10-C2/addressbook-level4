@@ -33,6 +33,8 @@ public class AddCommand extends Command {
 
     private final Entry toAdd;
 
+
+    //@@author A0126539Y
     /**
      * Convenience constructor using raw values.
      *
@@ -45,7 +47,6 @@ public class AddCommand extends Command {
             tagSet.add(new Tag(tagName));
         }
 
-        //@@author A0126539Y
         if (startTime != null && endTime != null) {
             this.toAdd = new Event(
                     new Title(title),
@@ -67,8 +68,8 @@ public class AddCommand extends Command {
         } else {
             throw new IllegalValueException(MESSAGE_USAGE);
         }
-        //@@author
     }
+    //@@author
 
     @Override
     public CommandResult execute() {
