@@ -7,9 +7,9 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
@@ -47,18 +47,18 @@ public class ModelManager extends ComponentManager implements Model {
         this(new TaskManager(), new UserPrefs());
     }
 
-    public ModelManager(ReadOnlyAddressBook initialData, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
         filteredPersons = new FilteredList<>(taskManager.getPersons());
     }
 
     @Override
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyTaskManager newData) {
         taskManager.resetData(newData);
         indicateAddressBookChanged();
     }
 
-    public ReadOnlyAddressBook getTaskManager() {
+    public ReadOnlyTaskManager getTaskManager() {
         return taskManager;
     }
 
@@ -74,7 +74,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addTask(Entry person) throws UniquePersonList.DuplicateTaskException {
+    public synchronized void addTask(Entry person) throws UniqueTaskList.DuplicateTaskException {
         taskManager.addTask(person);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();

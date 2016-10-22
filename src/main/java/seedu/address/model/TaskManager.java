@@ -3,9 +3,9 @@ package seedu.address.model;
 import javafx.collections.ObservableList;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
  * Wraps all data at the TaskManager level
  * Duplicates are not allowed (by .equals comparison)
  */
-public class TaskManager implements ReadOnlyAddressBook {
+public class TaskManager implements ReadOnlyTaskManager {
 
-    private final UniquePersonList entries;
+    private final UniqueTaskList entries;
     private final UniqueTagList tags;
 
     {
-        entries = new UniquePersonList();
+        entries = new UniqueTaskList();
         tags = new UniqueTagList();
     }
 
@@ -32,18 +32,18 @@ public class TaskManager implements ReadOnlyAddressBook {
     /**
      * Persons and Tags are copied into this addressbook
      */
-    public TaskManager(ReadOnlyAddressBook toBeCopied) {
-        this(toBeCopied.getUniquePersonList(), toBeCopied.getUniqueTagList());
+    public TaskManager(ReadOnlyTaskManager toBeCopied) {
+        this(toBeCopied.getUniqueTaskList(), toBeCopied.getUniqueTagList());
     }
 
     /**
      * Persons and Tags are copied into this addressbook
      */
-    public TaskManager(UniquePersonList persons, UniqueTagList tags) {
+    public TaskManager(UniqueTaskList persons, UniqueTagList tags) {
         resetData(persons.getInternalList(), tags.getInternalList());
     }
 
-    public static ReadOnlyAddressBook getEmptyAddressBook() {
+    public static ReadOnlyTaskManager getEmptyAddressBook() {
         return new TaskManager();
     }
 
@@ -77,8 +77,8 @@ public class TaskManager implements ReadOnlyAddressBook {
         setTags(newTags);
     }
 
-    public void resetData(ReadOnlyAddressBook newData) {
-        resetData(newData.getPersonList(), newData.getTagList());
+    public void resetData(ReadOnlyTaskManager newData) {
+        resetData(newData.getTaskList(), newData.getTagList());
     }
 
 //// task-level operations
@@ -88,9 +88,9 @@ public class TaskManager implements ReadOnlyAddressBook {
      * Also checks the new task's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the task to point to those in {@link #tags}.
      *
-     * @throws UniquePersonList.DuplicateTaskException if an equivalent task already exists.
+     * @throws UniqueTaskList.DuplicateTaskException if an equivalent task already exists.
      */
-    public void addTask(Entry person) throws UniquePersonList.DuplicateTaskException {
+    public void addTask(Entry person) throws UniqueTaskList.DuplicateTaskException {
         syncTagsWithMasterList(person);
         entries.add(person);
     }
@@ -136,11 +136,11 @@ public class TaskManager implements ReadOnlyAddressBook {
         person.setTags(new UniqueTagList(commonTagReferences));
     }
 
-    public boolean removePerson(Entry key) throws UniquePersonList.PersonNotFoundException {
+    public boolean removePerson(Entry key) throws UniqueTaskList.PersonNotFoundException {
         if (entries.remove(key)) {
             return true;
         } else {
-            throw new UniquePersonList.PersonNotFoundException();
+            throw new UniqueTaskList.PersonNotFoundException();
         }
     }
 
@@ -169,7 +169,7 @@ public class TaskManager implements ReadOnlyAddressBook {
     }
 
     @Override
-    public List<Entry> getPersonList() {
+    public List<Entry> getTaskList() {
         return Collections.unmodifiableList(entries.getInternalList());
     }
 
@@ -179,7 +179,7 @@ public class TaskManager implements ReadOnlyAddressBook {
     }
 
     @Override
-    public UniquePersonList getUniquePersonList() {
+    public UniqueTaskList getUniqueTaskList() {
         return this.entries;
     }
 

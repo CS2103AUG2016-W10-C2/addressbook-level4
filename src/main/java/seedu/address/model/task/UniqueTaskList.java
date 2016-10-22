@@ -19,7 +19,7 @@ import java.util.Iterator;
  * @see Task#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
-public class UniquePersonList implements Iterable<Entry> {
+public class UniqueTaskList implements Iterable<Entry> {
 
     /**
      * Signals that an operation would have violated the 'no duplicates' property of the list.
@@ -52,7 +52,7 @@ public class UniquePersonList implements Iterable<Entry> {
     /**
      * Constructs empty PersonList.
      */
-    public UniquePersonList() {}
+    public UniqueTaskList() {}
 
     /**
      * Returns true if the list contains an equivalent task as the given argument.
@@ -201,9 +201,9 @@ public class UniquePersonList implements Iterable<Entry> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof UniquePersonList // instanceof handles nulls
+                || (other instanceof UniqueTaskList // instanceof handles nulls
                 && this.internalList.equals(
-                ((UniquePersonList) other).internalList));
+                ((UniqueTaskList) other).internalList));
     }
 
     @Override

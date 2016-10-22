@@ -3,8 +3,8 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.PersonNotFoundException;
 
 public class UnmarkCommand extends Command {
     public static final String COMMAND_WORD = "unmark";
