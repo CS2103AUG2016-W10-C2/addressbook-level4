@@ -1,12 +1,9 @@
 package seedu.address.model.task;
 
-import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -17,14 +14,10 @@ import java.util.Objects;
  * Represents a Floating Task in the Task Manager. Guarantees: details are
  * present and not null, field values are validated.
  */
-public class Task implements Entry {
+public class Task extends Entry {
 
-    protected ObjectProperty<Title> title;
-    protected ObjectProperty<UniqueTagList> tags;
-    protected BooleanProperty isMarked;
     protected ObjectProperty<LocalDateTime> deadline;
-    protected StringProperty description;
-
+    
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
@@ -60,59 +53,6 @@ public class Task implements Entry {
         }
     }
 
-    @Override
-    public final Title getTitle() {
-        return title.get();
-    }
-
-    @Override
-    public final void setTitle(Title newTitle) {
-        title.set(newTitle);
-    }
-
-    @Override
-    public ObjectProperty<Title> titleObjectProperty() {
-        return title;
-    }
-
-    @Override
-    public final UniqueTagList getTags() {
-        return new UniqueTagList(tags.get());
-    }
-
-    /**
-     * Replaces this task's tags with the tags in the argument tag list.
-     */
-    @Override
-    public final void setTags(UniqueTagList newTags) {
-        tags.set(new UniqueTagList(newTags));
-    }
-
-    /**
-     * Adds every tag from the argument tag list that does not yet exist in this entry's tag list.
-     */
-    @Override
-    public void addTags(UniqueTagList uniqueTagList) {
-        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
-        updatedTagList.mergeFrom(uniqueTagList);
-        tags.set(updatedTagList);
-    }
-
-    /**
-     * Remove every tag from the argument tag list that exists in this entry's tag list.
-     */
-    @Override
-    public void removeTags(UniqueTagList tagsToRemove) {
-        UniqueTagList updatedTagList = new UniqueTagList(tags.get());
-        updatedTagList.removeFrom(tagsToRemove);
-        tags.set(updatedTagList);
-    }
-
-    @Override
-    public ObjectProperty<UniqueTagList> uniqueTagListObjectProperty() {
-        return tags;
-    }
-
     public LocalDateTime getDeadline() {
         return deadline.get();
     }
@@ -120,53 +60,9 @@ public class Task implements Entry {
     public void setDeadline(LocalDateTime deadline) {
         this.deadline.set(deadline);
     }
-
-    @Override
+    
     public ObjectProperty<LocalDateTime> deadlineObjectProperty() {
         return deadline;
-    }
-
-    @Override
-    public final String getDescription() {
-        if (description == null){
-            return "";
-        }
-        return description.get();
-    }
-
-    @Override
-    public final void setDescription(String newDescription) {
-        if (description == null) {
-            description = new SimpleStringProperty(newDescription);
-            return;
-        }
-        description.set(newDescription);
-    }
-
-    @Override
-    public StringProperty descriptionProperty() {
-        return description;
-    }
-
-
-    @Override
-    public void mark() {
-        this.isMarked.set(true);
-    }
-
-    @Override
-    public void unmark() {
-        this.isMarked.set(false);
-    }
-
-    @Override
-    public boolean isMarked() {
-        return isMarked.get();
-    }
-
-    @Override
-    public Observable isMarkedProperty() {
-        return isMarked;
     }
 
     @Override
@@ -212,11 +108,6 @@ public class Task implements Entry {
             builder.append(getDeadline().toString());
         }
         return builder.toString();
-    }
-
-    @Override
-    public String markString() {
-        return isMarked() ? "[X] " : "[ ] ";
     }
 
 }
