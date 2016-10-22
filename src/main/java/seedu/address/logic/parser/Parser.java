@@ -34,7 +34,8 @@ public class Parser {
     private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
     private static final Prefix endDatePrefix = new Prefix(BEFORE_FLAG);
     private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
-    private static final Prefix deadlinePrefix = new Prefix(DEADLINE_FLAG);
+    private static final Prefix startPrefix = new Prefix(START_FLAG);
+    private static final Prefix endPrefix = new Prefix(END_FLAG);
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
@@ -130,23 +131,44 @@ public class Parser {
     }
 
     /**
-     * Extracts the new entry's deadline from the add command's tag arguments
+     * Extracts the new entry's startTime from the add command's tag arguments
      * string. Format: YYYY-MM-DD HH:MM
      */
-    private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
-        String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
-        
-        if (deadline.isEmpty()) {
-        	return null;
+    private static LocalDateTime getStartTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        String startTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startPrefix));
+
+        if (startTime.isEmpty()) {
+            return null;
         }
-        
-        Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
+
+        Matcher matcher = DATE_TIME_FORMAT.matcher(startTime);
         if (!matcher.matches()) {
             throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
         }
 
         // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(deadline.split(" "));
+        final List<String> cleanedStrings = Arrays.asList(startTime.split(" "));
+        return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
+    }
+
+    /**
+     * Extracts the new entry's endTime from the add command's tag arguments
+     * string. Format: YYYY-MM-DD HH:MM
+     */
+    private static LocalDateTime getEndTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        String endTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endPrefix));
+
+        if (endTime.isEmpty()) {
+            return null;
+        }
+
+        Matcher matcher = DATE_TIME_FORMAT.matcher(endTime);
+        if (!matcher.matches()) {
+            throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
+        }
+
+        // remove the tag.
+        final List<String> cleanedStrings = Arrays.asList(endTime.split(" "));
         return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
     }
 
@@ -172,9 +194,8 @@ public class Parser {
     * @return the prepared command
     */
    private Command prepareAdd(String args) {
-       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startPrefix, endPrefix, tagPrefix, descPrefix);
        argsTokenizer.tokenize(args.trim());
-
        // Validate arg string format
        String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
        if (title.isEmpty()) {
@@ -183,7 +204,8 @@ public class Parser {
 
        try {
            return new AddCommand(title,
-                   getDeadlineFromArgument(argsTokenizer),
+                   getStartTimeFromArgument(argsTokenizer),
+                   getEndTimeFromArgument(argsTokenizer),
                    getTagsFromArgs(argsTokenizer),
                    getDescriptionFromArgs(argsTokenizer));
        } catch (IllegalValueException ive) {
@@ -199,7 +221,7 @@ public class Parser {
     * @return the prepared command
     */
    private Command prepareEdit(String args) {
-       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, deadlinePrefix, tagPrefix, descPrefix);
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, endPrefix, tagPrefix, descPrefix);
        argsTokenizer.tokenize(args.trim());
 
        // Validate arg string format
