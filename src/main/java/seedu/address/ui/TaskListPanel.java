@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.commons.events.ui.TaskCardSelectionChangedEvent;
@@ -23,10 +23,10 @@ public class TaskListPanel extends UiPart {
     private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
     private static final String FXML = "TaskListPanel.fxml";
     private VBox panel;
-    private AnchorPane placeHolderPane;
+    private Pane placeHolderPane;
 
     @FXML
-    private ListView<Entry> personListView;
+    private ListView<Entry> taskListView;
 
     public TaskListPanel() {
         super();
@@ -43,11 +43,11 @@ public class TaskListPanel extends UiPart {
     }
 
     @Override
-    public void setPlaceholder(AnchorPane pane) {
+    public void setPlaceholder(Pane pane) {
         this.placeHolderPane = pane;
     }
 
-    public static TaskListPanel load(Stage primaryStage, AnchorPane personListPlaceholder,
+    public static TaskListPanel load(Stage primaryStage, VBox personListPlaceholder,
                                      ObservableList<Entry> personList) {
         TaskListPanel taskListPanel =
                 UiPartLoader.loadUiPart(primaryStage, personListPlaceholder, new TaskListPanel());
@@ -61,8 +61,8 @@ public class TaskListPanel extends UiPart {
     }
 
     private void setConnections(ObservableList<Entry> personList) {
-        personListView.setItems(personList);
-        personListView.setCellFactory(listView -> new PersonListViewCell());
+        taskListView.setItems(personList);
+        taskListView.setCellFactory(listView -> new PersonListViewCell());
         setEventHandlerForSelectionChangeEvent();
     }
 
@@ -72,7 +72,7 @@ public class TaskListPanel extends UiPart {
     }
 
     private void setEventHandlerForSelectionChangeEvent() {
-        personListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        taskListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 logger.fine("Selection in task list panel changed to : '" + newValue + "'");
                 raise(new TaskCardSelectionChangedEvent(newValue));
@@ -82,8 +82,8 @@ public class TaskListPanel extends UiPart {
 
     public void scrollTo(int index) {
         Platform.runLater(() -> {
-            personListView.scrollTo(index);
-            personListView.getSelectionModel().clearAndSelect(index);
+            taskListView.scrollTo(index);
+            taskListView.getSelectionModel().clearAndSelect(index);
         });
     }
 
