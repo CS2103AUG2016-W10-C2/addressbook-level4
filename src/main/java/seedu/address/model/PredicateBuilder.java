@@ -10,7 +10,7 @@ import seedu.address.model.task.Entry;
 
 /**
  * Supports chaining of predicates for the `list` command
- * @author joeleba
+ * @@author A0127828W
  *
  */
 public class PredicateBuilder {
