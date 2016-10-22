@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -9,6 +7,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * A status line which provides feedback to the user, e.g.
+ * after a command is entered.
+ */
 public class StatusLine extends UiPart implements StatusDisplay {
     private static final String FXML = "StatusLine.fxml";
 
