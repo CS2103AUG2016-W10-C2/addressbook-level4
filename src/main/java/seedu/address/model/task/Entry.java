@@ -100,12 +100,11 @@ public interface Entry {
      */
     default String tagsString() {
         final StringBuffer buffer = new StringBuffer();
-        final String separator = ", ";
-        getTags().forEach(tag -> buffer.append(tag).append(separator));
+        getTags().forEach(tag -> buffer.append(tag));
         if (buffer.length() == 0) {
             return "";
         } else {
-            return buffer.substring(0, buffer.length() - separator.length());
+            return buffer.substring(0, buffer.length());
         }
     }
 
