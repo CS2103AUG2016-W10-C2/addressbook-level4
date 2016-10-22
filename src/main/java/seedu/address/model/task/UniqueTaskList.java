@@ -41,16 +41,12 @@ public class UniqueTaskList implements Iterable<Entry> {
         @Override
         public Observable[] call(Entry entry) {
         	if (entry instanceof Task) {
-        		return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), ((Task)entry).deadlineObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+        		return new Observable[] { entry.titleObjectProperty(), ((Task)entry).deadlineObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+        	} else if (entry instanceof Event){
+        		return new Observable[] { entry.titleObjectProperty(), ((Event)entry).startTimeObjectProperty(), ((Event)entry).endTimeObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
         	} else {
         		return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
         	}
-            
-            /*if (entry instanceof Deadline) {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty()};
-            } else {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
-            }*/
         }
     });
 

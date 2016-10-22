@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Event;
 
 public class TaskCard extends UiPart{
 
@@ -24,6 +25,10 @@ public class TaskCard extends UiPart{
     @FXML
     private Label deadline;
     @FXML
+    private Label startTime;
+    @FXML
+    private Label endTime;
+    @FXML
     private Label mark;
     @FXML
     private Label description;
@@ -35,9 +40,9 @@ public class TaskCard extends UiPart{
 
     }
 
-    public static TaskCard load(Entry person, int displayedIndex){
+    public static TaskCard load(Entry entry, int displayedIndex){
         TaskCard card = new TaskCard();
-        card.entry = person;
+        card.entry = entry;
         card.displayedIndex = displayedIndex;
         return UiPartLoader.loadUiPart(card);
     }
@@ -49,13 +54,22 @@ public class TaskCard extends UiPart{
         tags.setText(entry.tagsString());
         description.setText(entry.getDescription());
         if (entry instanceof Task) {
-            Task task = (Task) entry;
+            Task task = (Task)entry;
             if (task.getDeadline() != null) {
-                deadline.setText("deadline: " + task.getDeadline() );
+                deadline.setText("deadline: " + task.getDeadline().toString());
             }
             else {
                 deadline.setText("");
             }
+        	startTime.setText("");
+        	endTime.setText("");
+        }
+
+        if (entry instanceof Event) {
+        	Event event = (Event)entry;
+        	startTime.setText("Start time: " + event.getStartTime().toString());
+        	endTime.setText("End time: " + event.getEndTime().toString());
+        	deadline.setText("");
         }
         mark.setText(entry.markString());
     }

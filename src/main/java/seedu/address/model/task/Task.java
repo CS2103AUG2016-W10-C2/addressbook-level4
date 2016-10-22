@@ -38,10 +38,6 @@ public class Task extends Entry {
         this(title, null, tags, false, "");
     }
 
-    public Task(Title title, UniqueTagList tags, boolean isMarked) {
-        this(title, null, tags, isMarked, "");
-    }
-
 
     /**
      * Copy constructor.

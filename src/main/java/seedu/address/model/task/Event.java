@@ -3,6 +3,8 @@ package seedu.address.model.task;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,10 +15,6 @@ import seedu.address.model.tag.UniqueTagList;
 public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> startTime;
     protected ObjectProperty<LocalDateTime> endTime;
-
-	public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, String desc) {
-		this(title, startTime, endTime, tags, false, desc);
-	}
 
 	public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime);
@@ -29,10 +27,7 @@ public final class Event extends Entry{
 	}
 	
 	public Event(Entry entry) {
-		assert entry instanceof Event;
-		Event event = (Event)entry;
-        this.startTime = new SimpleObjectProperty<>(event.getStartTime());
-        this.endTime = new SimpleObjectProperty<>(event.getEndTime());
+		this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription());
 	}
 
 	public LocalDateTime getStartTime() {
