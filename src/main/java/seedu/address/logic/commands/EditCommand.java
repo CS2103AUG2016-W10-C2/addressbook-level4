@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryConversionException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -27,6 +29,7 @@ public class EditCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "Edited entry: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo edits to entry: %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "This entry already exists in the todo list";
+    public static final String MESSAGE_ENTRY_CONVERSION = "The entry would change type between Task and Event. Please use delete and add instead.";
     public static final String TITLE_FLAG = "title/";
 
     private final int targetIndex;
@@ -35,7 +38,7 @@ public class EditCommand extends UndoableCommand {
     private Entry taskToEdit;
     private Update reverseUpdate;
 
-    public EditCommand(int targetIndex, String title, Set<String> tags, String description) throws IllegalValueException {
+    public EditCommand(int targetIndex, String title, LocalDateTime startTime, LocalDateTime endTime, Set<String> tags, String description) throws IllegalValueException {
         this.targetIndex = targetIndex;
 
         Title newTitle = null;
@@ -56,7 +59,11 @@ public class EditCommand extends UndoableCommand {
         if (description != null && !description.isEmpty()) {
             newDescription = description;
         }
-        this.update = new Update(newTitle, newTags, newDescription);
+        
+        //make copy of time
+        LocalDateTime newStartTime = startTime == null ? null : startTime.plusDays(0);
+        LocalDateTime newEndTime = endTime == null ? null : endTime.plusDays(0);
+        this.update = new Update(newTitle, newStartTime, newEndTime, newTags, newDescription);
     }
 
     @Override
@@ -79,6 +86,8 @@ public class EditCommand extends UndoableCommand {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
+        } catch (EntryConversionException e) {
+        	return new CommandResult(MESSAGE_ENTRY_CONVERSION);
         }
 
         setExecutionIsSuccessful();
