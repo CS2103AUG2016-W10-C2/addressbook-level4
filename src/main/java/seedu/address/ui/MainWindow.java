@@ -186,11 +186,4 @@ public class MainWindow extends UiPart {
         return this.taskListPanel;
     }
 
-    public void loadPersonPage(Entry person) {
-        browserPanel.loadPersonPage(person);
-    }
-
-    public void releaseResources() {
-        browserPanel.freeResources();
-    }
 }
