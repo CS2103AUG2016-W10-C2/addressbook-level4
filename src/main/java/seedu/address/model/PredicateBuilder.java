@@ -1,12 +1,17 @@
 package seedu.address.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Task;
+
+import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
 
 /**
  * Supports chaining of predicates for the `list` command
@@ -20,13 +25,17 @@ public class PredicateBuilder {
      * @param startDate
      * @param endDate
      * @param onDate
+     * @param tags
      * @return pred the chained Predicate
      */
-    public Predicate<Entry> buildPredicate(Set<String> keywords, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
+    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
+        }
+        if (tags != null && !tags.isEmpty()) {
+            pred = pred.and(buildTagsPredicate(tags));
         }
         
         if (onDate != null) {
@@ -45,7 +54,11 @@ public class PredicateBuilder {
     }
     
     private Predicate<Entry> buildKeywordsPredicate(Set<String> keywords) {
-        return new PredicateExpression(new NameQualifier(keywords))::satisfies;
+        return new PredicateExpression(new TitleQualifier(keywords))::satisfies;
+    }
+
+    private Predicate<Entry> buildTagsPredicate(Set<String> tags) {
+        return new PredicateExpression(new TagsQualifier(tags))::satisfies;
     }
     
     private Predicate<Entry> buildBeforePredicate(LocalDateTime endDate) {
@@ -90,16 +103,16 @@ public class PredicateBuilder {
         String toString();
     }
 
-    private class NameQualifier implements Qualifier {
-        private Set<String> nameKeyWords;
+    private class TitleQualifier implements Qualifier {
+        private Set<String> titleKeyWords;
 
-        NameQualifier(Set<String> nameKeyWords) {
-            this.nameKeyWords = nameKeyWords;
+        TitleQualifier(Set<String> nameKeyWords) {
+            this.titleKeyWords = nameKeyWords;
         }
 
         @Override
         public boolean run(Entry entry) {
-            return nameKeyWords.stream()
+            return titleKeyWords.stream()
                     .filter(keyword -> StringUtil.containsIgnoreCase(entry.getTitle().fullTitle, keyword))
                     .findAny()
                     .isPresent();
@@ -107,7 +120,38 @@ public class PredicateBuilder {
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", nameKeyWords);
+            return "name=" + String.join(", ", titleKeyWords);
+        }
+    }
+
+    private class TagsQualifier implements Qualifier {
+        private Set<String> tags;
+
+        TagsQualifier(Set<String> tags) {
+            this.tags = tags;
+        }
+
+        @Override
+        public boolean run(Entry entry) {
+            Set<Tag> tags = new HashSet<>();
+            try {
+                for (String t: this.tags) {
+                    tags.add(new Tag(t));
+                }
+            } catch (IllegalValueException ive) {
+                System.err.println(MESSAGE_TAG_CONSTRAINTS);
+                return false;
+            }
+
+            return tags.stream()
+                .filter(tag -> entry.getTags().contains(tag))
+                .findAny()
+                .isPresent();
+        }
+
+        @Override
+        public String toString() {
+            return "name=" + String.join(", ", tags);
         }
     }
     

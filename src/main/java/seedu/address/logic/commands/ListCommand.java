@@ -64,7 +64,7 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, startDate, endDate, onDate);
+            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate);
             model.updateFilteredEntryListPredicate(predicate);
             
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
