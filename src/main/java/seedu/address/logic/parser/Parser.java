@@ -360,7 +360,7 @@ public class Parser {
             return new ListCommand();
         }
 
-        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix);
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix);
         argsTokenizer.tokenize(args);
 
         try {
@@ -379,6 +379,11 @@ public class Parser {
             String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
             String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
             String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
+            Set<String> tags = getTagsFromArgs(argsTokenizer);
+
+            if (tags.isEmpty()) {
+                listCommand.setTags(tags);
+            }
 
             // Ranged search and specific-day search should be mutually exclusive
             if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
