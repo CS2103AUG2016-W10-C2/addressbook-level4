@@ -3,7 +3,6 @@ package seedu.address.logic.commands;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
@@ -11,7 +10,7 @@ import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
 
 /**
- * 
+ *
  * Command to change user preference.
  *
  */
@@ -28,7 +27,7 @@ public class OptionCommand extends Command{
     public static final String MESSAGE_SAVE_LOCATION_SUCCESS = "Save Location";
     public static final String SAVE_LOCATION_FLAG = "save/";
     private static final String EXTENSION_FINDER_REGEX = "\\.(?=[^\\.]+$)";
-    
+
     private UserPrefs toChange;
     private final String saveTargetLocation;
     /**
@@ -57,7 +56,7 @@ public class OptionCommand extends Command{
        // this method shouldn't be called in option command.
        assert false;
     }
-    
+
     public void setUserPrefs(UserPrefs userPrefs) {
         this.toChange = userPrefs;
     }
