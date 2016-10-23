@@ -14,7 +14,7 @@ import seedu.address.model.tag.UniqueTagList;
 /*
  * Add tags to an entry.
  */
-public class TagCommand extends Command {
+public class TagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "tag";
 
@@ -24,10 +24,12 @@ public class TagCommand extends Command {
             + "Example: " + COMMAND_WORD + " 2 shopping, food";
 
     public static final String MESSAGE_SUCCESS = "Tagged entry: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo tag entry: %1$s";
 
     private final int targetIndex;
 
-    private final UniqueTagList newTags;
+    private final UniqueTagList tagsToAdd;
+    private Entry taskToTag;
 
     public TagCommand(int targetIndex, Set<String> tags) throws IllegalValueException {
         this.targetIndex = targetIndex;
@@ -36,11 +38,12 @@ public class TagCommand extends Command {
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-        this.newTags = new UniqueTagList(tagSet);
+        this.tagsToAdd = new UniqueTagList(tagSet);
     }
 
     @Override
-    public CommandResult execute() {   
+    public CommandResult execute() {
+        assert model != null;
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
         
         if (lastShownList.size() < targetIndex) {
@@ -48,14 +51,33 @@ public class TagCommand extends Command {
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
         
-        Entry taskToTag = lastShownList.get(targetIndex - 1);
-
+        taskToTag = lastShownList.get(targetIndex - 1);
+        tagsToAdd.removeFrom(taskToTag.getTags());
+        
         try {
-            model.tagTask(taskToTag, newTags);
+            model.tagTask(taskToTag, tagsToAdd);
         } catch (PersonNotFoundException e) {
             assert false : "The target entry cannot be missing";
         }
+        setExecutionIsSuccessful();
         return new CommandResult(String.format(MESSAGE_SUCCESS, taskToTag));
+    }
+
+    @Override
+    public CommandResult unexecute() {
+        if (!executionIsSuccessful){
+            return new CommandResult(MESSAGE_UNDO_FAIL);
+        };
+        assert model != null;
+        assert taskToTag != null;
+        assert tagsToAdd != null;
+
+        try {
+            model.untagTask(taskToTag, tagsToAdd);
+        } catch (PersonNotFoundException e) {
+            assert false : "The target entry cannot be missing";
+        }
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToTag));
     }
 
 }

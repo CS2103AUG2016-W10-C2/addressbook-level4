@@ -109,6 +109,19 @@ public class UniqueTagList implements Iterable<Tag> {
             }
         }
     }
+    
+    /**
+     * Retains only the tags in this set that are contained in the other tag list.
+     * Intersection of two tag lists.
+     */
+    public void retainAll(UniqueTagList otherTags) {
+        final Set<Tag> currentlyInside = this.toSet();
+        for (Tag tag : currentlyInside) {
+            if (!otherTags.contains(tag)) {
+                internalList.remove(tag);
+            }
+        }
+    }
 
     /**
      * Returns true if the list contains an equivalent Tag as the given argument.
