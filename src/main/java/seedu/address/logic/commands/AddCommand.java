@@ -26,7 +26,7 @@ public class AddCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo add new entry: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
-    public static final String START_FLAG = "start/";
+    public static final String START_FLAG = "st/";
     public static final String END_FLAG = "end/";
     public static final String TAG_FLAG = "#";
     public static final String DESC_FLAG = "desc/";

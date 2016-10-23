@@ -189,7 +189,7 @@ public class LogicManagerTest {
         expectedAB.addTask(toEdit);
         model.addTask(toEditCopy);
 
-        Update update = new Update(newTitle, null, null);
+        Update update = new Update(newTitle,null, null, null, null);
         update.setTask(toEdit);
         expectedAB.editTask(update);
 
@@ -213,7 +213,7 @@ public class LogicManagerTest {
         model.addTask(toEditCopy);
 
         Title newTitle = null;
-        Update update = new Update(newTitle, newTagList, "");
+        Update update = new Update(newTitle, null, null, newTagList, "");
         update.setTask(toEdit);
         expectedAB.editTask(update);
 
