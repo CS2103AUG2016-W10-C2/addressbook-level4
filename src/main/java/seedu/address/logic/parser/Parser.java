@@ -7,6 +7,7 @@ import seedu.address.logic.parser.ArgumentTokenizer.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -396,6 +397,8 @@ public class Parser {
             return new OptionCommand(getSaveLocationFromArgs(argsTokenizer));
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
+        } catch (InvalidPathException ipe) {
+            return new IncorrectCommand(ipe.getMessage());
         }
     }
 
