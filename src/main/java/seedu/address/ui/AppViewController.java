@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import javafx.fxml.FXML;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import seedu.address.logic.Logic;
 
@@ -15,8 +13,7 @@ public class AppViewController {
 
     private Logic logic;
 
-    @FXML
-    private BorderPane appView;
+    private Pane rootLayout;
 
     private AppViewController() {}
 
@@ -31,22 +28,27 @@ public class AppViewController {
     // # INITIALISERS #
     // ################
     void init(Pane root) {
-        appView = new BorderPane();
-        root.getChildren().add(appView);
+        if (rootLayout == null) {
+            this.rootLayout = root;
+        }
         initChildViews();
     }
 
     private void initChildViews() {
+        assert rootLayout != null;
+        HelpViewController hvc = new HelpViewController();
+        hvc.init();
         TaskViewController tvc = new TaskViewController(logic);
         tvc.init();
+
     }
 
     // #######################
     // # GETTERS AND SETTERS #
     // #######################
 
-    BorderPane getAppView() {
-        return appView;
+    Pane getRootLayout() {
+        return rootLayout;
     }
 
     public void setLogic(Logic logic) {
