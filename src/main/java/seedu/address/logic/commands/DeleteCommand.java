@@ -4,7 +4,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniquePersonList;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 /**
  * Deletes a task identified using it's last displayed index from the address book.
@@ -44,7 +44,7 @@ public class DeleteCommand extends UndoableCommand {
 
         try {
             model.deleteTask(entryToDelete);
-        } catch (PersonNotFoundException pnfe) {
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
 

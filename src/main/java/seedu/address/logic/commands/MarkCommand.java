@@ -3,8 +3,8 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 public class MarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "mark";
@@ -40,7 +40,7 @@ public class MarkCommand extends UndoableCommand {
         originalIsMarked = entryToMark.isMarked();
         try {
             model.markTask(entryToMark);
-        } catch (PersonNotFoundException pnfe) {
+        } catch (EntryNotFoundException pnfe) {
             assert false : "The target entry cannot be missing";
         }
 

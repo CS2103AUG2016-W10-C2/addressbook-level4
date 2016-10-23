@@ -97,7 +97,7 @@ public class UniqueTagList implements Iterable<Tag> {
             }
         }
     }
-    
+
     /**
      * Remove every tag from the argument list that exists in this list.
      */

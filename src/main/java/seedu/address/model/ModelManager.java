@@ -4,22 +4,17 @@ import javafx.collections.transformation.FilteredList;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.Deadline;
-import seedu.address.model.task.Task;
-import seedu.address.model.task.UniquePersonList;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
-import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -30,79 +25,78 @@ import java.util.logging.Logger;
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final TaskManager taskManager;
     private final FilteredList<Entry> filteredPersons;
 
     /**
-     * Initializes a ModelManager with the given AddressBook
-     * AddressBook and its variables should not be null
+     * Initializes a ModelManager with the given TaskManager
+     * TaskManager and its variables should not be null
      */
-    public ModelManager(AddressBook src, UserPrefs userPrefs) {
+    public ModelManager(TaskManager src, UserPrefs userPrefs) {
         super();
         assert src != null;
         assert userPrefs != null;
 
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
 
-        addressBook = new AddressBook(src);
-        filteredPersons = new FilteredList<>(addressBook.getPersons());
+        taskManager = new TaskManager(src);
+        filteredPersons = new FilteredList<>(taskManager.getEntries());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new TaskManager(), new UserPrefs());
     }
 
-    public ModelManager(ReadOnlyAddressBook initialData, UserPrefs userPrefs) {
-        addressBook = new AddressBook(initialData);
-        filteredPersons = new FilteredList<>(addressBook.getPersons());
+    public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
+        taskManager = new TaskManager(initialData);
+        filteredPersons = new FilteredList<>(taskManager.getEntries());
     }
 
     @Override
-    public void resetData(ReadOnlyAddressBook newData) {
-        addressBook.resetData(newData);
+    public void resetData(ReadOnlyTaskManager newData) {
+        taskManager.resetData(newData);
         indicateAddressBookChanged();
     }
 
-    @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyTaskManager getTaskManager() {
+        return taskManager;
     }
 
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
-        raise(new AddressBookChangedEvent(addressBook));
+        raise(new TaskManagerChangedEvent(taskManager));
     }
 
     @Override
-    public synchronized void deleteTask(Entry target) throws PersonNotFoundException {
-        addressBook.removePerson(target);
+    public synchronized void deleteTask(Entry target) throws EntryNotFoundException {
+        taskManager.removeEntry(target);
         indicateAddressBookChanged();
     }
 
     @Override
-    public synchronized void addTask(Entry person) throws UniquePersonList.DuplicateTaskException {
-        addressBook.addTask(person);
+    public synchronized void addTask(Entry person) throws UniqueTaskList.DuplicateTaskException {
+        taskManager.addTask(person);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
     public synchronized void editTask(Update update)
-            throws PersonNotFoundException, DuplicateTaskException {
-        addressBook.editTask(update);
+            throws EntryNotFoundException, DuplicateTaskException {
+        taskManager.editTask(update);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
     
     @Override
-    public void markTask(Entry task) throws PersonNotFoundException {
+    public void markTask(Entry task) throws EntryNotFoundException {
         addressBook.markTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
     
     @Override
-    public void unmarkTask(Entry task) throws PersonNotFoundException {
+    public void unmarkTask(Entry task) throws EntryNotFoundException {
         addressBook.unmarkTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
@@ -110,21 +104,21 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) {
-        addressBook.tagTask(taskToTag, tagsToAdd);
+        taskManager.tagTask(taskToTag, tagsToAdd);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
-    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws PersonNotFoundException {
-        addressBook.untagTask(taskToUntag, tagsToRemove);
+    public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException {
+        taskManager.untagTask(taskToUntag, tagsToRemove);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
     public void addTag(Tag tag) throws DuplicateTagException {
-        addressBook.addTag(tag);
+        taskManager.addTag(tag);
     }
     //=========== Filtered Person List Accessors ===============================================================
 

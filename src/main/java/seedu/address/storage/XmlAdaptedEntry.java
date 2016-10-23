@@ -23,7 +23,10 @@ public class XmlAdaptedEntry {
     private String description = "";
 
     @XmlElement
-    private String deadline;
+    private String start;
+
+    @XmlElement
+    private String end;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -53,7 +56,13 @@ public class XmlAdaptedEntry {
 
         if (source instanceof Task) {
             LocalDateTime deadlineTime = ((Task)source).getDeadline();
-            deadline = deadlineTime == null ? "" : deadlineTime.toString();
+            end = deadlineTime == null ? "" : deadlineTime.toString();
+        }
+
+        if (source instanceof Event) {
+            Event event = (Event)source;
+            start = event.getStartTime().toString();
+            end=  event.getEndTime().toString();
         }
     }
 
@@ -69,12 +78,13 @@ public class XmlAdaptedEntry {
         }
         final Title title = new Title(this.title);
         final UniqueTagList tags = new UniqueTagList(personTags);
-        LocalDateTime deadlineTime = deadline.isEmpty() ? null : LocalDateTime.parse(deadline);
-        return new Task(title, deadlineTime, tags, isMarked, description);
-        /*if (deadline != null) {
-            return new Task(title, null, tags, isMarked, description);
-        } else {
-            return new Deadline(title, LocalDateTime.parse(deadline), tags, isMarked, description);
-        }*/
+
+        LocalDateTime startTime = start == null || start.isEmpty() ? null : LocalDateTime.parse(start);
+        LocalDateTime endTime = end == null || end.isEmpty() ? null : LocalDateTime.parse(end);
+
+        if (startTime != null) {
+            return new Event(title, startTime, endTime, tags, isMarked, description);
+        }
+        return new Task(title, endTime, tags, isMarked, description);
     }
 }

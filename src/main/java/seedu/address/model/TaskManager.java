@@ -2,56 +2,54 @@ package seedu.address.model;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.task.Task;
-import seedu.address.model.task.Title;
-import seedu.address.model.task.Deadline;
+import seedu.address.model.task.Event;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the TaskManager level
  * Duplicates are not allowed (by .equals comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class TaskManager implements ReadOnlyTaskManager {
 
-    private final UniquePersonList entries;
+    private final UniqueTaskList entries;
     private final UniqueTagList tags;
 
     {
-        entries = new UniquePersonList();
+        entries = new UniqueTaskList();
         tags = new UniqueTagList();
     }
 
-    public AddressBook() {}
+    public TaskManager() {}
 
     /**
      * Persons and Tags are copied into this addressbook
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
-        this(toBeCopied.getUniquePersonList(), toBeCopied.getUniqueTagList());
+    public TaskManager(ReadOnlyTaskManager toBeCopied) {
+        this(toBeCopied.getUniqueTaskList(), toBeCopied.getUniqueTagList());
     }
 
     /**
      * Persons and Tags are copied into this addressbook
      */
-    public AddressBook(UniquePersonList persons, UniqueTagList tags) {
+    public TaskManager(UniqueTaskList persons, UniqueTagList tags) {
         resetData(persons.getInternalList(), tags.getInternalList());
     }
 
-    public static ReadOnlyAddressBook getEmptyAddressBook() {
-        return new AddressBook();
+    public static ReadOnlyTaskManager getEmptyAddressBook() {
+        return new TaskManager();
     }
 
 //// list overwrite operations
 
-    public ObservableList<Entry> getPersons() {
+    public ObservableList<Entry> getEntries() {
         return entries.getInternalList();
     }
 
@@ -64,23 +62,22 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     public void resetData(Collection<? extends Entry> newEntries, Collection<Tag> newTags) {
-        /* ArrayList<Entry> copyList = new ArrayList<>();
+        ArrayList<Entry> copyList = new ArrayList<>();
         for (Entry entry : newEntries) {
             Entry copy;
-            if (entry instanceof Deadline) {
-                copy = new Deadline(entry);
+            if (entry instanceof Event) {
+                copy = new Event(entry);
             } else {
                 copy = new Task(entry);
             }
             copyList.add(copy);
         }
-        setPersons(copyList); */
-        setEntries(newEntries.stream().map(Task::new).collect(Collectors.toList()));
+        setEntries(copyList);
         setTags(newTags);
     }
 
-    public void resetData(ReadOnlyAddressBook newData) {
-        resetData(newData.getPersonList(), newData.getTagList());
+    public void resetData(ReadOnlyTaskManager newData) {
+        resetData(newData.getTaskList(), newData.getTagList());
     }
 
 //// task-level operations
@@ -90,15 +87,15 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Also checks the new task's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the task to point to those in {@link #tags}.
      *
-     * @throws UniquePersonList.DuplicateTaskException if an equivalent task already exists.
+     * @throws UniqueTaskList.DuplicateTaskException if an equivalent task already exists.
      */
-    public void addTask(Entry person) throws UniquePersonList.DuplicateTaskException {
-        syncTagsWithMasterList(person);
-        entries.add(person);
+    public void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException {
+        syncTagsWithMasterList(entry);
+        entries.add(entry);
     }
 
     public void editTask(Update update)
-            throws PersonNotFoundException, DuplicateTaskException {
+            throws EntryNotFoundException, DuplicateTaskException {
         Entry toEdit = update.getTask();
         syncTagsWithMasterList(toEdit);
         entries.updateTitle(toEdit, update.getNewTitle());
@@ -106,11 +103,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         entries.updateDescription(toEdit, update.getNewDescription());
     }
 
-    public void markTask(Entry task) throws PersonNotFoundException {
+    public void markTask(Entry task) throws EntryNotFoundException {
         entries.mark(task);
     }
 
-    public void unmarkTask(Entry task) throws PersonNotFoundException {
+    public void unmarkTask(Entry task) throws EntryNotFoundException {
         entries.unmark(task);
     }
 
@@ -120,8 +117,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      *  - exists in the master list {@link #tags}
      *  - points to a Tag object in the master list
      */
-    private void syncTagsWithMasterList(Entry person) {
-        final UniqueTagList personTags = person.getTags();
+    private void syncTagsWithMasterList(Entry entry) {
+        final UniqueTagList personTags = entry.getTags();
         tags.mergeFrom(personTags);
 
         // Create map with values = tag object references in the master list
@@ -135,14 +132,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         for (Tag tag : personTags) {
             commonTagReferences.add(masterTagObjects.get(tag));
         }
-        person.setTags(new UniqueTagList(commonTagReferences));
+        entry.setTags(new UniqueTagList(commonTagReferences));
     }
 
-    public boolean removePerson(Entry key) throws UniquePersonList.PersonNotFoundException {
+    public boolean removeEntry(Entry key) throws EntryNotFoundException {
         if (entries.remove(key)) {
             return true;
         } else {
-            throw new UniquePersonList.PersonNotFoundException();
+            throw new EntryNotFoundException();
         }
     }
 
@@ -171,7 +168,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
-    public List<Entry> getPersonList() {
+    public List<Entry> getTaskList() {
         return Collections.unmodifiableList(entries.getInternalList());
     }
 
@@ -181,7 +178,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
-    public UniquePersonList getUniquePersonList() {
+    public UniqueTaskList getUniqueTaskList() {
         return this.entries;
     }
 
@@ -194,9 +191,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddressBook // instanceof handles nulls
-                && this.entries.equals(((AddressBook) other).entries)
-                && this.tags.equals(((AddressBook) other).tags));
+                || (other instanceof TaskManager // instanceof handles nulls
+                && this.entries.equals(((TaskManager) other).entries)
+                && this.tags.equals(((TaskManager) other).tags));
     }
 
     @Override

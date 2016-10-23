@@ -5,10 +5,13 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.ArgumentTokenizer.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -29,15 +32,21 @@ public class Parser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     // TODO: Use PrettyTime to parse dates
     private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
     private static final Prefix endDatePrefix = new Prefix(BEFORE_FLAG);
     private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
-    private static final Prefix deadlinePrefix = new Prefix(DEADLINE_FLAG);
+    private static final Prefix startPrefix = new Prefix(START_FLAG);
+    private static final Prefix endPrefix = new Prefix(END_FLAG);
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
+    private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
+    private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
+    private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
     public Parser() {}
 
@@ -133,38 +142,62 @@ public class Parser {
     }
 
     /**
-     * Extracts the new entry's deadline from the add command's tag arguments
-     * string. Format: YYYY-MM-DD HH:MM
+     * Extracts the new entry's startTime from the add command's tag arguments
+     * string.
      */
-    private static LocalDateTime getDeadlineFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
-        String deadline = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(deadlinePrefix));
-        
-        if (deadline.isEmpty()) {
-        	return null;
-        }
-        
-        Matcher matcher = DATE_TIME_FORMAT.matcher(deadline);
-        if (!matcher.matches()) {
-            throw new IllegalValueException(WRONG_DATE_TIME_INPUT);
+    private static LocalDateTime getStartTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        return getDateTimeFromArgument(argsTokenizer, startPrefix);
+    }
+
+    /**
+     * Extracts the new entry's endTime from the add command's tag arguments
+     * string.
+     */
+    private static LocalDateTime getEndTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        return getDateTimeFromArgument(argsTokenizer, endPrefix);
+    }
+
+    private static LocalDateTime getDateTimeFromArgument(ArgumentTokenizer argsTokenizer, Prefix prefix) throws IllegalValueException {
+        String dateTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(prefix));
+
+        if (dateTime.isEmpty()) {
+            return null;
         }
 
-        // remove the tag.
-        final List<String> cleanedStrings = Arrays.asList(deadline.split(" "));
-        return LocalDateTime.parse(cleanedStrings.get(0) + "T" + cleanedStrings.get(1) + ":00");
+        List<Date> possibleDates = prettyTimeParser.parse(dateTime);
+
+        if (possibleDates.size() != 1) {
+            throw new IllegalValueException(String.format(WRONG_DATE_TIME_INPUT, dateTime));
+        }
+
+        Date parsed = possibleDates.get(0);
+
+        String formatted = dateTimeFormat.format(parsed);
+        return LocalDateTime.parse(formatted);
     }
 
     /**
      * Parse LocalDateTime from an input string
-     * string. Format: YYYY-MM-DD
+     * string.
+     * 
+     * @@author A0127828W
      */
     private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString, String time) throws IllegalValueException {
         if (dateTimeString.isEmpty()) {
             return null;
         }
 
-        // remove the tag.
-        final String cleanedString = dateTimeString + "T" + time;
-        return LocalDateTime.parse(cleanedString);
+        List<Date> possibleDates = prettyTimeParser.parse(dateTimeString);
+
+        if (possibleDates.size() != 1) {
+            throw new IllegalValueException(String.format(WRONG_DATE_TIME_INPUT, dateTimeString));
+        }
+
+        Date parsed = possibleDates.get(0);
+
+        String formatted = dateFormat.format(parsed);
+        formatted = formatted + "T" + time;
+        return LocalDateTime.parse(formatted);
     }
 
     /**
@@ -175,9 +208,8 @@ public class Parser {
     * @return the prepared command
     */
    private Command prepareAdd(String args) {
-       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(deadlinePrefix, tagPrefix, descPrefix);
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startPrefix, endPrefix, tagPrefix, descPrefix);
        argsTokenizer.tokenize(args.trim());
-
        // Validate arg string format
        String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
        if (title.isEmpty()) {
@@ -186,7 +218,8 @@ public class Parser {
 
        try {
            return new AddCommand(title,
-                   getDeadlineFromArgument(argsTokenizer),
+                   getStartTimeFromArgument(argsTokenizer),
+                   getEndTimeFromArgument(argsTokenizer),
                    getTagsFromArgs(argsTokenizer),
                    getDescriptionFromArgs(argsTokenizer));
        } catch (IllegalValueException ive) {
@@ -202,7 +235,7 @@ public class Parser {
     * @return the prepared command
     */
    private Command prepareEdit(String args) {
-       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, deadlinePrefix, tagPrefix, descPrefix);
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, endPrefix, tagPrefix, descPrefix);
        argsTokenizer.tokenize(args.trim());
 
        // Validate arg string format
@@ -352,6 +385,8 @@ public class Parser {
 
     /**
      * Parses arguments in the context of the list task command.
+     *
+     * @@author A0127828W
      *
      * @param args
      *            full command args string

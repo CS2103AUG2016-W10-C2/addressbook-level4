@@ -8,8 +8,8 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Title;
-import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
@@ -75,7 +75,7 @@ public class EditCommand extends UndoableCommand {
         assert model != null;
         try {
             model.editTask(update);
-        } catch (PersonNotFoundException e) {
+        } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);

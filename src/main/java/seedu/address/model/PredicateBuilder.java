@@ -1,16 +1,18 @@
 package seedu.address.model;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.util.StringUtil;
-import seedu.address.model.task.Deadline;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Event;
+import seedu.address.model.task.Task;
 
 /**
  * Supports chaining of predicates for the `list` command
- * @author joeleba
+ * @@author A0127828W
  *
  */
 public class PredicateBuilder {
@@ -28,7 +30,7 @@ public class PredicateBuilder {
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
         }
-        
+
         if (onDate != null) {
             pred = pred.and(buildOnPredicate(onDate));
         } else {
@@ -39,23 +41,23 @@ public class PredicateBuilder {
                 pred = pred.and(buildBeforePredicate(endDate));
             }
         }
-        
+
         return pred;
-        
+
     }
-    
+
     private Predicate<Entry> buildKeywordsPredicate(Set<String> keywords) {
         return new PredicateExpression(new NameQualifier(keywords))::satisfies;
     }
-    
+
     private Predicate<Entry> buildBeforePredicate(LocalDateTime endDate) {
         return new PredicateExpression(new DateBeforeQualifier(endDate))::satisfies;
     }
-    
+
     private Predicate<Entry> buildAfterPredicate(LocalDateTime startDate) {
         return new PredicateExpression(new DateAfterQualifier(startDate))::satisfies;
     }
-    
+
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
@@ -110,7 +112,8 @@ public class PredicateBuilder {
             return "name=" + String.join(", ", nameKeyWords);
         }
     }
-    
+
+    //@@author A0126539Y
     private class DateAfterQualifier implements Qualifier {
         private LocalDateTime startDate;
 
@@ -118,17 +121,21 @@ public class PredicateBuilder {
             this.startDate = startDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
+                    return false;
+                }
+                return task.getDeadline().compareTo(startDate) >= 0;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            return deadline.getDeadline().compareTo(startDate) >= 0;
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(startDate) >= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -136,7 +143,7 @@ public class PredicateBuilder {
             return "Due after: " + startDate.toString();
         }
     }
-    
+
     private class DateBeforeQualifier implements Qualifier {
         private LocalDateTime endDate;
 
@@ -144,17 +151,21 @@ public class PredicateBuilder {
             this.endDate = endDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
+                    return false;
+                }
+                return task.getDeadline().compareTo(endDate) <= 0;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            return deadline.getDeadline().compareTo(endDate) <= 0;
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(endDate) <= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -162,7 +173,7 @@ public class PredicateBuilder {
             return "Due before: " + endDate.toString();
         }
     }
-    
+
     private class DateOnQualifier implements Qualifier {
         private LocalDateTime onDate;
 
@@ -170,20 +181,25 @@ public class PredicateBuilder {
             this.onDate = onDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            LocalDateTime beginningOfDay = onDate.truncatedTo(ChronoUnit.DAYS);
+            LocalDateTime endOfDay = onDate.truncatedTo(ChronoUnit.DAYS).plusDays(1);
+
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
+                    return false;
+                }
+                return task.getDeadline().compareTo(beginningOfDay) >= 0 && task.getDeadline().compareTo(endOfDay) <= 0;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
-            
-            return (deadline.getDeadline().compareTo(onDate) <= 0)
-                    && (deadline.getDeadline().compareTo(beginningOfDay) >= 0);
+
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(beginningOfDay) >= 0 && event.getEndTime().compareTo(endOfDay) <= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -191,4 +207,5 @@ public class PredicateBuilder {
             return "Due on: " + onDate.toString();
         }
     }
+    //@@author
 }

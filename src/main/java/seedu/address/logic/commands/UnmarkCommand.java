@@ -3,7 +3,7 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 public class UnmarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "unmark";
@@ -41,7 +41,7 @@ public class UnmarkCommand extends UndoableCommand {
 
         try {
             model.unmarkTask(entryToUnmark);
-        } catch (PersonNotFoundException pnfe) {
+        } catch (EntryNotFoundException pnfe) {
             assert false : "The target entry cannot be missing";
         }
         setExecutionIsSuccessful();
