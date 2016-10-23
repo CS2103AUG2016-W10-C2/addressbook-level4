@@ -19,6 +19,7 @@ public class HelpViewController extends Controller {
     }
 
     void initAppView() {
+        logger.info("Initialising HelpView...");
         appView = new BorderPane();
         HelpList helpList = new HelpList();
         helpList.init();

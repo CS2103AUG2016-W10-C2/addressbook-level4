@@ -35,6 +35,7 @@ public class TaskViewController extends Controller {
     }
 
     void initAppView() {
+        logger.info("Initialising TaskView...");
         appView = new BorderPane();
         TaskList taskList = new TaskList();
         taskList.init(getDefaultTasks());

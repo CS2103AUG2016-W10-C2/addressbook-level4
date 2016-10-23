@@ -63,7 +63,7 @@ public class MainController extends UiPart {
         rootLayout = (StackPane) node;
     }
 
-    public static MainController load(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
+    static MainController load(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         MainController mainController = UiPartLoader.loadUiPart(primaryStage, new MainController());
         mainController.configure(config, prefs, logic);
         return mainController;
@@ -110,7 +110,7 @@ public class MainController extends UiPart {
         primaryStage.setTitle(appTitle);
     }
 
-    protected void setWindowDefaultSize(UserPrefs prefs) {
+    private void setWindowDefaultSize(UserPrefs prefs) {
         primaryStage.setHeight(prefs.getGuiSettings().getWindowHeight());
         primaryStage.setWidth(prefs.getGuiSettings().getWindowWidth());
         if (prefs.getGuiSettings().getWindowCoordinates() != null) {
@@ -127,6 +127,10 @@ public class MainController extends UiPart {
     // #################
     // # FXML HANDLERS #
     // #################
+
+    /**
+     * Handler to leave the help screen when the `ESCAPE` key is pressed.
+     */
     @FXML
     private void handleKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE) {
@@ -146,18 +150,18 @@ public class MainController extends UiPart {
     // # GUI HELPERS #
     // ###############
 
-    public void show() {
+    void show() {
         primaryStage.show();
     }
 
-    public void hide() {
+    void hide() {
         primaryStage.hide();
     }
 
     /**
      * Returns the current size and the position of the main Window.
      */
-    public GuiSettings getCurrentGuiSetting() {
+    GuiSettings getCurrentGuiSetting() {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
