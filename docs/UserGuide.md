@@ -54,10 +54,10 @@ No tasks to display.
 
 | Command |Format |
 | --- | --- |
-|add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence>] [desc/<description>]`|
-|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
-|tag|`tag <task_id> #<tag_name> [#<tag_name> …]`|
-|untag|`untag <task_id> #<tag_name> [#<tag_name> …]`|
+|add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]`|
+|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
+|tag|`tag <task_id> #<tag_name> [#<tag_name> ...]`|
+|untag|`untag <task_id> #<tag_name> [#<tag_name> ...]`|
 |edit|`edit <task_id> [title/ new title] [st/ <start> end/ <end> | deadline/ <deadline>] [t/ <tags>...] [r/ <recurrence>] [desc/ <description>]`|
 |delete|`delete <task_id>`|
 |mark|`mark <task_id>`|
@@ -69,7 +69,7 @@ No tasks to display.
 ## Commands
 
 ```
-add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence>] [desc/<description>]
+add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
 ```
 
 > Add event or deadline
@@ -83,7 +83,7 @@ add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tags>]  [r/<recurrence
 
 
 ```
-list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tags>] [recurrence=<recurrence_value>] [desc=<description_value>]]
+list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]
 ```
 
 > List all or filtered entries
@@ -115,7 +115,7 @@ tag <task_id> #<tag_name> [#<tag_name> …]
 
 
 ```
-edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [#<tags>] [/r <recurrence>] [/desc <description>]
+edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [#<tag_name> ...] [/r <recurrence>] [/desc <description>]
 ```
 
 >  Edit the entry with the specified entry id.
