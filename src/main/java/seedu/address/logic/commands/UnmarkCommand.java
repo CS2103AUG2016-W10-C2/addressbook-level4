@@ -3,10 +3,9 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
-public class UnmarkCommand extends Command {
+public class UnmarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "unmark";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
@@ -15,9 +14,12 @@ public class UnmarkCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_UNMARK_ENTRY_SUCCESS = "Unmarked Entry: %1$s";
+    public static final String MESSAGE_SUCCESS = "Unmarked Entry: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo unmarked Entry: %1$s";
 
-    public final int targetIndex;
+    private final int targetIndex;
+    private Entry entryToUnmark;
+    private boolean originalIsMarked;
 
     public UnmarkCommand(int targetIndex) {
         this.targetIndex = targetIndex;
@@ -34,17 +36,36 @@ public class UnmarkCommand extends Command {
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
 
-        Entry entryToUnmark = lastShownList.get(targetIndex - 1);
+        entryToUnmark = lastShownList.get(targetIndex - 1);
+        originalIsMarked= entryToUnmark.isMarked();
 
         try {
             model.unmarkTask(entryToUnmark);
         } catch (EntryNotFoundException pnfe) {
             assert false : "The target entry cannot be missing";
-        } catch (DuplicateTaskException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        }
+        setExecutionIsSuccessful();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToUnmark));
+    }
+
+    @Override
+    public CommandResult unexecute() {
+        if (!executionIsSuccessful){
+            return new CommandResult(MESSAGE_UNDO_FAIL);
+        };
+        assert model != null;
+        assert entryToUnmark != null;
+
+        try {
+            if (originalIsMarked) {
+                model.markTask(entryToUnmark);
+            } else {
+                model.unmarkTask(entryToUnmark);
+            }
+        } catch (EntryNotFoundException enfe) {
+            assert false : "The target entry cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_UNMARK_ENTRY_SUCCESS, entryToUnmark));
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, entryToUnmark));
     }
 }

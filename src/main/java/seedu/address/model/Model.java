@@ -45,13 +45,11 @@ public interface Model {
     /** Updates the filter of the filtered task list*/
     void updateFilteredEntryListPredicate(Predicate<Entry> predicate);
     
-    /** Marks the given task. 
-     * @throws DuplicateTaskException */
-    void markTask(Entry entryToMark) throws EntryNotFoundException, DuplicateTaskException;
+    /** Marks the given task */
+    void markTask(Entry entryToMark) throws EntryNotFoundException;
     
-    /** Unmarks the given task 
-     * @throws  */
-    void unmarkTask(Entry task) throws EntryNotFoundException, DuplicateTaskException;
+    /** Unmarks the given task  */
+    void unmarkTask(Entry task) throws EntryNotFoundException;
 
     /** Add tags to task
      */

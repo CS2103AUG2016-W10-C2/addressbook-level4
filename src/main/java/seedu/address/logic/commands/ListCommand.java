@@ -19,8 +19,8 @@ public class ListCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": List all entries whose titles contain any of "
             + "the specified keywords (case-sensitive), or with deadlines before/after certain dates "
             + "and displays them as a list with index numbers.\n"
-            + "Parameters: ([after/YYYY-MM-DD] [before/YYYY-MM-DD] | [on/YYYY-MM-DD]) [KEYWORDS]\n"
-            + "Example: " + COMMAND_WORD + " after/2016-10-10 alice bob charlie";
+            + "Parameters: [KEYWORDS] [#TAGS] ([after/DATE] [before/DATE] | [on/DATE])\n"
+            + "Example: " + COMMAND_WORD + " banana apple #groceries after/tomorrow";
     
     public static final String MESSAGE_INVALID_DATE = "Invalid dates given.";
     public static final String MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS = "You can't search for a range and a specific day at the same time";
@@ -28,8 +28,9 @@ public class ListCommand extends Command {
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
     public static final String ON_FLAG = "on/";
-    
+
     private Set<String> keywords;
+    private Set<String> tags;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private LocalDateTime onDate;
@@ -40,6 +41,10 @@ public class ListCommand extends Command {
 
     public void setKeywords(Set<String> keywords) {
         this.keywords = keywords;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
     
     public void setStartDate(LocalDateTime startDate) {
@@ -59,7 +64,7 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, startDate, endDate, onDate);
+            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate);
             model.updateFilteredEntryListPredicate(predicate);
             
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
@@ -77,6 +82,7 @@ public class ListCommand extends Command {
      */
     private boolean isListAll() {
         return (keywords == null || keywords.isEmpty())
+                && (tags == null || tags.isEmpty())
                 && startDate == null
                 && endDate == null
                 && onDate == null;

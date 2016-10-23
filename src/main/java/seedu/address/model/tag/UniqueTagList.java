@@ -97,7 +97,7 @@ public class UniqueTagList implements Iterable<Tag> {
             }
         }
     }
-    
+
     /**
      * Remove every tag from the argument list that exists in this list.
      */
@@ -105,6 +105,19 @@ public class UniqueTagList implements Iterable<Tag> {
         final Set<Tag> alreadyInside = this.toSet();
         for (Tag tag : tags) {
             if (alreadyInside.contains(tag)) {
+                internalList.remove(tag);
+            }
+        }
+    }
+    
+    /**
+     * Retains only the tags in this set that are contained in the other tag list.
+     * Intersection of two tag lists.
+     */
+    public void retainAll(UniqueTagList otherTags) {
+        final Set<Tag> currentlyInside = this.toSet();
+        for (Tag tag : currentlyInside) {
+            if (!otherTags.contains(tag)) {
                 internalList.remove(tag);
             }
         }

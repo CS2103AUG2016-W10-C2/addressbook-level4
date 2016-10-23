@@ -40,12 +40,13 @@ public class UniqueTaskList implements Iterable<Entry> {
             new Callback<Entry, Observable[]>() {
         @Override
         public Observable[] call(Entry entry) {
-            return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
-            /*if (entry instanceof Deadline) {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.deadlineObjectProperty(), entry.descriptionProperty()};
-            } else {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty()};
-            }*/
+        	if (entry instanceof Task) {
+        		return new Observable[] { entry.titleObjectProperty(), ((Task)entry).deadlineObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+        	} else if (entry instanceof Event){
+        		return new Observable[] { entry.titleObjectProperty(), ((Event)entry).startTimeObjectProperty(), ((Event)entry).endTimeObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+        	} else {
+        		return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+        	}
         }
     });
 
@@ -149,10 +150,8 @@ public class UniqueTaskList implements Iterable<Entry> {
      * Mark an entry on the list.
      * @throws EntryNotFoundException
      *             if no such task could be found in the list.
-     * @throws DuplicateTaskException
-     *             if the task to add is a duplicate of an existing task.
      */
-    public void mark(Entry toMark) throws EntryNotFoundException, DuplicateTaskException {
+    public void mark(Entry toMark) throws EntryNotFoundException {
         assert toMark!= null;
         if (!contains(toMark)) {
             throw new EntryNotFoundException();
@@ -164,10 +163,8 @@ public class UniqueTaskList implements Iterable<Entry> {
      * Unmarks an entry on the list.
      * @throws EntryNotFoundException
      *             if no such task could be found in the list.
-     * @throws DuplicateTaskException
-     *             if the task to add is a duplicate of an existing task.
      */
-    public void unmark(Entry toUnmark) throws EntryNotFoundException, DuplicateTaskException {
+    public void unmark(Entry toUnmark) throws EntryNotFoundException {
         assert toUnmark!= null;
         if (!contains(toUnmark)) {
             throw new EntryNotFoundException();

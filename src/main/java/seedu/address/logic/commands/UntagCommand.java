@@ -14,7 +14,7 @@ import seedu.address.model.tag.UniqueTagList;
 /*
  * Remove tags from an entry.
  */
-public class UntagCommand extends Command {
+public class UntagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "untag";
 
@@ -24,8 +24,10 @@ public class UntagCommand extends Command {
             + "Example: " + COMMAND_WORD + " 2 shopping, food";
 
     public static final String MESSAGE_SUCCESS = "Removed tags from entry: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo remove tags from entry: %1$s";
 
     private final int targetIndex;
+    private Entry taskToUntag;
 
     private final UniqueTagList tagsToRemove;
 
@@ -48,14 +50,33 @@ public class UntagCommand extends Command {
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
         
-        Entry taskToUntag = lastShownList.get(targetIndex - 1);
+        taskToUntag = lastShownList.get(targetIndex - 1);
+        tagsToRemove.retainAll(taskToUntag.getTags());
 
         try {
             model.untagTask(taskToUntag, tagsToRemove);
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         }
+        setExecutionIsSuccessful();
         return new CommandResult(String.format(MESSAGE_SUCCESS, taskToUntag));
+    }
+
+    @Override
+    public CommandResult unexecute() {
+        if (!executionIsSuccessful){
+            return new CommandResult(MESSAGE_UNDO_FAIL);
+        };
+        assert model != null;
+        assert taskToUntag != null;
+        assert tagsToRemove != null;
+        
+        try {
+            model.tagTask(taskToUntag, tagsToRemove);
+        } catch (EntryNotFoundException enfe) {
+            assert false : "The target entry cannot be missing";
+        }
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToUntag));
     }
 
 }

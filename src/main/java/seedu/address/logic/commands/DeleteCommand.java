@@ -3,12 +3,13 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 /**
  * Deletes a task identified using it's last displayed index from the address book.
  */
-public class DeleteCommand extends Command {
+public class DeleteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
 
@@ -18,8 +19,11 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Entry: %1$s";
+    public static final String MESSAGE_UNDO_DELETE_PERSON_SUCCESS = "Undo delete Entry: %1$s";
+    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
 
     public final int targetIndex;
+    public Entry entryToDelete;
 
     public DeleteCommand(int targetIndex) {
         this.targetIndex = targetIndex;
@@ -36,15 +40,31 @@ public class DeleteCommand extends Command {
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
 
-        Entry personToDelete = lastShownList.get(targetIndex - 1);
+        entryToDelete = lastShownList.get(targetIndex - 1);
 
         try {
-            model.deleteTask(personToDelete);
-        } catch (EntryNotFoundException pnfe) {
+            model.deleteTask(entryToDelete);
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+        setExecutionIsSuccessful();
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, entryToDelete));
+    }
+
+    @Override
+    public CommandResult unexecute() {
+        if (!executionIsSuccessful){
+            return new CommandResult(MESSAGE_UNDO_FAIL);
+        };
+        assert model != null;
+        assert entryToDelete != null;
+        try {
+            model.addTask(entryToDelete);
+            return new CommandResult(String.format(MESSAGE_UNDO_DELETE_PERSON_SUCCESS, entryToDelete));
+        } catch (DuplicateTaskException e) {
+            return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
+        }
     }
 
 }

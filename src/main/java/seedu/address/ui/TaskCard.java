@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Event;
 
 public class TaskCard extends HBox {
     private static final String FXML = "TaskCard.fxml";
@@ -31,6 +32,12 @@ public class TaskCard extends HBox {
 
     @FXML
     private Label deadline;
+
+    @FXML
+    private Label startTime;
+
+    @FXML
+    private Label endTime;
 
     @FXML
     private CheckBox checkBox;
@@ -66,11 +73,20 @@ public class TaskCard extends HBox {
         if (entry instanceof Task) {
             Task task = (Task) entry;
             if (task.getDeadline() != null) {
-                deadline.setText("due: " + task.getDeadline() );
+                deadline.setText(task.getDeadLineDisplay().toUpperCase());
             }
             else {
                 deadline.setText("");
             }
+            startTime.setText("");
+            endTime.setText("");
+        }
+
+        if (entry instanceof Event) {
+            Event event = (Event)entry;
+            startTime.setText(event.getStartTime().toString());
+            endTime.setText(" - " + event.getEndTime().toString());
+            deadline.setText("");
         }
         checkBox.setSelected(entry.isMarked());
     }

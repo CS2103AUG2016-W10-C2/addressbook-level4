@@ -1,16 +1,23 @@
 package seedu.address.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.model.task.Deadline;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Event;
+import seedu.address.model.task.Task;
+
+import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
 
 /**
  * Supports chaining of predicates for the `list` command
- * @author joeleba
+ * @@author A0127828W
  *
  */
 public class PredicateBuilder {
@@ -20,15 +27,20 @@ public class PredicateBuilder {
      * @param startDate
      * @param endDate
      * @param onDate
+     * @param tags
      * @return pred the chained Predicate
      */
-    public Predicate<Entry> buildPredicate(Set<String> keywords, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
+    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
         }
-        
+
+        if (tags != null && !tags.isEmpty()) {
+            pred = pred.and(buildTagsPredicate(tags));
+        }
+
         if (onDate != null) {
             pred = pred.and(buildOnPredicate(onDate));
         } else {
@@ -39,23 +51,27 @@ public class PredicateBuilder {
                 pred = pred.and(buildBeforePredicate(endDate));
             }
         }
-        
+
         return pred;
-        
+
     }
-    
+
     private Predicate<Entry> buildKeywordsPredicate(Set<String> keywords) {
-        return new PredicateExpression(new NameQualifier(keywords))::satisfies;
+        return new PredicateExpression(new TitleQualifier(keywords))::satisfies;
     }
-    
+
+    private Predicate<Entry> buildTagsPredicate(Set<String> tags) {
+        return new PredicateExpression(new TagsQualifier(tags))::satisfies;
+    }
+
     private Predicate<Entry> buildBeforePredicate(LocalDateTime endDate) {
         return new PredicateExpression(new DateBeforeQualifier(endDate))::satisfies;
     }
-    
+
     private Predicate<Entry> buildAfterPredicate(LocalDateTime startDate) {
         return new PredicateExpression(new DateAfterQualifier(startDate))::satisfies;
     }
-    
+
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
@@ -90,16 +106,16 @@ public class PredicateBuilder {
         String toString();
     }
 
-    private class NameQualifier implements Qualifier {
-        private Set<String> nameKeyWords;
+    private class TitleQualifier implements Qualifier {
+        private Set<String> titleKeyWords;
 
-        NameQualifier(Set<String> nameKeyWords) {
-            this.nameKeyWords = nameKeyWords;
+        TitleQualifier(Set<String> nameKeyWords) {
+            this.titleKeyWords = nameKeyWords;
         }
 
         @Override
         public boolean run(Entry entry) {
-            return nameKeyWords.stream()
+            return titleKeyWords.stream()
                     .filter(keyword -> StringUtil.containsIgnoreCase(entry.getTitle().fullTitle, keyword))
                     .findAny()
                     .isPresent();
@@ -107,10 +123,42 @@ public class PredicateBuilder {
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", nameKeyWords);
+            return "name=" + String.join(", ", titleKeyWords);
         }
     }
-    
+
+    private class TagsQualifier implements Qualifier {
+        private Set<String> tags;
+
+        TagsQualifier(Set<String> tags) {
+            this.tags = tags;
+        }
+
+        @Override
+        public boolean run(Entry entry) {
+            Set<Tag> tags = new HashSet<>();
+            try {
+                for (String t: this.tags) {
+                    tags.add(new Tag(t));
+                }
+            } catch (IllegalValueException ive) {
+                System.err.println(MESSAGE_TAG_CONSTRAINTS);
+                return false;
+            }
+
+            return tags.stream()
+                .filter(tag -> entry.getTags().contains(tag))
+                .findAny()
+                .isPresent();
+        }
+
+        @Override
+        public String toString() {
+            return "tags=" + String.join(", ", tags);
+        }
+    }
+
+    //@@author A0126539Y
     private class DateAfterQualifier implements Qualifier {
         private LocalDateTime startDate;
 
@@ -118,17 +166,21 @@ public class PredicateBuilder {
             this.startDate = startDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
+                    return false;
+                }
+                return task.getDeadline().compareTo(startDate) >= 0;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            return deadline.getDeadline().compareTo(startDate) >= 0;
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(startDate) >= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -136,7 +188,7 @@ public class PredicateBuilder {
             return "Due after: " + startDate.toString();
         }
     }
-    
+
     private class DateBeforeQualifier implements Qualifier {
         private LocalDateTime endDate;
 
@@ -144,17 +196,21 @@ public class PredicateBuilder {
             this.endDate = endDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
+                    return false;
+                }
+                return task.getDeadline().compareTo(endDate) <= 0;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            return deadline.getDeadline().compareTo(endDate) <= 0;
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(endDate) <= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -162,7 +218,7 @@ public class PredicateBuilder {
             return "Due before: " + endDate.toString();
         }
     }
-    
+
     private class DateOnQualifier implements Qualifier {
         private LocalDateTime onDate;
 
@@ -170,20 +226,25 @@ public class PredicateBuilder {
             this.onDate = onDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            // Don't include FloatingTasks, which have no deadline
-            if (entry.getClass().getSimpleName().equals("FloatingTask")) {
-                return false;
+            LocalDateTime beginningOfDay = onDate.truncatedTo(ChronoUnit.DAYS);
+            LocalDateTime endOfDay = onDate.truncatedTo(ChronoUnit.DAYS).plusDays(1);
+
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
+                    return false;
+                }
+                return task.getDeadline().compareTo(beginningOfDay) >= 0 && task.getDeadline().compareTo(endOfDay) <= 0;
             }
-             
-            // Deadline
-            Deadline deadline = (Deadline) entry;
-            LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
-            
-            return (deadline.getDeadline().compareTo(onDate) <= 0)
-                    && (deadline.getDeadline().compareTo(beginningOfDay) >= 0);
+
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(beginningOfDay) >= 0 && event.getEndTime().compareTo(endOfDay) <= 0;
+            }
+
+            return false;
         }
 
         @Override

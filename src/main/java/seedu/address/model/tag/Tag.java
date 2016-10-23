@@ -11,7 +11,7 @@ public class Tag {
 
     public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should only contain "
                                                         +"alphanumeric characters, space and underscore";
-    public static final String TAG_VALIDATION_REGEX = "[\\p{Alnum}\\s_]+";
+    public static final String TAG_VALIDATION_REGEX = "^(?!\\s)[\\p{Alnum}\\s_]+(?<!\\s)$";
 
     public String tagName;
 
@@ -25,11 +25,11 @@ public class Tag {
      */
     public Tag(String name) throws IllegalValueException {
         assert name != null;
-        name = name.trim();
-        if (!isValidTagName(name)) {
+        String trimmedName = name.trim();
+        if (!isValidTagName(trimmedName)) {
             throw new IllegalValueException(MESSAGE_TAG_CONSTRAINTS);
         }
-        this.tagName = name;
+        this.tagName = trimmedName;
     }
 
     /**
