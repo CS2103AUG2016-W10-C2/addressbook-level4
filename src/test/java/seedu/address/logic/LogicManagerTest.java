@@ -580,6 +580,217 @@ public class LogicManagerTest {
                 expectedMessage, expectedAB, expectedList);
     }
 
+    @Test
+    public void execute_undoWithNoUndoableCommandsInHistory_errorMessageShown() throws Exception {
+        // setup expectations
+        TaskManager expectedAB = new TaskManager();
+        
+        // command before undo
+        logic.execute("clear");
+        logic.execute("list");
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                UndoCommand.MESSAGE_FAILURE,
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoAdd_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeAdded = helper.taskWithTags();
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeAdded);
+        expectedAB.removeEntry(toBeAdded);
+        
+        // commands before undo
+        logic.execute(helper.generateAddCommand(toBeAdded));
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(AddCommand.MESSAGE_UNDO_SUCCESS, toBeAdded),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoDelete_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task task1 = helper.generateTask(1);
+        Task task2 = helper.generateTask(2);
+        Task task3 = helper.generateTask(3);
+        
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(task1);
+        expectedAB.addTask(task2);
+        expectedAB.addTask(task3);
+        expectedAB.removeEntry(task2);
+        expectedAB.addTask(task2);
+
+        model.addTask(task1);
+        model.addTask(task2);
+        model.addTask(task3);
+        // command to undo
+        logic.execute("delete 2");
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(DeleteCommand.MESSAGE_UNDO_DELETE_PERSON_SUCCESS, task2),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoEdit_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toEdit = helper.taskWithTags();
+        Task toEditCopy = helper.taskWithTags();
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toEditCopy);
+        
+        model.addTask(toEdit);
+        // command to undo
+        logic.execute(helper.generateEditCommand(toEdit, 1, "New Title"));
+
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(EditCommand.MESSAGE_UNDO_SUCCESS, toEditCopy),
+                expectedAB, expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoMark_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeMarked = helper.taskWithTags();
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeMarked);
+
+        model.addTask(toBeMarked);
+        // command to undo
+        logic.execute("mark 1");
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(MarkCommand.MESSAGE_UNDO_SUCCESS, toBeMarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoUnmark_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeUnmarked = helper.taskWithTags();
+        toBeUnmarked.mark();
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeUnmarked);
+
+        model.addTask(toBeUnmarked);
+        // command to undo
+        logic.execute("unmark 1");
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(UnmarkCommand.MESSAGE_UNDO_SUCCESS, toBeUnmarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoTag_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeTagged = helper.taskWithTags();
+        Task toBeTaggedCopy = helper.taskWithTags();
+
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("newTag");
+        UniqueTagList tags = new UniqueTagList(tag1, tag2);
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeTagged);
+        expectedAB.addTag(tag2);
+
+        model.addTask(toBeTagged);
+        // command to undo
+        logic.execute(helper.generateTagCommand(tags, 1));
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(TagCommand.MESSAGE_UNDO_SUCCESS, toBeTaggedCopy),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoUntag_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeUntagged = helper.taskWithTags();
+        Task toBeUntaggedCopy = helper.taskWithTags();
+
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("newTag");
+        UniqueTagList tags = new UniqueTagList(tag1, tag2);
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeUntagged);
+
+        model.addTask(toBeUntagged);
+        // command to undo
+        logic.execute(helper.generateUntagCommand(tags, 1));
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                String.format(UntagCommand.MESSAGE_UNDO_SUCCESS, toBeUntaggedCopy),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoMultipleCommands() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task task1 = helper.generateTask(1);
+        Task task2 = helper.generateTask(2);
+        Task task2Copy = helper.generateTask(2);
+        Task task3 = helper.generateTask(3);
+        
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(task1);
+        expectedAB.addTask(task2);
+        expectedAB.addTask(task3);
+        expectedAB.removeEntry(task2);
+        expectedAB.addTask(task2);
+
+        model.addTask(task1);
+        task2.mark();
+        model.addTask(task2);
+        // command to undo
+        logic.execute(helper.generateAddCommand(task3));
+        logic.execute("mark 2");
+        logic.execute("list");  //non-undoable command.
+        logic.execute("delete 2");
+
+        // Undo "delete 2"
+        assertCommandBehavior("undo",
+                String.format(DeleteCommand.MESSAGE_UNDO_DELETE_PERSON_SUCCESS, task2),
+                expectedAB,
+                expectedAB.getTaskList());
+        
+        // Undo "mark 2"
+        assertCommandBehavior("undo",
+                String.format(MarkCommand.MESSAGE_UNDO_SUCCESS, task2Copy),
+                expectedAB,
+                expectedAB.getTaskList());
+
+        // Undo add task
+        expectedAB.removeEntry(task3);
+        assertCommandBehavior("undo",
+                String.format(AddCommand.MESSAGE_UNDO_SUCCESS, task3),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+    
     /**
      * A utility class to generate test data.
      */
