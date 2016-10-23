@@ -24,8 +24,8 @@ $ list
 You can edit a task with the following command:
 
 ```
-$ edit 0 deadline/ 3 October
-[ ] Get groceries, due: 3 October
+$ edit 0 end/ 3 October
+[ ] Get groceries, deadline: 3 October
 ```
 
 Undo is quite easily done:
@@ -54,7 +54,7 @@ No tasks to display.
 
 | Command |Format |
 | --- | --- |
-|add|`add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]`|
+|add|`add <task_name> [st/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]`|
 |list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
 |tag|`tag <task_id> #<tag_name> [#<tag_name> ...]`|
 |untag|`untag <task_id> #<tag_name> [#<tag_name> ...]`|
@@ -69,7 +69,11 @@ No tasks to display.
 ## Commands
 
 ```
+<<<<<<< d0f67a50e24fe9780ae48441715ca23f43dcdc73
 add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
+=======
+add <task_name> [st/<start> end/<end>] [#<tags>]  [r/<recurrence>] [desc/<description>]
+>>>>>>> Updated userguide
 ```
 
 > Add event or deadline
@@ -79,7 +83,7 @@ add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...]  [r/<re
 
 > - `add CS2103T Lecture st/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly #rocks`
 
-> - `add CS2105 Assignment 1 dl/2016-10-10 10:00`
+> - `add CS2105 Assignment 1 end/2016-10-10 10:00`
 
 
 ```
