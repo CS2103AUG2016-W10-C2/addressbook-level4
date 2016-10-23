@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.task.*;
+import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -13,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Adds a task to the address book.
  */
-public class AddCommand extends Command {
+public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -23,6 +24,7 @@ public class AddCommand extends Command {
             + " Buy Banana t/NTUC,shopping desc/Bananas are yummy";
 
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo add new entry: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
     public static final String DEADLINE_FLAG = "dl/";
     public static final String TAG_FLAG = "#";
@@ -86,11 +88,26 @@ public class AddCommand extends Command {
         assert model != null;
         try {
             model.addTask(toAdd);
+            setExecutionIsSuccessful();
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniquePersonList.DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
         }
 
+    }
+
+    @Override
+    public CommandResult unexecute() {
+        if (!executionIsSuccessful){
+            return new CommandResult(MESSAGE_UNDO_FAIL);
+        };
+        assert toAdd != null;
+        try {
+            model.deleteTask(toAdd);
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "The target entry cannot be missing";
+        }
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, toAdd));
     }
 
 }
