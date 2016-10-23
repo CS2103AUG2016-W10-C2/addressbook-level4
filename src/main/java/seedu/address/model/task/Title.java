@@ -20,11 +20,11 @@ public class Title {
      */
     public Title(String name) throws IllegalValueException {
         assert name != null;
-        name = name.trim();
-        if (!isValidName(name)) {
+        String trimmedName = name.trim();
+        if (!isValidName(trimmedName)) {
             throw new IllegalValueException(MESSAGE_NAME_CONSTRAINTS);
         }
-        this.fullTitle = name;
+        this.fullTitle = trimmedName;
     }
     
     public static Title copy(Title original) {

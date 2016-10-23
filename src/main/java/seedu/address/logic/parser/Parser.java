@@ -407,7 +407,7 @@ public class Parser {
                 String[] keywords = keywordsString.get().split("\\s+");
 
                 Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-                keywordSet.removeIf(s -> s.equals(""));
+                keywordSet.removeIf(s -> "".equals(s));
                 listCommand.setKeywords(keywordSet);
             }
 
