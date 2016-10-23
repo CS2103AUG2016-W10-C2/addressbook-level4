@@ -8,15 +8,15 @@ import seedu.address.model.task.Entry;
 /**
  * Provides a handle to a task card in the task list panel.
  */
-public class PersonCardHandle extends GuiHandle {
-    private static final String NAME_FIELD_ID = "#name";
-    private static final String ADDRESS_FIELD_ID = "#address";
-    private static final String PHONE_FIELD_ID = "#phone";
-    private static final String EMAIL_FIELD_ID = "#email";
+public class TaskCardHandle extends GuiHandle {
+    private static final String TITLE_FIELD_ID = "#title";
+    private static final String DESCRIPTION_FIELD_ID = "#description";
+    private static final String TAGS_FIELD_ID = "#tags";
+    private static final String DEADLINE_FIELD_ID = "#deadline";
 
     private Node node;
 
-    public PersonCardHandle(GuiRobot guiRobot, Stage primaryStage, Node node){
+    public TaskCardHandle(GuiRobot guiRobot, Stage primaryStage, Node node){
         super(guiRobot, primaryStage, null);
         this.node = node;
     }
@@ -25,38 +25,38 @@ public class PersonCardHandle extends GuiHandle {
         return getTextFromLabel(fieldId, node);
     }
 
-    public String getFullName() {
-        return getTextFromLabel(NAME_FIELD_ID);
+    public String getTitle() {
+        return getTextFromLabel(TITLE_FIELD_ID);
     }
 
-    public String getAddress() {
-        return getTextFromLabel(ADDRESS_FIELD_ID);
+    public String getDescription() {
+        return getTextFromLabel(DESCRIPTION_FIELD_ID);
     }
 
-    public String getPhone() {
-        return getTextFromLabel(PHONE_FIELD_ID);
+    public String getTags() {
+        return getTextFromLabel(TAGS_FIELD_ID);
     }
 
-    public String getEmail() {
-        return getTextFromLabel(EMAIL_FIELD_ID);
+    public String getDeadline() {
+        return getTextFromLabel(DEADLINE_FIELD_ID);
     }
 
     public boolean isSameEntry(Entry entry){
-        return getFullName().equals(entry.getTitle().fullTitle);
+        return getTitle().equals(entry.getTitle().fullTitle);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof PersonCardHandle) {
-            PersonCardHandle handle = (PersonCardHandle) obj;
-            return getFullName().equals(handle.getFullName())
-                    && getAddress().equals(handle.getAddress()); //TODO: compare the rest
+        if(obj instanceof TaskCardHandle) {
+            TaskCardHandle handle = (TaskCardHandle) obj;
+            return getTitle().equals(handle.getTitle())
+                    && getDescription().equals(handle.getDescription()); //TODO: compare the rest
         }
         return super.equals(obj);
     }
 
     @Override
     public String toString() {
-        return getFullName() + " " + getAddress();
+        return getTitle() + " " + getDescription();
     }
 }
