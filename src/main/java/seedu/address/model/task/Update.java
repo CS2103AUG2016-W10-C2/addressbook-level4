@@ -38,4 +38,7 @@ public class Update {
         return newDescription;
     }
 
+    public static Update generateUpdateFromEntry(Entry entry) {
+        return new Update(entry.getTitle(), entry.getTags(), entry.getDescription());
+    }
 }
