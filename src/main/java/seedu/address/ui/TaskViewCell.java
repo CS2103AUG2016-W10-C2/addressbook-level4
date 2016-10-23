@@ -7,7 +7,7 @@ import seedu.address.model.task.Entry;
 import seedu.address.ui.util.GuiUtil;
 
 /**
- * Custom Task cell which is displayed using a TaskCard
+ * Custom ListCell which is displayed using a TaskCard
  */
 // @@author A0116603R
 public class TaskViewCell extends ListCell<Entry> implements EntryViewCell {

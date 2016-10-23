@@ -3,12 +3,16 @@ package seedu.address.ui;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ShowTaskListEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
 
@@ -25,7 +29,6 @@ public class MainController extends UiPart {
     // #############
     // # CONSTANTS #
     // #############
-    private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "RootLayout.fxml";
     private static final String CSS_SOURCE = "/view/PriorityQTheme.css";
     private static final int MIN_HEIGHT = 720;
@@ -70,7 +73,6 @@ public class MainController extends UiPart {
         this.logic = logic;
 
         setTitle(config.getAppTitle());
-        setIcon(ICON);
         setWindowMinSize();
         setWindowDefaultSize(prefs);
 
