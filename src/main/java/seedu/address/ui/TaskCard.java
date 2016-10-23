@@ -1,52 +1,66 @@
 package seedu.address.ui;
 
-import java.time.LocalDateTime;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 
-public class TaskCard extends UiPart{
+public class TaskCard extends HBox {
+    private static final String FXML = "TaskCard.fxml";
 
-    private static final String FXML = "TaskListCard.fxml";
+    // ########
+    // # FXML #
+    // ########
+    @FXML
+    private Label id;
 
     @FXML
-    private HBox cardPane;
+    private Label title;
+
     @FXML
-    private Text name;
+    private Label tags;
+
     @FXML
-    private Text id;
+    private Label description;
+
     @FXML
-    private Text tags;
+    private Label deadline;
+
     @FXML
-    private Text deadline;
-    @FXML
-    private Text mark;
-    @FXML
-    private Text description;
+    private CheckBox checkBox;
+
+
+    // ########
+    // # DATA #
+    // ########
 
     private Entry entry;
-    private int displayedIndex;
+    private int index;
 
     public TaskCard(){
-
+        super();
+        FXMLLoader loader = UiPartLoader.getLoader(FXML);
+        loader.setRoot(this);
+        loader.setController(this);
+        UiPartLoader.loadNode(loader, FXML);
     }
 
-    public static TaskCard load(Entry person, int displayedIndex){
-        TaskCard card = new TaskCard();
-        card.entry = person;
-        card.displayedIndex = displayedIndex;
-        return UiPartLoader.loadUiPart(card);
+    public void init(Entry entry, int index, EventHandler<ActionEvent> handler) {
+        this.entry = entry;
+        this.index = index;
+        this.checkBox.setOnAction(handler);
+        initData();
     }
 
-    @FXML
-    public void initialize() {
-        name.setText(entry.getTitle().fullTitle);
-        id.setText(displayedIndex + ". ");
+    public void initData() {
+        title.setText(entry.getTitle().fullTitle);
+        id.setText(Integer.toString(index));
         tags.setText(entry.tagsString());
         description.setText(entry.getDescription());
         if (entry instanceof Task) {
@@ -58,20 +72,6 @@ public class TaskCard extends UiPart{
                 deadline.setText("");
             }
         }
-        mark.setText(entry.markString());
-    }
-
-    public HBox getLayout() {
-        return cardPane;
-    }
-
-    @Override
-    public void setNode(Node node) {
-        cardPane = (HBox)node;
-    }
-
-    @Override
-    public String getFxmlPath() {
-        return FXML;
+        checkBox.setSelected(entry.isMarked());
     }
 }
