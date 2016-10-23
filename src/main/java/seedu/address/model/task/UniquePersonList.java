@@ -149,10 +149,8 @@ public class UniquePersonList implements Iterable<Entry> {
      * Mark an entry on the list.
      * @throws PersonNotFoundException
      *             if no such task could be found in the list.
-     * @throws DuplicateTaskException
-     *             if the task to add is a duplicate of an existing task.
      */
-    public void mark(Entry toMark) throws PersonNotFoundException, DuplicateTaskException {
+    public void mark(Entry toMark) throws PersonNotFoundException {
         assert toMark!= null;
         if (!contains(toMark)) {
             throw new PersonNotFoundException();
@@ -164,10 +162,8 @@ public class UniquePersonList implements Iterable<Entry> {
      * Unmarks an entry on the list.
      * @throws PersonNotFoundException
      *             if no such task could be found in the list.
-     * @throws DuplicateTaskException
-     *             if the task to add is a duplicate of an existing task.
      */
-    public void unmark(Entry toUnmark) throws PersonNotFoundException, DuplicateTaskException {
+    public void unmark(Entry toUnmark) throws PersonNotFoundException {
         assert toUnmark!= null;
         if (!contains(toUnmark)) {
             throw new PersonNotFoundException();

@@ -95,14 +95,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     @Override
-    public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void markTask(Entry task) throws PersonNotFoundException {
         addressBook.markTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
     
     @Override
-    public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void unmarkTask(Entry task) throws PersonNotFoundException {
         addressBook.unmarkTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
@@ -146,7 +146,5 @@ public class ModelManager extends ComponentManager implements Model {
     private void updateFilteredPersonList(Predicate<Entry> predicate) {
         filteredPersons.setPredicate(predicate);
     }
-
-    
 
 }

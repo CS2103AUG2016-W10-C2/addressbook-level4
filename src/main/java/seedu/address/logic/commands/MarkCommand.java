@@ -6,7 +6,7 @@ import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniquePersonList.DuplicateTaskException;
 import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
 
-public class MarkCommand extends Command {
+public class MarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "mark";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
@@ -15,19 +15,20 @@ public class MarkCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_MARK_ENTRY_SUCCESS = "Marked Entry: %1$s";
-    public static final String MESSAGE_DUPLICATE_TASK = "This entry already exists in the todo list";
+    public static final String MESSAGE_SUCCESS = "Marked Entry: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo mark Entry: %1$s";
 
-    public final int targetIndex;
+    private final int targetIndex;
+    private Entry entryToMark;
+    private boolean originalIsMarked;
 
     public MarkCommand(int targetIndex) {
         this.targetIndex = targetIndex;
     }
 
-
     @Override
     public CommandResult execute() {
-
+        assert model != null;
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
 
         if (lastShownList.size() < targetIndex) {
@@ -35,16 +36,36 @@ public class MarkCommand extends Command {
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
 
-        Entry entryToMark = lastShownList.get(targetIndex - 1);
-
+        entryToMark = lastShownList.get(targetIndex - 1);
+        originalIsMarked = entryToMark.isMarked();
         try {
             model.markTask(entryToMark);
         } catch (PersonNotFoundException pnfe) {
             assert false : "The target entry cannot be missing";
-        } catch (DuplicateTaskException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_TASK);
         }
 
-        return new CommandResult(String.format(MESSAGE_MARK_ENTRY_SUCCESS, entryToMark));
+        setExecutionIsSuccessful();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToMark));
+    }
+
+    @Override
+    public CommandResult unexecute() {
+        if (!executionIsSuccessful){
+            return new CommandResult(MESSAGE_UNDO_FAIL);
+        };
+        assert model != null;
+        assert entryToMark != null;
+
+        try {
+            if (originalIsMarked) {
+                model.markTask(entryToMark);
+            } else {
+                model.unmarkTask(entryToMark);
+            }
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "The target entry cannot be missing";
+        }
+
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, entryToMark));
     }
 }

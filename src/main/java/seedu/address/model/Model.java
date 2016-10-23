@@ -49,12 +49,12 @@ public interface Model {
     
     /** Marks the given task. 
      * @throws DuplicateTaskException */
-    void markTask(Entry entryToMark) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;
-    
+    void markTask(Entry entry) throws UniquePersonList.PersonNotFoundException;
+
     /** Unmarks the given task 
      * @throws  */
-    void unmarkTask(Entry task) throws UniquePersonList.PersonNotFoundException, DuplicateTaskException;
-
+    void unmarkTask(Entry entry) throws UniquePersonList.PersonNotFoundException;
+    
     /** Add tags to task
      */
     void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) throws PersonNotFoundException;

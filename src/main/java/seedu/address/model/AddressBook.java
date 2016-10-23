@@ -106,11 +106,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         entries.updateDescription(toEdit, update.getNewDescription());
     }
 
-    public void markTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void markTask(Entry task) throws PersonNotFoundException {
         entries.mark(task);
     }
 
-    public void unmarkTask(Entry task) throws PersonNotFoundException, DuplicateTaskException {
+    public void unmarkTask(Entry task) throws PersonNotFoundException {
         entries.unmark(task);
     }
 
