@@ -154,7 +154,7 @@ public class PredicateBuilder {
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", tags);
+            return "tags=" + String.join(", ", tags);
         }
     }
 
