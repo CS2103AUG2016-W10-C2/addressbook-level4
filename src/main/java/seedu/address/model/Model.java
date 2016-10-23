@@ -4,6 +4,7 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryConversionException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -25,9 +26,10 @@ public interface Model {
     /** Deletes the given task. */
     void deleteTask(Entry target) throws EntryNotFoundException;
 
-    /** Edit the given task */
+    /** Edit the given task 
+     * @throws EntryConversionException */
     void editTask(Update update)
-            throws EntryNotFoundException, DuplicateTaskException;
+            throws EntryNotFoundException, DuplicateTaskException, EntryConversionException;
 
     /** Adds the given task */
     void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException;

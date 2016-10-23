@@ -6,6 +6,7 @@ import seedu.address.model.task.Event;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryConversionException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
@@ -95,10 +96,12 @@ public class TaskManager implements ReadOnlyTaskManager {
     }
 
     public void editTask(Update update)
-            throws EntryNotFoundException, DuplicateTaskException {
+            throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
         Entry toEdit = update.getTask();
         syncTagsWithMasterList(toEdit);
         entries.updateTitle(toEdit, update.getNewTitle());
+        entries.updateStartTime(toEdit, update.getStartTime());
+        entries.updateEndTime(toEdit, update.getEndTime());
         entries.updateTags(toEdit, update.getNewTags());
         entries.updateDescription(toEdit, update.getNewDescription());
     }

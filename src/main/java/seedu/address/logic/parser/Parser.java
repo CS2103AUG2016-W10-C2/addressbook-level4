@@ -235,7 +235,7 @@ public class Parser {
     * @return the prepared command
     */
    private Command prepareEdit(String args) {
-       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, endPrefix, tagPrefix, descPrefix);
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(titlePrefix, startPrefix, endPrefix, tagPrefix, descPrefix);
        argsTokenizer.tokenize(args.trim());
 
        // Validate arg string format
@@ -248,6 +248,8 @@ public class Parser {
        try {
            return new EditCommand(index.get(),
                getTitleFromArgs(argsTokenizer),
+               getStartTimeFromArgument(argsTokenizer),
+               getEndTimeFromArgument(argsTokenizer),
                getTagsFromArgs(argsTokenizer),
                getDescriptionFromArgs(argsTokenizer));
        } catch (IllegalValueException ive) {

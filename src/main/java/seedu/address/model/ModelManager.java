@@ -9,6 +9,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.address.model.task.UniqueTaskList.EntryConversionException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -82,7 +83,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void editTask(Update update)
-            throws EntryNotFoundException, DuplicateTaskException {
+            throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
         taskManager.editTask(update);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
