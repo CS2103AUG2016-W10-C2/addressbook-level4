@@ -69,11 +69,7 @@ No tasks to display.
 ## Commands
 
 ```
-<<<<<<< d0f67a50e24fe9780ae48441715ca23f43dcdc73
-add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
-=======
-add <task_name> [st/<start> end/<end>] [#<tags>]  [r/<recurrence>] [desc/<description>]
->>>>>>> Updated userguide
+add <task_name> [st/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
 ```
 
 > Add event or deadline
