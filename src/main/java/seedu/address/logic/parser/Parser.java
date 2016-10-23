@@ -432,7 +432,10 @@ public class Parser {
 
             if (onDateString.isEmpty()) {
                 final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
-                final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString).plusDays(1).minusSeconds(1);
+                LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
+                if (endDate != null) {
+                    endDate = endDate.plusDays(1).minusSeconds(1);
+                }
 
                 if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
