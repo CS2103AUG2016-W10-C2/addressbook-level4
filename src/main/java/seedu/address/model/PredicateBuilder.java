@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -9,6 +10,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Event;
 import seedu.address.model.task.Task;
 
 import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
@@ -34,10 +36,11 @@ public class PredicateBuilder {
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
         }
+
         if (tags != null && !tags.isEmpty()) {
             pred = pred.and(buildTagsPredicate(tags));
         }
-        
+
         if (onDate != null) {
             pred = pred.and(buildOnPredicate(onDate));
         } else {
@@ -48,11 +51,11 @@ public class PredicateBuilder {
                 pred = pred.and(buildBeforePredicate(endDate));
             }
         }
-        
+
         return pred;
-        
+
     }
-    
+
     private Predicate<Entry> buildKeywordsPredicate(Set<String> keywords) {
         return new PredicateExpression(new TitleQualifier(keywords))::satisfies;
     }
@@ -60,15 +63,15 @@ public class PredicateBuilder {
     private Predicate<Entry> buildTagsPredicate(Set<String> tags) {
         return new PredicateExpression(new TagsQualifier(tags))::satisfies;
     }
-    
+
     private Predicate<Entry> buildBeforePredicate(LocalDateTime endDate) {
         return new PredicateExpression(new DateBeforeQualifier(endDate))::satisfies;
     }
-    
+
     private Predicate<Entry> buildAfterPredicate(LocalDateTime startDate) {
         return new PredicateExpression(new DateAfterQualifier(startDate))::satisfies;
     }
-    
+
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
@@ -154,7 +157,8 @@ public class PredicateBuilder {
             return "name=" + String.join(", ", tags);
         }
     }
-    
+
+    //@@author A0126539Y
     private class DateAfterQualifier implements Qualifier {
         private LocalDateTime startDate;
 
@@ -162,23 +166,21 @@ public class PredicateBuilder {
             this.startDate = startDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            String entryClass = entry.getClass().getSimpleName();
-
-            switch(entryClass) {
-                case "Task":
-                    Task task = (Task) entry;
-                    if (task.getDeadline() == null) {
-                        return false;
-                    } else {
-                        return task.getDeadline().compareTo(startDate) >= 0;
-                    }
-
-                default:
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
                     return false;
+                }
+                return task.getDeadline().compareTo(startDate) >= 0;
             }
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(startDate) >= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -186,7 +188,7 @@ public class PredicateBuilder {
             return "Due after: " + startDate.toString();
         }
     }
-    
+
     private class DateBeforeQualifier implements Qualifier {
         private LocalDateTime endDate;
 
@@ -194,23 +196,21 @@ public class PredicateBuilder {
             this.endDate = endDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            String entryClass = entry.getClass().getSimpleName();
-
-            switch(entryClass) {
-                case "Task":
-                    Task task = (Task) entry;
-                    if (task.getDeadline() == null) {
-                        return false;
-                    } else {
-                        return task.getDeadline().compareTo(endDate) <= 0;
-                    }
-
-                default:
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
                     return false;
+                }
+                return task.getDeadline().compareTo(endDate) <= 0;
             }
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(endDate) <= 0;
+            }
+
+            return false;
         }
 
         @Override
@@ -218,7 +218,7 @@ public class PredicateBuilder {
             return "Due before: " + endDate.toString();
         }
     }
-    
+
     private class DateOnQualifier implements Qualifier {
         private LocalDateTime onDate;
 
@@ -226,26 +226,25 @@ public class PredicateBuilder {
             this.onDate = onDate;
         }
 
-        // TODO: Change this when we introduce Events
         @Override
         public boolean run(Entry entry) {
-            String entryClass = entry.getClass().getSimpleName();
+            LocalDateTime beginningOfDay = onDate.truncatedTo(ChronoUnit.DAYS);
+            LocalDateTime endOfDay = onDate.truncatedTo(ChronoUnit.DAYS).plusDays(1);
 
-            switch(entryClass) {
-                case "Task":
-                    Task task = (Task) entry;
-                    if (task.getDeadline() == null) {
-                        return false;
-                    } else {
-                        LocalDateTime beginningOfDay = onDate.minusDays(1).plusSeconds(1);
-
-                        return (task.getDeadline().compareTo(onDate) <= 0)
-                            && (task.getDeadline().compareTo(beginningOfDay) >= 0);
-                    }
-
-                default:
+            if (entry instanceof Task) {
+                Task task = (Task)entry;
+                if (task.getDeadline() == null) {
                     return false;
+                }
+                return task.getDeadline().compareTo(beginningOfDay) >= 0 && task.getDeadline().compareTo(endOfDay) <= 0;
             }
+
+            if (entry instanceof Event) {
+                Event event = (Event)entry;
+                return event.getStartTime().compareTo(beginningOfDay) >= 0 && event.getEndTime().compareTo(endOfDay) <= 0;
+            }
+
+            return false;
         }
 
         @Override

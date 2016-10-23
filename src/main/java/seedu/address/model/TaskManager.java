@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.task.Task;
+import seedu.address.model.task.Event;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
@@ -11,7 +12,6 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Wraps all data at the TaskManager level
@@ -62,18 +62,17 @@ public class TaskManager implements ReadOnlyTaskManager {
     }
 
     public void resetData(Collection<? extends Entry> newEntries, Collection<Tag> newTags) {
-        /* ArrayList<Entry> copyList = new ArrayList<>();
+        ArrayList<Entry> copyList = new ArrayList<>();
         for (Entry entry : newEntries) {
             Entry copy;
-            if (entry instanceof Deadline) {
-                copy = new Deadline(entry);
+            if (entry instanceof Event) {
+                copy = new Event(entry);
             } else {
                 copy = new Task(entry);
             }
             copyList.add(copy);
         }
-        setPersons(copyList); */
-        setEntries(newEntries.stream().map(Task::new).collect(Collectors.toList()));
+        setEntries(copyList);
         setTags(newTags);
     }
 
