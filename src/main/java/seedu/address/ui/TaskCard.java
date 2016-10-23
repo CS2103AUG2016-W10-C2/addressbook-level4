@@ -56,7 +56,7 @@ public class TaskCard extends UiPart{
         if (entry instanceof Task) {
             Task task = (Task)entry;
             if (task.getDeadline() != null) {
-                deadline.setText("deadline: " + task.getDeadline().toString());
+                deadline.setText("deadline: " + task.getDeadLineDisplay() );
             }
             else {
                 deadline.setText("");

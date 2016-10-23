@@ -80,7 +80,7 @@ public class XmlAdaptedEntry {
         final UniqueTagList tags = new UniqueTagList(personTags);
 
         LocalDateTime startTime = start == null || start.isEmpty() ? null : LocalDateTime.parse(start);
-        LocalDateTime endTime = end.isEmpty() ? null : LocalDateTime.parse(end);
+        LocalDateTime endTime = end == null || end.isEmpty() ? null : LocalDateTime.parse(end);
 
         if (startTime != null) {
             return new Event(title, startTime, endTime, tags, isMarked, description);

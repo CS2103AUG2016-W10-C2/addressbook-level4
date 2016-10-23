@@ -28,8 +28,7 @@ public class AddCommand extends Command {
     public static final String END_FLAG = "end/";
     public static final String TAG_FLAG = "#";
     public static final String DESC_FLAG = "desc/";
-    public static final String WRONG_DATE_TIME_INPUT = "Wrong date format supplied. The correct format is YYYY-MM-DD HH:mm";
-    public static final Pattern DATE_TIME_FORMAT = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}");
+    public static final String WRONG_DATE_TIME_INPUT = "Wrong date time format: %s. Try 'tomorrow' or '2016-10-10'.";
 
     private final Entry toAdd;
 
