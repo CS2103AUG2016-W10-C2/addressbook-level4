@@ -20,7 +20,19 @@ public class CollectionUtil {
         }
         return false;
     }
-
+    
+    /**
+     * Returns True if at least one items are not null.
+     */
+    //@@author A0126539Y
+    public static boolean isAnyNotNull(Object... items) {
+        for (Object item: items) {
+            if (item != null) {
+                return true;
+            }
+        }
+        return true;
+    }
 
 
     /**

@@ -13,9 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
+import javax.swing.plaf.OptionPaneUI;
+
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.AddCommand.*;
+import static seedu.address.logic.commands.OptionCommand.SAVE_LOCATION_FLAG;
 import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
@@ -47,6 +50,7 @@ public class Parser {
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    private static final Prefix saveLocationPrefix = new Prefix(SAVE_LOCATION_FLAG);
 
     public Parser() {}
 
@@ -96,7 +100,7 @@ public class Parser {
 
         case ListCommand.COMMAND_WORD:
             return prepareList(arguments);
-            
+
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
 
@@ -105,7 +109,8 @@ public class Parser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
-
+        case OptionCommand.COMMAND_WORD:
+            return prepareOption(arguments);
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -179,7 +184,7 @@ public class Parser {
     /**
      * Parse LocalDateTime from an input string
      * string.
-     * 
+     *
      * @@author A0127828W
      */
     private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString) throws IllegalValueException {
@@ -199,6 +204,17 @@ public class Parser {
         formatted = formatted + "T00:00";
         return LocalDateTime.parse(formatted);
     }
+
+    /**
+     *
+     * @param argsTokenizer
+     * @return new save location for PriorityQ
+     */
+    //@@author A0126539Y
+    private static String getSaveLocationFromArgs(ArgumentTokenizer argsTokenizer) {
+        return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(saveLocationPrefix));
+    }
+    //@@author
 
     /**
     * Parses arguments in the context of the add task command.
@@ -364,6 +380,23 @@ public class Parser {
         }
 
         return new SelectCommand(index.get());
+    }
+
+    /**
+     *
+     * @param args
+     *          full command args string
+     * @return the prepared command
+     */
+    private Command prepareOption(String args) {
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(saveLocationPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        try {
+            return new OptionCommand(getSaveLocationFromArgs(argsTokenizer));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
     }
 
     /**

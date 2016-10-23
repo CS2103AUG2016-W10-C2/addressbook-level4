@@ -48,15 +48,18 @@ public class MainApp extends Application {
         super.init();
 
         config = initConfig(getApplicationParameter("config"));
-        storage = new StorageManager(config.getAddressBookFilePath(), config.getUserPrefsFilePath());
+        storage = new StorageManager(config.getTaskManagerFilePath(), config.getUserPrefsFilePath());
 
         userPrefs = initPrefs(config);
+        if (userPrefs.getSaveLocation() != null) {
+            storage = new StorageManager(userPrefs.getSaveLocation(), config.getUserPrefsFilePath());
+        }
 
         initLogging(config);
 
         model = initModelManager(storage, userPrefs);
 
-        logic = new LogicManager(model, storage);
+        logic = new LogicManager(model, storage, userPrefs);
 
         ui = new UiManager(logic, config, userPrefs);
 

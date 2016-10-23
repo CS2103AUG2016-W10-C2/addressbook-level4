@@ -14,7 +14,7 @@ public class Config {
     private String appTitle = "PriorityQ";
     private Level logLevel = Level.INFO;
     private String userPrefsFilePath = "preferences.json";
-    private String addressBookFilePath = "data/addressbook.xml";
+    private String taskManagerFilePath = "data/PriorityQ.xml";
     private String taskManagerName = "TypicalTaskManagerName";
 
 
@@ -45,12 +45,12 @@ public class Config {
         this.userPrefsFilePath = userPrefsFilePath;
     }
 
-    public String getAddressBookFilePath() {
-        return addressBookFilePath;
+    public String getTaskManagerFilePath() {
+        return taskManagerFilePath;
     }
 
-    public void setAddressBookFilePath(String addressBookFilePath) {
-        this.addressBookFilePath = addressBookFilePath;
+    public void setTaskManagerFilePath(String taskManagerFilePath) {
+        this.taskManagerFilePath = taskManagerFilePath;
     }
 
     public String getTaskManagerName() {
@@ -76,13 +76,13 @@ public class Config {
         return Objects.equals(appTitle, o.appTitle)
                 && Objects.equals(logLevel, o.logLevel)
                 && Objects.equals(userPrefsFilePath, o.userPrefsFilePath)
-                && Objects.equals(addressBookFilePath, o.addressBookFilePath)
+                && Objects.equals(taskManagerFilePath, o.taskManagerFilePath)
                 && Objects.equals(taskManagerName, o.taskManagerName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(appTitle, logLevel, userPrefsFilePath, addressBookFilePath, taskManagerName);
+        return Objects.hash(appTitle, logLevel, userPrefsFilePath, taskManagerFilePath, taskManagerName);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class Config {
         sb.append("App title : " + appTitle);
         sb.append("\nCurrent log level : " + logLevel);
         sb.append("\nPreference file Location : " + userPrefsFilePath);
-        sb.append("\nLocal data file location : " + addressBookFilePath);
+        sb.append("\nLocal data file location : " + taskManagerFilePath);
         sb.append("\nTaskManager name : " + taskManagerName);
         return sb.toString();
     }
