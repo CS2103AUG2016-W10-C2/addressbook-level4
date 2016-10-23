@@ -37,31 +37,31 @@ public class UniqueTaskList implements Iterable<Entry> {
      * there is no such matching task in the list.
      */
     public static class EntryNotFoundException extends Exception {}
-    
+
     /**
      * Signals that an operation would have violated the 'no duplicates' property of the list.
      */
     public static class EntryConversionException extends DataConversionException {
-		public EntryConversionException(Exception cause) {
-			super(cause);
-		}
+        public EntryConversionException(Exception cause) {
+            super(cause);
+        }
 
-		public EntryConversionException() {
-			super(new Exception());
-		}
-	}
+        public EntryConversionException() {
+            super(new Exception());
+        }
+    }
 
     private final ObservableList<Entry> internalList = FXCollections.observableArrayList(
             new Callback<Entry, Observable[]>() {
         @Override
         public Observable[] call(Entry entry) {
-        	if (entry instanceof Task) {
-        		return new Observable[] { entry.titleObjectProperty(), ((Task)entry).deadlineObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
-        	} else if (entry instanceof Event){
-        		return new Observable[] { entry.titleObjectProperty(), ((Event)entry).startTimeObjectProperty(), ((Event)entry).endTimeObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
-        	} else {
-        		return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
-        	}
+            if (entry instanceof Task) {
+                return new Observable[] { entry.titleObjectProperty(), ((Task)entry).deadlineObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+            } else if (entry instanceof Event){
+                return new Observable[] { entry.titleObjectProperty(), ((Event)entry).startTimeObjectProperty(), ((Event)entry).endTimeObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+            } else {
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+            }
         }
     });
 
@@ -120,7 +120,7 @@ public class UniqueTaskList implements Iterable<Entry> {
             toEdit.setTitle(newTitle);
         }
     }
-    
+
     /**
      * Update the Start Date of the given Entry, if the given argument is not null and the Entry is an Event
      * @param toEdit
@@ -139,16 +139,16 @@ public class UniqueTaskList implements Iterable<Entry> {
             throw new EntryNotFoundException();
         }
 
-    	if (newStartTime != null) {
-    		if (toEdit instanceof Event) {
-    			((Event) toEdit).setStartTime(newStartTime);
-    		}
-    		else {
-    			throw new EntryConversionException();
-    		}
+        if (newStartTime != null) {
+            if (toEdit instanceof Event) {
+                ((Event) toEdit).setStartTime(newStartTime);
+            }
+            else {
+                throw new EntryConversionException();
+            }
         }
     }
-    
+
     /**
      * Update the endTime of Entry. The type of the Entry won't change.
      * @param toEdit
@@ -163,15 +163,15 @@ public class UniqueTaskList implements Iterable<Entry> {
         if (!contains(toEdit)) {
             throw new EntryNotFoundException();
         }
-        
+
         if (newEndTime != null) {
-        	if (toEdit instanceof Task) {
+            if (toEdit instanceof Task) {
                 ((Task)toEdit).setDeadline(newEndTime);
-        	}
-        	
-        	if (toEdit instanceof Event) {
+            }
+
+            if (toEdit instanceof Event) {
                 ((Event)toEdit).setEndTime(newEndTime);
-        	}
+            }
         }
     }
 

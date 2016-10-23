@@ -59,7 +59,7 @@ public class EditCommand extends UndoableCommand {
         if (description != null && !description.isEmpty()) {
             newDescription = description;
         }
-        
+
         //make copy of time
         LocalDateTime newStartTime = startTime == null ? null : startTime.plusDays(0);
         LocalDateTime newEndTime = endTime == null ? null : endTime.plusDays(0);
@@ -67,9 +67,9 @@ public class EditCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult execute() {   
+    public CommandResult execute() {
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
-        
+
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
@@ -87,7 +87,7 @@ public class EditCommand extends UndoableCommand {
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
         } catch (EntryConversionException e) {
-        	return new CommandResult(MESSAGE_ENTRY_CONVERSION);
+            return new CommandResult(MESSAGE_ENTRY_CONVERSION);
         }
 
         setExecutionIsSuccessful();
