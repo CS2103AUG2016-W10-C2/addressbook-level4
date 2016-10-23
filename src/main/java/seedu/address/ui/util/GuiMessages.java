@@ -6,6 +6,6 @@ package seedu.address.ui.util;
 //@@author A0116603R
 public class GuiMessages {
 
-    public static final String STATUS_LINE_WELCOME = "Hello! Welcome to PriorityQ";
+    public static final String STATUS_LINE_WELCOME = "Hello! Welcome to PriorityQ; If you're new, type `help`";
     public static final String COMMAND_LINE_PROMPT = "Start by entering any command here, e.g. add Buy groceries";
 }

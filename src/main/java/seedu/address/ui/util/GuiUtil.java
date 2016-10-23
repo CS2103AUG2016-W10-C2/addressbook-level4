@@ -12,6 +12,11 @@ import seedu.address.commons.events.ui.MarkTaskEvent;
 //@@author A0116603R
 public class GuiUtil {
 
+    public static double OPAQUE = 1.0;
+    public static double TRANSPARENT = 0.0;
+
+    public static double DEFAULT_FADE_DURATION = 400;
+
     public static EventHandler<ActionEvent> getCheckBoxEventHandler(int idx) {
         return new EventHandler<ActionEvent>() {
             @Override
