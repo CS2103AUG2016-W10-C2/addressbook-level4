@@ -23,7 +23,7 @@ public class PredicateBuilderTest {
     @Before
     public void setup() {
         try {
-            testEntryWithoutDeadline = new EntryBuilder().withTitle("banana").build();
+            testEntryWithoutDeadline = new EntryBuilder().withTitle("banana").withTags("groceries").build();
         } catch (IllegalValueException ive) {
             System.err.println(ive);
         }
@@ -33,19 +33,26 @@ public class PredicateBuilderTest {
     public void buildPredicate() throws Exception {
         Set<String> keywords = new HashSet<>(Arrays.asList("banana"));
         Set<String> emptyKeywords = new HashSet<>(Arrays.asList(""));
+        Set<String> tags = new HashSet<>(Arrays.asList("groceries"));
         LocalDateTime date = LocalDateTime.now();
 
         // TODO: Add Task builder
-        assertPredicate(keywords, null, null, null, true);
-        assertPredicate(emptyKeywords, null, null, null, false);
-        assertPredicate(keywords, date, null, null, false);
-        assertPredicate(keywords, null, date, null, false);
-        assertPredicate(keywords, null, null, date, false);
+        assertPredicate(null, null, null, null, null, true);
+        assertPredicate(keywords, null, null, null, null, true);
+        assertPredicate(emptyKeywords, null, null, null, null, false);
+
+        assertPredicate(null, tags, null, null, null, true);
+        assertPredicate(keywords, tags, null, null, null, true);
+        assertPredicate(emptyKeywords, tags, null, null, null, false);
+
+        assertPredicate(keywords, tags, date, null, null, false);
+        assertPredicate(keywords, tags, null, date, null, false);
+        assertPredicate(keywords, tags, null, null, date, false);
     }
 
-    private void assertPredicate(Set<String> keywords, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean expected) {
+    private void assertPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean expected) {
         PredicateBuilder predicateBuilder = new PredicateBuilder();
-        Predicate<Entry> pred = predicateBuilder.buildPredicate(keywords, startDate, endDate, onDate);
+        Predicate<Entry> pred = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate);
         assertEquals(pred.test(testEntryWithoutDeadline), expected);
     }
 
