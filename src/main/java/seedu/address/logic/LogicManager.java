@@ -1,10 +1,13 @@
 package seedu.address.logic;
 
+import com.google.common.eventbus.Subscribe;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.MarkCommand;
 import seedu.address.logic.parser.Parser;
 import seedu.address.model.Model;
 import seedu.address.model.task.Entry;
@@ -37,5 +40,10 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<Entry> getFilteredPersonList() {
         return model.getFilteredPersonList();
+    }
+
+    @Subscribe
+    private void handleMarkTaskEvent(MarkTaskEvent event) {
+        execute(event.getCommandString());
     }
 }
