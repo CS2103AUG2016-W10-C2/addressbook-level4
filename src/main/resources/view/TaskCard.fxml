@@ -14,8 +14,7 @@
       <GridPane prefHeight="100.0" prefWidth="500.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="0.0" prefWidth="60.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="240.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="420.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -30,7 +29,8 @@
                <children>
                   <GridPane prefHeight="100.0" prefWidth="242.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -58,22 +58,17 @@
                               <Insets bottom="15.0" left="15.0" right="15.0" />
                            </padding>
                         </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" styleClass="date" GridPane.columnIndex="1">
+                           <children>
+                              <Label fx:id="deadline" text="Deadline" />
+                              <Label fx:id="startTime" text="Start" />
+                              <Label fx:id="endTime" text="End" />
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                </children>
             </HBox>
-            <VBox prefHeight="100.0" prefWidth="0.0" GridPane.columnIndex="2">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label fx:id="deadline" text="Deadline" />
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-               </children>
-            </VBox>
          </children>
       </GridPane>
    </children>
