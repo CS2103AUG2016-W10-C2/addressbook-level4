@@ -11,6 +11,8 @@ import seedu.address.model.tag.UniqueTagList;
  */
 public interface Entry {
 
+    String DELIMITER = " ";
+
     /**
      * Get the Title for this Entry
      */
@@ -100,11 +102,11 @@ public interface Entry {
      */
     default String tagsString() {
         final StringBuffer buffer = new StringBuffer();
-        getTags().forEach(tag -> buffer.append(tag));
+        getTags().forEach(tag -> buffer.append(tag).append(DELIMITER));
         if (buffer.length() == 0) {
             return "";
         } else {
-            return buffer.substring(0, buffer.length());
+            return buffer.substring(0, buffer.length() - DELIMITER.length());
         }
     }
 
