@@ -4,11 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Arrays;
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.concurrent.ExecutionException;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,10 +16,10 @@ import static org.junit.Assert.*;
  * Created by joeleba on 23/10/16.
  */
 public class UniqueTagListTest {
-    UniqueTagList uniqueTagList;
-    UniqueTagList otherTagList;
-    Tag singleTag;
-    Tag otherTag;
+    private UniqueTagList uniqueTagList;
+    private UniqueTagList otherTagList;
+    private Tag singleTag;
+    private Tag otherTag;
 
     @Before
     public void setUp() throws Exception {
