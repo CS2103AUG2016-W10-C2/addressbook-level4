@@ -586,7 +586,6 @@ public class LogicManagerTest {
         TaskManager expectedAB = new TaskManager();
         
         // command before undo
-        logic.execute("clear");
         logic.execute("list");
         // execute command and verify result
         assertCommandBehavior("undo",
@@ -742,6 +741,31 @@ public class LogicManagerTest {
         // execute command and verify result
         assertCommandBehavior("undo",
                 String.format(UntagCommand.MESSAGE_UNDO_SUCCESS, toBeUntaggedCopy),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_undoClear_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task task1 = helper.generateTask(1);
+        Task task2 = helper.generateTask(2);
+        Task task3 = helper.generateTask(3);
+        
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(task1);
+        expectedAB.addTask(task2);
+        expectedAB.addTask(task3);
+
+        model.addTask(task1);
+        model.addTask(task2);
+        model.addTask(task3);
+        // command to undo
+        logic.execute("clear");
+        // execute command and verify result
+        assertCommandBehavior("undo",
+                ClearCommand.MESSAGE_UNDO_SUCCESS,
                 expectedAB,
                 expectedAB.getTaskList());
     }
