@@ -103,11 +103,11 @@ public class TaskManager implements ReadOnlyTaskManager {
         entries.updateDescription(toEdit, update.getNewDescription());
     }
 
-    public void markTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
+    public void markTask(Entry task) throws EntryNotFoundException {
         entries.mark(task);
     }
 
-    public void unmarkTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
+    public void unmarkTask(Entry task) throws EntryNotFoundException {
         entries.unmark(task);
     }
 

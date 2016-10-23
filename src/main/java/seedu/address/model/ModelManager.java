@@ -89,14 +89,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     @Override
-    public void markTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
+    public void markTask(Entry task) throws EntryNotFoundException {
         taskManager.markTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
     
     @Override
-    public void unmarkTask(Entry task) throws EntryNotFoundException, DuplicateTaskException {
+    public void unmarkTask(Entry task) throws EntryNotFoundException {
         taskManager.unmarkTask(task);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
@@ -140,7 +140,5 @@ public class ModelManager extends ComponentManager implements Model {
     private void updateFilteredPersonList(Predicate<Entry> predicate) {
         filteredPersons.setPredicate(predicate);
     }
-
-    
 
 }
