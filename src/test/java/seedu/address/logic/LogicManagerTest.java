@@ -9,7 +9,7 @@ import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
-import seedu.address.commons.events.ui.ShowHelpRequestEvent;
+import seedu.address.commons.events.ui.ShowHelpListEvent;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.model.TaskManager;
 import seedu.address.model.Model;
@@ -53,7 +53,7 @@ public class LogicManagerTest {
     }
 
     @Subscribe
-    private void handleShowHelpRequestEvent(ShowHelpRequestEvent she) {
+    private void handleShowHelpRequestEvent(ShowHelpListEvent she) {
         helpShown = true;
     }
 

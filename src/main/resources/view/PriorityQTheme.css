@@ -99,3 +99,17 @@
     -fx-background-radius: 3, 2, 4, 0;
     -fx-prompt-text-fill: transparent;
 }
+
+/*========== HELPCARD ==========*/
+.helpcard .label {
+    -fx-font-size: 10pt;
+    -fx-font-family: "PT Sans Narrow";
+    -fx-text-fill: DarkSlateGrey;
+    -fx-padding: 4;
+}
+
+.helpcard #commandLabel {
+    -fx-font-family: "PT Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: DarkTurquoise;
+}
