@@ -182,7 +182,7 @@ public class Parser {
      * 
      * @@author A0127828W
      */
-    private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString, String time) throws IllegalValueException {
+    private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString) throws IllegalValueException {
         if (dateTimeString.isEmpty()) {
             return null;
         }
@@ -196,7 +196,7 @@ public class Parser {
         Date parsed = possibleDates.get(0);
 
         String formatted = dateFormat.format(parsed);
-        formatted = formatted + "T" + time;
+        formatted = formatted + "T00:00";
         return LocalDateTime.parse(formatted);
     }
 
@@ -431,8 +431,11 @@ public class Parser {
             }
 
             if (onDateString.isEmpty()) {
-                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString, "00:00:00");
-                final LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString, "23:59:59");
+                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
+                LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
+                if (endDate != null) {
+                    endDate = endDate.plusDays(1).minusSeconds(1);
+                }
 
                 if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
                     return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
@@ -441,7 +444,7 @@ public class Parser {
                 listCommand.setStartDate(startDate);
                 listCommand.setEndDate(endDate);
             } else {
-                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString, "23:59:59");
+                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString);
 
                 listCommand.setOnDate(onDate);
             }
