@@ -2,7 +2,7 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.task.*;
-import seedu.address.model.task.UniquePersonList.PersonNotFoundException;
+import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -93,7 +93,7 @@ public class AddCommand extends UndoableCommand {
         assert toAdd != null;
         try {
             model.deleteTask(toAdd);
-        } catch (PersonNotFoundException pnfe) {
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, toAdd));

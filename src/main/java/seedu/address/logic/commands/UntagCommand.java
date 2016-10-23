@@ -73,7 +73,7 @@ public class UntagCommand extends UndoableCommand {
         
         try {
             model.tagTask(taskToUntag, tagsToRemove);
-        } catch (PersonNotFoundException e) {
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToUntag));

@@ -74,7 +74,7 @@ public class TagCommand extends UndoableCommand {
 
         try {
             model.untagTask(taskToTag, tagsToAdd);
-        } catch (PersonNotFoundException e) {
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToTag));

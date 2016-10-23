@@ -95,7 +95,7 @@ public class EditCommand extends UndoableCommand {
 
         try {
             model.editTask(reverseUpdate);
-        } catch (PersonNotFoundException e) {
+        } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);

@@ -62,7 +62,7 @@ public class UnmarkCommand extends UndoableCommand {
             } else {
                 model.unmarkTask(entryToUnmark);
             }
-        } catch (PersonNotFoundException pnfe) {
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
 

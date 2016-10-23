@@ -3,7 +3,7 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
-import seedu.address.model.task.UniquePersonList;
+import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 /**
@@ -62,7 +62,7 @@ public class DeleteCommand extends UndoableCommand {
         try {
             model.addTask(entryToDelete);
             return new CommandResult(String.format(MESSAGE_UNDO_DELETE_PERSON_SUCCESS, entryToDelete));
-        } catch (UniquePersonList.DuplicateTaskException e) {
+        } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
         }
     }
