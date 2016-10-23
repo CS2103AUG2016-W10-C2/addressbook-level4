@@ -8,10 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
-import seedu.address.ui.util.GuiMessages;
 
 import java.util.logging.Logger;
 
@@ -58,8 +58,8 @@ public class CommandArea extends VBox {
 
     @FXML
     public void initialize() {
-        cmdLine.setPromptText(GuiMessages.COMMAND_LINE_PROMPT);
-        statusLine.setText(GuiMessages.STATUS_LINE_WELCOME);
+        cmdLine.setPromptText(Messages.COMMAND_LINE_PROMPT);
+        statusLine.setText(Messages.STATUS_LINE_WELCOME);
     }
 
     // @@author
