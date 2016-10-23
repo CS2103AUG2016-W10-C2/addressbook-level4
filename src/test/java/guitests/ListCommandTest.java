@@ -34,6 +34,6 @@ public class ListCommandTest extends AddressBookGuiTest {
         commandBox.runCommand(command);
         assertListSize(expectedHits.length);
         assertResultMessage(expectedHits.length + " entries listed!");
-        assertTrue(personListPanel.isListMatching(expectedHits));
+        assertTrue(taskList.isListMatching(expectedHits));
     }
 }
