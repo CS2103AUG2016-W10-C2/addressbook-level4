@@ -126,8 +126,10 @@ public class MainController extends UiPart {
     // # FXML HANDLERS #
     // #################
     @FXML
-    public void handleHelp() {
-        //TODO(karenang): raise new HelpDisplay event
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ESCAPE) {
+            EventsCenter.getInstance().post(new ShowTaskListEvent());
+        }
     }
 
     /**
