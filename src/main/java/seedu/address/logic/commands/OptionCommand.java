@@ -10,7 +10,11 @@ import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
 
 /**
+<<<<<<< 0a1f153dd13e7a47c950276da2f07b664bd10bad
  *
+=======
+ * 
+>>>>>>> Impelement saving in another location.
  * Command to change user preference.
  *
  */
