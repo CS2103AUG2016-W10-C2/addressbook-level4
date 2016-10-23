@@ -3,4 +3,4 @@
 <?import javafx.scene.layout.StackPane?>
 
 
-<StackPane fx:id="rootLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.address.ui.MainController" />
+<StackPane fx:id="rootLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="720.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.address.ui.MainController" />
