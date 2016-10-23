@@ -48,7 +48,7 @@ public abstract class UiPart {
     public abstract void setNode(Node node);
 
     /**
-     * Override this method to return the name of the fxml file. e.g. {@code "MainWindow.fxml"}
+     * Override this method to return the name of the fxml file. e.g. {@code "MainController.fxml"}
      * @return
      */
     public abstract String getFxmlPath();

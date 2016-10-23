@@ -107,5 +107,5 @@ public class UiManager extends ComponentManager implements Ui {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         mainController.handleHelp();
     }
-    
+
 }
