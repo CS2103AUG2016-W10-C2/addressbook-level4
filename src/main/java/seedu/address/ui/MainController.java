@@ -29,7 +29,7 @@ public class MainController extends UiPart {
     private static final String FXML = "RootLayout.fxml";
     private static final String CSS_SOURCE = "/view/PriorityQTheme.css";
     private static final int MIN_HEIGHT = 720;
-    private static final int MIN_WIDTH = 480;
+    private static final int MIN_WIDTH = 500;
 
     private static final Logger logger = LogsCenter.getLogger(MainController.class);
 
