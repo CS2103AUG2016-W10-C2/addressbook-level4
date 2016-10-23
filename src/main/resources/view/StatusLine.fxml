@@ -4,8 +4,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.address.ui.StatusLine">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text fx:id="message" fill="#4d4d4d" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello! Welcome to PriorityQ">
          <font>
@@ -13,4 +12,4 @@
          </font>
       </Text>
    </children>
-</HBox>
+</fx:root>
