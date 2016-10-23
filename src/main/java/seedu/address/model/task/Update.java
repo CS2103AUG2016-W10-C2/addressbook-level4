@@ -53,6 +53,12 @@ public class Update {
     }
 
     public static Update generateUpdateFromEntry(Entry entry) {
-        return new Update(entry.getTitle(), entry.getTags(), entry.getDescription());
+        if (entry instanceof Task) {
+            return new Update(entry.getTitle(), null, ((Task) entry).getDeadline(), entry.getTags(), entry.getDescription());
+        }
+        if (entry instanceof Event) {
+            return new Update(entry.getTitle(), ((Event) entry).getStartTime(), ((Event) entry).getEndTime(), entry.getTags(), entry.getDescription());
+        }
+        return null;
     }
 }

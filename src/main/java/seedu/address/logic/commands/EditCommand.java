@@ -108,6 +108,8 @@ public class EditCommand extends UndoableCommand {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
+        } catch (EntryConversionException e) {
+            assert false: "Undo shouldn't convert Task to Event and vice versa";
         }
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToEdit));
     }
