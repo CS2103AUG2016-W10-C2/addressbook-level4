@@ -40,7 +40,7 @@ public class SelectCommandTest extends AddressBookGuiTest {
 
     private void assertSelectionSuccess(int index) {
         commandBox.runCommand("select " + index);
-        assertResultMessage("Selected Person: "+index);
+        assertResultMessage("Selected Entry: "+index);
         assertPersonSelected(index);
     }
 
