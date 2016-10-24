@@ -98,9 +98,9 @@ public class MainController extends UiPart {
     }
 
     private void initAppController() {
-        AppViewController avc = AppViewController.getInstance();
+        AppViewController avc = new AppViewController(rootLayout);
         avc.setLogic(logic);
-        avc.init(rootLayout);
+        avc.init();
     }
 
     // ##############

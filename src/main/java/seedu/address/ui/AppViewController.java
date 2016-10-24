@@ -9,47 +9,34 @@ import seedu.address.logic.Logic;
 //@@author A0116603R
 public class AppViewController {
 
-    private static AppViewController instance;
-
     private Logic logic;
 
     private Pane rootLayout;
 
-    private AppViewController() {}
-
-    public static AppViewController getInstance() {
-        if (instance == null) {
-            instance = new AppViewController();
-        }
-        return instance;
+    AppViewController(Pane root) {
+        this.rootLayout = root;
     }
+
 
     // ################
     // # INITIALISERS #
     // ################
-    void init(Pane root) {
-        if (rootLayout == null) {
-            this.rootLayout = root;
-        }
+    void init() {
         initChildViews();
     }
 
     private void initChildViews() {
         assert rootLayout != null;
         HelpViewController hvc = new HelpViewController();
-        hvc.init();
+        hvc.init(rootLayout);
         TaskViewController tvc = new TaskViewController(logic);
-        tvc.init();
+        tvc.init(rootLayout);
 
     }
 
     // #######################
     // # GETTERS AND SETTERS #
     // #######################
-
-    Pane getRootLayout() {
-        return rootLayout;
-    }
 
     public void setLogic(Logic logic) {
         this.logic = logic;

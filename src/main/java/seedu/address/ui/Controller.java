@@ -17,12 +17,11 @@ import static seedu.address.ui.util.GuiUtil.TRANSPARENT;
 abstract class Controller {
     BorderPane appView;
 
-    abstract void init();
+    abstract void init(Pane root);
 
     abstract void initAppView();
 
-    void addToRootView() {
-        Pane root = AppViewController.getInstance().getRootLayout();
+    void addToRootView(Pane root) {
         root.getChildren().add(appView);
     }
 

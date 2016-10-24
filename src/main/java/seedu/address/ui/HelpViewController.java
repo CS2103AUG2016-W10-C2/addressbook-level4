@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import com.google.common.eventbus.Subscribe;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ShowHelpListEvent;
 import seedu.address.commons.events.ui.ShowTaskListEvent;
@@ -12,9 +13,9 @@ public class HelpViewController extends Controller {
     private static final Logger logger = LogsCenter.getLogger(HelpViewController.class);
 
     @Override
-    void init() {
+    void init(Pane root) {
         initAppView();
-        addToRootView();
+        addToRootView(root);
         registerAsEventHandler(this);
     }
 

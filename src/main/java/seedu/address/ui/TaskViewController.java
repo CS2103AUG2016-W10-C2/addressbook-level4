@@ -3,10 +3,12 @@ package seedu.address.ui;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ShowHelpListEvent;
 import seedu.address.commons.events.ui.ShowTaskListEvent;
 import seedu.address.logic.Logic;
+import seedu.address.model.task.Entry;
 
 import java.util.logging.Logger;
 
@@ -28,9 +30,9 @@ public class TaskViewController extends Controller {
     // # INITIALISERS #
     // ################
     @Override
-    void init() {
+    void init(Pane root) {
         initAppView();
-        addToRootView();
+        addToRootView(root);
         registerAsEventHandler(this);
     }
 
@@ -48,7 +50,7 @@ public class TaskViewController extends Controller {
     // # PRIVATE GETTERS #
     // ###################
 
-    private ObservableList getDefaultTasks() {
+    private ObservableList<Entry> getDefaultTasks() {
         assert logic != null;
         return logic.getFilteredPersonList();
     }
