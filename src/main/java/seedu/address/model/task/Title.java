@@ -8,7 +8,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class Title {
 
-    public static final String MESSAGE_NAME_CONSTRAINTS = "Entry title should be spaces or alphanumeric characters";
+    public static final String MESSAGE_NAME_CONSTRAINTS = "Entry title should be spaces or alphanumeric characters. "
+                                                          +"(Your input:\"%1$s\")";
     public static final String NAME_VALIDATION_REGEX = "[\\p{Alnum} ]+";
 
     public final String fullTitle;
@@ -22,7 +23,7 @@ public class Title {
         assert name != null;
         String trimmedName = name.trim();
         if (!isValidName(trimmedName)) {
-            throw new IllegalValueException(MESSAGE_NAME_CONSTRAINTS);
+            throw new IllegalValueException(String.format(MESSAGE_NAME_CONSTRAINTS, trimmedName));
         }
         this.fullTitle = trimmedName;
     }
