@@ -4,11 +4,11 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.TaskManager;
 import seedu.address.model.task.*;
 
-public class TypicalTestPersons {
+public class TypicalTestTasks {
 
     public static TestEntry apple, banana, cat, doge, eggplant, study, jogging, homework, movie;
 
-    public TypicalTestPersons() {
+    public TypicalTestTasks() {
         try {
             apple =  new EntryBuilder().withTitle("Buy apples").withTags("groceries").build();
             banana = new EntryBuilder().withTitle("Buy bananas").withTags("groceries", "for scale").build();
