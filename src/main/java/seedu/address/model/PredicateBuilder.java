@@ -78,7 +78,7 @@ public class PredicateBuilder {
     //========== Inner classes/interfaces used for filtering ==================================================
 
     interface Expression {
-        boolean satisfies(Entry person);
+        boolean satisfies(Entry entry);
         String toString();
     }
 
@@ -91,8 +91,8 @@ public class PredicateBuilder {
         }
 
         @Override
-        public boolean satisfies(Entry person) {
-            return qualifier.run(person);
+        public boolean satisfies(Entry entry) {
+            return qualifier.run(entry);
         }
 
         @Override
@@ -102,7 +102,7 @@ public class PredicateBuilder {
     }
 
     interface Qualifier {
-        boolean run(Entry person);
+        boolean run(Entry entry);
         String toString();
     }
 
