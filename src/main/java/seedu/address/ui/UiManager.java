@@ -41,14 +41,12 @@ public class UiManager extends ComponentManager implements Ui {
     public void start(Stage primaryStage) {
         logger.info("Starting UI...");
         primaryStage.setTitle(config.getAppTitle());
-
-        //Set the application icon.
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
+        primaryStage.setResizable(false);
 
         try {
             mainController = MainController.load(primaryStage, config, prefs, logic);
-            mainController.show(); //This should be called before creating other UI parts
-
+            mainController.show();
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during initializing", e);
