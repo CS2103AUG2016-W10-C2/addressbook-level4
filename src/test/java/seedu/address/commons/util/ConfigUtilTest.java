@@ -125,8 +125,8 @@ public class ConfigUtilTest {
 
     private String addToTestDataPathIfNotNull(String configFileInTestDataFolder) {
         return configFileInTestDataFolder != null
-                                  ? TEST_DATA_FOLDER + configFileInTestDataFolder
-                                  : null;
+                ? TEST_DATA_FOLDER + configFileInTestDataFolder
+                        : null;
     }
 
 
