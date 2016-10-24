@@ -60,16 +60,14 @@
     -fx-font-style: italic;
     -fx-font-size: 9pt;
     -fx-text-fill: DarkGrey;
-}
-
-.taskcard #deadline {
-    -fx-text-fill: DarkTurquoise;
+    -fx-padding: 0 0 0 45;
 }
 
 .taskcard .date {
-    -fx-font-size: 8pt;
+    -fx-font-size: 7pt;
     -fx-font-family: "PT Sans";
     -fx-font-weight: bold;
+    -fx-text-fill: DarkTurquoise;
 }
 
 .taskcard .check-box *.box{
