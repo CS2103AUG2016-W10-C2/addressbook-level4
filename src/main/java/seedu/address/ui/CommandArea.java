@@ -9,7 +9,9 @@ import javafx.scene.layout.VBox;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.Messages;
+import seedu.address.commons.events.ui.DidMarkTaskEvent;
 import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
+import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 
@@ -70,6 +72,11 @@ public class CommandArea extends VBox {
         mostRecentResult = logic.execute(previousCommand);
         statusLine.setText(mostRecentResult.feedbackToUser);
         logger.info("Result: " + mostRecentResult.feedbackToUser);
+    }
+
+    @Subscribe
+    private void handleDidMarkTaskEvent(DidMarkTaskEvent event) {
+        statusLine.setText(event.getCommandResult().feedbackToUser);
     }
 
 

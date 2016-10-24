@@ -2,6 +2,7 @@ package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
 import seedu.address.logic.commands.MarkCommand;
+import seedu.address.logic.commands.UnmarkCommand;
 
 /**
  * An event indicating that the user has clicked on a checkbox for a particular
@@ -9,8 +10,8 @@ import seedu.address.logic.commands.MarkCommand;
  */
 public class MarkTaskEvent extends BaseEvent {
 
-    private final static String COMPLETED = "completed";
-    private final static String UN_COMPLETE = "unmarked";
+    private final static String CHECKED = "checked";
+    private final static String UNCHECKED = "unchecked";
 
     // The index of the task in the current view which was acted upon.
     private int targetTaskIndex;
@@ -24,12 +25,13 @@ public class MarkTaskEvent extends BaseEvent {
     }
 
     public String getCommandString() {
-        return MarkCommand.COMMAND_WORD + " " + targetTaskIndex;
+        String command = shouldMark ? MarkCommand.COMMAND_WORD : UnmarkCommand.COMMAND_WORD;
+        return command + " " + targetTaskIndex;
     }
 
     @Override
     public String toString() {
-        String action = shouldMark ? COMPLETED : UN_COMPLETE;
+        String action = shouldMark ? CHECKED : UNCHECKED;
         return String.format("User %s task at index %d", action, targetTaskIndex);
     }
 

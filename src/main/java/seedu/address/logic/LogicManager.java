@@ -3,7 +3,9 @@ package seedu.address.logic;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.ComponentManager;
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.DidMarkTaskEvent;
 import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoableCommand;
@@ -59,6 +61,6 @@ public class LogicManager extends ComponentManager implements Logic {
 
     @Subscribe
     private void handleMarkTaskEvent(MarkTaskEvent event) {
-        execute(event.getCommandString());
+        EventsCenter.getInstance().post(new DidMarkTaskEvent(execute(event.getCommandString())));
     }
 }
