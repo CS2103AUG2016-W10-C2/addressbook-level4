@@ -26,6 +26,7 @@ public class AddCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo add new entry: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
+    public static final String MESSAGE_START_END_ERROR = "The start/ flag must be used in conjunction with the end/ flag";
     public static final String START_FLAG = "start/";
     public static final String END_FLAG = "end/";
     public static final String TAG_FLAG = "#";
@@ -66,7 +67,11 @@ public class AddCommand extends UndoableCommand {
                     false,
                     description
             );
-        } else {
+        }
+        else if (startTime != null && endTime == null) {
+            throw new IllegalValueException(MESSAGE_START_END_ERROR);
+        }
+        else {
             throw new IllegalValueException(MESSAGE_USAGE);
         }
     }
