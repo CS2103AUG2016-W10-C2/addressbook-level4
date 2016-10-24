@@ -156,7 +156,7 @@ public class LogicManagerTest {
     @Test
     public void execute_add_invalidTaskData() throws Exception {
         assertCommandBehavior(
-                "add []\\[;]", Title.MESSAGE_NAME_CONSTRAINTS);
+                "add []\\[;]", String.format(Title.MESSAGE_NAME_CONSTRAINTS, "[]\\[;]"));
         assertCommandBehavior(
                 "add Valid Task " + TAG_FLAG + "invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
     }
