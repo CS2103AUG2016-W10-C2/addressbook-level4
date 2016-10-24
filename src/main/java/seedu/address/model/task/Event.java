@@ -35,12 +35,20 @@ public final class Event extends Entry{
         return startTime.get();
     }
 
+    public String getStartTimeDisplay() {
+        return getDateDisplay(getStartTime());
+    }
+
     public void setStartTime(LocalDateTime startTime) {
         this.startTime.set(startTime);
     }
 
     public LocalDateTime getEndTime() {
         return endTime.get();
+    }
+
+    public String getEndTimeDisplay() {
+        return getDateDisplay(getEndTime());
     }
 
     public void setEndTime(LocalDateTime endTime) {

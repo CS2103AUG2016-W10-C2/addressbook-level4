@@ -1,6 +1,7 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
@@ -18,6 +19,8 @@ import seedu.address.model.tag.UniqueTagList;
  * values are validated.
  */
 public abstract class Entry {
+    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
+
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
@@ -146,6 +149,16 @@ public abstract class Entry {
      */
     public final String markString() {
         return isMarked() ? "[X] " : "[ ] ";
+    }
+
+    /**
+     * Get the date for display to the user
+     */
+    public String getDateDisplay(LocalDateTime dateTime){
+        if (dateTime == null) {
+            return "";
+        }
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 
     /**

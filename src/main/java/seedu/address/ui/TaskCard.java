@@ -73,7 +73,7 @@ public class TaskCard extends HBox {
         if (entry instanceof Task) {
             Task task = (Task) entry;
             if (task.getDeadline() != null) {
-                deadline.setText(task.getDeadLineDisplay().toUpperCase());
+                deadline.setText(task.getDeadlineDisplay().toUpperCase());
             }
             else {
                 deadline.setText("");
@@ -84,8 +84,8 @@ public class TaskCard extends HBox {
 
         if (entry instanceof Event) {
             Event event = (Event)entry;
-            startTime.setText(event.getStartTime().toString());
-            endTime.setText(" - " + event.getEndTime().toString());
+            startTime.setText(event.getStartTimeDisplay().toUpperCase());
+            endTime.setText(" - " + event.getEndTimeDisplay().toUpperCase());
             deadline.setText("");
         }
         checkBox.setSelected(entry.isMarked());
