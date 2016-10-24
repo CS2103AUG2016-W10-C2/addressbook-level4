@@ -12,6 +12,8 @@ import seedu.address.commons.core.LogsCenter;
 
 import java.util.logging.Logger;
 
+import static seedu.address.ui.util.GuiUtil.DEFAULT_FADE_DURATION;
+
 /**
  * Base class for all GUI Handles used in testing.
  */
@@ -49,18 +51,22 @@ public class GuiHandle {
         return guiRobot.lookup(query).tryQuery().get();
     }
 
-    protected String getTextFieldText(String filedName) {
-        return ((TextField) getNode(filedName)).getText();
+    protected String getTextFieldText(String field) {
+        return ((TextField) getNode(field)).getText();
     }
 
     protected void setTextField(String textFieldId, String newText) {
         guiRobot.clickOn(textFieldId);
-        ((TextField)guiRobot.lookup(textFieldId).tryQuery().get()).setText(newText);
+        ((TextField)primaryStage.getScene().lookup(textFieldId)).setText(newText);
         guiRobot.sleep(500); // so that the texts stays visible on the GUI for a short period
     }
 
     public void pressEnter() {
         guiRobot.type(KeyCode.ENTER).sleep(500);
+    }
+
+    public void pressEscape() {
+        guiRobot.type(KeyCode.ESCAPE).sleep(500);
     }
 
     protected String getTextFromLabel(String fieldId, Node parentNode) {

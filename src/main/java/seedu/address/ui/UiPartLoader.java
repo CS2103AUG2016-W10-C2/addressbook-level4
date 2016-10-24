@@ -3,6 +3,7 @@ package seedu.address.ui;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import seedu.address.MainApp;
 
@@ -11,6 +12,10 @@ import seedu.address.MainApp;
  */
 public class UiPartLoader {
     private final static String FXML_FILE_FOLDER = "/view/";
+
+    public static FXMLLoader getLoader(String fxmlPath) {
+        return new FXMLLoader(MainApp.class.getResource(FXML_FILE_FOLDER + fxmlPath));
+    }
 
     public static <T extends UiPart> T loadUiPart(Stage primaryStage, T controllerSeed) {
         return loadUiPart(primaryStage, null, controllerSeed);
@@ -24,10 +29,10 @@ public class UiPartLoader {
      * @param sampleUiPart The sample of the expected UiPart class.
      * @param <T> The type of the UiPart
      */
-    public static <T extends UiPart> T loadUiPart(Stage primaryStage, AnchorPane placeholder, T sampleUiPart) {
+    public static <T extends UiPart> T loadUiPart(Stage primaryStage, Pane placeholder, T sampleUiPart) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource(FXML_FILE_FOLDER + sampleUiPart.getFxmlPath()));
-        Node mainNode = loadLoader(loader, sampleUiPart.getFxmlPath());
+        Node mainNode = loadNode(loader, sampleUiPart.getFxmlPath());
         UiPart controller = loader.getController();
         controller.setStage(primaryStage);
         controller.setPlaceholder(placeholder);
@@ -35,23 +40,8 @@ public class UiPartLoader {
         return (T)controller;
     }
 
-    /**
-     * Returns the ui class for a specific UI Part.
-     *
-     * @param seedUiPart The UiPart object to be used as the ui.
-     * @param <T> The type of the UiPart
-     */
 
-    public static <T extends UiPart> T loadUiPart(T seedUiPart) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource(FXML_FILE_FOLDER + seedUiPart.getFxmlPath()));
-        loader.setController(seedUiPart);
-        loadLoader(loader, seedUiPart.getFxmlPath());
-        return seedUiPart;
-    }
-
-
-    private static Node loadLoader(FXMLLoader loader, String fxmlFileName) {
+    public static Node loadNode(FXMLLoader loader, String fxmlFileName) {
         try {
             return loader.load();
         } catch (Exception e) {

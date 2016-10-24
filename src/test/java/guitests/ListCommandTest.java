@@ -10,23 +10,24 @@ public class ListCommandTest extends AddressBookGuiTest {
 
     @Test
     public void list_nonEmptyList() {
-        assertListResult("list Mark"); //no results
-        assertListResult("list Meier", td.benson, td.daniel); //multiple results
+        //TODO: Write better, less fragile tests
+        assertListResult("list nodoge"); //no results
+        assertListResult("list Buy", td.apple, td.banana, td.eggplant); //multiple results
 
         //find after deleting one result
         commandBox.runCommand("delete 1");
-        assertListResult("list Meier",td.daniel);
+        assertListResult("list doge",td.doge);
     }
 
     @Test
     public void list_emptyList(){
         commandBox.runCommand("clear");
-        assertListResult("list Jean"); //no results
+        assertListResult("list doge"); //no results
     }
 
     @Test
     public void list_invalidCommand_fail() {
-        commandBox.runCommand("listgeorge");
+        commandBox.runCommand("listdoge");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
@@ -34,6 +35,6 @@ public class ListCommandTest extends AddressBookGuiTest {
         commandBox.runCommand(command);
         assertListSize(expectedHits.length);
         assertResultMessage(expectedHits.length + " entries listed!");
-        assertTrue(personListPanel.isListMatching(expectedHits));
+        assertTrue(taskList.isListMatching(expectedHits));
     }
 }

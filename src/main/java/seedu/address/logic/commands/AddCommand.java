@@ -18,7 +18,7 @@ public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to the list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to the list.\n"
             + "Parameters: TITLE [start/START TIME] [end/END TIME] [#TAG...] [desc/DESCRIPTION]\n"
             + "Example: " + COMMAND_WORD
             + " Buy Banana #NTUC #shopping desc/Bananas are yummy";
