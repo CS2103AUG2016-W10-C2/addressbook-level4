@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -92,9 +93,29 @@ public class MainController extends UiPart {
     }
 
     private void configureScene() {
+        assert scene != null;
         URL url = this.getClass().getResource(CSS_SOURCE);
         String css = url.toExternalForm();
         scene.getStylesheets().add(css);
+        addEscapeHandlerForScene();
+    }
+
+    /**
+     * Event filter to leave the help screen when the `ESCAPE` key is pressed.
+     * A filter is used instead of a handler since the ListView or a particular
+     * JavaFX node consumes the event only in the case of an `ESCAPE` key.
+     */
+    private void addEscapeHandlerForScene() {
+        assert scene != null;
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.ESCAPE) {
+                    EventsCenter.getInstance().post(new ShowTaskListEvent());
+                    ke.consume();
+                }
+            }
+        });
     }
 
     private void initAppController() {
@@ -127,17 +148,6 @@ public class MainController extends UiPart {
     // #################
     // # FXML HANDLERS #
     // #################
-
-    /**
-     * Handler to leave the help screen when the `ESCAPE` key is pressed.
-     */
-    @FXML
-    private void handleKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ESCAPE) {
-            EventsCenter.getInstance().post(new ShowTaskListEvent());
-        }
-    }
-
     /**
      * Closes the application.
      */
