@@ -18,7 +18,7 @@ public class ConfigTest {
                 "Current log level : INFO\n" +
                 "Preference file Location : preferences.json\n" +
                 "Local data file location : data/addressbook.xml\n" +
-                "TaskManager name : PriorityQ";
+                "TaskManager name : TypicalTaskManagerName";
 
         assertEquals(defaultConfigAsString, new Config().toString());
     }

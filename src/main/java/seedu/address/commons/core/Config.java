@@ -15,7 +15,7 @@ public class Config {
     private Level logLevel = Level.INFO;
     private String userPrefsFilePath = "preferences.json";
     private String addressBookFilePath = "data/addressbook.xml";
-    private String taskManagerName = "PriorityQ";
+    private String taskManagerName = "TypicalTaskManagerName";
 
 
     public Config() {
