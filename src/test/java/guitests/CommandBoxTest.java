@@ -1,7 +1,6 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.address.commons.core.Messages;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +9,7 @@ public class CommandBoxTest extends AddressBookGuiTest {
 
     @Test
     public void commandBox_commandSucceeds_textCleared() {
-        commandBox.runCommand(td.benson.getAddCommand());
+        commandBox.runCommand(td.banana.getAddCommand());
         assertEquals(commandBox.getCommandInput(), "");
     }
 

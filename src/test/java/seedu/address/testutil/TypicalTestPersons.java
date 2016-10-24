@@ -4,54 +4,50 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.TaskManager;
 import seedu.address.model.task.*;
 
-/**
- *
- */
 public class TypicalTestPersons {
 
-    public static TestEntry alice, benson, carl, daniel, elle, fiona, george, hoon, ida;
+    public static TestEntry apple, banana, cat, doge, eggplant, study, jogging, homework, movie;
 
     public TypicalTestPersons() {
         try {
-            alice =  new EntryBuilder().withTitle("Alice Pauline").withTags("friends").build();
-            benson = new EntryBuilder().withTitle("Benson Meier").withTags("owesMoney", "friends").build();
-            carl = new EntryBuilder().withTitle("Carl Kurz").build();
-            daniel = new EntryBuilder().withTitle("Daniel Meier").build();
-            elle = new EntryBuilder().withTitle("Elle Meyer").build();
-            fiona = new EntryBuilder().withTitle("Fiona Kunz").build();
-            george = new EntryBuilder().withTitle("George Best").build();
+            apple =  new EntryBuilder().withTitle("Buy apples").withTags("groceries").build();
+            banana = new EntryBuilder().withTitle("Buy bananas").withTags("groceries", "for scale").build();
+            cat = new EntryBuilder().withTitle("Adopt a cat").build();
+            doge = new EntryBuilder().withTitle("Get blankets for doge").build();
+            eggplant = new EntryBuilder().withTitle("Buy eggplants").build();
+            study = new EntryBuilder().withTitle("Study for tests").build();
+            jogging = new EntryBuilder().withTitle("Go jogging this Thursday").build();
 
-            //Manually added
-            hoon = new EntryBuilder().withTitle("Hoon Meier").build();
-            ida = new EntryBuilder().withTitle("Ida Mueller").build();
+            homework = new EntryBuilder().withTitle("Do assignment 314").build();
+            movie = new EntryBuilder().withTitle("Watch Deadpool").build();
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "not possible";
         }
     }
 
-    public static void loadAddressBookWithSampleData(TaskManager ab) {
+    public static void loadAddressBookWithSampleData(TaskManager taskManager) {
 
         try {
-            ab.addTask(new Task(alice));
-            ab.addTask(new Task(benson));
-            ab.addTask(new Task(carl));
-            ab.addTask(new Task(daniel));
-            ab.addTask(new Task(elle));
-            ab.addTask(new Task(fiona));
-            ab.addTask(new Task(george));
+            taskManager.addTask(new Task(apple));
+            taskManager.addTask(new Task(banana));
+            taskManager.addTask(new Task(cat));
+            taskManager.addTask(new Task(doge));
+            taskManager.addTask(new Task(eggplant));
+            taskManager.addTask(new Task(study));
+            taskManager.addTask(new Task(jogging));
         } catch (UniqueTaskList.DuplicateTaskException e) {
             assert false : "not possible";
         }
     }
 
     public TestEntry[] getTypicalPersons() {
-        return new TestEntry[]{alice, benson, carl, daniel, elle, fiona, george};
+        return new TestEntry[]{apple, banana, cat, doge, eggplant, study, jogging};
     }
 
     public TaskManager getTypicalAddressBook(){
-        TaskManager ab = new TaskManager();
-        loadAddressBookWithSampleData(ab);
-        return ab;
+        TaskManager tm = new TaskManager();
+        loadAddressBookWithSampleData(tm);
+        return tm;
     }
 }
