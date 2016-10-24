@@ -28,7 +28,7 @@ public class UniqueTaskList implements Iterable<Entry> {
      */
     public static class DuplicateTaskException extends DuplicateDataException {
         protected DuplicateTaskException() {
-            super("Operation would result in duplicate persons");
+            super("Operation would result in duplicate entries");
         }
     }
 
