@@ -34,6 +34,18 @@ PriorityQ
     * Add and edit task description ([#42](https://github.com/CS2103AUG2016-W10-C2/main/pull/42), [#43](https://github.com/CS2103AUG2016-W10-C2/main/pull/43))
     * Mockups, design of app
 
+#### VincentSeng [@bertoia](https://github.com/bertoia)
+<img src="images/VincentSeng.jpg" width="175"><br>
+
+* Components in charge of: [undo](DeveloperGuide.md#listing-component)
+* Aspects/tools in charge of: Testing
+* Features implemented:
+    * [undo command](https://github.com/CS2103AUG2016-W10-C2/main/pull/73)
+    * [mark/unmark commands](https://github.com/CS2103AUG2016-W10-C2/main/tree/mark-task)
+    * [tag/untag commands](https://github.com/CS2103AUG2016-W10-C2/main/pull/41)
+* Code written: [[functional code](../collated/main/A0121501E.md)][[test code](../collated/test/A0121501E.md)][[docs](collated/docs/A0121501E.md)]
+* Other major contributions:
+
 ### Roles and responsibilities
 **President: Vincent**
 
