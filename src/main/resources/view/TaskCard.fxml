@@ -15,8 +15,8 @@
          <children>
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="280.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="170.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="270.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -34,6 +34,7 @@
                      <children>
                         <Label fx:id="deadline" styleClass="date" text="Deadline" wrapText="true" />
                         <Label fx:id="startTime" styleClass="date" text="Start" wrapText="true" />
+                        <Label fx:id="separator" styleClass="date" text="-" />
                         <Label fx:id="endTime" styleClass="date" text="End" wrapText="true" />
                      </children>
                   </HBox>

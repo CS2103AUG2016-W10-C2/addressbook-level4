@@ -70,16 +70,62 @@
     -fx-padding: 0 0 0 40;
 }
 
+.taskcard #deadline {
+    -fx-text-fill: white;
+    -fx-background-color: DarkTurquoise;
+    -fx-background-radius: 6;
+    -fx-padding: 3;
+}
+
 .taskcard .date {
     -fx-font-family: "San Francisco Display Bold";
     -fx-font-size: 7pt;
     -fx-text-fill: DarkTurquoise;
 }
 
+.taskcard .date.present#deadline {
+    -fx-background-color: YellowGreen;
+}
+
+.taskcard .date.past#deadline {
+    -fx-background-color: OrangeRed;
+}
+
+/* We have to separate them out because *CSS*.
+   Otherwise, styles get overridden and it does not look pretty.
+ */
+.taskcard #startTime, #endTime {
+    -fx-text-fill: DarkTurquoise;
+}
+
+.taskcard .date.present#startTime {
+    -fx-text-fill: YellowGreen;
+}
+
+.taskcard .date.present#separator {
+    -fx-text-fill: YellowGreen;
+}
+
+.taskcard .date.present#endTime {
+    -fx-text-fill: YellowGreen;
+}
+
+.taskcard .date.past#startTime {
+    -fx-text-fill: LightGrey;
+}
+
+.taskcard .date.past#separator {
+    -fx-text-fill: LightGrey;
+}
+
+.taskcard .date.past#endTime {
+    -fx-text-fill: LightGrey;
+}
+
 .taskcard .check-box *.box{
     -fx-background-color: #eeeeee;
     -fx-background-insets: 0;
-    -fx-background-radius: 10, 10, 10;
+    -fx-background-radius: 6;
 }
 
 /*========== COMMANDAREA ==========*/
@@ -88,19 +134,15 @@
     -fx-text-fill: DarkTurquoise;
 }
 
-.commandarea .text-field.error {
-    -fx-focus-color: #dc0051;
-    -fx-faint-focus-color: #dc00511A;
+.commandarea .text-field {
+    -fx-background-color: LightGrey, white;
+    -fx-background-insets: 0 0 -1 0, 0;
+    -fx-background-radius: 0;
+}
 
-    -fx-highlight-fill: -fx-accent;
-    -fx-highlight-text-fill: white;
-    -fx-background-color:
-        -fx-focus-color,
-        -fx-control-inner-background,
-        -fx-faint-focus-color,
-        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
-    -fx-background-insets: -0.2, 1, -1.4, 3;
-    -fx-background-radius: 3, 2, 4, 0;
+.commandarea .text-field.error {
+    -fx-background-color: Crimson, white;
+    -fx-background-insets: 0 0 -1 0, 0;
     -fx-prompt-text-fill: transparent;
 }
 

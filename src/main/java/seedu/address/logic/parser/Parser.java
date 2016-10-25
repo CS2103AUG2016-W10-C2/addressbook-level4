@@ -36,6 +36,7 @@ public class Parser {
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final Pattern MONTH_DATE = Pattern.compile("(?<month>\\d\\d)(?<separator>/|-)(?<day>\\d\\d)(?<theRest>.*)");
 
     // TODO: Use PrettyTime to parse dates
     private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
@@ -166,6 +167,13 @@ public class Parser {
 
         if (dateTime.isEmpty()) {
             return null;
+        }
+
+        // Since PrettyTime uses the US date format (MM/DD),
+        // Swap month-date order if necessary
+        final Matcher matcher = MONTH_DATE.matcher(dateTime);
+        if (matcher.matches()) {
+            dateTime = matcher.group("day") + matcher.group("separator") + matcher.group("month") + matcher.group("theRest");
         }
 
         List<Date> possibleDates = prettyTimeParser.parse(dateTime);
