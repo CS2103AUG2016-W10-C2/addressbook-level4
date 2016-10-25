@@ -3,7 +3,6 @@ package seedu.address.model.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
