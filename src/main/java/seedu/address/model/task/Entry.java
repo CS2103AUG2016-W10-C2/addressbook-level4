@@ -1,14 +1,12 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import seedu.address.model.tag.UniqueTagList;
-
 import static seedu.address.commons.core.Messages.SPACE;
 
 /**
@@ -17,8 +15,6 @@ import static seedu.address.commons.core.Messages.SPACE;
  * values are validated.
  */
 public abstract class Entry {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
-
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
@@ -152,12 +148,7 @@ public abstract class Entry {
     /**
      * Get the date for display to the user
      */
-    public String getDateDisplay(LocalDateTime dateTime){
-        if (dateTime == null) {
-            return "";
-        }
-        return dateTime.format(DATE_TIME_FORMATTER);
-    }
+    public abstract String getDateDisplay(LocalDateTime dateTime);
 
     /**
      * Formats the Entry as text, showing all contact details.

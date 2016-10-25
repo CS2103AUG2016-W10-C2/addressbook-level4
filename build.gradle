@@ -35,7 +35,8 @@ allprojects {
         junitVersion = '4.12'
         testFxVersion = '4.0.+'
         monocleVersion = '1.8.0_20'
-        prettyTimeVersion = '4.0.0.Final'
+        prettyTimeNlpVersion = '4.0.0.Final'
+        prettyTimeVersion = '3.2.7.Final'
 
         libDir = 'lib'
     }
@@ -53,7 +54,8 @@ allprojects {
         compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
         compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDataTypeVersion"
         compile "com.google.guava:guava:$guavaVersion"
-        compile "org.ocpsoft.prettytime:prettytime-nlp:$prettyTimeVersion"
+        compile "org.ocpsoft.prettytime:prettytime-nlp:$prettyTimeNlpVersion"
+        compile "org.ocpsoft.prettytime:prettytime:$prettyTimeVersion"
 
         testCompile "junit:junit:$junitVersion"
         testCompile "org.testfx:testfx-core:$testFxVersion"
