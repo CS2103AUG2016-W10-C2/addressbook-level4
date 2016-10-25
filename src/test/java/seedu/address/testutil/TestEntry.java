@@ -39,4 +39,9 @@ public class TestEntry extends Entry {
         }
         return sb.toString();
     }
+
+    @Override
+    public int compareTo(Entry o) {
+        return 0;
+    }
 }

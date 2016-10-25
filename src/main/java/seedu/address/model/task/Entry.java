@@ -20,7 +20,7 @@ import static seedu.address.commons.core.Messages.SPACE;
  * Implementations should guarantee: details are present and not null, field
  * values are validated.
  */
-public abstract class Entry {
+public abstract class Entry implements Comparable<Entry>{
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     protected ObjectProperty<Title> title;
