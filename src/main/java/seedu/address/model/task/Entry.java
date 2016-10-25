@@ -6,11 +6,8 @@ import java.time.format.DateTimeFormatter;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
 import static seedu.address.commons.core.Messages.SPACE;
@@ -21,7 +18,7 @@ import static seedu.address.commons.core.Messages.SPACE;
  * values are validated.
  */
 public abstract class Entry {
-    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
