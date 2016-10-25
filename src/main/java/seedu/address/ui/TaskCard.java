@@ -51,6 +51,7 @@ public class TaskCard extends HBox {
     @FXML
     private CheckBox checkBox;
 
+    private ChangeListener<Boolean> listener;
 
     // ########
     // # DATA #
@@ -70,7 +71,7 @@ public class TaskCard extends HBox {
     public void init(Entry entry, int index, ChangeListener<Boolean> listener) {
         this.entry = entry;
         this.index = index;
-        this.checkBox.selectedProperty().addListener(listener);
+        this.listener = listener;
         this.checkBox.selectedProperty().bindBidirectional(entry.isMarkedProperty());
         initData();
     }
@@ -82,6 +83,7 @@ public class TaskCard extends HBox {
         description.setText(entry.getDescription());
         if (entry instanceof Task) {
             Task task = (Task) entry;
+            checkBox.selectedProperty().addListener(listener);
             checkBox.setSelected(entry.isMarked());
             setEmptyText(startTime, endTime);
             hide(startTime, endTime);

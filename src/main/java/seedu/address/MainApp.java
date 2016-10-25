@@ -40,7 +40,7 @@ public class MainApp extends Application {
     private Config config;
     private UserPrefs userPrefs;
 
-    MainApp() {}
+    public MainApp() {}
 
     @Override
     public void init() throws Exception {
