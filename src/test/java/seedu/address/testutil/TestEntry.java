@@ -1,17 +1,12 @@
 package seedu.address.testutil;
 
-import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.*;
 
-import java.util.StringJoiner;
+import java.time.LocalDateTime;
 
 import static seedu.address.logic.commands.AddCommand.TAG_FLAG;
 
@@ -38,5 +33,9 @@ public class TestEntry extends Entry {
             this.getTags().getInternalList().forEach(s -> sb.append(" " + TAG_FLAG).append(s.tagName));
         }
         return sb.toString();
+    }
+    @Override
+    public String getDateDisplay(LocalDateTime dateTime) {
+        return "";
     }
 }
