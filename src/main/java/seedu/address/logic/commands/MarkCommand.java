@@ -5,6 +5,7 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
+//@@author A0121501E
 public class MarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "mark";
 

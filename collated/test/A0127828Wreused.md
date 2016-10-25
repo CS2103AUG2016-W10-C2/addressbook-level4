@@ -1,15 +1,6 @@
-package seedu.address.logic.parser;
-
-import org.junit.Test;
-import seedu.address.logic.parser.ArgumentTokenizer;
-import seedu.address.logic.parser.ArgumentTokenizer.Prefix;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-
-/**
- * @@author A0127828W-reused
+# A0127828Wreused
+###### /java/seedu/address/logic/parser/ArgumentTokenizerTest.java
+``` java
  */
 public class ArgumentTokenizerTest {
 
@@ -149,3 +140,4 @@ public class ArgumentTokenizerTest {
     }
 
 }
+```

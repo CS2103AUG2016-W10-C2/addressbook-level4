@@ -27,14 +27,16 @@ public class UserPrefs {
     public void setGuiSettings(double width, double height, int x, int y) {
         guiSettings = new GuiSettings(width, height, x, y);
     }
-    
+
+    //@@author A0126539Y
     public String getSaveLocation() {
         return saveLocation;
     }
-    
+
     public void setSaveLocation(String saveLocation) {
         this.saveLocation = saveLocation;
     }
+    //@@author A0126539Y
 
     @Override
     public boolean equals(Object other) {
