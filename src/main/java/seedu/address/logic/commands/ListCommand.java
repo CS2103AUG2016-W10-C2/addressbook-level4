@@ -9,6 +9,7 @@ import seedu.address.model.task.Entry;
 
 /**
  * Lists all persons in the address book to the user.
+ * @@author A0127828W
  */
 public class ListCommand extends Command {
 

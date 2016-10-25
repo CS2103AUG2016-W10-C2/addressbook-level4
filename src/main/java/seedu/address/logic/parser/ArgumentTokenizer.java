@@ -5,6 +5,8 @@ import java.util.*;
 /**
  * Retrieved from https://github.com/nus-cs2103-AY1617S1/addressbook-level4/ on 2016/10/21
  * Author: ndt93
+ *
+ * @@author A0127828W-reused
  */
 
 /**
@@ -75,12 +77,14 @@ public class ArgumentTokenizer {
 
     /**
      * Returns true if the prefix appeared more than once in the arguments
+     * @@author A0127828W
      */
     public boolean hasMultiple(Prefix prefix) {
         Optional<List<String>> allOccurences = getAllValues(prefix);
 
         return allOccurences.isPresent() && allOccurences.get().size() > 1;
     }
+    //@@author
 
     private void resetTokenizerState() {
         this.tokenizedArguments.clear();

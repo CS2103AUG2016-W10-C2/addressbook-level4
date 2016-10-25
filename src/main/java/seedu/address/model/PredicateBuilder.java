@@ -75,6 +75,7 @@ public class PredicateBuilder {
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
+    //@author A0127828W-reused
     //========== Inner classes/interfaces used for filtering ==================================================
 
     interface Expression {
@@ -106,6 +107,7 @@ public class PredicateBuilder {
         String toString();
     }
 
+    //@author A0127828W
     private class TitleQualifier implements Qualifier {
         private Set<String> titleKeyWords;
 
@@ -157,6 +159,7 @@ public class PredicateBuilder {
             return "tags=" + String.join(", ", tags);
         }
     }
+    //@@author
 
     //@@author A0126539Y
     private class DateAfterQualifier implements Qualifier {
@@ -219,6 +222,7 @@ public class PredicateBuilder {
         }
     }
 
+    //@@author A0127828W
     private class DateOnQualifier implements Qualifier {
         private LocalDateTime onDate;
 
