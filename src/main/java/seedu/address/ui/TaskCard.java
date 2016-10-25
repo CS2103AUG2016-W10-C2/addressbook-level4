@@ -12,6 +12,10 @@ import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Event;
 
+import java.time.LocalDateTime;
+
+import static seedu.address.ui.util.GuiUtil.TRANSPARENT;
+
 public class TaskCard extends HBox {
     private static final String FXML = "TaskCard.fxml";
 
@@ -74,9 +78,11 @@ public class TaskCard extends HBox {
             Task task = (Task) entry;
             if (task.getDeadline() != null) {
                 deadline.setText(task.getDeadlineDisplay().toUpperCase());
-            }
-            else {
-                deadline.setText("");
+                if (task.getDeadline().isBefore(LocalDateTime.now())) {
+                    deadline.getStyleClass().add("overdue");
+                }
+            } else {
+                deadline.setOpacity(TRANSPARENT);
             }
             startTime.setText("");
             endTime.setText("");
@@ -87,6 +93,7 @@ public class TaskCard extends HBox {
             startTime.setText(event.getStartTimeDisplay().toUpperCase());
             endTime.setText(" - " + event.getEndTimeDisplay().toUpperCase());
             deadline.setText("");
+            deadline.setOpacity(TRANSPARENT);
         }
         checkBox.setSelected(entry.isMarked());
     }
