@@ -1,18 +1,17 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import seedu.address.commons.util.CollectionUtil;
+import org.ocpsoft.prettytime.PrettyTime;
 import seedu.address.model.tag.UniqueTagList;
-
 import static seedu.address.commons.core.Messages.SPACE;
 
 /**
@@ -21,6 +20,7 @@ import static seedu.address.commons.core.Messages.SPACE;
  * values are validated.
  */
 public abstract class Entry {
+    static final PrettyTime prettyTime = new PrettyTime();
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     protected ObjectProperty<Title> title;
@@ -160,7 +160,8 @@ public abstract class Entry {
         if (dateTime == null) {
             return "";
         }
-        return dateTime.format(DATE_TIME_FORMATTER);
+        Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        return prettyTime.format(interpreted);
     }
 
     /**
