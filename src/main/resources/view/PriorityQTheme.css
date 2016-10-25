@@ -83,6 +83,10 @@
     -fx-text-fill: DarkTurquoise;
 }
 
+.taskcard .date.today#deadline {
+    -fx-background-color: YellowGreen;
+}
+
 .taskcard .date.overdue#deadline {
     -fx-background-color: OrangeRed;
 }
