@@ -1,28 +1,30 @@
 /* @@author A0116603R */
 /* ========== FONTS ==========*/
 @font-face {
-    font-family: PT Sans Narrow;
+    font-family: San Francisco Text;
     font-style: normal;
-    src: url("/fonts/PT_Sans-Narrow-Web-Regular.ttf");
+    src: url("/fonts/SanFranciscoText-Regular.otf");
 }
 
 @font-face {
-    font-family: PT Sans;
-    font-style: italic;
-    src: url("/fonts/PT_Sans-Web-Italic.ttf");
+    font-family: San Francisco Display;
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/SanFranciscoDisplay-Light.otf");
 }
 
 @font-face {
-    font-family: PT Sans;
-    font-style: bold;
-    src: url("/fonts/PT_Sans-Web-Bold.ttf");
+    font-family: San Francisco Display;
+    font-style: normal;
+    font-weight: 700;
+    src: url("/fonts/SanFranciscoDisplay-Bold.otf");
 }
 
 /* ========== JAVAFX ELEMENTS ==========*/
 .root {
     -fx-background-color: white;
-    -fx-font-size: 12pt;
-    -fx-font-family: "PT Sans Narrow";
+    -fx-font-size: 10pt;
+    -fx-font-family: "San Francisco Display Light";
     -fx-padding: 10;
 }
 
@@ -63,17 +65,14 @@
 }
 
 .taskcard #description {
-    -fx-font-family: "PT Sans";
-    -fx-font-style: italic;
     -fx-font-size: 9pt;
     -fx-text-fill: DarkGrey;
-    -fx-padding: 0 0 0 45;
+    -fx-padding: 0 0 0 40;
 }
 
 .taskcard .date {
+    -fx-font-family: "San Francisco Display Bold";
     -fx-font-size: 7pt;
-    -fx-font-family: "PT Sans";
-    -fx-font-weight: bold;
     -fx-text-fill: DarkTurquoise;
 }
 
@@ -108,13 +107,11 @@
 /*========== HELPCARD ==========*/
 .helpcard .label {
     -fx-font-size: 10pt;
-    -fx-font-family: "PT Sans Narrow";
     -fx-text-fill: DarkSlateGrey;
     -fx-padding: 4;
 }
 
 .helpcard #commandLabel {
-    -fx-font-family: "PT Sans";
-    -fx-font-weight: bold;
+    -fx-font-family: "San Francisco Display Bold";
     -fx-text-fill: DarkTurquoise;
 }
