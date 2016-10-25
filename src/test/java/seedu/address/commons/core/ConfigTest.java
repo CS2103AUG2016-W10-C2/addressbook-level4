@@ -17,7 +17,7 @@ public class ConfigTest {
         String defaultConfigAsString = "App title : PriorityQ\n" +
                 "Current log level : INFO\n" +
                 "Preference file Location : preferences.json\n" +
-                "Local data file location : data/addressbook.xml\n" +
+                "Local data file location : data/PriorityQ.xml\n" +
                 "TaskManager name : TypicalTaskManagerName";
 
         assertEquals(defaultConfigAsString, new Config().toString());
