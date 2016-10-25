@@ -83,12 +83,43 @@
     -fx-text-fill: DarkTurquoise;
 }
 
-.taskcard .date.today#deadline {
+.taskcard .date.present#deadline {
     -fx-background-color: YellowGreen;
 }
 
-.taskcard .date.overdue#deadline {
+.taskcard .date.past#deadline {
     -fx-background-color: OrangeRed;
+}
+
+/* We have to separate them out because *CSS*.
+   Otherwise, styles get overridden and it does not look pretty.
+ */
+.taskcard #startTime, #endTime {
+    -fx-text-fill: DarkTurquoise;
+}
+
+.taskcard .date.present#startTime {
+    -fx-text-fill: YellowGreen;
+}
+
+.taskcard .date.present#separator {
+    -fx-text-fill: YellowGreen;
+}
+
+.taskcard .date.present#endTime {
+    -fx-text-fill: YellowGreen;
+}
+
+.taskcard .date.past#startTime {
+    -fx-text-fill: LightGrey;
+}
+
+.taskcard .date.past#separator {
+    -fx-text-fill: LightGrey;
+}
+
+.taskcard .date.past#endTime {
+    -fx-text-fill: LightGrey;
 }
 
 .taskcard .check-box *.box{
