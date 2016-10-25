@@ -13,7 +13,7 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.model.TaskManager;
 import seedu.address.model.task.Entry;
 import seedu.address.testutil.TestUtil;
-import seedu.address.testutil.TypicalTestPersons;
+import seedu.address.testutil.TypicalTestTasks;
 
 import java.util.concurrent.TimeoutException;
 
@@ -31,15 +31,14 @@ public abstract class AddressBookGuiTest {
 
     TestApp testApp;
 
-    protected TypicalTestPersons td = new TypicalTestPersons();
+    protected TypicalTestTasks td = new TypicalTestTasks();
 
     /*
      *   Handles to GUI elements present at the start up are created in advance
      *   for easy access from child classes.
      */
     protected MainGuiHandle mainGui;
-    protected MainMenuHandle mainMenu;
-    protected PersonListPanelHandle personListPanel;
+    protected TaskListHandle taskList;
     protected ResultDisplayHandle resultDisplay;
     protected CommandBoxHandle commandBox;
     private Stage stage;
@@ -58,8 +57,7 @@ public abstract class AddressBookGuiTest {
     public void setup() throws Exception {
         FxToolkit.setupStage((stage) -> {
             mainGui = new MainGuiHandle(new GuiRobot(), stage);
-            mainMenu = mainGui.getMainMenu();
-            personListPanel = mainGui.getPersonListPanel();
+            taskList = mainGui.getPersonListPanel();
             resultDisplay = mainGui.getResultDisplay();
             commandBox = mainGui.getCommandBox();
             this.stage = stage;
@@ -77,7 +75,7 @@ public abstract class AddressBookGuiTest {
      */
     protected TaskManager getInitialData() {
         TaskManager ab = TestUtil.generateEmptyAddressBook();
-        TypicalTestPersons.loadAddressBookWithSampleData(ab);
+        TypicalTestTasks.loadAddressBookWithSampleData(ab);
         return ab;
     }
 
@@ -97,16 +95,16 @@ public abstract class AddressBookGuiTest {
     /**
      * Asserts the task shown in the card is same as the given task
      */
-    public void assertMatching(Entry person, PersonCardHandle card) {
-        assertTrue(TestUtil.compareCardAndPerson(card, person));
+    public void assertMatching(Entry entry, TaskCardHandle card) {
+        assertTrue(TestUtil.compareCardAndEntry(card, entry));
     }
 
     /**
      * Asserts the size of the task list is equal to the given number.
      */
     protected void assertListSize(int size) {
-        int numberOfPeople = personListPanel.getNumberOfPeople();
-        assertEquals(size, numberOfPeople);
+        int numberOfTasks = taskList.getNumberOfTasks();
+        assertEquals(size, numberOfTasks);
     }
 
     /**

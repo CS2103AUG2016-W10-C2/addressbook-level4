@@ -1,6 +1,7 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
@@ -12,16 +13,22 @@ import javafx.beans.property.StringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
+import static seedu.address.commons.core.Messages.SPACE;
+
 /**
  * A read-only immutable interface for an Entry in the Task Manager.
  * Implementations should guarantee: details are present and not null, field
  * values are validated.
  */
 public abstract class Entry {
+    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
+
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
     protected StringProperty description;
+
+    String DELIMITER = " ";
 
     /**
      * Get the Title for this Entry
@@ -147,18 +154,33 @@ public abstract class Entry {
     }
 
     /**
+     * Get the date for display to the user
+     */
+    public String getDateDisplay(LocalDateTime dateTime){
+        if (dateTime == null) {
+            return "";
+        }
+        return dateTime.format(DATE_TIME_FORMATTER);
+    }
+
+    /**
      * Formats the Entry as text, showing all contact details.
      */
+    //@@author A0116603R
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle());
-        if (!getTags().isEmpty()) {
-            builder.append(" Tags: ");
-            getTags().forEach(builder::append);
-        }
+
         if (!getDescription().isEmpty()) {
-            builder.append(" Description: ");
+            builder.append(SPACE);
+            builder.append("(");
             builder.append(getDescription());
+            builder.append(")");
+        }
+
+        if (!getTags().isEmpty()) {
+            builder.append(SPACE);
+            builder.append(tagsString());
         }
         return builder.toString();
     }
@@ -168,12 +190,11 @@ public abstract class Entry {
      */
     public final String tagsString() {
         final StringBuffer buffer = new StringBuffer();
-        final String separator = ", ";
-        getTags().forEach(tag -> buffer.append(tag).append(separator));
+        getTags().forEach(tag -> buffer.append(tag).append(DELIMITER));
         if (buffer.length() == 0) {
             return "";
         } else {
-            return buffer.substring(0, buffer.length() - separator.length());
+            return buffer.substring(0, buffer.length() - DELIMITER.length());
         }
     }
 }

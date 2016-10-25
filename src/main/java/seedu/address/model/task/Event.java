@@ -12,6 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
+import static seedu.address.commons.core.Messages.SPACE;
+
 //@@author A0126539Y
 public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> startTime;
@@ -35,12 +37,20 @@ public final class Event extends Entry{
         return startTime.get();
     }
 
+    public String getStartTimeDisplay() {
+        return getDateDisplay(getStartTime());
+    }
+
     public void setStartTime(LocalDateTime startTime) {
         this.startTime.set(startTime);
     }
 
     public LocalDateTime getEndTime() {
         return endTime.get();
+    }
+
+    public String getEndTimeDisplay() {
+        return getDateDisplay(getEndTime());
     }
 
     public void setEndTime(LocalDateTime endTime) {
@@ -81,22 +91,20 @@ public final class Event extends Entry{
     }
 
     @Override
+    //@@author A0116603R
     public String getAsText() {
-        final StringBuilder builder = new StringBuilder()
-                .append(getTitle())
-                .append(" Start time: ")
-                .append(getStartTime().toString())
-                .append(" End time: ")
-                .append(getEndTime().toString());
-        if (!getTags().isEmpty()) {
-            builder.append(" Tags: ");
-            getTags().forEach(builder::append);
-        }
-        if (!getDescription().isEmpty()) {
-            builder.append(" Description: ");
-            builder.append(getDescription());
-        }
+        final StringBuilder builder = new StringBuilder();
+        builder.append(super.getAsText());
 
+        assert (getStartTime() != null && getEndTime() != null);
+
+        builder.append(SPACE);
+        builder.append("from: ");
+        builder.append(getStartTimeDisplay());
+
+        builder.append(SPACE);
+        builder.append("to: ");
+        builder.append(getEndTimeDisplay());
         return builder.toString();
     }
 

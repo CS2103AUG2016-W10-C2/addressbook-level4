@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="500.0" styleClass="commandarea" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0">
+         <children>
+            <Label fx:id="statusLine" alignment="CENTER" prefWidth="480.0" text="StatusLine" textAlignment="CENTER" wrapText="true" />
+         </children>
+         <padding>
+            <Insets bottom="4.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="28.0" prefWidth="500.0">
+         <children>
+            <TextField fx:id="cmdLine" onAction="#handleCommandInputChanged" prefWidth="500.0" promptText="A command prompt" />
+         </children>
+      </HBox>
+   </children>
+</fx:root>

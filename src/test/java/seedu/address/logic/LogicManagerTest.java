@@ -9,7 +9,7 @@ import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
-import seedu.address.commons.events.ui.ShowHelpRequestEvent;
+import seedu.address.commons.events.ui.ShowHelpListEvent;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.model.TaskManager;
 import seedu.address.model.Model;
@@ -53,7 +53,7 @@ public class LogicManagerTest {
     }
 
     @Subscribe
-    private void handleShowHelpRequestEvent(ShowHelpRequestEvent she) {
+    private void handleShowHelpRequestEvent(ShowHelpListEvent she) {
         helpShown = true;
     }
 
@@ -156,7 +156,7 @@ public class LogicManagerTest {
     @Test
     public void execute_add_invalidTaskData() throws Exception {
         assertCommandBehavior(
-                "add []\\[;]", Title.MESSAGE_NAME_CONSTRAINTS);
+                "add []\\[;]", String.format(Title.MESSAGE_NAME_CONSTRAINTS, "[]\\[;]"));
         assertCommandBehavior(
                 "add Valid Task " + TAG_FLAG + "invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
     }
@@ -837,7 +837,7 @@ public class LogicManagerTest {
          */
         Task generateTask(int seed) throws Exception {
             return new Task(
-                    new Title("Person " + seed),
+                    new Title("Entry " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1)))
             );
         }

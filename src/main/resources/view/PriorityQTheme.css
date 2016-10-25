@@ -1,0 +1,117 @@
+/* @@author A0116603R */
+/* ========== FONTS ==========*/
+@font-face {
+    font-family: San Francisco Text;
+    font-style: normal;
+    src: url("/fonts/SanFranciscoText-Regular.otf");
+}
+
+@font-face {
+    font-family: San Francisco Display;
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/SanFranciscoDisplay-Light.otf");
+}
+
+@font-face {
+    font-family: San Francisco Display;
+    font-style: normal;
+    font-weight: 700;
+    src: url("/fonts/SanFranciscoDisplay-Bold.otf");
+}
+
+/* ========== JAVAFX ELEMENTS ==========*/
+.root {
+    -fx-background-color: white;
+    -fx-font-size: 10pt;
+    -fx-font-family: "San Francisco Display Light";
+    -fx-padding: 10;
+}
+
+.list-view {
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0px;
+}
+
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow,
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+
+.list-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0px;
+}
+
+/*========== TASKCARD ==========*/
+.taskcard .label {
+    -fx-text-fill: DarkSlateGrey;
+}
+
+.taskcard #id {
+    -fx-padding: 0 4 0 0;
+}
+
+.taskcard #tags {
+    -fx-font-size: 9pt;
+    -fx-text-fill: DarkTurquoise;
+    -fx-letter-spacing: -2px;
+    -fx-padding: 0 0 4 4;
+}
+
+.taskcard #description {
+    -fx-font-size: 9pt;
+    -fx-text-fill: DarkGrey;
+    -fx-padding: 0 0 0 40;
+}
+
+.taskcard .date {
+    -fx-font-family: "San Francisco Display Bold";
+    -fx-font-size: 7pt;
+    -fx-text-fill: DarkTurquoise;
+}
+
+.taskcard .check-box *.box{
+    -fx-background-color: #eeeeee;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10, 10, 10;
+}
+
+/*========== COMMANDAREA ==========*/
+.commandarea .label {
+    -fx-font-size: 9pt;
+    -fx-text-fill: DarkTurquoise;
+}
+
+.commandarea .text-field.error {
+    -fx-focus-color: #dc0051;
+    -fx-faint-focus-color: #dc00511A;
+
+    -fx-highlight-fill: -fx-accent;
+    -fx-highlight-text-fill: white;
+    -fx-background-color:
+        -fx-focus-color,
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-insets: -0.2, 1, -1.4, 3;
+    -fx-background-radius: 3, 2, 4, 0;
+    -fx-prompt-text-fill: transparent;
+}
+
+/*========== HELPCARD ==========*/
+.helpcard .label {
+    -fx-font-size: 10pt;
+    -fx-text-fill: DarkSlateGrey;
+    -fx-padding: 4;
+}
+
+.helpcard #commandLabel {
+    -fx-font-family: "San Francisco Display Bold";
+    -fx-text-fill: DarkTurquoise;
+}

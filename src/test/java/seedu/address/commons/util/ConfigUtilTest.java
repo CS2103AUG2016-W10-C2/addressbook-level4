@@ -77,7 +77,7 @@ public class ConfigUtilTest {
         config.setLogLevel(Level.INFO);
         config.setUserPrefsFilePath("C:\\preferences.json");
         config.setAddressBookFilePath("addressbook.xml");
-        config.setAddressBookName("TypicalAddressBookName");
+        config.setTaskManagerName("TypicalTaskManagerName");
         return config;
     }
 

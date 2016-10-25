@@ -8,8 +8,9 @@ import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
+import static seedu.address.commons.core.Messages.SPACE;
 
 /**
  * Represents a Floating Task in the Task Manager. Guarantees: details are
@@ -20,7 +21,6 @@ public class Task extends Entry {
 
     protected ObjectProperty<LocalDateTime> deadline;
 
-    private static final DateTimeFormatter displayDeadlineFormatter = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description);
@@ -57,14 +57,8 @@ public class Task extends Entry {
         return deadline.get();
     }
 
-    public String getDeadLineDisplay() {
-        LocalDateTime deadline = this.deadline.get();
-
-        if (deadline == null) {
-            return "";
-        } else {
-            return deadline.format(displayDeadlineFormatter);
-        }
+    public String getDeadlineDisplay() {
+        return getDateDisplay(getDeadline());
     }
 
     public void setDeadline(LocalDateTime deadline) {
@@ -101,23 +95,15 @@ public class Task extends Entry {
     }
 
     @Override
+    //@@author A0116603R
     public String getAsText() {
-        final StringBuilder builder = new StringBuilder()
-                .append(getTitle());
+        final StringBuilder builder = new StringBuilder();
+        builder.append(super.getAsText());
         if (getDeadline() != null) {
-            builder.append(" Deadline: ");
-            builder.append(getDeadline().toString());
+            builder.append(SPACE);
+            builder.append("Due:");
+            builder.append(getDeadlineDisplay());
         }
-
-        if (!getTags().isEmpty()) {
-            builder.append(" Tags: ");
-            getTags().forEach(builder::append);
-        }
-        if (!getDescription().isEmpty()) {
-            builder.append(" Description: ");
-            builder.append(getDescription());
-        }
-
         return builder.toString();
     }
 
