@@ -3,4 +3,4 @@
 <?import javafx.scene.control.ListView?>
 
 
-<fx:root fx:id="taskListView" maxHeight="1.7976931348623157E308" prefHeight="640.0" type="ListView" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" />
+<fx:root fx:id="taskListView" prefHeight="640.0" type="ListView" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" />
