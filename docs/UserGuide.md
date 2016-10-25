@@ -68,6 +68,7 @@ No tasks to display.
 
 ## Commands
 
+#### Adding
 ```
 add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
 ```
@@ -81,7 +82,7 @@ add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [d
 
 > - `add CS2105 Assignment 1 end/2016-10-10 10:00`
 
-
+#### Listing
 ```
 list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]
 ```
@@ -96,7 +97,7 @@ list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...
 
 > - `list buy banana #groceries`
 
-
+#### Tagging
 ```
 tag <task_id> #<tag_name> [#<tag_name> …]
 ```
@@ -113,7 +114,7 @@ tag <task_id> #<tag_name> [#<tag_name> …]
 
 > Duplicated tags will only be added once
 
-
+#### Editing
 ```
 edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [#<tag_name> ...] [/r <recurrence>] [/desc <description>]
 ```
@@ -129,6 +130,7 @@ edit <task_id> [new title] [/st <start> /end <end> | /dl <deadline>] [#<tag_name
 > - `edit 13 #yearly`
 
 
+#### Deleting
 ```
 delete <entry_id>
 ```
@@ -140,7 +142,7 @@ delete <entry_id>
 
 > - `Delete 42`
 
-
+#### Marking
 ```
 mark <entry_id>
 ```
@@ -155,7 +157,7 @@ mark <entry_id>
 
 > - `unmark 42`
 
-
+#### Showing
 ```
 show <entry_id>
 ```
@@ -163,7 +165,7 @@ show <entry_id>
 
 > `list` should be executed before this command to obtain a entry id.
 
-
+#### Help
 ```
 help [<command>]
 ```
@@ -172,7 +174,7 @@ help [<command>]
 
 > Help is also shown if you enter an incorrect command e.g. abcd
 
-
+#### Config
 ```
 config [option=value ...]
 ```
