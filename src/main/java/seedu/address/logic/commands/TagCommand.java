@@ -14,6 +14,7 @@ import seedu.address.model.tag.UniqueTagList;
 /*
  * Add tags to an entry.
  */
+//@@author A0121501E
 public class TagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "tag";

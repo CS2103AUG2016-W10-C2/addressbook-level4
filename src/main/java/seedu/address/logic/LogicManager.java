@@ -39,7 +39,8 @@ public class LogicManager extends ComponentManager implements Logic {
     public CommandResult execute(String commandText) {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = parser.parseCommand(commandText);
-        
+
+        //@@author A0121501E
         if (command instanceof UndoCommand) {
             ((UndoCommand) command).setData(model, undoableCommandHistory);
         } else {
@@ -51,6 +52,7 @@ public class LogicManager extends ComponentManager implements Logic {
             ((UndoableCommand) command).getExecutionIsSuccessful()) {
             undoableCommandHistory.push((UndoableCommand) command);
         }
+        //@@author
         return commandResult;
     }
 

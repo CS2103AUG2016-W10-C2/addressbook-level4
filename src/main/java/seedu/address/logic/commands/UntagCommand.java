@@ -14,6 +14,7 @@ import seedu.address.model.tag.UniqueTagList;
 /*
  * Remove tags from an entry.
  */
+//@@author A0121501E
 public class UntagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "untag";

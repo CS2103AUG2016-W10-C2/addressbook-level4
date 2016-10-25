@@ -26,6 +26,7 @@ public class ClearCommand extends UndoableCommand {
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
+    //@@author A0121501E
     @Override
     public CommandResult unexecute() {
         if (!executionIsSuccessful){
