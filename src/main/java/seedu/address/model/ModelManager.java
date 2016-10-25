@@ -1,7 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
-
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
@@ -27,7 +27,8 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskManager taskManager;
-    private final FilteredList<Entry> filteredPersons;
+    private final FilteredList<Entry> filteredEntries;
+    private final SortedList<Entry> sortedEntries;
 
     /**
      * Initializes a ModelManager with the given TaskManager
@@ -41,7 +42,8 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
 
         taskManager = new TaskManager(src);
-        filteredPersons = new FilteredList<>(taskManager.getEntries());
+        filteredEntries = new FilteredList<>(taskManager.getEntries());
+        sortedEntries = filteredEntries.sorted();
     }
 
     public ModelManager() {
@@ -50,7 +52,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
-        filteredPersons = new FilteredList<>(taskManager.getEntries());
+        filteredEntries = new FilteredList<>(taskManager.getEntries());
+        sortedEntries = filteredEntries.sorted();
     }
 
     @Override
@@ -85,35 +88,30 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void editTask(Update update)
             throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
         taskManager.editTask(update);
-        updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
     public void markTask(Entry task) throws EntryNotFoundException {
         taskManager.markTask(task);
-        updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         taskManager.unmarkTask(task);
-        updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
     public void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) {
         taskManager.tagTask(taskToTag, tagsToAdd);
-        updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
     @Override
     public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException {
         taskManager.untagTask(taskToUntag, tagsToRemove);
-        updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
 
@@ -125,12 +123,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public UnmodifiableObservableList<Entry> getFilteredPersonList() {
-        return new UnmodifiableObservableList<>(filteredPersons);
+        return new UnmodifiableObservableList<>(sortedEntries);
     }
 
     @Override
     public void updateFilteredListToShowAll() {
-        filteredPersons.setPredicate(null);
+        filteredEntries.setPredicate(null);
     }
 
     @Override
@@ -139,6 +137,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private void updateFilteredPersonList(Predicate<Entry> predicate) {
-        filteredPersons.setPredicate(predicate);
+        filteredEntries.setPredicate(predicate);
     }
 }

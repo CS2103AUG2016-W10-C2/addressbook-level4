@@ -121,21 +121,8 @@ public final class Event extends Entry{
     }
 
     @Override
-    //@@author A0121501E
-    public int compareTo(Entry o) {
-        if (this.isMarked() != o.isMarked()){
-            return this.isMarked() ? 1 : -1;
-        }
-        if (o instanceof Event) {
-            return this.getStartTime().compareTo(((Event) o).getStartTime());
-        }
-        else if (o instanceof Task) {
-            if (((Task) o).isFloatingTask()) {
-                return -1;
-            }
-            return this.getStartTime().compareTo(((Task) o).getDeadline());
-        }
-        return 0;
+    public LocalDateTime getComparableTime() {
+        return startTime.get();
     }
 
 }

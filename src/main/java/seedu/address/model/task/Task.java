@@ -123,26 +123,11 @@ public class Task extends Entry {
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
         return prettyTime.format(interpreted);
     }
-    //@@author A0121501E
-    public int compareTo(Entry o) {
-        if (this.isMarked() != o.isMarked()){
-            return this.isMarked() ? 1 : -1;
-        }
-        if (o instanceof Event) {
-            if (this.isFloatingTask()) {
-                return 1;
-            }
-            return this.getDeadline().compareTo(((Event) o).getStartTime());
-        }
-        else if (o instanceof Task) {
-            if (this.isFloatingTask() != ((Task) o).isFloatingTask()) {
-                return this.isFloatingTask() ? 1 : -1;
-            }
-            if (!this.isFloatingTask() && !((Task) o).isFloatingTask()) {
-                return this.getDeadline().compareTo(((Task) o).getDeadline());
-            }
-        }
-        return 0;
+
+    // @@author A0121501E
+    @Override
+    public LocalDateTime getComparableTime() {
+        return deadline.get();
     }
 
 }

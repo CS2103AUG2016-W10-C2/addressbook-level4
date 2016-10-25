@@ -1,6 +1,7 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -13,7 +14,7 @@ import static seedu.address.commons.core.Messages.SPACE;
  * A read-only immutable interface for an Entry in the Task Manager.
  * Implementations should guarantee: details are present and not null, field
  * values are validated.
- *
+ */
 public abstract class Entry implements Comparable<Entry> {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
@@ -21,6 +22,7 @@ public abstract class Entry implements Comparable<Entry> {
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
     protected StringProperty description;
+    protected LocalDateTime lastModified;
 
     String DELIMITER = " ";
 
@@ -185,5 +187,24 @@ public abstract class Entry implements Comparable<Entry> {
         } else {
             return buffer.substring(0, buffer.length() - DELIMITER.length());
         }
+    }
+    
+    //@@author A0121501E
+    public int compareTo(Entry o) {
+        LocalDateTime thisDateTime = this.getComparableTime();
+        LocalDateTime oDateTime = this.getComparableTime();
+        return thisDateTime.compareTo(oDateTime);
+    }
+    
+    /**
+     * returns a comparable time used to determine an entry's order
+     */
+    public abstract LocalDateTime getComparableTime();
+    
+    /**
+     *  sets the last modified to the current time
+     */
+    public void resetLastModified() {
+        lastModified = LocalDateTime.now();
     }
 }
