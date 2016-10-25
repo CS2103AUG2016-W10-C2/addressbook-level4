@@ -7,18 +7,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="480.0" styleClass="helpcard" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" styleClass="helpcard" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="480.0">
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="85.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="340.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <HBox alignment="CENTER_LEFT" prefWidth="60.0">
+            <HBox alignment="CENTER_LEFT" prefWidth="100.0">
                <children>
                   <Label fx:id="commandLabel" text="CMD" />
                </children>
@@ -26,7 +26,7 @@
                   <Insets />
                </GridPane.margin>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefWidth="440.0" GridPane.columnIndex="1">
+            <HBox alignment="CENTER_RIGHT" prefWidth="400.0" GridPane.columnIndex="1">
                <children>
                   <Label fx:id="helpText" text="HelpText" textAlignment="RIGHT" wrapText="true" />
                </children>
