@@ -131,7 +131,7 @@ public class Task extends Entry {
                 return this.getDeadline().compareTo(((Task) o).getDeadline());
             }
         }
-        return 0;
+        return this.getTitle() .toString().compareTo(o.getTitle().toString());
     }
 
 }
