@@ -1,11 +1,7 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
-import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,7 +15,6 @@ import static seedu.address.commons.core.Messages.SPACE;
  * values are validated.
  */
 public abstract class Entry {
-
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
@@ -140,7 +135,7 @@ public abstract class Entry {
     /**
      * Get the isMarkProperty for this Entry
      */
-    public final Observable isMarkedProperty() {
+    public final BooleanProperty isMarkedProperty() {
         return isMarked;
     }
     /**

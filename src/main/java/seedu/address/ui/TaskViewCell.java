@@ -25,7 +25,7 @@ public class TaskViewCell extends ListCell<Entry> implements EntryViewCell {
         } else {
             TaskCard taskCard = new TaskCard();
             int currIdx = getIndex() + 1;
-            taskCard.init(entry, currIdx, GuiUtil.getCheckBoxEventHandler(currIdx));
+            taskCard.init(entry, currIdx, GuiUtil.getCheckBoxEventListener(currIdx));
             setGraphic(taskCard);
         }
 

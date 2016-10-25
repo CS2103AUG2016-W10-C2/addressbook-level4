@@ -104,7 +104,7 @@ public class Task extends Entry {
         builder.append(super.getAsText());
         if (getDeadline() != null) {
             builder.append(SPACE);
-            builder.append("Due:");
+            builder.append("Due: ");
             builder.append(getDeadlineDisplay());
         }
         return builder.toString();
