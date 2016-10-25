@@ -12,11 +12,14 @@ import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.UndoableCommandHistory;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.logic.commands.OptionCommand;
 import seedu.address.logic.parser.Parser;
 import seedu.address.model.Model;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.task.Entry;
 import seedu.address.storage.Storage;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -28,11 +31,15 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final Parser parser;
     UndoableCommandHistory undoableCommandHistory;
+    private final UserPrefs userPrefs;
+    private final Storage storage;
 
-    public LogicManager(Model model, Storage storage) {
+    public LogicManager(Model model, Storage storage, UserPrefs userPrefs) {
         this.model = model;
         this.parser = new Parser();
         this.undoableCommandHistory = new UndoableCommandHistory();
+        this.storage = storage;
+        this.userPrefs = userPrefs;
     }
 
     @Override
@@ -43,10 +50,28 @@ public class LogicManager extends ComponentManager implements Logic {
         //@@author A0121501E
         if (command instanceof UndoCommand) {
             ((UndoCommand) command).setData(model, undoableCommandHistory);
-        } else {
+        }
+        else if (command instanceof OptionCommand) {
+            OptionCommand optionCommand = (OptionCommand)command;
+            optionCommand.setUserPrefs(userPrefs);
+            try {
+                CommandResult result = optionCommand.execute();
+                storage.saveUserPrefs(userPrefs);
+                if (userPrefs.getSaveLocation() != null && !userPrefs.getSaveLocation().isEmpty()){
+                    storage.setTaskManagerFilepath(userPrefs.getSaveLocation());
+                    storage.saveTaskManager(model.getTaskManager());
+                }
+                return result;
+            } catch (IOException e) {
+                return new CommandResult("Failed saving user preference");
+            } finally {
+                optionCommand.setUserPrefs(null); // to prevent userPrefs from changing again
+            }
+        }
+        else {
             command.setData(model);
         }
-        
+
         CommandResult commandResult = command.execute();
         if (command instanceof UndoableCommand &&
             ((UndoableCommand) command).getExecutionIsSuccessful()) {

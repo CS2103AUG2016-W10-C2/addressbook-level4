@@ -7,6 +7,7 @@ import seedu.address.logic.parser.ArgumentTokenizer.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -16,6 +17,7 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.AddCommand.*;
+import static seedu.address.logic.commands.OptionCommand.SAVE_LOCATION_FLAG;
 import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
 import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
 import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
@@ -34,6 +36,7 @@ public class Parser {
     private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final Pattern MONTH_DATE = Pattern.compile("(?<month>\\d\\d)(?<separator>/|-)(?<day>\\d\\d)(?<theRest>.*)");
 
     // TODO: Use PrettyTime to parse dates
     private static final Prefix startDatePrefix = new Prefix(AFTER_FLAG);
@@ -47,6 +50,7 @@ public class Parser {
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    private static final Prefix saveLocationPrefix = new Prefix(SAVE_LOCATION_FLAG);
 
     public Parser() {}
 
@@ -93,7 +97,7 @@ public class Parser {
 
         case ListCommand.COMMAND_WORD:
             return prepareList(arguments);
-            
+
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
 
@@ -102,7 +106,8 @@ public class Parser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
-
+        case OptionCommand.COMMAND_WORD:
+            return prepareOption(arguments);
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -161,6 +166,13 @@ public class Parser {
             return null;
         }
 
+        // Since PrettyTime uses the US date format (MM/DD),
+        // Swap month-date order if necessary
+        final Matcher matcher = MONTH_DATE.matcher(dateTime);
+        if (matcher.matches()) {
+            dateTime = matcher.group("day") + matcher.group("separator") + matcher.group("month") + matcher.group("theRest");
+        }
+
         List<Date> possibleDates = prettyTimeParser.parse(dateTime);
 
         if (possibleDates.size() != 1) {
@@ -176,7 +188,7 @@ public class Parser {
     /**
      * Parse LocalDateTime from an input string
      * string.
-     * 
+     *
      * @@author A0127828W
      */
     private static LocalDateTime getLocalDateTimeFromArgument(String dateTimeString) throws IllegalValueException {
@@ -195,6 +207,17 @@ public class Parser {
         String formatted = dateFormat.format(parsed);
         formatted = formatted + "T00:00";
         return LocalDateTime.parse(formatted);
+    }
+    //@@author
+
+    /**
+     *
+     * @param argsTokenizer
+     * @return new save location for PriorityQ
+     */
+    //@@author A0126539Y
+    private static String getSaveLocationFromArgs(ArgumentTokenizer argsTokenizer) {
+        return argsTokenizer.getValue(saveLocationPrefix).orElse(null);
     }
     //@@author
 
@@ -348,6 +371,25 @@ public class Parser {
         }
     }
     
+    /**
+     *
+     * @param args
+     *          full command args string
+     * @return the prepared command
+     */
+    private Command prepareOption(String args) {
+        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(saveLocationPrefix);
+        argsTokenizer.tokenize(args.trim());
+
+        try {
+            return new OptionCommand(getSaveLocationFromArgs(argsTokenizer));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        } catch (InvalidPathException ipe) {
+            return new IncorrectCommand(ipe.getMessage());
+        }
+    }
+
     /**
      * Returns the specified index in the {@code command} IF a positive unsigned
      * integer is given as the index. Returns an {@code Optional.empty()}
