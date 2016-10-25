@@ -46,6 +46,18 @@ PriorityQ
 * Code written: [[functional code](../collated/main/A0121501E.md)][[test code](../collated/test/A0121501E.md)][[docs](collated/docs/A0121501E.md)]
 * Other major contributions:
 
+#### Tjong Anthony [@tjonganthony](https://github.com/tjonganthony)
+<img src="images/TjongAnthony.jpeg" width="175"><br>
+
+* Components in charge of: Task, Event
+* Aspects/tools in charge of: Models
+* Features implemented:
+    * [Entries type edit](https://github.com/CS2103AUG2016-W10-C2/main/pull/69)
+    * [Option Command](https://github.com/CS2103AUG2016-W10-C2/main/pull/75)
+* Code written: [[functional code](../collated/main/A0126539Y.md)][[test code](../collated/test/A0126539Y.md)][[docs](collated/docs/A0126539Y.md)]
+* Other major contributions:
+    * [Floating Task and Deadline](https://github.com/CS2103AUG2016-W10-C2/main/pull/62)
+    * [Event](https://github.com/CS2103AUG2016-W10-C2/main/pull/66)
 ### Roles and responsibilities
 **President: Vincent**
 

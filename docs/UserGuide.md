@@ -173,4 +173,4 @@ config [option=value ...]
 
 > Examples:
 
-> - `config name=Jim`
+> - `config save/data/MyNewLocation.xml`
