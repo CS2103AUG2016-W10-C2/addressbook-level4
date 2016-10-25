@@ -12,10 +12,7 @@ import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Event;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import static seedu.address.ui.util.GuiUtil.TRANSPARENT;
+import static seedu.address.ui.util.GuiUtil.*;
 
 /**
  * Represents Tasks and Events in the TaskList
@@ -44,6 +41,9 @@ public class TaskCard extends HBox {
 
     @FXML
     private Label startTime;
+
+    @FXML
+    private Label separator;
 
     @FXML
     private Label endTime;
@@ -77,40 +77,68 @@ public class TaskCard extends HBox {
     }
 
     private void initData() {
-        title.setText(entry.getTitle().fullTitle);
-        id.setText(Integer.toString(index));
-        tags.setText(entry.tagsString());
-        description.setText(entry.getDescription());
+        initCommonElements();
         if (entry instanceof Task) {
             Task task = (Task) entry;
-            checkBox.selectedProperty().addListener(listener);
-            checkBox.setSelected(entry.isMarked());
-            setEmptyText(startTime, endTime);
-            hide(startTime, endTime);
-
-            if (task.getDeadline() == null) {
-                deadline.setOpacity(TRANSPARENT);
-                return;
-            }
-
-            deadline.setText(task.getDeadlineDisplay().toUpperCase());
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime midnight = LocalDateTime.of(now.toLocalDate().plusDays(1), LocalTime.MIDNIGHT);
-            if (task.getDeadline().isBefore(now)) {
-                deadline.getStyleClass().add("overdue");
-            } else if (task.getDeadline().isAfter(now) && task.getDeadline().isBefore(midnight)) {
-                deadline.getStyleClass().add("today");
-            }
+            initTaskSpecificElements(task);
+            hideEventSpecificElements();
         }
 
         if (entry instanceof Event) {
             Event event = (Event)entry;
-            startTime.setText(event.getStartTimeDisplay().toUpperCase());
-            endTime.setText(" - " + event.getEndTimeDisplay().toUpperCase());
-            setEmptyText(deadline);
-            hide(deadline, checkBox);
+            initEventSpecificElements(event);
+            hideTaskSpecificElements();
+        }
+    }
+
+    private void initCommonElements() {
+        title.setText(entry.getTitle().fullTitle);
+        id.setText(Integer.toString(index));
+        tags.setText(entry.tagsString());
+        description.setText(entry.getDescription());
+    }
+
+    private void initTaskSpecificElements(Task task) {
+        initCheckbox(task);
+
+        if (task.getDeadline() == null) {
+            deadline.setOpacity(TRANSPARENT);
+            return;
         }
 
+        deadline.setText(task.getDeadlineDisplay().toUpperCase());
+        String additionalStyleClass = getDeadlineStyling(task.getDeadline());
+        if (!additionalStyleClass.isEmpty()) {
+            deadline.getStyleClass().add(additionalStyleClass);
+        }
+    }
+
+    private void initCheckbox(Task task) {
+        checkBox.selectedProperty().addListener(listener);
+        checkBox.setSelected(task.isMarked());
+    }
+
+    private void hideEventSpecificElements() {
+        setEmptyText(startTime, separator, endTime);
+        hide(startTime, separator, endTime);
+    }
+
+    private void initEventSpecificElements(Event event) {
+        startTime.setText(event.getStartTimeDisplay().toUpperCase());
+        separator.setText(EVENT_DATE_SEPARATOR);
+        endTime.setText(event.getEndTimeDisplay().toUpperCase());
+
+        String additionalStyleClass = getEventStyling(event.getStartTime(), event.getEndTime());
+        if (!additionalStyleClass.isEmpty()) {
+            startTime.getStyleClass().add(additionalStyleClass);
+            separator.getStyleClass().add(additionalStyleClass);
+            endTime.getStyleClass().add(additionalStyleClass);
+        }
+    }
+
+    private void hideTaskSpecificElements() {
+        setEmptyText(deadline);
+        hide(deadline, checkBox);
     }
 
     private void hide(Node... nodes) {
