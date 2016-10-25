@@ -47,11 +47,8 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = parser.parseCommand(commandText);
 
-        //@@author A0121501E
-        if (command instanceof UndoCommand) {
-            ((UndoCommand) command).setData(model, undoableCommandHistory);
-        }
-        else if (command instanceof OptionCommand) {
+        //@@author A0126539Y
+        if (command instanceof OptionCommand) {
             OptionCommand optionCommand = (OptionCommand)command;
             optionCommand.setUserPrefs(userPrefs);
             try {
@@ -67,6 +64,11 @@ public class LogicManager extends ComponentManager implements Logic {
             } finally {
                 optionCommand.setUserPrefs(null); // to prevent userPrefs from changing again
             }
+        }
+        //@@author
+        //@@author A0121501E
+        else if (command instanceof UndoCommand) {
+            ((UndoCommand) command).setData(model, undoableCommandHistory);
         }
         else {
             command.setData(model);

@@ -35,11 +35,11 @@ public class Update {
     public Title getNewTitle() {
         return newTitle;
     }
-    
+
     public LocalDateTime getStartTime() {
     	return startTime;
     }
-    
+
     public LocalDateTime getEndTime() {
     	return endTime;
     }
@@ -52,6 +52,7 @@ public class Update {
         return newDescription;
     }
 
+    //@@author A0126539Y
     public static Update generateUpdateFromEntry(Entry entry) {
         if (entry instanceof Task) {
             return new Update(entry.getTitle(), null, ((Task) entry).getDeadline(), entry.getTags(), entry.getDescription());
@@ -61,4 +62,5 @@ public class Update {
         }
         return null;
     }
+    //@@author
 }
