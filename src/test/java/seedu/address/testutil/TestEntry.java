@@ -37,5 +37,9 @@ public class TestEntry extends Entry {
     @Override
     public String getDateDisplay(LocalDateTime dateTime) {
         return "";
+
+    @Override
+    public int compareTo(Entry o) {
+        return 0;
     }
 }
