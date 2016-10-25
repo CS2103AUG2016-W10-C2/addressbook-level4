@@ -10,6 +10,8 @@ import seedu.address.model.tag.UniqueTagList;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static seedu.address.commons.core.Messages.SPACE;
+
 /**
  * Represents a Floating Task in the Task Manager. Guarantees: details are
  * present and not null, field values are validated.
@@ -93,23 +95,15 @@ public class Task extends Entry {
     }
 
     @Override
+    //@@author A0116603R
     public String getAsText() {
-        final StringBuilder builder = new StringBuilder()
-                .append(getTitle());
+        final StringBuilder builder = new StringBuilder();
+        builder.append(super.getAsText());
         if (getDeadline() != null) {
-            builder.append(" Deadline: ");
-            builder.append(getDeadline().toString());
+            builder.append(SPACE);
+            builder.append("Due:");
+            builder.append(getDeadlineDisplay());
         }
-
-        if (!getTags().isEmpty()) {
-            builder.append(" Tags: ");
-            getTags().forEach(builder::append);
-        }
-        if (!getDescription().isEmpty()) {
-            builder.append(" Description: ");
-            builder.append(getDescription());
-        }
-
         return builder.toString();
     }
 

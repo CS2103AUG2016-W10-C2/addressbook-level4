@@ -13,6 +13,8 @@ import javafx.beans.property.StringProperty;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
+import static seedu.address.commons.core.Messages.SPACE;
+
 /**
  * A read-only immutable interface for an Entry in the Task Manager.
  * Implementations should guarantee: details are present and not null, field
@@ -164,16 +166,21 @@ public abstract class Entry {
     /**
      * Formats the Entry as text, showing all contact details.
      */
+    //@@author A0116603R
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle());
-        if (!getTags().isEmpty()) {
-            builder.append(" Tags: ");
-            getTags().forEach(builder::append);
-        }
+
         if (!getDescription().isEmpty()) {
-            builder.append(" Description: ");
+            builder.append(SPACE);
+            builder.append("(");
             builder.append(getDescription());
+            builder.append(")");
+        }
+
+        if (!getTags().isEmpty()) {
+            builder.append(SPACE);
+            builder.append(tagsString());
         }
         return builder.toString();
     }
