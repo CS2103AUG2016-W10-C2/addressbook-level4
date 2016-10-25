@@ -3,6 +3,13 @@ package seedu.address.commons.events.ui;
 import seedu.address.commons.events.BaseEvent;
 import seedu.address.logic.commands.CommandResult;
 
+/**
+ * An event indicating that the Logic component has completed
+ * executing the mark/unmark command after a user clicks on
+ * a checkbox in the GUI. This event is used to propagate feedback
+ * to the user.
+ */
+//@@author A0116603R
 public class DidMarkTaskEvent extends BaseEvent{
 
     private CommandResult cmdResult;

@@ -14,6 +14,7 @@ import static seedu.address.ui.util.GuiUtil.TRANSPARENT;
  * Abstract class for all app view controllers.
  * Forces controllers to implement an init method.
  */
+//@@author A0116603R
 abstract class Controller {
     BorderPane appView;
 

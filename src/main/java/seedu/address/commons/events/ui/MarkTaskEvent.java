@@ -8,6 +8,7 @@ import seedu.address.logic.commands.UnmarkCommand;
  * An event indicating that the user has clicked on a checkbox for a particular
  * task in the GUI.
  */
+//@@author A0116603R
 public class MarkTaskEvent extends BaseEvent {
 
     private final static String CHECKED = "checked";

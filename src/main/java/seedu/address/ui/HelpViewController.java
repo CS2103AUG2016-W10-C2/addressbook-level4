@@ -9,6 +9,10 @@ import seedu.address.commons.events.ui.ShowTaskListEvent;
 
 import java.util.logging.Logger;
 
+/**
+ * Controller which displays the help page
+ */
+//@@author A0116603R
 public class HelpViewController extends Controller {
     private static final Logger logger = LogsCenter.getLogger(HelpViewController.class);
 
