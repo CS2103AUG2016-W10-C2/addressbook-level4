@@ -21,6 +21,19 @@ PriorityQ
   * Integration of Tokenizer ([#61](https://github.com/CS2103AUG2016-W10-C2/main/pull/61))
   * Implemented [Predicate Chaining](https://github.com/CS2103AUG2016-W10-C2/main/blob/master/src/main/java/seedu/address/model/PredicateBuilder.java) to allow better filtering with `list` command
 
+### Karen Ang [@karenang](https://github.com/karenang)
+<img src="images/KarenAng.png" width="175"><br>
+
+* Components in charge of: [GUI](DeveloperGuide.md#ui-component)
+* Aspects/tools in charge of: Testing, [Project](https://github.com/CS2103AUG2016-W10-C2/main/projects/1)
+* Features implemented:
+    * GUI ([#86](https://github.com/CS2103AUG2016-W10-C2/main/pull/86), [#98](https://github.com/CS2103AUG2016-W10-C2/main/pull/98))
+    * [Initial edit command](https://github.com/CS2103AUG2016-W10-C2/main/pull/23)
+* Code written: [[functional code]()][[test code]()][[docs]()]
+* Other major contributions:
+    * Add and edit task description ([#42](https://github.com/CS2103AUG2016-W10-C2/main/pull/42), [#43](https://github.com/CS2103AUG2016-W10-C2/main/pull/43))
+    * Mockups, design of app
+
 ### Roles and responsibilities
 **President: Vincent**
 
