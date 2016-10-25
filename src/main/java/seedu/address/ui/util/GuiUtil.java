@@ -1,8 +1,6 @@
 package seedu.address.ui.util;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.CheckBox;
+import javafx.beans.value.ChangeListener;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.MarkTaskEvent;
 
@@ -17,15 +15,7 @@ public class GuiUtil {
 
     public static double DEFAULT_FADE_DURATION = 400;
 
-    public static EventHandler<ActionEvent> getCheckBoxEventHandler(int idx) {
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (event.getSource() instanceof CheckBox) {
-                    CheckBox chkBox = (CheckBox) event.getSource();
-                    EventsCenter.getInstance().post(new MarkTaskEvent(idx, chkBox.isSelected()));
-                }
-            }
-        };
+    public static ChangeListener<Boolean> getCheckBoxEventListener(int idx) {
+        return (ov, old_val, new_val) -> EventsCenter.getInstance().post(new MarkTaskEvent(idx, new_val));
     }
 }

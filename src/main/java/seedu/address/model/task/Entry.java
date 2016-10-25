@@ -139,7 +139,7 @@ public abstract class Entry {
     /**
      * Get the isMarkProperty for this Entry
      */
-    public final Observable isMarkedProperty() {
+    public final BooleanProperty isMarkedProperty() {
         return isMarked;
     }
     /**

@@ -1,10 +1,10 @@
 package seedu.address.ui;
 
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -17,6 +17,10 @@ import java.time.LocalTime;
 
 import static seedu.address.ui.util.GuiUtil.TRANSPARENT;
 
+/**
+ * Represents Tasks and Events in the TaskList
+ */
+//@@author A0116603R
 public class TaskCard extends HBox {
     private static final String FXML = "TaskCard.fxml";
 
@@ -63,10 +67,11 @@ public class TaskCard extends HBox {
         UiPartLoader.loadNode(loader, FXML);
     }
 
-    public void init(Entry entry, int index, EventHandler<ActionEvent> handler) {
+    public void init(Entry entry, int index, ChangeListener<Boolean> listener) {
         this.entry = entry;
         this.index = index;
-        this.checkBox.setOnAction(handler);
+        this.checkBox.selectedProperty().addListener(listener);
+        this.checkBox.selectedProperty().bindBidirectional(entry.isMarkedProperty());
         initData();
     }
 
