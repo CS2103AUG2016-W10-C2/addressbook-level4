@@ -29,7 +29,7 @@ PriorityQ
 * Features implemented:
     * GUI ([#86](https://github.com/CS2103AUG2016-W10-C2/main/pull/86), [#98](https://github.com/CS2103AUG2016-W10-C2/main/pull/98))
     * [Initial edit command](https://github.com/CS2103AUG2016-W10-C2/main/pull/23)
-* Code written: [[functional code]()][[test code]()][[docs]()]
+* Code written: [[functional code](../collated/main/A0116603R.md)][[test code](../collated/test/A0116603R.md)][[docs](collated/docs/A0116603R.md)]
 * Other major contributions:
     * Add and edit task description ([#42](https://github.com/CS2103AUG2016-W10-C2/main/pull/42), [#43](https://github.com/CS2103AUG2016-W10-C2/main/pull/43))
     * Mockups, design of app
