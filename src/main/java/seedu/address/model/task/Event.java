@@ -1,9 +1,10 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
-
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,6 +19,7 @@ import static seedu.address.commons.core.Messages.SPACE;
 public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> startTime;
     protected ObjectProperty<LocalDateTime> endTime;
+    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description) {
         assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime);
@@ -108,4 +110,13 @@ public final class Event extends Entry{
         return builder.toString();
     }
 
+    // @@author A0127828W
+    @Override
+    public String getDateDisplay(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return "";
+        }
+        Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        return dateTime.format(DATE_TIME_FORMATTER);
+    }
 }

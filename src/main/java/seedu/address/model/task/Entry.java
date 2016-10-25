@@ -10,7 +10,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import org.ocpsoft.prettytime.PrettyTime;
 import seedu.address.model.tag.UniqueTagList;
 import static seedu.address.commons.core.Messages.SPACE;
 
@@ -20,8 +19,6 @@ import static seedu.address.commons.core.Messages.SPACE;
  * values are validated.
  */
 public abstract class Entry {
-    static final PrettyTime prettyTime = new PrettyTime();
-    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
@@ -156,13 +153,7 @@ public abstract class Entry {
     /**
      * Get the date for display to the user
      */
-    public String getDateDisplay(LocalDateTime dateTime){
-        if (dateTime == null) {
-            return "";
-        }
-        Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-        return prettyTime.format(interpreted);
-    }
+    public abstract String getDateDisplay(LocalDateTime dateTime);
 
     /**
      * Formats the Entry as text, showing all contact details.

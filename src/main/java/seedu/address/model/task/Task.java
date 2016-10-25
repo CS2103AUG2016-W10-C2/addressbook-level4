@@ -4,10 +4,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import org.ocpsoft.prettytime.PrettyTime;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Objects;
 
 import static seedu.address.commons.core.Messages.SPACE;
@@ -18,7 +21,7 @@ import static seedu.address.commons.core.Messages.SPACE;
  */
 //@@author A0126539Y
 public class Task extends Entry {
-
+    static final PrettyTime prettyTime = new PrettyTime();
     protected ObjectProperty<LocalDateTime> deadline;
 
 
@@ -107,4 +110,13 @@ public class Task extends Entry {
         return builder.toString();
     }
 
+    @Override
+    // @@author A0127828W
+    public String getDateDisplay(LocalDateTime dateTime){
+        if (dateTime == null) {
+            return "";
+        }
+        Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        return prettyTime.format(interpreted);
+    }
 }
