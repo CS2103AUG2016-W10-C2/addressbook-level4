@@ -211,7 +211,7 @@ public class Parser {
      */
     //@@author A0126539Y
     private static String getSaveLocationFromArgs(ArgumentTokenizer argsTokenizer) {
-        return unwrapOptionalStringOrEmpty(argsTokenizer.getValue(saveLocationPrefix));
+        return argsTokenizer.getValue(saveLocationPrefix).orElse(null);
     }
     //@@author
 

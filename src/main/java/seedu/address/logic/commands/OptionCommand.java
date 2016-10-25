@@ -37,6 +37,7 @@ public class OptionCommand extends Command{
      */
     public OptionCommand(String saveLocation)
             throws IllegalValueException, InvalidPathException {
+        System.out.println(saveLocation);
         if (!CollectionUtil.isAnyNotNull(saveLocation)) {
             throw new IllegalValueException(MESSAGE_USAGE);
         }
