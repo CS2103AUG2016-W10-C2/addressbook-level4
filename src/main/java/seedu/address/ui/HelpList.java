@@ -13,9 +13,9 @@ public class HelpList extends ListView<HelpList.HelpItem> {
     private static final String FXML = "HelpList.fxml";
 
     private static final String ADD_HELP = "ADD";
-    private static final String ADD_HELP_TEXT = "add <task_name> [st/<start> end/<end> | dl/<deadline>] [#<tag_name> ...] [desc/<description>]";
+    private static final String ADD_HELP_TEXT = "add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [r/<recurrence>] [desc/<description>]";
     private static final String EDIT_HELP = "EDIT";
-    private static final String EDIT_HELP_TEXT = "edit <task_id> [title/new title] [st/<start> end/<end> | deadline/<deadline>] [#<tags>...] [desc/<description>]";
+    private static final String EDIT_HELP_TEXT = "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]\n";
     private static final String ESCAPE_HELP = "CLOSE HELP";
     private static final String ESCAPE_HELP_TEXT = "<ESCAPE-KEY>";
     private static final String LIST_HELP = "LIST";
@@ -30,6 +30,8 @@ public class HelpList extends ListView<HelpList.HelpItem> {
     private static final String MARK_HELP_TEXT = "mark <task_id>";
     private static final String UNMARK_HELP = "UNMARK";
     private static final String UNMARK_HELP_TEXT = "unmark <task_id>";
+    private static final String OPTION_HELP = "OPTION";
+    private static final String OPTION_HELP_TEXT = "option [<type>/<value> ...]";
 
     private ObservableList<HelpItem> data;
 
@@ -58,6 +60,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
         data.add(new HelpItem(DELETE_HELP, DELETE_HELP_TEXT));
         data.add(new HelpItem(MARK_HELP, MARK_HELP_TEXT));
         data.add(new HelpItem(UNMARK_HELP, UNMARK_HELP_TEXT));
+        data.add(new HelpItem(OPTION_HELP, OPTION_HELP_TEXT));
     }
 
     class HelpItem {
