@@ -58,6 +58,7 @@ PriorityQ
 * Other major contributions:
     * [Floating Task and Deadline](https://github.com/CS2103AUG2016-W10-C2/main/pull/62)
     * [Event](https://github.com/CS2103AUG2016-W10-C2/main/pull/66)
+
 ### Roles and responsibilities
 **President: Vincent**
 

@@ -55,7 +55,7 @@ delete 1
 |unmark|`unmark <task_id>`|
 |show|`show <task_id>`|
 |help|`help [<command>]`|
-|config|`config [option=value ...]`|
+|option|`option [<type>/<value> ...]`|
 
 ## Commands
 
@@ -165,9 +165,9 @@ help [<command>]
 
 > Help is also shown if you enter an incorrect command e.g. abcd
 
-#### Config
+#### option
 ```
-config [option=value ...]
+option [<type>/<value> ...]
 ```
 > Configure user settings: name, file path to data file
 
