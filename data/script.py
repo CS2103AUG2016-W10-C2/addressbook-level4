@@ -9,7 +9,7 @@ date_template = "2016-10-{}T"
 start_day = 12
 end_day = 28
 yesterday = 25
-output_file = 'addressbook.xml'
+output_file = 'demo.xml'
 
 def prettify(rough_string):
     reparsed = minidom.parseString(rough_string)
