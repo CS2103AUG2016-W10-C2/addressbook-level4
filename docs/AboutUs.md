@@ -1,9 +1,3 @@
-PriorityQ
-==============================
-- [About Us](about-us)
-- [User Stories](user-stories)
-- [Use Cases](use-cases)
-
 ## About us
 
 #### Le Ba Hieu Giang [@joeleba](https://github.com/joeleba)
