@@ -7,10 +7,10 @@ import seedu.address.commons.events.ui.MarkTaskEvent;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+//@@author A0116603R
 /**
  * Helper class which returns event handlers for user-initiated events
  */
-//@@author A0116603R
 public class GuiUtil {
 
     public static double OPAQUE = 1.0;
@@ -30,10 +30,26 @@ public class GuiUtil {
         return (ov, old_val, new_val) -> EventsCenter.getInstance().post(new MarkTaskEvent(idx, new_val));
     }
 
+    /**
+     * Get the style class for floating task elements such as id, title and
+     * description.
+     * @param isMarked true, if the current task is marked as done
+     * @return a string, the style class for the floating task
+     */
     public static  String getTaskStyling(boolean isMarked) {
         return getDeadlineStyling(isMarked, null);
     }
 
+    /**
+     * Get the style class for deadlines. The style differs depending on whether the
+     * task is marked as done. If it is not done, it differs depending on whether it
+     * is overdue. If it is not overdue, it differs depending on whether the deadline
+     * is due by the end of the current day.
+     * @param isMarked true, if the current task is marked as done
+     * @param deadline a datetime which will be compared to the current time to
+     *                 determine the style class
+     * @return a string, the style class for the deadline
+     */
     public static String getDeadlineStyling(boolean isMarked, LocalDateTime deadline) {
         if (isMarked) {
             return PAST_STYLE_CLASS;
@@ -56,6 +72,14 @@ public class GuiUtil {
         return "";
     }
 
+    /**
+     * Get the style class for events. The style differs depending on whether the
+     * event is over. If it is not over, but currently ongoing, a different style
+     * class is also applied.
+     * @param startTime a datetime, the start of the event
+     * @param endTime a datetime, the end of the event
+     * @return a string, the style class for the event
+     */
     public static String getEventStyling(LocalDateTime startTime, LocalDateTime endTime) {
         assert (startTime != null && endTime != null);
         LocalDateTime now = LocalDateTime.now();
