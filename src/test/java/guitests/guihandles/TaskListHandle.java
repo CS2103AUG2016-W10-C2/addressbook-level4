@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
+import static seedu.address.ui.util.GuiUtil.OPAQUE;
 
 /**
  * Provides a handle for the panel containing the task list.
@@ -31,11 +32,6 @@ public class TaskListHandle extends GuiHandle {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
     }
 
-    public List<Entry> getSelectedPersons() {
-        ListView<Entry> personList = getListView();
-        return personList.getSelectionModel().getSelectedItems();
-    }
-
     public ListView<Entry> getListView() {
         return (ListView<Entry>) getNode(TASK_LIST_ID);
     }
@@ -47,13 +43,12 @@ public class TaskListHandle extends GuiHandle {
     public boolean isListMatching(Entry... persons) {
         return this.isListMatching(0, persons);
     }
-    
+
     /**
-     * Clicks on the ListView.
+     * Returns true if the task list is currently visible
      */
-    public void clickOnListView() {
-        Point2D point= TestUtil.getScreenMidPoint(getListView());
-        guiRobot.clickOn(point.getX(), point.getY());
+    public boolean isVisible() {
+        return getNode(TASK_LIST_ID).getOpacity() == OPAQUE;
     }
 
     /**
@@ -85,6 +80,7 @@ public class TaskListHandle extends GuiHandle {
     public boolean isListMatching(int startPosition, Entry... persons) throws IllegalArgumentException {
         if (persons.length + startPosition != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n" +
+                    "Got " + (persons.length) + " persons" +
                     "Expected " + (getListView().getItems().size() - 1) + " persons");
         }
         assertTrue(this.containsInOrder(startPosition, persons));

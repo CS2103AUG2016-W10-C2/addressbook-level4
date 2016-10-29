@@ -5,18 +5,25 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class HelpWindowTest extends AddressBookGuiTest {
+public class HelpWindowTest extends TaskManagerGuiTest {
 
+    //@@author A0116603R
     @Test
-    public void openHelpWindow() {
-
+    public void openAndCloseHelpWindow() {
         HelpWindowHandle helpWindowHandle = commandBox.runHelpCommand();
         assertHelpWindowOpen(helpWindowHandle);
 
         helpWindowHandle.pressEscape();
+        assertHelpWindowClosed();
     }
 
-    private void assertHelpWindowOpen(HelpWindowHandle helpWindowHandle) {
-        assertTrue(helpWindowHandle.isWindowOpen());
+    private void assertHelpWindowClosed() {
+        assertTrue(taskList.isVisible());
     }
+
+    // @@author
+    private void assertHelpWindowOpen(HelpWindowHandle helpWindowHandle) {
+        assertTrue(helpWindowHandle.isVisible());
+    }
+
 }
