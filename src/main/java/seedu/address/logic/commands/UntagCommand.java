@@ -25,7 +25,7 @@ public class UntagCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 2 #shopping #food";
 
     public static final String MESSAGE_SUCCESS = "Removed %1$s from entry: %2$s";
-    public static final String MESSAGE_UNDO_SUCCESS = "Undo remove tags from entry: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo remove %1$s from entry: %2$s";
     public static final String MESSAGE_NON_EXISTENT = "None of the specified tags exist in the entry: %1$s";
 
     private final int targetIndex;
@@ -58,6 +58,7 @@ public class UntagCommand extends UndoableCommand {
         tagsToRemove.retainAll(taskToUntag.getTags());
 
         if (tagsToRemove.isEmpty()){
+            indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(String.format(MESSAGE_NON_EXISTENT, taskToUntag));
         }
         try {
@@ -83,7 +84,7 @@ public class UntagCommand extends UndoableCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
-        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToUntag));
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, tagsToRemove, taskToUntag));
     }
 
 }
