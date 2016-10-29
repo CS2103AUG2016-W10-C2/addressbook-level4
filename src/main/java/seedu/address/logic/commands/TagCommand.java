@@ -24,8 +24,8 @@ public class TagCommand extends UndoableCommand {
             + "Parameters: TASK_ID TAG[,...] "
             + "Example: " + COMMAND_WORD + " 2 #shopping #food";
 
-    public static final String MESSAGE_SUCCESS = "Tagged entry: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo tag entry: %1$s";
+    public static final String MESSAGE_SUCCESS = "Add %1$s to entry: %2$s";
     public static final String MESSAGE_ALREADY_EXISTS = "All specified tags already exist on entry: %1$s";
 
     private final int targetIndex;
@@ -66,7 +66,7 @@ public class TagCommand extends UndoableCommand {
             assert false : "The target entry cannot be missing";
         }
         setExecutionIsSuccessful();
-        return new CommandResult(String.format(MESSAGE_SUCCESS, taskToTag));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, tagsToAdd, taskToTag));
     }
 
     @Override
