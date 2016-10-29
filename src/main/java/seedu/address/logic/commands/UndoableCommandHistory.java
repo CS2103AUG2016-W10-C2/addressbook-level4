@@ -8,17 +8,37 @@ import java.util.Deque;
  */
 //@@author A0121501E
 public class UndoableCommandHistory {
-    Deque<UndoableCommand> commandInternalQueue = new ArrayDeque<UndoableCommand>();
+    Deque<UndoableCommand> commandInternalUndoQueue = new ArrayDeque<UndoableCommand>();
+    Deque<UndoableCommand> commandInternalRedoQueue = new ArrayDeque<UndoableCommand>();
     public static class UndoableCommandNotFoundException extends Exception {};
     
-    public void push(UndoableCommand undoableCommand) {
-        commandInternalQueue.addFirst(undoableCommand);
+    /** Push a new Undoable command to history.
+     *  Resets the redo queue since the redo commands are no longer in sync.
+     */
+    public void pushToHistory(UndoableCommand undoableCommand) {
+        commandInternalRedoQueue = new ArrayDeque<UndoableCommand>();
+        commandInternalUndoQueue.addFirst(undoableCommand);
+    }
+
+    public void pushToRedoStack(UndoableCommand undoableCommand) {
+        commandInternalRedoQueue.addFirst(undoableCommand);
     }
     
-    public UndoableCommand getMostRecentUndoableCommand() throws UndoableCommandNotFoundException {
-        if (commandInternalQueue.isEmpty()){
+    public void pushToUndoStack(UndoableCommand undoableCommand) {
+        commandInternalUndoQueue.addFirst(undoableCommand);
+    }
+    
+    public UndoableCommand getFromUndoStack() throws UndoableCommandNotFoundException {
+        if (commandInternalUndoQueue.isEmpty()){
             throw new UndoableCommandNotFoundException();
         }
-        return commandInternalQueue.poll();
+        return commandInternalUndoQueue.poll();
+    }
+    
+    public UndoableCommand getFromRedoStack() throws UndoableCommandNotFoundException {
+        if (commandInternalRedoQueue.isEmpty()){
+            throw new UndoableCommandNotFoundException();
+        }
+        return commandInternalRedoQueue.poll();
     }
 }
