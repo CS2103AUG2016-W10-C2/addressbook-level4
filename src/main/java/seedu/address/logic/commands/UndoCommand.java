@@ -24,8 +24,12 @@ public class UndoCommand extends Command {
     @Override
     public CommandResult execute() {
         try {
-            UndoableCommand undoableCommand = undoableCommandHistory.getMostRecentUndoableCommand();
-            return undoableCommand.unexecute();
+            UndoableCommand undoableCommand = undoableCommandHistory.getFromUndoStack();
+            CommandResult undoableCommandResult = undoableCommand.unexecute();
+            if (undoableCommand.getCommandState() == CommandState.REDOABLE) {
+                undoableCommandHistory.pushToRedoStack(undoableCommand);
+            }
+            return undoableCommandResult;
         } catch (UndoableCommandNotFoundException e) {
             return new CommandResult(MESSAGE_FAILURE);
         }
