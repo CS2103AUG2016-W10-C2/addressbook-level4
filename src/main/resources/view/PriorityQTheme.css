@@ -67,7 +67,19 @@
 .taskcard #description {
     -fx-font-size: 9pt;
     -fx-text-fill: DarkGrey;
-    -fx-padding: 0 0 0 40;
+    -fx-padding: -6 0 0 26;
+}
+
+.taskcard #description.event {
+    -fx-padding: -6 0 0 0;
+}
+
+.taskcard .label.past, #description.past {
+    -fx-text-fill: LightGrey;
+}
+
+.taskcard .label.overdue, #description.overdue {
+    -fx-text-fill: OrangeRed;
 }
 
 .taskcard #deadline {
@@ -88,6 +100,10 @@
 }
 
 .taskcard .date.past#deadline {
+    -fx-background-color: LightGrey;
+}
+
+.taskcard .date.overdue#deadline {
     -fx-background-color: OrangeRed;
 }
 
