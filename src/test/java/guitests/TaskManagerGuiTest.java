@@ -57,7 +57,7 @@ public abstract class TaskManagerGuiTest {
     public void setup() throws Exception {
         FxToolkit.setupStage((stage) -> {
             mainGui = new MainGuiHandle(new GuiRobot(), stage);
-            taskList = mainGui.getPersonListPanel();
+            taskList = mainGui.getTaskListPanel();
             resultDisplay = mainGui.getResultDisplay();
             commandBox = mainGui.getCommandBox();
             this.stage = stage;
