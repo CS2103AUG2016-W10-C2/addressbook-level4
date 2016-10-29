@@ -44,17 +44,19 @@ public class UntagCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult execute() {   
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
-        
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+    public CommandResult execute() {
+        assert model != null;
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
+            
+            taskToUntag = lastShownList.get(targetIndex - 1);
+            tagsToRemove.retainAll(taskToUntag.getTags());
         }
-        
-        taskToUntag = lastShownList.get(targetIndex - 1);
-        tagsToRemove.retainAll(taskToUntag.getTags());
-
         try {
             model.untagTask(taskToUntag, tagsToRemove);
         } catch (EntryNotFoundException e) {

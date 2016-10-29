@@ -70,16 +70,17 @@ public class EditCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
 
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            taskToEdit = lastShownList.get(targetIndex - 1);
+            update.setTask(taskToEdit);
+            reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
+            reverseUpdate.setTask(taskToEdit);
         }
-
-        taskToEdit = lastShownList.get(targetIndex - 1);
-        update.setTask(taskToEdit);
-        reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
-        reverseUpdate.setTask(taskToEdit);
         assert model != null;
         try {
             model.editTask(update);

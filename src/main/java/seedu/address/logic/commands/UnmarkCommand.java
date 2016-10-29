@@ -27,19 +27,20 @@ public class UnmarkCommand extends UndoableCommand {
         this.targetIndex = targetIndex;
     }
 
-
     @Override
     public CommandResult execute() {
-
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
-
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        assert model != null;
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+    
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
+    
+            entryToUnmark = lastShownList.get(targetIndex - 1);
+            originalIsMarked= entryToUnmark.isMarked();
         }
-
-        entryToUnmark = lastShownList.get(targetIndex - 1);
-        originalIsMarked= entryToUnmark.isMarked();
 
         try {
             model.unmarkTask(entryToUnmark);

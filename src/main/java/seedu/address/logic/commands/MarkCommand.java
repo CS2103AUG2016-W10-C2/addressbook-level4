@@ -30,15 +30,18 @@ public class MarkCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         assert model != null;
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
-
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+    
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
+    
+            entryToMark = lastShownList.get(targetIndex - 1);
+            originalIsMarked = entryToMark.isMarked();
         }
-
-        entryToMark = lastShownList.get(targetIndex - 1);
-        originalIsMarked = entryToMark.isMarked();
+        
         try {
             model.markTask(entryToMark);
         } catch (EntryNotFoundException pnfe) {

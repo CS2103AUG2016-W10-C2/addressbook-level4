@@ -33,15 +33,16 @@ public class DeleteCommand extends UndoableCommand {
 
     @Override
     public CommandResult execute() {
+        if (getCommandState()==CommandState.PRE_EXECUTION){
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
 
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
 
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            entryToDelete = lastShownList.get(targetIndex - 1);
         }
-
-        entryToDelete = lastShownList.get(targetIndex - 1);
 
         try {
             model.deleteTask(entryToDelete);

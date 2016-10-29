@@ -46,16 +46,18 @@ public class TagCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         assert model != null;
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
-        
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
+            
+            taskToTag = lastShownList.get(targetIndex - 1);
+            tagsToAdd.removeFrom(taskToTag.getTags());
         }
-        
-        taskToTag = lastShownList.get(targetIndex - 1);
-        tagsToAdd.removeFrom(taskToTag.getTags());
-        
+
         try {
             model.tagTask(taskToTag, tagsToAdd);
         } catch (EntryNotFoundException e) {
