@@ -14,10 +14,10 @@ import seedu.address.model.task.Event;
 
 import static seedu.address.ui.util.GuiUtil.*;
 
+//@@author A0116603R
 /**
  * Represents Tasks and Events in the TaskList
  */
-//@@author A0116603R
 public class TaskCard extends HBox {
     private static final String FXML = "TaskCard.fxml";
 

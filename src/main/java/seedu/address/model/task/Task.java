@@ -97,8 +97,8 @@ public class Task extends Entry {
                 && other.isMarked() == this.isMarked());
     }
 
-    @Override
     //@@author A0116603R
+    @Override
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.getAsText());

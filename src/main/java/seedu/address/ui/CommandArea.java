@@ -17,10 +17,10 @@ import seedu.address.logic.commands.CommandResult;
 
 import java.util.logging.Logger;
 
+// @@author A0116603R
 /**
  * Represents the Command Area
  */
-// @@author A0116603R
 public class CommandArea extends VBox {
 
     // ####################
