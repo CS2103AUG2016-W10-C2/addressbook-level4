@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.logic.commands.*;
-import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpListEvent;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
 import seedu.address.model.TaskManager;
@@ -57,10 +56,6 @@ public class LogicManagerTest {
         helpShown = true;
     }
 
-    @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent je) {
-        targetedJumpIndex = je.targetIndex;
-    }
 
     @Before
     public void setup() {

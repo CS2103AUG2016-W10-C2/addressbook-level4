@@ -151,7 +151,7 @@ public abstract class Entry {
     public abstract String getDateDisplay(LocalDateTime dateTime);
 
     /**
-     * Formats the Entry as text, showing all contact details.
+     * Formats the Entry as text, showing all task details.
      */
     //@@author A0116603R
     public String getAsText() {

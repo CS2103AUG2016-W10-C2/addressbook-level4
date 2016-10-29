@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
  */
 public class TestUtil {
 
-    public static String LS = System.lineSeparator();
 
     public static void assertThrows(Class<? extends Throwable> expected, Runnable executable) {
         try {
@@ -162,35 +161,6 @@ public class TestUtil {
         }
         keys.add(keyCodeCombination.getCode());
         return keys.toArray(new KeyCode[]{});
-    }
-
-    public static boolean isHeadlessEnvironment() {
-        String headlessProperty = System.getProperty("testfx.headless");
-        return headlessProperty != null && headlessProperty.equals("true");
-    }
-
-    public static void captureScreenShot(String fileName) {
-        File file = GuiTest.captureScreenshot();
-        try {
-            Files.copy(file, new File(fileName + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets mid point of a node relative to the screen.
-     * @param node
-     * @return
-     */
-    public static Point2D getScreenMidPoint(Node node) {
-        double x = getScreenPos(node).getMinX() + node.getLayoutBounds().getWidth() / 2;
-        double y = getScreenPos(node).getMinY() + node.getLayoutBounds().getHeight() / 2;
-        return new Point2D(x,y);
-    }
-
-    public static Bounds getScreenPos(Node node) {
-        return node.localToScreen(node.getBoundsInLocal());
     }
 
     /**

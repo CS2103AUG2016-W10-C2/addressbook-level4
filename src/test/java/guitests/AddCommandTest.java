@@ -47,7 +47,7 @@ public class AddCommandTest extends TaskManagerGuiTest {
         commandBox.runCommand(testEntry.getAddCommand());
 
         //confirm the new card contains the right data
-        TaskCardHandle addedCard = taskList.navigateToPerson(testEntry.getTitle().fullTitle);
+        TaskCardHandle addedCard = taskList.navigateToEntry(testEntry.getTitle().fullTitle);
         assertMatching(testEntry, addedCard);
 
         //confirm the list now contains all previous persons plus the new task
