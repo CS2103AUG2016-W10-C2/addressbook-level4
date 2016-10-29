@@ -22,10 +22,11 @@ public class UntagCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes tags from task. "
             + "Parameters: TASK_ID TAG[,...] "
-            + "Example: " + COMMAND_WORD + " 2 shopping, food";
+            + "Example: " + COMMAND_WORD + " 2 #shopping #food";
 
-    public static final String MESSAGE_SUCCESS = "Removed tags from entry: %1$s";
+    public static final String MESSAGE_SUCCESS = "Removed %1$s from entry: %2$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo remove tags from entry: %1$s";
+    public static final String MESSAGE_NON_EXISTENT = "None of the specified tags exist in the entry: %1$s";
 
     private final int targetIndex;
     private Entry taskToUntag;
@@ -43,7 +44,8 @@ public class UntagCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult execute() {   
+    public CommandResult execute() {
+        assert tagsToRemove.isEmpty() == false; //should be handled in the parser
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
         
         if (lastShownList.size() < targetIndex) {
@@ -52,15 +54,19 @@ public class UntagCommand extends UndoableCommand {
         }
         
         taskToUntag = lastShownList.get(targetIndex - 1);
+
         tagsToRemove.retainAll(taskToUntag.getTags());
 
+        if (tagsToRemove.isEmpty()){
+            return new CommandResult(String.format(MESSAGE_NON_EXISTENT, taskToUntag));
+        }
         try {
             model.untagTask(taskToUntag, tagsToRemove);
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         }
         setExecutionIsSuccessful();
-        return new CommandResult(String.format(MESSAGE_SUCCESS, taskToUntag));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, tagsToRemove, taskToUntag));
     }
 
     @Override

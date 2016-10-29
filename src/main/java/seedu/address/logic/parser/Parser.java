@@ -343,6 +343,9 @@ public class Parser {
 
         try {
             Set<String> tagStrings = getTagsFromArgs(argsTokenizer);
+            if (tagStrings.isEmpty()) {
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE)); 
+            }
             return new TagCommand(targetIndex.get(), tagStrings);
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
@@ -365,6 +368,9 @@ public class Parser {
 
         try {
             Set<String> tagStrings = getTagsFromArgs(argsTokenizer);
+            if (tagStrings.isEmpty()) {
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE));
+            }
             return new UntagCommand(targetIndex.get(), tagStrings);
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
