@@ -553,6 +553,73 @@ public class LogicManagerTest {
     }
 
     @Test
+    public void execute_mark_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeMarked = helper.generateTask(1);
+        Task toBeMarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        toBeMarkedCopy.mark();
+        expectedAB.addTask(toBeMarkedCopy);
+        
+        model.addTask(toBeMarked);
+        assertCommandBehavior("mark 1",
+                String.format(MarkCommand.MESSAGE_SUCCESS, toBeMarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_mark_alreadyMarked() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task alreadyMarked = helper.generateTask(1);
+        alreadyMarked.mark();
+        Task toBeMarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        toBeMarkedCopy.mark();
+        expectedAB.addTask(toBeMarkedCopy);
+        
+        model.addTask(alreadyMarked);
+        assertCommandBehavior("mark 1",
+                String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_unmark_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeUnmarked = helper.generateTask(1);
+        Task toBeUnmarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeUnmarkedCopy);
+        
+        model.addTask(toBeUnmarked);
+        assertCommandBehavior("unmark 1",
+                String.format(UnmarkCommand.MESSAGE_SUCCESS, toBeUnmarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_unmark_alreadyUnmarked() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task alreadyUnmarked = helper.generateTask(1);
+        Task alreadyUnmarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(alreadyUnmarkedCopy);
+        
+        model.addTask(alreadyUnmarked);
+        assertCommandBehavior("unmark 1",
+                String.format(UnmarkCommand.MESSAGE_SUCCESS, alreadyUnmarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
     public void execute_undoWithNoUndoableCommandsInHistory_errorMessageShown() throws Exception {
         // setup expectations
         TaskManager expectedAB = new TaskManager();
