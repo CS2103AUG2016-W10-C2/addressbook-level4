@@ -9,10 +9,12 @@ import seedu.address.commons.events.ui.DidMarkTaskEvent;
 import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoableCommand;
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.logic.commands.UndoableCommandHistory;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.OptionCommand;
+import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.parser.Parser;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
@@ -65,10 +67,12 @@ public class LogicManager extends ComponentManager implements Logic {
                 optionCommand.setUserPrefs(null); // to prevent userPrefs from changing again
             }
         }
-        //@@author
         //@@author A0121501E
         else if (command instanceof UndoCommand) {
             ((UndoCommand) command).setData(model, undoableCommandHistory);
+        }
+        else if (command instanceof RedoCommand) {
+            ((RedoCommand) command).setData(model, undoableCommandHistory);
         }
         else {
             command.setData(model);
@@ -76,8 +80,8 @@ public class LogicManager extends ComponentManager implements Logic {
 
         CommandResult commandResult = command.execute();
         if (command instanceof UndoableCommand &&
-            ((UndoableCommand) command).getExecutionIsSuccessful()) {
-            undoableCommandHistory.push((UndoableCommand) command);
+            ((UndoableCommand) command).getCommandState() == CommandState.UNDOABLE) {
+            undoableCommandHistory.pushToHistory((UndoableCommand) command);
         }
         //@@author
         return commandResult;
