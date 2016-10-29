@@ -46,7 +46,7 @@ public class TagCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         assert model != null;
-        assert tagsToAdd.isEmpty() == false; //should be handled in the parser
+        assert !tagsToAdd.isEmpty(); //should be handled in the parser
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
         
         if (lastShownList.size() < targetIndex) {
