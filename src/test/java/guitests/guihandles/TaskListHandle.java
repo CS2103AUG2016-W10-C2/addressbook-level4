@@ -2,7 +2,6 @@ package guitests.guihandles;
 
 
 import guitests.GuiRobot;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -24,8 +23,7 @@ import static seedu.address.ui.util.GuiUtil.OPAQUE;
 public class TaskListHandle extends GuiHandle {
 
     public static final int NOT_FOUND = -1;
-    public static final String CARD_PANE_ID = "#cardPane";
-
+    private static final String CARD_PANE_ID = "#cardPane";
     private static final String TASK_LIST_ID = "#taskListView";
 
     public TaskListHandle(GuiRobot guiRobot, Stage primaryStage) {
@@ -38,10 +36,10 @@ public class TaskListHandle extends GuiHandle {
 
     /**
      * Returns true if the list is showing the task details correctly and in correct order.
-     * @param persons A list of task in the correct order.
+     * @param entries A list of task in the correct order.
      */
-    public boolean isListMatching(Entry... persons) {
-        return this.isListMatching(0, persons);
+    public boolean isListMatching(Entry... entries) {
+        return this.isListMatching(0, entries);
     }
 
     /**
@@ -87,7 +85,7 @@ public class TaskListHandle extends GuiHandle {
         for (int i = 0; i < persons.length; i++) {
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
-            guiRobot.sleep(200);
+            guiRobot.sleep(100);
             if (!TestUtil.compareCardAndEntry(getPersonCardHandle(startPosition + i), persons[i])) {
                 return false;
             }
@@ -96,36 +94,34 @@ public class TaskListHandle extends GuiHandle {
     }
 
 
-    public TaskCardHandle navigateToPerson(String title) {
-        guiRobot.sleep(500); //Allow a bit of time for the list to be updated
+    public TaskCardHandle navigateToEntry(String title) {
         final Optional<Entry> entry = getListView().getItems().stream().filter(p -> p.getTitle().fullTitle.equals(title)).findAny();
         if (!entry.isPresent()) {
             throw new IllegalStateException("Name not found: " + title);
         }
 
-        return navigateToPerson(entry.get());
+        return navigateToEntry(entry.get());
     }
 
     /**
      * Navigates the listview to display and select the task.
      */
-    public TaskCardHandle navigateToPerson(Entry person) {
-        int index = getPersonIndex(person);
+    public TaskCardHandle navigateToEntry(Entry entry) {
+        int index = getTaskIndex(entry);
 
         guiRobot.interact(() -> {
             getListView().scrollTo(index);
             guiRobot.sleep(100);
             getListView().getSelectionModel().select(index);
         });
-        guiRobot.sleep(100);
-        return getPersonCardHandle(person);
+        return getPersonCardHandle(entry);
     }
 
 
     /**
      * Returns the position of the task given, {@code NOT_FOUND} if not found in the list.
      */
-    public int getPersonIndex(Entry targetEntry) {
+    public int getTaskIndex(Entry targetEntry) {
         List<Entry> personsInList = getListView().getItems();
         for (int i = 0; i < personsInList.size(); i++) {
             if(personsInList.get(i).getTitle().equals(targetEntry.getTitle())){
@@ -138,8 +134,8 @@ public class TaskListHandle extends GuiHandle {
     /**
      * Gets a task from the list by index
      */
-    public Entry getPerson(int index) {
-        return getListView().getItems().get(index);
+    public Entry getEntry(int index) {
+        return getListView().getItems().get(index-1);
     }
 
     public TaskCardHandle getPersonCardHandle(int index) {
