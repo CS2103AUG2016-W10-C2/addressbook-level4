@@ -75,7 +75,8 @@ public abstract class TaskManagerGuiTest {
      */
     protected TaskManager getInitialData() {
         TaskManager ab = TestUtil.generateEmptyAddressBook();
-        TypicalTestTasks.loadAddressBookWithSampleData(ab);
+        TypicalTestTasks typicalTestTasks = new TypicalTestTasks();
+        typicalTestTasks.loadAddressBookWithSampleData(ab);
         return ab;
     }
 
