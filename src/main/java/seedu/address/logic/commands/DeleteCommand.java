@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
@@ -48,24 +49,24 @@ public class DeleteCommand extends UndoableCommand {
             assert false : "The target entry cannot be missing";
         }
 
-        setExecutionIsSuccessful();
+        setUndoable();
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, entryToDelete));
     }
 
     @Override
     //@@author A0121501E
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState()!=CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
         };
         assert model != null;
         assert entryToDelete != null;
         try {
             model.addTask(entryToDelete);
+            setRedoable();
             return new CommandResult(String.format(MESSAGE_UNDO_DELETE_PERSON_SUCCESS, entryToDelete));
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
         }
     }
-
 }

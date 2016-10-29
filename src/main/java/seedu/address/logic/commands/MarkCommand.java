@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
@@ -44,15 +45,15 @@ public class MarkCommand extends UndoableCommand {
             assert false : "The target entry cannot be missing";
         }
 
-        setExecutionIsSuccessful();
+        setUndoable();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToMark));
     }
 
     @Override
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState() != CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
-        };
+        }
         assert model != null;
         assert entryToMark != null;
 
@@ -62,6 +63,7 @@ public class MarkCommand extends UndoableCommand {
             } else {
                 model.unmarkTask(entryToMark);
             }
+            setRedoable();
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }

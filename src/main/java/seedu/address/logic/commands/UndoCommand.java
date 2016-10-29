@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.logic.commands.UndoableCommandHistory.UndoableCommandNotFoundException;
 import seedu.address.model.Model;
 

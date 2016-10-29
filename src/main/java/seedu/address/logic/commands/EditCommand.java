@@ -7,6 +7,7 @@ import java.util.Set;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
@@ -90,14 +91,14 @@ public class EditCommand extends UndoableCommand {
             return new CommandResult(MESSAGE_ENTRY_CONVERSION);
         }
 
-        setExecutionIsSuccessful();
+        setUndoable();
         return new CommandResult(String.format(MESSAGE_SUCCESS, taskToEdit));
     }
 
     @Override
     //@@author A0121501E
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState()!=CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
         };
         assert model != null;
@@ -112,7 +113,7 @@ public class EditCommand extends UndoableCommand {
         } catch (EntryConversionException e) {
             assert false: "Undo shouldn't convert Task to Event and vice versa";
         }
+        setRedoable();
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToEdit));
     }
-
 }
