@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AddCommandTest extends TaskManagerGuiTest {
 
-    //@@author A0116603R
+    //@@author A0116603R-reused
     @Test
     public void add() {
         TestEntry[] currentList = td.getSampleEntriesAsArray(); // sample entries already present
