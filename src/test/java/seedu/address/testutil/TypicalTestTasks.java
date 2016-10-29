@@ -66,7 +66,7 @@ public class TypicalTestTasks {
         }
     }
 
-    public static void loadAddressBookWithSampleData(TaskManager taskManager) {
+    public void loadAddressBookWithSampleData(TaskManager taskManager) {
         for (Entry entry : getSampleEntries()) {
             try {
                 taskManager.addTask(new Task(entry));
@@ -76,7 +76,7 @@ public class TypicalTestTasks {
         }
     }
 
-    private static List<TestEntry> getSampleEntries() {
+    private List<TestEntry> getSampleEntries() {
         List<TestEntry> allTestEntries = new BuyTasks().getSampleEntries();
         allTestEntries.addAll(new StudyTasks().getSampleEntries());
         allTestEntries.addAll(new WatchTasks().getSampleEntries());
