@@ -16,7 +16,6 @@ public class HelpWindowHandle extends GuiHandle {
 
     public HelpWindowHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, HELP_WINDOW_TITLE);
-        guiRobot.sleep(300);
     }
 
     public boolean isVisible() {
@@ -25,7 +24,6 @@ public class HelpWindowHandle extends GuiHandle {
 
     public void closeWindow() {
         super.closeWindow();
-        guiRobot.sleep(500);
     }
 
 }

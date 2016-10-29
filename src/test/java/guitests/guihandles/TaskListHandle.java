@@ -114,7 +114,7 @@ public class TaskListHandle extends GuiHandle {
 
         guiRobot.interact(() -> {
             getListView().scrollTo(index);
-            guiRobot.sleep(150);
+            guiRobot.sleep(100);
             getListView().getSelectionModel().select(index);
         });
         guiRobot.sleep(100);
