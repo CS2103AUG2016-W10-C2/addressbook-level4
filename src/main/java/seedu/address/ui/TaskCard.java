@@ -2,12 +2,16 @@ package seedu.address.ui;
 
 
 import javafx.beans.value.ChangeListener;
+import javafx.css.Styleable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.controlsfx.control.spreadsheet.Grid;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Event;
@@ -18,7 +22,7 @@ import static seedu.address.ui.util.GuiUtil.*;
  * Represents Tasks and Events in the TaskList
  */
 //@@author A0116603R
-public class TaskCard extends HBox {
+public class TaskCard extends VBox {
     private static final String FXML = "TaskCard.fxml";
 
     // ########
@@ -94,8 +98,16 @@ public class TaskCard extends HBox {
     private void initCommonElements() {
         title.setText(entry.getTitle().fullTitle);
         id.setText(Integer.toString(index));
-        tags.setText(entry.tagsString());
-        description.setText(entry.getDescription());
+        if (entry.tagsString().isEmpty()) {
+            hide(tags);
+        } else {
+            tags.setText(entry.tagsString());
+        }
+        if (entry.getDescription() == null || entry.getDescription().isEmpty()) {
+            hide(description);
+        } else {
+            description.setText(entry.getDescription());
+        }
     }
 
     private void initTaskSpecificElements(Task task) {
@@ -103,19 +115,40 @@ public class TaskCard extends HBox {
 
         if (task.getDeadline() == null) {
             deadline.setOpacity(TRANSPARENT);
+            styleTask(getTaskStyling(task.isMarked()));
             return;
         }
 
         deadline.setText(task.getDeadlineDisplay().toUpperCase());
-        String additionalStyleClass = getDeadlineStyling(task.getDeadline());
-        if (!additionalStyleClass.isEmpty()) {
-            deadline.getStyleClass().add(additionalStyleClass);
-        }
+        styleDeadline(getDeadlineStyling(task.isMarked(), task.getDeadline()));
     }
 
     private void initCheckbox(Task task) {
         checkBox.selectedProperty().addListener(listener);
         checkBox.setSelected(task.isMarked());
+    }
+
+    private void styleTask(String styleClass) {
+        if (!styleClass.isEmpty()) {
+            addStyleClass(styleClass, getTaskElements());
+        }
+    }
+
+    private void addStyleClass(String styleClass, Styleable... nodes) {
+        for (Styleable node : nodes) {
+            node.getStyleClass().add(styleClass);
+        }
+    }
+
+    private Styleable[] getTaskElements() {
+        return new Styleable[]{id, title, description};
+    }
+
+    private void styleDeadline(String styleClass) {
+        if (!styleClass.isEmpty()) {
+            styleTask(styleClass);
+            addStyleClass(styleClass, deadline);
+        }
     }
 
     private void hideEventSpecificElements() {
@@ -128,11 +161,13 @@ public class TaskCard extends HBox {
         separator.setText(EVENT_DATE_SEPARATOR);
         endTime.setText(event.getEndTimeDisplay().toUpperCase());
 
-        String additionalStyleClass = getEventStyling(event.getStartTime(), event.getEndTime());
-        if (!additionalStyleClass.isEmpty()) {
-            startTime.getStyleClass().add(additionalStyleClass);
-            separator.getStyleClass().add(additionalStyleClass);
-            endTime.getStyleClass().add(additionalStyleClass);
+        styleEvent(getEventStyling(event.getStartTime(), event.getEndTime()));
+    }
+
+    private void styleEvent(String styleClass) {
+        addStyleClass(EVENT_DESCRIPTION_STYLE_CLASS, description);
+        if (!styleClass.isEmpty()) {
+            addStyleClass(styleClass, startTime, separator, endTime, id, title, description);
         }
     }
 
@@ -141,15 +176,16 @@ public class TaskCard extends HBox {
         hide(deadline, checkBox);
     }
 
-    private void hide(Node... nodes) {
-        for (Node node : nodes) {
-            node.setOpacity(TRANSPARENT);
-        }
-    }
-
     private void setEmptyText(Label... labels) {
         for (Label label : labels) {
             label.setText("");
+        }
+    }
+
+    private void hide(Node... nodes) {
+        for (Node node : nodes) {
+            node.managedProperty().bind(node.visibleProperty());
+            node.setVisible(false);
         }
     }
 }
