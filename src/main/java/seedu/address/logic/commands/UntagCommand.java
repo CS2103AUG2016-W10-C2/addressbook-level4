@@ -6,6 +6,7 @@ import java.util.Set;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -45,17 +46,19 @@ public class UntagCommand extends UndoableCommand {
 
     @Override
     public CommandResult execute() {
+        assert model != null;
         assert !tagsToRemove.isEmpty(); //should be handled in the parser
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
-        
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
+            
+            taskToUntag = lastShownList.get(targetIndex - 1);
+            tagsToRemove.retainAll(taskToUntag.getTags());
         }
-        
-        taskToUntag = lastShownList.get(targetIndex - 1);
-
-        tagsToRemove.retainAll(taskToUntag.getTags());
 
         if (tagsToRemove.isEmpty()){
             indicateAttemptToExecuteIncorrectCommand();
@@ -66,15 +69,15 @@ public class UntagCommand extends UndoableCommand {
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         }
-        setExecutionIsSuccessful();
+        setUndoable();
         return new CommandResult(String.format(MESSAGE_SUCCESS, tagsToRemove, taskToUntag));
     }
 
     @Override
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState() != CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
-        };
+        }
         assert model != null;
         assert taskToUntag != null;
         assert tagsToRemove != null;
@@ -84,6 +87,7 @@ public class UntagCommand extends UndoableCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
+        setRedoable();
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, tagsToRemove, taskToUntag));
     }
 
