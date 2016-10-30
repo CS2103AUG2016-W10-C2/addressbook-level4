@@ -119,4 +119,9 @@ public final class Event extends Entry{
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
         return dateTime.format(DATE_TIME_FORMATTER);
     }
+
+    @Override
+    public boolean isMarked() {
+        return LocalDateTime.now().isAfter(endTime.get());
+    }
 }
