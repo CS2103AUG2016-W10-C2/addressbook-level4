@@ -22,10 +22,11 @@ public class TagCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds tags to task. "
             + "Parameters: TASK_ID TAG[,...] "
-            + "Example: " + COMMAND_WORD + " 2 shopping, food";
+            + "Example: " + COMMAND_WORD + " 2 #shopping #food";
 
-    public static final String MESSAGE_SUCCESS = "Tagged entry: %1$s";
-    public static final String MESSAGE_UNDO_SUCCESS = "Undo tag entry: %1$s";
+    public static final String MESSAGE_SUCCESS = "Add %1$s to entry: %2$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo add %1$s to entry: %2$s";
+    public static final String MESSAGE_ALREADY_EXISTS = "All specified tags already exist on entry: %1$s";
 
     private final int targetIndex;
 
@@ -45,6 +46,7 @@ public class TagCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         assert model != null;
+        assert !tagsToAdd.isEmpty(); //should be handled in the parser
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
         
         if (lastShownList.size() < targetIndex) {
@@ -55,13 +57,17 @@ public class TagCommand extends UndoableCommand {
         taskToTag = lastShownList.get(targetIndex - 1);
         tagsToAdd.removeFrom(taskToTag.getTags());
         
+        if (tagsToAdd.isEmpty()){
+            indicateAttemptToExecuteIncorrectCommand();
+            return new CommandResult(String.format(MESSAGE_ALREADY_EXISTS, taskToTag));
+        }
         try {
             model.tagTask(taskToTag, tagsToAdd);
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         }
         setExecutionIsSuccessful();
-        return new CommandResult(String.format(MESSAGE_SUCCESS, taskToTag));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, tagsToAdd, taskToTag));
     }
 
     @Override
@@ -78,7 +84,7 @@ public class TagCommand extends UndoableCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
-        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToTag));
+        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, tagsToAdd, taskToTag));
     }
 
 }
