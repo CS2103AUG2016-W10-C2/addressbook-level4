@@ -1020,7 +1020,7 @@ public class LogicManagerTest {
         logic.execute("undo");
         // execute command and verify result
         assertCommandBehavior("redo",
-                String.format(TagCommand.MESSAGE_SUCCESS, toBeTaggedCopy),
+                String.format(TagCommand.MESSAGE_SUCCESS, new UniqueTagList(tag2), toBeTaggedCopy),
                 expectedAB,
                 expectedAB.getTaskList());
     }
@@ -1045,7 +1045,7 @@ public class LogicManagerTest {
         logic.execute("undo");
         // execute command and verify result
         assertCommandBehavior("redo",
-                String.format(UntagCommand.MESSAGE_SUCCESS, toBeUntaggedCopy),
+                String.format(UntagCommand.MESSAGE_SUCCESS, new UniqueTagList(tag1), toBeUntaggedCopy),
                 expectedAB,
                 expectedAB.getTaskList());
     }
