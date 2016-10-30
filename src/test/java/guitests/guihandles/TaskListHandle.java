@@ -50,19 +50,19 @@ public class TaskListHandle extends GuiHandle {
     }
 
     /**
-     * Returns true if the {@code persons} appear as the sub list (in that order) at position {@code startPosition}.
+     * Returns true if the {@code entries} appear as the sub list (in that order) at position {@code startPosition}.
      */
     public boolean containsInOrder(int startPosition, Entry... entries) {
-        List<Entry> personsInList = getListView().getItems();
+        List<Entry> entryList = getListView().getItems();
 
         // Return false if the list in panel is too short to contain the given list
-        if (startPosition + entries.length > personsInList.size()){
+        if (startPosition + entries.length > entryList.size()){
             return false;
         }
 
-        // Return false if any of the persons doesn't match
+        // Return false if any of the entries doesn't match
         for (int i = 0; i < entries.length; i++) {
-            if (!personsInList.get(startPosition + i).getTitle().fullTitle.equals(entries[i].getTitle().fullTitle)){
+            if (!entryList.get(startPosition + i).getTitle().fullTitle.equals(entries[i].getTitle().fullTitle)){
                 return false;
             }
         }
@@ -73,20 +73,20 @@ public class TaskListHandle extends GuiHandle {
     /**
      * Returns true if the list is showing the task details correctly and in correct order.
      * @param startPosition The starting position of the sub list.
-     * @param persons A list of task in the correct order.
+     * @param entries A list of task in the correct order.
      */
-    public boolean isListMatching(int startPosition, Entry... persons) throws IllegalArgumentException {
-        if (persons.length + startPosition != getListView().getItems().size()) {
+    public boolean isListMatching(int startPosition, Entry... entries) throws IllegalArgumentException {
+        if (entries.length + startPosition != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n" +
-                    "Got " + (persons.length) + " persons" +
-                    "Expected " + (getListView().getItems().size() - 1) + " persons");
+                    "Got " + (entries.length) + " entries" +
+                    "Expected " + (getListView().getItems().size() - 1) + " entries");
         }
-        assertTrue(this.containsInOrder(startPosition, persons));
-        for (int i = 0; i < persons.length; i++) {
+        assertTrue(this.containsInOrder(startPosition, entries));
+        for (int i = 0; i < entries.length; i++) {
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(100);
-            if (!TestUtil.compareCardAndEntry(getPersonCardHandle(startPosition + i), persons[i])) {
+            if (!TestUtil.compareCardAndEntry(getTaskCardHandle(startPosition + i), entries[i])) {
                 return false;
             }
         }
@@ -114,7 +114,7 @@ public class TaskListHandle extends GuiHandle {
             guiRobot.sleep(100);
             getListView().getSelectionModel().select(index);
         });
-        return getPersonCardHandle(entry);
+        return getTaskCardHandle(entry);
     }
 
 
@@ -122,9 +122,9 @@ public class TaskListHandle extends GuiHandle {
      * Returns the position of the task given, {@code NOT_FOUND} if not found in the list.
      */
     public int getTaskIndex(Entry targetEntry) {
-        List<Entry> personsInList = getListView().getItems();
-        for (int i = 0; i < personsInList.size(); i++) {
-            if(personsInList.get(i).getTitle().equals(targetEntry.getTitle())){
+        List<Entry> entries = getListView().getItems();
+        for (int i = 0; i < entries.size(); i++) {
+            if(entries.get(i).getTitle().equals(targetEntry.getTitle())){
                 return i;
             }
         }
@@ -138,17 +138,17 @@ public class TaskListHandle extends GuiHandle {
         return getListView().getItems().get(index-1);
     }
 
-    public TaskCardHandle getPersonCardHandle(int index) {
-        return getPersonCardHandle(new Task(getListView().getItems().get(index)));
+    public TaskCardHandle getTaskCardHandle(int index) {
+        return getTaskCardHandle(new Task(getListView().getItems().get(index)));
     }
 
-    public TaskCardHandle getPersonCardHandle(Entry person) {
+    public TaskCardHandle getTaskCardHandle(Entry person) {
         Set<Node> nodes = getAllCardNodes();
-        Optional<Node> personCardNode = nodes.stream()
+        Optional<Node> taskCardNode = nodes.stream()
                 .filter(n -> new TaskCardHandle(guiRobot, primaryStage, n).isSameEntry(person))
                 .findFirst();
-        if (personCardNode.isPresent()) {
-            return new TaskCardHandle(guiRobot, primaryStage, personCardNode.get());
+        if (taskCardNode.isPresent()) {
+            return new TaskCardHandle(guiRobot, primaryStage, taskCardNode.get());
         } else {
             return null;
         }
