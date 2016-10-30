@@ -2,6 +2,7 @@ package guitests.guihandles;
 
 import guitests.GuiRobot;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import seedu.address.model.task.Entry;
 
@@ -48,6 +49,15 @@ public class TaskCardHandle extends GuiHandle {
 
     public boolean getIsMarked() {
         return getMarkedStatusFromCheckbox(CHECKBOX_FIELD_ID);
+    }
+
+    private CheckBox getCheckBox() {
+        return (CheckBox) guiRobot.from(node).lookup(CHECKBOX_FIELD_ID).tryQuery().get();
+    }
+
+    public void toggleCheckBox() {
+        CheckBox checkBox = getCheckBox();
+        guiRobot.clickOn(checkBox);
     }
 
     public boolean isSameEntry(Entry entry){

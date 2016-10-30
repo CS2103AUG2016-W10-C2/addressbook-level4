@@ -135,11 +135,11 @@ public class TaskListHandle extends GuiHandle {
      * Gets a task from the list by index
      */
     public Entry getEntry(int index) {
-        return getListView().getItems().get(index-1);
+        return getListView().getItems().get(index);
     }
 
     public TaskCardHandle getTaskCardHandle(int index) {
-        return getTaskCardHandle(new Task(getListView().getItems().get(index)));
+        return getTaskCardHandle(new Task(getEntry(index)));
     }
 
     public TaskCardHandle getTaskCardHandle(Entry person) {

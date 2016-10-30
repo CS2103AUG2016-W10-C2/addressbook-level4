@@ -8,8 +8,8 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYE
 public class UnmarkCommandTest extends TaskManagerGuiTest{
     @Test
     public void unmarkFloatingTask() {
-        int testIndex = 1;
-        commandBox.runCommand(UnmarkCommand.COMMAND_WORD + " " + testIndex);
+        int testIndex = 0;
+        commandBox.runCommand(UnmarkCommand.COMMAND_WORD + " " + testIndex+1); // gui uses 1-based indexing
         assertResultMessage(String.format(UnmarkCommand.MESSAGE_SUCCESS, taskList.getEntry(testIndex)));
 
         commandBox.runCommand(UnmarkCommand.COMMAND_WORD + " " + Integer.MAX_VALUE);
