@@ -41,8 +41,11 @@ public interface Model {
     /** Returns the filtered task list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<Entry> getFilteredPersonList();
 
-    /** Updates the filter of the filtered task list to show all persons */
+    /** Updates the filter of the filtered task list to show all entries */
     void updateFilteredListToShowAll();
+
+    /** Updates the filter of the filtered task list to show all entries excluding completed ones */
+    void updateFilteredListToShowAllWithoutCompleted();
 
     /** Updates the filter of the filtered task list*/
     void updateFilteredEntryListPredicate(Predicate<Entry> predicate);
