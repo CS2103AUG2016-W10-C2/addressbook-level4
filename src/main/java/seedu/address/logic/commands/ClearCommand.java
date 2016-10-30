@@ -22,18 +22,19 @@ public class ClearCommand extends UndoableCommand {
         assert model != null;
         originalTaskManager = new TaskManager(model.getTaskManager());
         model.resetData(TaskManager.getEmptyAddressBook());
-        setExecutionIsSuccessful();
+        setUndoable();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
     //@@author A0121501E
     @Override
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState() != CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
         }
         assert model != null;
         model.resetData(originalTaskManager);
+        setRedoable();
         return new CommandResult(MESSAGE_UNDO_SUCCESS);
     }
 }

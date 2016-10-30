@@ -5,16 +5,16 @@ import seedu.address.logic.commands.UndoableCommandHistory.UndoableCommandNotFou
 import seedu.address.model.Model;
 
 /**
- * Undo the previous undoable command.
+ * Redo the previous undo command.
  */
 //@@author A0121501E
-public class UndoCommand extends Command {
+public class RedoCommand extends Command {
 
-    public static final String COMMAND_WORD = "undo";
-    public static final String MESSAGE_FAILURE = "No undoable commands found!";
+    public static final String COMMAND_WORD = "redo";
+    public static final String MESSAGE_FAILURE = "No redoable commands found!";
     private UndoableCommandHistory undoableCommandHistory;
 
-    public UndoCommand() {}
+    public RedoCommand() {}
     
     public void setData(Model model, UndoableCommandHistory undoableCommandQueue) {
         this.model = model;
@@ -24,10 +24,10 @@ public class UndoCommand extends Command {
     @Override
     public CommandResult execute() {
         try {
-            UndoableCommand undoableCommand = undoableCommandHistory.getFromUndoStack();
-            CommandResult undoableCommandResult = undoableCommand.unexecute();
-            if (undoableCommand.getCommandState() == CommandState.REDOABLE) {
-                undoableCommandHistory.pushToRedoStack(undoableCommand);
+            UndoableCommand undoableCommand = undoableCommandHistory.getFromRedoStack();
+            CommandResult undoableCommandResult = undoableCommand.reExecute();
+            if (undoableCommand.getCommandState() == CommandState.UNDOABLE) {
+                undoableCommandHistory.pushToUndoStack(undoableCommand);
             }
             return undoableCommandResult;
         } catch (UndoableCommandNotFoundException e) {

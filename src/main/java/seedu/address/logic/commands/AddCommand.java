@@ -82,7 +82,7 @@ public class AddCommand extends UndoableCommand {
         assert model != null;
         try {
             model.addTask(toAdd);
-            setExecutionIsSuccessful();
+            setUndoable();
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueTaskList.DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
@@ -92,7 +92,7 @@ public class AddCommand extends UndoableCommand {
     //@@author A0121501E
     @Override
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState()!=CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
         };
         assert toAdd != null;
@@ -101,7 +101,7 @@ public class AddCommand extends UndoableCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
+        setRedoable();
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, toAdd));
     }
-
 }

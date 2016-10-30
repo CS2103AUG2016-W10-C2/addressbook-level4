@@ -7,6 +7,7 @@ import java.util.Set;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.model.task.Entry;
 import seedu.address.model.task.Title;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
@@ -69,16 +70,17 @@ public class EditCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+        if (getCommandState()==CommandState.PRE_EXECUTION) {
+            if (lastShownList.size() < targetIndex) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
 
-        if (lastShownList.size() < targetIndex) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            taskToEdit = lastShownList.get(targetIndex - 1);
+            update.setTask(taskToEdit);
+            reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
+            reverseUpdate.setTask(taskToEdit);
         }
-
-        taskToEdit = lastShownList.get(targetIndex - 1);
-        update.setTask(taskToEdit);
-        reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
-        reverseUpdate.setTask(taskToEdit);
         assert model != null;
         try {
             model.editTask(update);
@@ -90,14 +92,14 @@ public class EditCommand extends UndoableCommand {
             return new CommandResult(MESSAGE_ENTRY_CONVERSION);
         }
 
-        setExecutionIsSuccessful();
+        setUndoable();
         return new CommandResult(String.format(MESSAGE_SUCCESS, taskToEdit));
     }
 
     @Override
     //@@author A0121501E
     public CommandResult unexecute() {
-        if (!executionIsSuccessful){
+        if (getCommandState()!=CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
         };
         assert model != null;
@@ -112,7 +114,7 @@ public class EditCommand extends UndoableCommand {
         } catch (EntryConversionException e) {
             assert false: "Undo shouldn't convert Task to Event and vice versa";
         }
+        setRedoable();
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, taskToEdit));
     }
-
 }
