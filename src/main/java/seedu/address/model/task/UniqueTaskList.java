@@ -106,10 +106,16 @@ public class UniqueTaskList implements Iterable<Entry> {
      */
     public void updateTitle(Entry toEdit, Title newTitle) throws DuplicateTaskException, EntryNotFoundException {
         assert toEdit != null;
-        for (int i = 0; i < internalList.size(); i++) {
-            if (internalList.get(i).getTitle().equals(newTitle)) {
-                throw new DuplicateTaskException();
-            }
+        Entry copy;
+        if (toEdit instanceof Task) {
+            copy = new Task(toEdit);
+        } else {
+            copy = new Event(toEdit);
+        }
+        copy.setTitle(newTitle);
+
+        if (contains(copy)) {
+            throw new DuplicateTaskException();
         }
 
         if (!contains(toEdit)) {
