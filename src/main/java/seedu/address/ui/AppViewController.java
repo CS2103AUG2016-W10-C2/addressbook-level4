@@ -3,10 +3,10 @@ package seedu.address.ui;
 import javafx.scene.layout.Pane;
 import seedu.address.logic.Logic;
 
+//@@author A0116603R
 /**
  * Interaction point between Main Controller and rest of the app view(s)
  */
-//@@author A0116603R
 public class AppViewController {
 
     private Logic logic;

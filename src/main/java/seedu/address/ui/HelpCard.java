@@ -5,10 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+// @@author A0116603R
 /**
  * Represents a help item which can be displayed.
  */
-// @@author A0116603R
 public class HelpCard extends HBox {
     private static final String FXML = "HelpCard.fxml";
 

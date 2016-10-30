@@ -12,11 +12,11 @@ import seedu.address.model.task.Entry;
 
 import java.util.logging.Logger;
 
+//@@author A0116603R
 /**
  * Controller which initializes the default Task View -- this consists of
  * a TaskList and a CommandArea
  */
-//@@author A0116603R
 public class TaskViewController extends Controller {
     private static final Logger logger = LogsCenter.getLogger(TaskViewController.class);
 

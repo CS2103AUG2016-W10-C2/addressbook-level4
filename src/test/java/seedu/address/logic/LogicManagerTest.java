@@ -413,7 +413,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_tag_withoutTagnameArgs() throws Exception {
+    public void execute_tag_withoutTagnameArgs_errorMessageShown() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
@@ -421,7 +421,7 @@ public class LogicManagerTest {
         Task t1Copy = helper.generateTask(1);
         List<Task> expectedList = helper.generateEntryList(t1Copy);
         TaskManager expectedAB = helper.generateAddressBook(expectedList);
-        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
+        String expectedMessage = String.format(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
         
         assertCommandBehavior("tag 1", expectedMessage, expectedAB, expectedList);
     }
@@ -443,7 +443,7 @@ public class LogicManagerTest {
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
         TaskManager expectedAB = helper.generateAddressBook(expectedList);
-        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
+        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, tags, t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
     }
@@ -464,7 +464,27 @@ public class LogicManagerTest {
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
         TaskManager expectedAB = helper.generateAddressBook(expectedList);
-        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, t1Copy);
+        String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, new UniqueTagList(tag3), t1Copy);
+        assertCommandBehavior(helper.generateTagCommand(tags, 1),
+                expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_tagOnlyExistingTags_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task t1 = helper.generateTask(1);
+        helper.addToModel(model, helper.generateEntryList(t1));
+        
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("tag2");
+        UniqueTagList tags = new UniqueTagList(tag1, tag2);
+        
+        Task t1Copy = helper.generateTask(1);
+        t1Copy.addTags(tags);
+        
+        List<Task> expectedList = helper.generateEntryList(t1Copy);
+        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        String expectedMessage = String.format(TagCommand.MESSAGE_ALREADY_EXISTS, t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
     }
@@ -490,7 +510,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_untag_withoutTagnameArgs() throws Exception {
+    public void execute_untagWithoutTagnameArgs_errorMessageShown() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
@@ -498,7 +518,7 @@ public class LogicManagerTest {
         Task t1Copy = helper.generateTask(1);
         List<Task> expectedList = helper.generateEntryList(t1Copy);
         TaskManager expectedAB = helper.generateAddressBook(expectedList);
-        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE);
         
         assertCommandBehavior("untag 1", expectedMessage, expectedAB, expectedList);
     }
@@ -521,30 +541,95 @@ public class LogicManagerTest {
         List<Task> expectedList = helper.generateEntryList(t1Copy);
         TaskManager expectedAB = helper.generateAddressBook(expectedList);
         helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
-        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
+
+        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, new UniqueTagList(tag1), t1Copy);
         assertCommandBehavior(helper.generateUntagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
     }
 
     @Test
-    public void execute_untag_allowRemoveNonExistentTags() throws Exception {
+    public void execute_untagNonExistentTags_NonExistentMessageShown() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task t1 = helper.generateTask(1);
         helper.addToModel(model, helper.generateEntryList(t1));
         
-        Tag tag1 = new Tag("tag1");
         Tag tag3 = new Tag("tag3");  // Does not exist
-        UniqueTagList tags = new UniqueTagList(tag1, tag3);
+        UniqueTagList tags = new UniqueTagList(tag3);
         
         Task t1Copy = helper.generateTask(1);
-        t1Copy.removeTags(tags);
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
         TaskManager expectedAB = helper.generateAddressBook(expectedList);
-        helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
-        String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, t1Copy);
+        String expectedMessage = String.format(UntagCommand.MESSAGE_NON_EXISTENT, t1Copy);
         assertCommandBehavior(helper.generateUntagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
+    }
+
+    @Test
+    public void execute_mark_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeMarked = helper.generateTask(1);
+        Task toBeMarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        toBeMarkedCopy.mark();
+        expectedAB.addTask(toBeMarkedCopy);
+        
+        model.addTask(toBeMarked);
+        assertCommandBehavior("mark 1",
+                String.format(MarkCommand.MESSAGE_SUCCESS, toBeMarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_mark_alreadyMarked() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task alreadyMarked = helper.generateTask(1);
+        alreadyMarked.mark();
+        Task toBeMarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        toBeMarkedCopy.mark();
+        expectedAB.addTask(toBeMarkedCopy);
+        
+        model.addTask(alreadyMarked);
+        assertCommandBehavior("mark 1",
+                String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_unmark_successful() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeUnmarked = helper.generateTask(1);
+        Task toBeUnmarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(toBeUnmarkedCopy);
+        
+        model.addTask(toBeUnmarked);
+        assertCommandBehavior("unmark 1",
+                String.format(UnmarkCommand.MESSAGE_SUCCESS, toBeUnmarked),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+
+    @Test
+    public void execute_unmark_alreadyUnmarked() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Task alreadyUnmarked = helper.generateTask(1);
+        Task alreadyUnmarkedCopy = helper.generateTask(1);
+
+        TaskManager expectedAB = new TaskManager();
+        expectedAB.addTask(alreadyUnmarkedCopy);
+        
+        model.addTask(alreadyUnmarked);
+        assertCommandBehavior("unmark 1",
+                String.format(UnmarkCommand.MESSAGE_SUCCESS, alreadyUnmarked),
+                expectedAB,
+                expectedAB.getTaskList());
     }
 
     @Test
@@ -683,7 +768,7 @@ public class LogicManagerTest {
         logic.execute(helper.generateTagCommand(tags, 1));
         // execute command and verify result
         assertCommandBehavior("undo",
-                String.format(TagCommand.MESSAGE_UNDO_SUCCESS, toBeTaggedCopy),
+                String.format(TagCommand.MESSAGE_UNDO_SUCCESS, new UniqueTagList(tag2), toBeTaggedCopy),
                 expectedAB,
                 expectedAB.getTaskList());
     }
@@ -707,7 +792,7 @@ public class LogicManagerTest {
         logic.execute(helper.generateUntagCommand(tags, 1));
         // execute command and verify result
         assertCommandBehavior("undo",
-                String.format(UntagCommand.MESSAGE_UNDO_SUCCESS, toBeUntaggedCopy),
+                String.format(UntagCommand.MESSAGE_UNDO_SUCCESS, new UniqueTagList(tag1), toBeUntaggedCopy),
                 expectedAB,
                 expectedAB.getTaskList());
     }
