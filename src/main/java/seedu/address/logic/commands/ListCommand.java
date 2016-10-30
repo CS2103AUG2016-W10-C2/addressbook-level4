@@ -29,16 +29,18 @@ public class ListCommand extends Command {
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
     public static final String ON_FLAG = "on/";
+    public static final String COMPLETED_FLAG = "completed/";
 
     private Set<String> keywords;
     private Set<String> tags;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private LocalDateTime onDate;
+    private final boolean includeCompleted;
     
     private final PredicateBuilder predicateBuilder = new PredicateBuilder();
     
-    public ListCommand() {}
+    public ListCommand(boolean includeCompleted) { this.includeCompleted = includeCompleted; }
 
     public void setKeywords(Set<String> keywords) {
         this.keywords = keywords;
@@ -65,9 +67,9 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate);
+            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted);
             model.updateFilteredEntryListPredicate(predicate);
-            
+
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
         }
     }
@@ -86,6 +88,7 @@ public class ListCommand extends Command {
                 && (tags == null || tags.isEmpty())
                 && startDate == null
                 && endDate == null
-                && onDate == null;
+                && onDate == null
+                && includeCompleted;
     }
 }

@@ -17,11 +17,9 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.AddCommand.*;
+import static seedu.address.logic.commands.ListCommand.*;
 import static seedu.address.logic.commands.OptionCommand.SAVE_LOCATION_FLAG;
 import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
-import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
-import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
-import static seedu.address.logic.commands.ListCommand.ON_FLAG;
 
 /**
  * Parses user input.
@@ -47,6 +45,7 @@ public class Parser {
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
+    private static final Prefix completedPrefix = new Prefix(COMPLETED_FLAG);
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -430,14 +429,15 @@ public class Parser {
     private Command prepareList(String args) {
         // Guard statement
         if (args.isEmpty()) {
-            return new ListCommand();
+            return new ListCommand(false);
         }
 
-        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix);
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix, completedPrefix);
         argsTokenizer.tokenize(args);
 
         try {
-            ListCommand listCommand = new ListCommand();
+            boolean includeCompleted = argsTokenizer.getValue(completedPrefix).isPresent();
+            ListCommand listCommand = new ListCommand(includeCompleted);
 
             // keywords delimited by whitespace
             Optional<String> keywordsString = argsTokenizer.getPreamble();
