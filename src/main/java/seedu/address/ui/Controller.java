@@ -10,11 +10,11 @@ import static seedu.address.ui.util.GuiUtil.DEFAULT_FADE_DURATION;
 import static seedu.address.ui.util.GuiUtil.OPAQUE;
 import static seedu.address.ui.util.GuiUtil.TRANSPARENT;
 
+//@@author A0116603R
 /**
  * Abstract class for all app view controllers.
  * Forces controllers to implement an init method.
  */
-//@@author A0116603R
 abstract class Controller {
     BorderPane appView;
 

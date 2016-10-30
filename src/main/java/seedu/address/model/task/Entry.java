@@ -150,10 +150,10 @@ public abstract class Entry {
      */
     public abstract String getDateDisplay(LocalDateTime dateTime);
 
+    //@@author A0116603R
     /**
      * Formats the Entry as text, showing all contact details.
      */
-    //@@author A0116603R
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle());

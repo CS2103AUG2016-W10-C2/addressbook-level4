@@ -5,10 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import seedu.address.model.task.Entry;
 
+// @@author A0116603R
 /**
  * Represents a list of tasks to be displayed
  */
-// @@author A0116603R
 public class TaskList extends ListView<Entry> {
     private static String FXML = "TaskList.fxml";
 

@@ -5,10 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 
+// @@author A0116603R
 /**
  * Represents a list of help cards to be displayed
  */
-// @@author A0116603R
 public class HelpList extends ListView<HelpList.HelpItem> {
     private static final String FXML = "HelpList.fxml";
 

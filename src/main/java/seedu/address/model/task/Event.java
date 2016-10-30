@@ -92,8 +92,8 @@ public final class Event extends Entry{
                 && this.isSameStateAs((Event) other));
     }
 
-    @Override
     //@@author A0116603R
+    @Override
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.getAsText());

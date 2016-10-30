@@ -20,11 +20,11 @@ import seedu.address.model.UserPrefs;
 import java.net.URL;
 import java.util.logging.Logger;
 
+//@@author A0116603R
 /**
  * The Main Controller, which is in charge of the root layout and
  * enables other UI elements to be placed within the application.
  */
-//@@author A0116603R
 public class MainController extends UiPart {
 
     // #############
