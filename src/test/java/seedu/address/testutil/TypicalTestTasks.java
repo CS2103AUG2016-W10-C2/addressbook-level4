@@ -6,6 +6,7 @@ import seedu.address.model.task.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //@@author A0116603R
 /**
@@ -14,55 +15,95 @@ import java.util.Set;
 public class TypicalTestTasks {
 
     public static class BuyTasks implements TestTasks {
+        // Leave one task publicly accessible in case one needs direct access
         public static final String TASK_1 = "Buy apples";
-        static final String TASK_2 = "Buy bananas";
-        static final String TASK_3 = "Buy cookies";
-        static final String TASK_4 = "Buy some time";
+        static final String[] SAMPLES = new String[]{TASK_1, "Buy bananas"};
+        static final String[] NON_SAMPLES = new String[]{"Buy cookies", "Buy some time"};
 
         public static final String VERB = "Buy";
 
+        static final String[] DEFAULT_TAGS = new String[]{"groceries", "shopping"};
+        static final String DEFAULT_DESCRIPTION = "Gotta buy em' all";
+
         @Override
         public List<TestEntry> getSampleEntries() {
-            return getAllEntries(TASK_1, TASK_2);
+            return build(getAllEntries(SAMPLES));
         }
 
         @Override
         public List<TestEntry> getNonSampleEntries() {
-            return getAllEntries(TASK_3, TASK_4);
+            return build(getAllEntries(NON_SAMPLES));
+        }
+
+        @Override
+        public List<EntryBuilder> getSampleEntriesWithTags(){
+            return getAllEntries(SAMPLES).stream().map(entryBuilder -> {
+                try {
+                    return entryBuilder.withTags(DEFAULT_TAGS);
+                } catch (IllegalValueException e) {
+                    assert false : "not possible";
+                }
+                return null;
+            }).collect(Collectors.toList());
+        }
+
+        @Override
+        public List<EntryBuilder> getSampleEntriesWithDescription() {
+            return getAllEntries(SAMPLES).stream().map(entryBuilder -> entryBuilder.withDescription(DEFAULT_DESCRIPTION)).collect(Collectors.toList());
         }
     }
 
     private static class StudyTasks implements TestTasks {
-        static final String TASK_1 = "Study for finals";
-        static final String TASK_2 = "Do assignment 1";
-        static final String TASK_3 = "Read up on unit testing";
-        static final String TASK_4 = "Code for project";
+        static final String[] SAMPLES = new String[]{"Study for finals", "Do assignment 1"};
+        static final String[] NON_SAMPLES = new String[]{"Read up on unit testing", "Code for project"};
+
+        static final String DEFAULT_DESCRIPTION = "A short little description which grew longer";
 
         @Override
         public List<TestEntry> getSampleEntries() {
-            return getAllEntries(TASK_1, TASK_2);
+            return build(getAllEntries(SAMPLES));
         }
 
         @Override
         public List<TestEntry> getNonSampleEntries() {
-            return getAllEntries(TASK_3, TASK_4);
+            return build(getAllEntries(NON_SAMPLES));
+        }
+
+        @Override
+        public List<EntryBuilder> getSampleEntriesWithTags() {
+            return null;
+        }
+
+        @Override
+        public List<EntryBuilder> getSampleEntriesWithDescription() {
+            return getAllEntries(SAMPLES).stream().map(entryBuilder -> entryBuilder.withDescription(DEFAULT_DESCRIPTION)).collect(Collectors.toList());
         }
     }
 
     public static class WatchTasks implements TestTasks {
-        static final String TASK_1 = "Watch movie";
-        static final String TASK_2 = "Watch Black Mirror";
+        static final String[] SAMPLES = new String[]{"Watch movie", "Watch Black Mirror"};
+        static final String[] NON_SAMPLES = new String[]{"Watch Doctor Who", "Watch Big Hero 6"};
 
         public static final String VERB = "Watch";
 
         @Override
         public List<TestEntry> getSampleEntries() {
-            return getAllEntries(TASK_1);
+            return build(getAllEntries(SAMPLES));
         }
 
         @Override
         public List<TestEntry> getNonSampleEntries() {
-            return getAllEntries(TASK_2);
+            return build(getAllEntries(NON_SAMPLES));
+        }
+
+        @Override
+        public List<EntryBuilder> getSampleEntriesWithTags() {
+            return null;
+        }
+
+        @Override
+        public List<EntryBuilder> getSampleEntriesWithDescription() {
+            return null;
         }
     }
 
@@ -77,8 +118,8 @@ public class TypicalTestTasks {
     }
 
     private List<TestEntry> getSampleEntries() {
-        List<TestEntry> allTestEntries = new BuyTasks().getSampleEntries();
-        allTestEntries.addAll(new StudyTasks().getSampleEntries());
+        List<TestEntry> allTestEntries = new BuyTasks().getBuiltSampleEntriesWithTags();
+        allTestEntries.addAll(new StudyTasks().getBuiltSampleEntriesWithDescription());
         allTestEntries.addAll(new WatchTasks().getSampleEntries());
         return allTestEntries;
     }

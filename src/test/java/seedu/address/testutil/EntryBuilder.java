@@ -32,6 +32,11 @@ public class EntryBuilder {
         return this;
     }
 
+    public EntryBuilder withDescription(String description) {
+        entry.setDescription(description);
+        return this;
+    }
+
     public TestEntry build() {
         return this.entry;
     }
