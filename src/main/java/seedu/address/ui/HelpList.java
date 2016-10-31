@@ -32,6 +32,8 @@ public class HelpList extends ListView<HelpList.HelpItem> {
     private static final String UNMARK_HELP_TEXT = "unmark <task_id>";
     private static final String OPTION_HELP = "OPTION";
     private static final String OPTION_HELP_TEXT = "option [<type>/<value> ...]";
+    private static final String UNDO_HELP = "UNDO";
+    private static final String UNDO_HELP_TEXT = "undo";
 
     private ObservableList<HelpItem> data;
 
@@ -60,6 +62,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
         data.add(new HelpItem(DELETE_HELP, DELETE_HELP_TEXT));
         data.add(new HelpItem(MARK_HELP, MARK_HELP_TEXT));
         data.add(new HelpItem(UNMARK_HELP, UNMARK_HELP_TEXT));
+        data.add(new HelpItem(UNDO_HELP, UNDO_HELP_TEXT));
         data.add(new HelpItem(OPTION_HELP, OPTION_HELP_TEXT));
     }
 
