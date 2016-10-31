@@ -114,10 +114,6 @@ public class UniqueTaskList implements Iterable<Entry> {
         }
         copy.setTitle(newTitle);
 
-        if (contains(copy)) {
-            throw new DuplicateTaskException();
-        }
-
         if (!contains(toEdit)) {
             throw new EntryNotFoundException();
         }
