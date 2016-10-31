@@ -56,7 +56,8 @@ public class AddCommand extends UndoableCommand {
                     endTime,
                     new UniqueTagList(tagSet),
                     false,
-                    description
+                    description,
+                    LocalDateTime.now()
             );
         }
         else if (startTime == null){
@@ -65,7 +66,8 @@ public class AddCommand extends UndoableCommand {
                     endTime,
                     new UniqueTagList(tagSet),
                     false,
-                    description
+                    description,
+                    LocalDateTime.now()
             );
         }
         else if (startTime != null && endTime == null) {

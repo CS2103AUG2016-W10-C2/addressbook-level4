@@ -37,6 +37,7 @@ public class EditCommand extends UndoableCommand {
 
     private final Update update;
     private Entry taskToEdit;
+    private LocalDateTime originalLastModifiedTime;
     private Update reverseUpdate;
 
     public EditCommand(int targetIndex, String title, LocalDateTime startTime, LocalDateTime endTime, Set<String> tags, String description) throws IllegalValueException {
@@ -77,6 +78,7 @@ public class EditCommand extends UndoableCommand {
             }
 
             taskToEdit = lastShownList.get(targetIndex - 1);
+            originalLastModifiedTime = taskToEdit.getLastModifiedTime().plusDays(0);
             update.setTask(taskToEdit);
             reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
             reverseUpdate.setTask(taskToEdit);
@@ -91,7 +93,6 @@ public class EditCommand extends UndoableCommand {
         } catch (EntryConversionException e) {
             return new CommandResult(MESSAGE_ENTRY_CONVERSION);
         }
-
         setUndoable();
         return new CommandResult(String.format(MESSAGE_SUCCESS, taskToEdit));
     }
@@ -107,6 +108,7 @@ public class EditCommand extends UndoableCommand {
 
         try {
             model.editTask(reverseUpdate);
+            model.updateLastModifiedTime(taskToEdit, originalLastModifiedTime);
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
         } catch (DuplicateTaskException e) {

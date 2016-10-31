@@ -15,6 +15,7 @@ import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -114,6 +115,16 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addTag(Tag tag) throws DuplicateTagException {
         taskManager.addTag(tag);
+    }
+
+    @Override
+    public void updateLastModifiedTime(Entry entry) throws EntryNotFoundException {
+        taskManager.updateLastModifiedTime(entry);
+    }
+
+    @Override
+    public void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException {
+        taskManager.updateLastModifiedTime(entry, localDateTime);
     }
     //=========== Filtered Person List Accessors ===============================================================
 

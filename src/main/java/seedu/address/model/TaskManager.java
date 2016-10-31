@@ -12,6 +12,7 @@ import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -104,14 +105,17 @@ public class TaskManager implements ReadOnlyTaskManager {
         entries.updateEndTime(toEdit, update.getEndTime());
         entries.updateTags(toEdit, update.getNewTags());
         entries.updateDescription(toEdit, update.getNewDescription());
+        entries.updateLastModifiedTime(toEdit);
     }
 
     public void markTask(Entry task) throws EntryNotFoundException {
         entries.mark(task);
+        entries.updateLastModifiedTime(task);
     }
 
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         entries.unmark(task);
+        entries.updateLastModifiedTime(task);
     }
 
 
@@ -144,6 +148,15 @@ public class TaskManager implements ReadOnlyTaskManager {
         } else {
             throw new EntryNotFoundException();
         }
+    }
+
+
+    public void updateLastModifiedTime(Entry entry) throws EntryNotFoundException {
+        entries.updateLastModifiedTime(entry);
+    }
+
+    public void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException {
+        entries.updateLastModifiedTime(entry, localDateTime);
     }
 
 //// tag-level operations
