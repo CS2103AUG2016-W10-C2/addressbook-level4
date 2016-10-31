@@ -22,7 +22,7 @@ public abstract class Entry implements Comparable<Entry> {
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
     protected StringProperty description;
-    protected LocalDateTime lastModified;
+    protected ObjectProperty<LocalDateTime> lastModifiedTime;
 
     String DELIMITER = " ";
 
@@ -192,7 +192,11 @@ public abstract class Entry implements Comparable<Entry> {
     //@@author A0121501E
     public int compareTo(Entry o) {
         LocalDateTime thisDateTime = this.getComparableTime();
-        LocalDateTime oDateTime = this.getComparableTime();
+        LocalDateTime oDateTime = o.getComparableTime();
+        int compareValue = thisDateTime.compareTo(oDateTime);
+        if (compareValue==0) {
+            return this.getTitle().toString().compareTo(o.getTitle().toString());
+        }
         return thisDateTime.compareTo(oDateTime);
     }
     
@@ -202,9 +206,21 @@ public abstract class Entry implements Comparable<Entry> {
     public abstract LocalDateTime getComparableTime();
     
     /**
-     *  sets the last modified to the current time
+     *  sets the last modified time
      */
-    public void resetLastModified() {
-        lastModified = LocalDateTime.now();
+    public void setLastModifiedTime(LocalDateTime localDateTime) {
+        lastModifiedTime.set(localDateTime);
+    }
+    
+    public void resetLastModifiedTime() {
+        lastModifiedTime.set(LocalDateTime.now());
+    }
+    
+    public LocalDateTime getLastModifiedTime() {
+        return lastModifiedTime.get();
+    }
+
+    public ObjectProperty<LocalDateTime> getLastModifiedTimeProperty() {
+        return lastModifiedTime;
     }
 }

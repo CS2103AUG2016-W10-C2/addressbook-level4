@@ -21,18 +21,21 @@ public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> endTime;
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
-    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description) {
-        assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime);
+    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description,
+                 LocalDateTime lastModifiedTime) {
+        assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime, lastModifiedTime);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
         this.description = new SimpleStringProperty(description);
         this.startTime = new SimpleObjectProperty<>(startTime);
         this.endTime = new SimpleObjectProperty<>(endTime);
+        this.lastModifiedTime = new SimpleObjectProperty<>(lastModifiedTime);
     }
 
     public Event(Entry entry) {
-        this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription());
+        this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(),
+             entry.getDescription(), entry.getLastModifiedTime());
     }
 
     public LocalDateTime getStartTime() {
@@ -120,6 +123,7 @@ public final class Event extends Entry{
         return dateTime.format(DATE_TIME_FORMATTER);
     }
 
+    // @@author A0121501E
     @Override
     public LocalDateTime getComparableTime() {
         return startTime.get();
