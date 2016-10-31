@@ -1,6 +1,8 @@
 package guitests;
 
 import org.junit.Test;
+import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Arrays;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.testutil.TestEntry;
 
@@ -32,6 +34,7 @@ public class ListCommandTest extends AddressBookGuiTest {
     }
 
     private void assertListResult(String command, TestEntry... expectedHits ) {
+        Arrays.sort(expectedHits);
         commandBox.runCommand(command);
         assertListSize(expectedHits.length);
         assertResultMessage(expectedHits.length + " entries listed!");

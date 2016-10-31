@@ -7,6 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpListEvent;
@@ -111,6 +112,7 @@ public class LogicManagerTest {
         CommandResult result = logic.execute(inputCommand);
         //Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
+        UnmodifiableObservableList<Entry> ee = model.getFilteredPersonList();
         assertEquals(expectedShownList, model.getFilteredPersonList());
         //Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedAddressBook, model.getTaskManager());
@@ -331,13 +333,12 @@ public class LogicManagerTest {
         
         List<Task> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         TaskManager expectedAB = helper.generateAddressBook(fourPersons);
-        List<Task> expectedList = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list",
                 ListCommand.MESSAGE_SUCCESS,
                 expectedAB,
-                expectedList);
+                expectedAB.getTaskList());
     }
 
     @Test
@@ -350,7 +351,7 @@ public class LogicManagerTest {
 
         List<Task> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         TaskManager expectedAB = helper.generateAddressBook(fourPersons);
-        List<Task> expectedList = helper.generateEntryList(pTarget1, pTarget2);
+        List<Task> expectedList = helper.generateEntryList(pTarget2, pTarget1);
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list KEY",
@@ -369,7 +370,7 @@ public class LogicManagerTest {
 
         List<Task> fourPersons = helper.generateEntryList(p3, p1, p4, p2);
         TaskManager expectedAB = helper.generateAddressBook(fourPersons);
-        List<Task> expectedList = fourPersons;
+        List<Entry> expectedList = expectedAB.getTaskList();
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list KEY",
@@ -850,9 +851,9 @@ public class LogicManagerTest {
         model.addTask(task2);
         // command to undo
         logic.execute(helper.generateAddCommand(task3));
-        logic.execute("mark 2");
+        logic.execute("mark 2"); //changes the lastModifiedDate which changes the order
         logic.execute("list");  //non-undoable command.
-        logic.execute("delete 2");
+        logic.execute("delete 3");
 
         // Undo "delete 2"
         assertCommandBehavior("undo",

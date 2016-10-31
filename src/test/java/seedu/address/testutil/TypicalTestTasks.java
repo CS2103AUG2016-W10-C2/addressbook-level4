@@ -1,5 +1,8 @@
 package seedu.address.testutil;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.TaskManager;
 import seedu.address.model.task.*;
@@ -10,16 +13,16 @@ public class TypicalTestTasks {
 
     public TypicalTestTasks() {
         try {
-            apple =  new EntryBuilder().withTitle("Buy apples").withTags("groceries").build();
-            banana = new EntryBuilder().withTitle("Buy bananas").withTags("groceries", "for scale").build();
-            cat = new EntryBuilder().withTitle("Adopt a cat").build();
-            doge = new EntryBuilder().withTitle("Get blankets for doge").build();
-            eggplant = new EntryBuilder().withTitle("Buy eggplants").build();
-            study = new EntryBuilder().withTitle("Study for tests").build();
-            jogging = new EntryBuilder().withTitle("Go jogging this Thursday").build();
+            apple =  new EntryBuilder().withTitle("Buy apples").withLastModifiedDate(LocalDateTime.parse("2016-10-10T10:00:00")).withTags("groceries").build();
+            banana = new EntryBuilder().withTitle("Buy bananas").withLastModifiedDate(LocalDateTime.parse("2016-11-10T10:00:00")).withTags("groceries", "for scale").build();
+            cat = new EntryBuilder().withTitle("Adopt a cat").withLastModifiedDate(LocalDateTime.parse("2016-10-10T10:00:00")).build();
+            doge = new EntryBuilder().withTitle("Get blankets for doge").withLastModifiedDate(LocalDateTime.parse("2016-01-10T10:00:00")).build();
+            eggplant = new EntryBuilder().withTitle("Buy eggplants").withLastModifiedDate(LocalDateTime.parse("2016-09-10T10:00:00")).build();
+            study = new EntryBuilder().withTitle("Study for tests").withLastModifiedDate(LocalDateTime.parse("2016-12-10T10:00:00")).build();
+            jogging = new EntryBuilder().withTitle("Go jogging this Thursday").withLastModifiedDate(LocalDateTime.parse("2016-10-10T10:00:00")).build();
 
-            homework = new EntryBuilder().withTitle("Do assignment 314").build();
-            movie = new EntryBuilder().withTitle("Watch Deadpool").build();
+            homework = new EntryBuilder().withTitle("Do assignment 314").withLastModifiedDate(LocalDateTime.parse("2015-10-10T10:00:00")).build();
+            movie = new EntryBuilder().withTitle("Watch Deadpool").withLastModifiedDate(LocalDateTime.parse("2019-10-10T10:00:00")).build();
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "not possible";
@@ -42,7 +45,9 @@ public class TypicalTestTasks {
     }
 
     public TestEntry[] getTypicalPersons() {
-        return new TestEntry[]{apple, banana, cat, doge, eggplant, study, jogging};
+        TestEntry[] testEntry = new TestEntry[]{apple, banana, cat, doge, eggplant, study, jogging};
+        Arrays.sort(testEntry);
+        return testEntry;
     }
 
     public TaskManager getTypicalAddressBook(){
