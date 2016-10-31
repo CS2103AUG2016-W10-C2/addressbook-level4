@@ -9,7 +9,6 @@ import seedu.address.model.tag.UniqueTagList;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Adds a task to the address book.
@@ -31,6 +30,7 @@ public class AddCommand extends UndoableCommand {
     public static final String END_FLAG = "end/";
     public static final String TAG_FLAG = "#";
     public static final String DESC_FLAG = "desc/";
+    public static final String REPEAT_FLAG = "repeat/";
     public static final String WRONG_DATE_TIME_INPUT = "Wrong date time format: %s. Try 'tomorrow' or '2016-10-10'.";
 
     private final Entry toAdd;
@@ -39,16 +39,19 @@ public class AddCommand extends UndoableCommand {
     //@@author A0126539Y
     /**
      * Convenience constructor using raw values.
+     * @param recursion TODO
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public AddCommand(String title, LocalDateTime startTime, LocalDateTime endTime, Set<String> tags, String description)
+    public AddCommand(String title, LocalDateTime startTime, LocalDateTime endTime, Set<String> tags, String description, long recursion)
             throws IllegalValueException, IllegalArgumentException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-
+        
+        System.out.println("repeat = " + recursion);
+        
         if (startTime != null && endTime != null) {
             this.toAdd = new Event(
                     new Title(title),
@@ -56,7 +59,8 @@ public class AddCommand extends UndoableCommand {
                     endTime,
                     new UniqueTagList(tagSet),
                     false,
-                    description
+                    description,
+                    recursion
             );
         }
         else if (startTime == null){

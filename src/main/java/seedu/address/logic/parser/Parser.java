@@ -44,6 +44,7 @@ public class Parser {
     private static final Prefix onDatePrefix = new Prefix(ON_FLAG);
     private static final Prefix startPrefix = new Prefix(START_FLAG);
     private static final Prefix endPrefix = new Prefix(END_FLAG);
+    private static final Prefix repeatPrefix = new Prefix(REPEAT_FLAG);
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
@@ -51,7 +52,9 @@ public class Parser {
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     private static final Prefix saveLocationPrefix = new Prefix(SAVE_LOCATION_FLAG);
-
+    
+    private static final String RECURSION_ERROR_MESSAGE = "Recursion timing is wrong. Please make sure it's a valid format.";
+    
     public Parser() {}
 
     /**
@@ -161,6 +164,29 @@ public class Parser {
     private static LocalDateTime getEndTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         return getDateTimeFromArgument(argsTokenizer, endPrefix);
     }
+    
+    //@@ author A0126539Y
+    /**
+     * Extracts the new entry's recurring timing from the add command's tag arguments
+     * string.
+     */
+    private static long getRecurTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        String recurTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(repeatPrefix));
+        System.out.println("recurTime = " + recurTime);
+        
+        if (recurTime.isEmpty()) {
+            return 0;
+        }
+        
+        long recurDistance = prettyTimeParser.parseSyntax(recurTime).get(0).getRecurInterval();
+        
+        if (recurDistance == 0) {
+            throw new IllegalValueException(RECURSION_ERROR_MESSAGE);
+        }
+        
+        return recurDistance;
+    }
+    //@@author
 
     private static LocalDateTime getDateTimeFromArgument(ArgumentTokenizer argsTokenizer, Prefix prefix) throws IllegalValueException {
         String dateTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(prefix));
@@ -187,7 +213,8 @@ public class Parser {
         String formatted = dateTimeFormat.format(parsed);
         return LocalDateTime.parse(formatted);
     }
-
+    
+    
     /**
      * Parse LocalDateTime from an input string
      * string.
@@ -232,7 +259,7 @@ public class Parser {
     * @return the prepared command
     */
    private Command prepareAdd(String args) {
-       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startPrefix, endPrefix, tagPrefix, descPrefix);
+       ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startPrefix, endPrefix, tagPrefix, descPrefix, repeatPrefix);
        argsTokenizer.tokenize(args.trim());
        // Validate arg string format
        String title = unwrapOptionalStringOrEmpty(argsTokenizer.getPreamble());
@@ -245,7 +272,8 @@ public class Parser {
                    getStartTimeFromArgument(argsTokenizer),
                    getEndTimeFromArgument(argsTokenizer),
                    getTagsFromArgs(argsTokenizer),
-                   getDescriptionFromArgs(argsTokenizer));
+                   getDescriptionFromArgs(argsTokenizer),
+                   getRecurTimeFromArgument(argsTokenizer));
        } catch (IllegalValueException|IllegalArgumentException ive) {
            return new IncorrectCommand(ive.getMessage());
        }

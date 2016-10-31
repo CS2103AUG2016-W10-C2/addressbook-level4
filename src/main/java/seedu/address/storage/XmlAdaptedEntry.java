@@ -83,7 +83,7 @@ public class XmlAdaptedEntry {
         LocalDateTime endTime = end == null || end.isEmpty() ? null : LocalDateTime.parse(end);
 
         if (startTime != null) {
-            return new Event(title, startTime, endTime, tags, isMarked, description);
+            return new Event(title, startTime, endTime, tags, isMarked, description, -1);
         }
         return new Task(title, endTime, tags, isMarked, description);
     }

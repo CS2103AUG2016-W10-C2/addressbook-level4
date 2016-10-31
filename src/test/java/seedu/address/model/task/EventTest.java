@@ -32,7 +32,7 @@ public class EventTest {
             tags = new UniqueTagList(new Tag("tag1"));
             isMarked = false;
             description = "Description";
-            testEvent = new Event(title, startTime, endTime, tags, isMarked, description);
+            testEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1);
         } catch (IllegalValueException ive) {
             ive.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class EventTest {
 
     @Test(expected = ClassCastException.class)
     public void createEventFromEntry() {
-        Entry eventEntry = new Event(title, startTime, endTime, tags, isMarked, description);
+        Entry eventEntry = new Event(title, startTime, endTime, tags, isMarked, description, -1);
         assertTrue(new Event(eventEntry) instanceof Event);
 
         Entry taskEntry = new Task(title, endTime, tags, isMarked, description);
@@ -83,7 +83,7 @@ public class EventTest {
 
     @Test
     public void isSameStateAs() {
-        Event otherEvent = new Event(title, startTime, endTime, tags, isMarked, description);
+        Event otherEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1);
         assertTrue(testEvent.isSameStateAs(otherEvent));
     }
 
