@@ -50,8 +50,8 @@ public class TaskManager implements ReadOnlyTaskManager {
 
 //// list overwrite operations
 
-    public ObservableList<Entry> getEntries() {
-        return entries.getInternalList();
+    public ObservableList<Entry> getSortedEntries() {
+        return entries.getInternalList().sorted();
     }
 
     public void setEntries(List<Entry> entries) {
@@ -172,6 +172,11 @@ public class TaskManager implements ReadOnlyTaskManager {
 
     @Override
     public List<Entry> getTaskList() {
+        return Collections.unmodifiableList(entries.getInternalList().sorted());
+    }
+
+    @Override
+    public List<Entry> getUnsortedTaskList() {
         return Collections.unmodifiableList(entries.getInternalList());
     }
 

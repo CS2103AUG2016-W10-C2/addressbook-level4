@@ -1,7 +1,6 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
@@ -28,7 +27,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final TaskManager taskManager;
     private final FilteredList<Entry> filteredEntries;
-    private final SortedList<Entry> sortedEntries;
 
     /**
      * Initializes a ModelManager with the given TaskManager
@@ -42,8 +40,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
 
         taskManager = new TaskManager(src);
-        filteredEntries = new FilteredList<>(taskManager.getEntries());
-        sortedEntries = filteredEntries.sorted();
+        filteredEntries = new FilteredList<>(taskManager.getSortedEntries());
     }
 
     public ModelManager() {
@@ -52,8 +49,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
-        filteredEntries = new FilteredList<>(taskManager.getEntries());
-        sortedEntries = filteredEntries.sorted();
+        filteredEntries = new FilteredList<>(taskManager.getSortedEntries());
     }
 
     @Override
@@ -123,7 +119,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public UnmodifiableObservableList<Entry> getFilteredPersonList() {
-        return new UnmodifiableObservableList<>(sortedEntries);
+        return new UnmodifiableObservableList<>(filteredEntries);
     }
 
     @Override
