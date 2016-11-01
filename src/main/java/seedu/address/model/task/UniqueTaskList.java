@@ -99,12 +99,10 @@ public class UniqueTaskList implements Iterable<Entry> {
      *          the Task to be edited
      * @param newTitle
      *          the new Title for the Task
-     * @throws DuplicateTaskException
-     *          if an existing Task already has the same Title as the one specified
      * @throws EntryNotFoundException
      *          if the Task to be edited cannot be found
      */
-    public void updateTitle(Entry toEdit, Title newTitle) throws DuplicateTaskException, EntryNotFoundException {
+    public void updateTitle(Entry toEdit, Title newTitle) throws EntryNotFoundException {
         assert toEdit != null;
         Entry copy;
         if (toEdit instanceof Task) {
@@ -113,10 +111,6 @@ public class UniqueTaskList implements Iterable<Entry> {
             copy = new Event(toEdit);
         }
         copy.setTitle(newTitle);
-
-        if (contains(copy)) {
-            throw new DuplicateTaskException();
-        }
 
         if (!contains(toEdit)) {
             throw new EntryNotFoundException();
@@ -281,6 +275,30 @@ public class UniqueTaskList implements Iterable<Entry> {
     @Override
     public int hashCode() {
         return internalList.hashCode();
+    }
+
+    //@@author A0121501E
+    /**
+     * Updates the entry specified by update
+     * @param update
+     * @throws EntryNotFoundException if the Entry is not contained within the list.
+     * @throws EntryConversionException from method updateStartTime
+     * @throws DuplicateTaskException if an existing task equals to the edited task.
+     */
+    public void update(Update update) throws EntryNotFoundException, EntryConversionException, DuplicateTaskException {
+        Entry toEdit = update.getTask();
+        Entry toEditUpdatedCopy = update.getUpdatedCopy();
+        
+        for (Entry entry : internalList) {
+            if (entry!=toEdit && entry.equals(toEditUpdatedCopy)) {
+                throw new DuplicateTaskException();
+            }
+        }
+        updateTitle(toEdit, update.getNewTitle());
+        updateStartTime(toEdit, update.getStartTime());
+        updateEndTime(toEdit, update.getEndTime());
+        updateTags(toEdit, update.getNewTags());
+        updateDescription(toEdit, update.getNewDescription());
     }
 
 }
