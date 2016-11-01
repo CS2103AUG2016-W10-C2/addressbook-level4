@@ -9,30 +9,30 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root fx:id="cardPane" prefWidth="500.0" styleClass="taskcard" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="cardPane" prefWidth="480.0" styleClass="taskcard" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane vgap="50.0">
+      <GridPane vgap="50.0" VBox.vgrow="ALWAYS">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="390.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="340.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="140.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox prefWidth="400.0" GridPane.vgrow="ALWAYS">
+            <VBox GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" VBox.vgrow="ALWAYS">
                      <children>
                         <CheckBox fx:id="checkBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="18.0" />
                         <Label fx:id="id" text="Index" />
-                        <Label fx:id="title" text="Title" />
-                        <Label fx:id="tags" text="#tag" />
+                        <Label fx:id="title" text="Title" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="tags" minWidth="-Infinity" text="#tag" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <VBox alignment="BASELINE_RIGHT" GridPane.columnIndex="1">
+            <VBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
                   <Label fx:id="deadline" styleClass="date" text="Deadline" wrapText="true" />
                   <Label fx:id="startTime" styleClass="date" text="Start" wrapText="true" />
@@ -41,8 +41,14 @@
                </children>
             </VBox>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="6.0" />
+         </padding>
       </GridPane>
-      <Label fx:id="description" maxHeight="-Infinity" prefWidth="400.0" text="Description" wrapText="true" VBox.vgrow="ALWAYS">
+      <Label fx:id="description" maxHeight="-Infinity" text="Description" wrapText="true" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>

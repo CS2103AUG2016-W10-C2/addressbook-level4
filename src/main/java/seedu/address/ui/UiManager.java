@@ -42,7 +42,6 @@ public class UiManager extends ComponentManager implements Ui {
         logger.info("Starting UI...");
         primaryStage.setTitle(config.getAppTitle());
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
-        primaryStage.setResizable(false);
 
         try {
             mainController = MainController.load(primaryStage, config, prefs, logic);

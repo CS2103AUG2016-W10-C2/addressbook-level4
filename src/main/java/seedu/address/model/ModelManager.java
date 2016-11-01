@@ -42,6 +42,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskManager = new TaskManager(src);
         filteredEntries = new FilteredList<>(taskManager.getSortedEntries());
+        updateFilteredListToShowAllWithoutCompleted();
     }
 
     public ModelManager() {
@@ -51,6 +52,7 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
         filteredEntries = new FilteredList<>(taskManager.getSortedEntries());
+        updateFilteredListToShowAllWithoutCompleted();
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException {
         taskManager.addTask(entry);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
@@ -85,30 +87,35 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void editTask(Update update)
             throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
         taskManager.editTask(update);
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void markTask(Entry task) throws EntryNotFoundException {
         taskManager.markTask(task);
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         taskManager.unmarkTask(task);
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) {
         taskManager.tagTask(taskToTag, tagsToAdd);
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException {
         taskManager.untagTask(taskToUntag, tagsToRemove);
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
@@ -136,6 +143,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredListToShowAll() {
         filteredEntries.setPredicate(null);
+    }
+
+    @Override
+    public void updateFilteredListToShowAllWithoutCompleted() {
+        Predicate<Entry> predicate = e -> !e.isMarked();
+        filteredPersons.setPredicate(predicate);
     }
 
     @Override

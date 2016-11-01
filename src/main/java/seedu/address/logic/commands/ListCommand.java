@@ -15,6 +15,8 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
+    public static final String LIST_ALL_COMMAND_WORD = "list-all";
+
     public static final String MESSAGE_SUCCESS = "Listed all entries";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": List all entries whose titles contain any of "
@@ -35,10 +37,11 @@ public class ListCommand extends Command {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private LocalDateTime onDate;
+    private final boolean includeCompleted;
     
     private final PredicateBuilder predicateBuilder = new PredicateBuilder();
     
-    public ListCommand() {}
+    public ListCommand(boolean includeCompleted) { this.includeCompleted = includeCompleted; }
 
     public void setKeywords(Set<String> keywords) {
         this.keywords = keywords;
@@ -65,9 +68,9 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate);
+            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted);
             model.updateFilteredEntryListPredicate(predicate);
-            
+
             return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
         }
     }
@@ -86,6 +89,7 @@ public class ListCommand extends Command {
                 && (tags == null || tags.isEmpty())
                 && startDate == null
                 && endDate == null
-                && onDate == null;
+                && onDate == null
+                && includeCompleted;
     }
 }

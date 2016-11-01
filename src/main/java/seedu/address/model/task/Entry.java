@@ -118,7 +118,7 @@ public abstract class Entry {
     /**
      * Returns true if Entry is marked as completed
      */
-    public final boolean isMarked() {
+    public boolean isMarked() {
         return isMarked.get();
     }
 

@@ -247,19 +247,46 @@ public class LogicManagerTest {
 
 
     @Test
-    public void execute_list_showsAllPersons() throws Exception {
+    public void execute_list_showsAllEntriesWithCompleted() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskManager expectedAB = helper.generateAddressBook(2);
-        List<? extends Entry> expectedList = expectedAB.getTaskList();
+        Task toBeMarked = helper.taskWithTags();
+        toBeMarked.mark();
 
-        // prepare address book state
-        helper.addToModel(model, 2);
+        // prepare to-do list state
+        TaskManager expectedAB = new TaskManager();
+        List<? extends Entry> expectedList = expectedAB.getEntries();
 
-        assertCommandBehavior("list",
-                ListCommand.MESSAGE_SUCCESS,
-                expectedAB,
-                expectedList);
+        // Add unmarked
+        model.addTask(toBeMarked);
+        expectedAB.addTask(toBeMarked);
+
+        assertCommandBehavior(ListCommand.LIST_ALL_COMMAND_WORD,
+            ListCommand.MESSAGE_SUCCESS,
+            expectedAB,
+            expectedList);
+    }
+
+    @Test
+    public void execute_list_showsAllEntriesWithoutCompleted() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeMarked = helper.taskWithTags();
+        toBeMarked.mark();
+
+        // prepare to-do list state
+        // Expected to show empty list
+        TaskManager expectedAB = new TaskManager();
+        List<? extends Entry> expectedList = new ArrayList<>();
+
+        // Add marked entries
+        model.addTask(toBeMarked);
+        expectedAB.addTask(toBeMarked);
+
+        assertCommandBehavior(ListCommand.COMMAND_WORD,
+            String.format(MESSAGE_ENTRY_LISTED_OVERVIEW, 0),
+            expectedAB,
+            expectedList);
     }
 
 
@@ -284,7 +311,7 @@ public class LogicManagerTest {
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
-        List<Task> entryList = helper.generateEntreList(2);
+        List<Task> entryList = helper.generateEntryList(2);
 
         // set AB state to 2 entries
         model.resetData(new TaskManager());
@@ -309,9 +336,9 @@ public class LogicManagerTest {
     @Test
     public void execute_delete_removesCorrectPerson() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> threePersons = helper.generateEntreList(3);
+        List<Task> threePersons = helper.generateEntryList(3);
 
-        TaskManager expectedAB = helper.generateAddressBook(threePersons);
+        TaskManager expectedAB = helper.generateTodoList(threePersons);
         expectedAB.removeEntry(threePersons.get(1));
         helper.addToModel(model, threePersons);
 
@@ -332,13 +359,14 @@ public class LogicManagerTest {
         Task p2 = helper.generateEntryWithTitle("KEYKEYKEY sduauo");
         
         List<Task> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
-        TaskManager expectedAB = helper.generateAddressBook(fourPersons);
+        TaskManager expectedAB = helper.generateTodoList(fourPersons);
+        List<Task> expectedList = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         helper.addToModel(model, fourPersons);
 
-        assertCommandBehavior("list",
+        assertCommandBehavior(ListCommand.LIST_ALL_COMMAND_WORD,
                 ListCommand.MESSAGE_SUCCESS,
                 expectedAB,
-                expectedAB.getTaskList());
+                expectedList);
     }
 
     @Test
@@ -350,8 +378,8 @@ public class LogicManagerTest {
         Task p2 = helper.generateEntryWithTitle("KEYKEYKEY sduauo");
 
         List<Task> fourPersons = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
-        TaskManager expectedAB = helper.generateAddressBook(fourPersons);
-        List<Task> expectedList = helper.generateEntryList(pTarget2, pTarget1);
+        TaskManager expectedAB = helper.generateTodoList(fourPersons);
+        List<Task> expectedList = helper.generateEntryList(pTarget1, pTarget2);
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list KEY",
@@ -369,8 +397,8 @@ public class LogicManagerTest {
         Task p4 = helper.generateEntryWithTitle("KEy sduauo");
 
         List<Task> fourPersons = helper.generateEntryList(p3, p1, p4, p2);
-        TaskManager expectedAB = helper.generateAddressBook(fourPersons);
-        List<Entry> expectedList = expectedAB.getTaskList();
+        TaskManager expectedAB = helper.generateTodoList(fourPersons);
+        List<Task> expectedList = fourPersons;
         helper.addToModel(model, fourPersons);
 
         assertCommandBehavior("list KEY",
@@ -388,7 +416,7 @@ public class LogicManagerTest {
         Task p1 = helper.generateEntryWithTitle("sduauo");
 
         List<Task> fourPersons = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
-        TaskManager expectedAB = helper.generateAddressBook(fourPersons);
+        TaskManager expectedAB = helper.generateTodoList(fourPersons);
         List<Task> expectedList = helper.generateEntryList(pTarget1, pTarget2, pTarget3);
         helper.addToModel(model, fourPersons);
 
@@ -413,7 +441,7 @@ public class LogicManagerTest {
         helper.addToModel(model, helper.generateEntryList(t1));
 
         List<Task> expectedList = helper.generateEntryList(t1);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         
         assertCommandBehavior("tag 1 " + TAG_FLAG + "**", expectedMessage, expectedAB, expectedList);
     }
@@ -426,7 +454,7 @@ public class LogicManagerTest {
         
         Task t1Copy = helper.generateTask(1);
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         String expectedMessage = String.format(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
         
         assertCommandBehavior("tag 1", expectedMessage, expectedAB, expectedList);
@@ -448,7 +476,7 @@ public class LogicManagerTest {
         t1Copy.addTags(tags);
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, tags, t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
@@ -469,7 +497,7 @@ public class LogicManagerTest {
         t1Copy.addTags(tags);
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         String expectedMessage = String.format(TagCommand.MESSAGE_SUCCESS, new UniqueTagList(tag3), t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
@@ -489,7 +517,7 @@ public class LogicManagerTest {
         t1Copy.addTags(tags);
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         String expectedMessage = String.format(TagCommand.MESSAGE_ALREADY_EXISTS, t1Copy);
         assertCommandBehavior(helper.generateTagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
@@ -510,7 +538,7 @@ public class LogicManagerTest {
         helper.addToModel(model, helper.generateEntryList(t1));
 
         List<Task> expectedList = helper.generateEntryList(t1);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         
         assertCommandBehavior("untag 1 " + TAG_FLAG + "**", expectedMessage, expectedAB, expectedList);
     }
@@ -523,7 +551,7 @@ public class LogicManagerTest {
         
         Task t1Copy = helper.generateTask(1);
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE);
         
         assertCommandBehavior("untag 1", expectedMessage, expectedAB, expectedList);
@@ -545,7 +573,7 @@ public class LogicManagerTest {
         t1Copy.removeTags(tags);
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         helper.addToAddressBook(expectedAB, new UniqueTagList(tag1));
 
         String expectedMessage = String.format(UntagCommand.MESSAGE_SUCCESS, new UniqueTagList(tag1), t1Copy);
@@ -565,7 +593,7 @@ public class LogicManagerTest {
         Task t1Copy = helper.generateTask(1);
         
         List<Task> expectedList = helper.generateEntryList(t1Copy);
-        TaskManager expectedAB = helper.generateAddressBook(expectedList);
+        TaskManager expectedAB = helper.generateTodoList(expectedList);
         String expectedMessage = String.format(UntagCommand.MESSAGE_NON_EXISTENT, t1Copy);
         assertCommandBehavior(helper.generateUntagCommand(tags, 1),
                 expectedMessage, expectedAB, expectedList);
@@ -585,7 +613,7 @@ public class LogicManagerTest {
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, toBeMarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -600,10 +628,12 @@ public class LogicManagerTest {
         expectedAB.addTask(toBeMarkedCopy);
         
         model.addTask(alreadyMarked);
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD);
+
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -748,12 +778,13 @@ public class LogicManagerTest {
 
         model.addTask(toBeUnmarked);
         // command to undo
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD);
         logic.execute("unmark 1");
         // execute command and verify result
         assertCommandBehavior("undo",
                 String.format(UnmarkCommand.MESSAGE_UNDO_SUCCESS, toBeUnmarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -835,7 +866,7 @@ public class LogicManagerTest {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task task1 = helper.generateTask(1);
-        Task task2 = helper.generateTask(2);
+        Task task2 = helper.generateTask(2); // To be marked
         Task task2Copy = helper.generateTask(2);
         Task task3 = helper.generateTask(3);
         
@@ -847,20 +878,21 @@ public class LogicManagerTest {
         expectedAB.addTask(task2);
 
         model.addTask(task1);
-        task2.mark();
         model.addTask(task2);
+
         // command to undo
         logic.execute(helper.generateAddCommand(task3));
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD); //non-undoable command.
         logic.execute("mark 2"); //changes the lastModifiedDate which changes the order
-        logic.execute("list");  //non-undoable command.
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD); //non-undoable command.
         logic.execute("delete 3");
 
         // Undo "delete 2"
         assertCommandBehavior("undo",
                 String.format(DeleteCommand.MESSAGE_UNDO_DELETE_PERSON_SUCCESS, task2),
                 expectedAB,
-                expectedAB.getTaskList());
-        
+                Arrays.asList(task1, task3));
+
         // Undo "mark 2"
         assertCommandBehavior("undo",
                 String.format(MarkCommand.MESSAGE_UNDO_SUCCESS, task2Copy),
@@ -976,7 +1008,7 @@ public class LogicManagerTest {
         assertCommandBehavior("redo",
                 String.format(MarkCommand.MESSAGE_SUCCESS, toBeMarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -991,6 +1023,7 @@ public class LogicManagerTest {
 
         model.addTask(toBeUnmarked);
         // command to undo
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD);
         logic.execute("unmark 1");
         logic.execute("undo");
         // execute command and verify result
@@ -1176,7 +1209,7 @@ public class LogicManagerTest {
         /**
          * Generates an TaskManager with auto-generated persons.
          */
-        TaskManager generateAddressBook(int numGenerated) throws Exception{
+        TaskManager generateTodoList(int numGenerated) throws Exception{
             TaskManager taskManager = new TaskManager();
             addToAddressBook(taskManager, numGenerated);
             return taskManager;
@@ -1185,7 +1218,7 @@ public class LogicManagerTest {
         /**
          * Generates an TaskManager based on the list of Persons given.
          */
-        TaskManager generateAddressBook(List<Task> persons) throws Exception{
+        TaskManager generateTodoList(List<Task> persons) throws Exception{
             TaskManager taskManager = new TaskManager();
             addToAddressBook(taskManager, persons);
             return taskManager;
@@ -1196,7 +1229,7 @@ public class LogicManagerTest {
          * @param taskManager The TaskManager to which the Persons will be added
          */
         void addToAddressBook(TaskManager taskManager, int numGenerated) throws Exception{
-            addToAddressBook(taskManager, generateEntreList(numGenerated));
+            addToAddressBook(taskManager, generateEntryList(numGenerated));
         }
 
         /**
@@ -1222,7 +1255,7 @@ public class LogicManagerTest {
          * @param model The model to which the Persons will be added
          */
         void addToModel(Model model, int numGenerated) throws Exception{
-            addToModel(model, generateEntreList(numGenerated));
+            addToModel(model, generateEntryList(numGenerated));
         }
 
         /**
@@ -1246,7 +1279,7 @@ public class LogicManagerTest {
         /**
          * Generates a list of Persons based on the flags.
          */
-        List<Task> generateEntreList(int numGenerated) throws Exception{
+        List<Task> generateEntryList(int numGenerated) throws Exception{
             List<Task> entries = new ArrayList<>();
             for(int i = 1; i <= numGenerated; i++){
                 entries.add(generateTask(i));

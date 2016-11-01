@@ -132,5 +132,9 @@ public final class Event extends Entry{
     public LocalDateTime getComparableTime() {
         return startTime.get();
     }
-
+    //@@author
+    @Override
+    public boolean isMarked() {
+        return LocalDateTime.now().isAfter(endTime.get());
+    }
 }
