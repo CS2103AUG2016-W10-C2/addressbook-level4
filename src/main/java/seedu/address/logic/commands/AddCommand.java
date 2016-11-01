@@ -50,8 +50,6 @@ public class AddCommand extends UndoableCommand {
             tagSet.add(new Tag(tagName));
         }
 
-        System.out.println("repeat = " + recursion);
-
         if (startTime != null && endTime != null) {
             this.toAdd = new Event(
                     new Title(title),
