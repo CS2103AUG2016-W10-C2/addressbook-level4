@@ -19,6 +19,7 @@ public class EventTest {
     private Title title;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private LocalDateTime lastModifiedTime;
     private UniqueTagList tags;
     private String description;
     private boolean isMarked;
@@ -32,7 +33,12 @@ public class EventTest {
             tags = new UniqueTagList(new Tag("tag1"));
             isMarked = false;
             description = "Description";
+<<<<<<< HEAD
             testEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1);
+=======
+            lastModifiedTime = LocalDateTime.parse("2016-10-10T10:00:00");
+            testEvent = new Event(title, startTime, endTime, tags, isMarked, description, lastModifiedTime);
+>>>>>>> a0b3c293208f4681612d6665cef6644cf1f44df4
         } catch (IllegalValueException ive) {
             ive.printStackTrace();
         }
@@ -45,10 +51,10 @@ public class EventTest {
 
     @Test(expected = ClassCastException.class)
     public void createEventFromEntry() {
-        Entry eventEntry = new Event(title, startTime, endTime, tags, isMarked, description, -1);
+        Entry eventEntry = new Event(title, startTime, endTime, tags, isMarked, description, -1, lastModifiedTime);
         assertTrue(new Event(eventEntry) instanceof Event);
 
-        Entry taskEntry = new Task(title, endTime, tags, isMarked, description);
+        Entry taskEntry = new Task(title, endTime, tags, isMarked, description, lastModifiedTime);
         // Should throw exception
         new Event(taskEntry);
     }
@@ -83,7 +89,7 @@ public class EventTest {
 
     @Test
     public void isSameStateAs() {
-        Event otherEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1);
+        Event otherEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1, lastModifiedTime);
         assertTrue(testEvent.isSameStateAs(otherEvent));
     }
 

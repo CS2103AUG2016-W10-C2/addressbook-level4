@@ -49,9 +49,9 @@ public class AddCommand extends UndoableCommand {
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-        
+
         System.out.println("repeat = " + recursion);
-        
+
         if (startTime != null && endTime != null) {
             this.toAdd = new Event(
                     new Title(title),
@@ -60,7 +60,8 @@ public class AddCommand extends UndoableCommand {
                     new UniqueTagList(tagSet),
                     false,
                     description,
-                    recursion
+                    recursion,
+                    LocalDateTime.now()
             );
         }
         else if (startTime == null){
@@ -69,7 +70,8 @@ public class AddCommand extends UndoableCommand {
                     endTime,
                     new UniqueTagList(tagSet),
                     false,
-                    description
+                    description,
+                    LocalDateTime.now()
             );
         }
         else if (startTime != null && endTime == null) {

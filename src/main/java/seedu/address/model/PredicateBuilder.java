@@ -30,9 +30,13 @@ public class PredicateBuilder {
      * @param tags
      * @return pred the chained Predicate
      */
-    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate) {
+    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted) {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
+        if (!includeCompleted) {
+            pred = pred.and(buildCompletedPredicate(includeCompleted));
+        }
+
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
         }
@@ -75,6 +79,11 @@ public class PredicateBuilder {
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
+
+    private Predicate<Entry> buildCompletedPredicate(boolean includeCompleted) {
+        return new PredicateExpression(new CompletedQualifier(includeCompleted))::satisfies;
+    }
+
     //@author A0127828W-reused
     //========== Inner classes/interfaces used for filtering ==================================================
 
@@ -254,6 +263,29 @@ public class PredicateBuilder {
         @Override
         public String toString() {
             return "Due on: " + onDate.toString();
+        }
+    }
+
+    //@@author A0127828W
+    private class CompletedQualifier implements Qualifier {
+        private boolean includeCompleted;
+
+        CompletedQualifier(boolean includeCompleted) {
+            this.includeCompleted = includeCompleted;
+        }
+
+        @Override
+        public boolean run(Entry entry) {
+            if (includeCompleted) {
+                return true;
+            } else {
+                return !entry.isMarked();
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Include completed: " + includeCompleted;
         }
     }
 }

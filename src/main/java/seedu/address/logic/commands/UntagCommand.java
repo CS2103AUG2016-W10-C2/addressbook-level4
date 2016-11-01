@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class UntagCommand extends UndoableCommand {
 
     private final int targetIndex;
     private Entry taskToUntag;
+    private LocalDateTime originalLastModifiedTime;
 
     private final UniqueTagList tagsToRemove;
 
@@ -57,6 +59,7 @@ public class UntagCommand extends UndoableCommand {
             }
             
             taskToUntag = lastShownList.get(targetIndex - 1);
+            originalLastModifiedTime = taskToUntag.getLastModifiedTime();
             tagsToRemove.retainAll(taskToUntag.getTags());
         }
 
@@ -84,6 +87,7 @@ public class UntagCommand extends UndoableCommand {
         
         try {
             model.tagTask(taskToUntag, tagsToRemove);
+            model.updateLastModifiedTime(taskToUntag, originalLastModifiedTime);
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }

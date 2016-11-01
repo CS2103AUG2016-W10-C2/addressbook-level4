@@ -1,11 +1,15 @@
 package seedu.address.ui.util;
 
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.MarkTaskEvent;
+import seedu.address.commons.events.ui.WindowResizeEvent;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //@@author A0116603R
 /**
@@ -18,6 +22,9 @@ public class GuiUtil {
 
     public static double DEFAULT_FADE_DURATION = 400;
 
+    public static Double LARGE_DISPLAY_WIDTH = Double.valueOf(768);
+    public static String LARGE_STYLE_CLASS = "large";
+
     public static final String EVENT_DATE_SEPARATOR = " - ";
 
     public static final String EVENT_DESCRIPTION_STYLE_CLASS = "event";
@@ -28,6 +35,27 @@ public class GuiUtil {
 
     public static ChangeListener<Boolean> getCheckBoxEventListener(int idx) {
         return (ov, old_val, new_val) -> EventsCenter.getInstance().post(new MarkTaskEvent(idx, new_val));
+    }
+
+    //@@author A0116603R-reused
+    public static ChangeListener<Number> getWindowResizeEventListener() {
+        return new ChangeListener<Number>() {
+            final Timer timer = new Timer();
+            TimerTask task = null;
+            final long delayTime = 200;
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, final Number newValue) {
+                if (task != null) task.cancel();
+                task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        EventsCenter.getInstance().post(new WindowResizeEvent(newValue));
+                    }
+                };
+                timer.schedule(task, delayTime);
+            }
+        };
     }
 
     /**

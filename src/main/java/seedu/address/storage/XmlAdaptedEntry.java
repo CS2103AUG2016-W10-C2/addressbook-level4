@@ -29,11 +29,14 @@ public class XmlAdaptedEntry {
     private String end;
 
     @XmlElement
+    private String lastModified;
+
+    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     @XmlElement
     private boolean isMarked;
-    
+
     @XmlElement
     private long recursion;
 
@@ -53,6 +56,7 @@ public class XmlAdaptedEntry {
         description = source.getDescription();
         isMarked = source.isMarked();
         tagged = new ArrayList<>();
+        lastModified = source.getLastModifiedTime().toString();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
@@ -85,10 +89,11 @@ public class XmlAdaptedEntry {
 
         LocalDateTime startTime = start == null || start.isEmpty() ? null : LocalDateTime.parse(start);
         LocalDateTime endTime = end == null || end.isEmpty() ? null : LocalDateTime.parse(end);
+        LocalDateTime lastModifiedTime = LocalDateTime.parse(lastModified);
 
         if (startTime != null) {
-            return new Event(title, startTime, endTime, tags, isMarked, description, recursion);
+            return new Event(title, startTime, endTime, tags, isMarked, description, recursion, lastModifiedTime);
         }
-        return new Task(title, endTime, tags, isMarked, description);
+        return new Task(title, endTime, tags, isMarked, description, lastModifiedTime);
     }
 }

@@ -14,7 +14,7 @@ public class DeleteCommandTest extends AddressBookGuiTest {
     public void delete() {
 
         //delete the first in the list
-        TestEntry[] currentList = td.getTypicalPersons();
+        TestEntry[] currentList = td.getTypicalSortedPersons();
         int targetIndex = 1;
         assertDeleteSuccess(targetIndex, currentList);
 

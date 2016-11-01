@@ -20,6 +20,8 @@ import seedu.address.model.UserPrefs;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import static seedu.address.ui.util.GuiUtil.getWindowResizeEventListener;
+
 //@@author A0116603R
 /**
  * The Main Controller, which is in charge of the root layout and
@@ -32,7 +34,7 @@ public class MainController extends UiPart {
     // #############
     private static final String FXML = "RootLayout.fxml";
     private static final String CSS_SOURCE = "/view/PriorityQTheme.css";
-    private static final int MIN_HEIGHT = 760;
+    private static final int MIN_HEIGHT = 520;
     private static final int MIN_WIDTH = 520;
 
     private static final Logger logger = LogsCenter.getLogger(MainController.class);
@@ -88,7 +90,6 @@ public class MainController extends UiPart {
         assert rootLayout != null;
         logger.info("Initialising Scene...");
         scene = new Scene(rootLayout);
-
         configureScene();
     }
 
@@ -97,7 +98,8 @@ public class MainController extends UiPart {
         URL url = this.getClass().getResource(CSS_SOURCE);
         String css = url.toExternalForm();
         scene.getStylesheets().add(css);
-        addEscapeHandlerForScene();
+        addEscapeFilterForScene();
+        scene.widthProperty().addListener(getWindowResizeEventListener());
     }
 
     /**
@@ -105,7 +107,7 @@ public class MainController extends UiPart {
      * A filter is used instead of a handler since the ListView or a particular
      * JavaFX node consumes the event only in the case of an `ESCAPE` key.
      */
-    private void addEscapeHandlerForScene() {
+    private void addEscapeFilterForScene() {
         assert scene != null;
         scene.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
@@ -175,5 +177,4 @@ public class MainController extends UiPart {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
-
 }

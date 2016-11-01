@@ -11,6 +11,7 @@ import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 
 /**
@@ -41,8 +42,11 @@ public interface Model {
     /** Returns the filtered task list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<Entry> getFilteredPersonList();
 
-    /** Updates the filter of the filtered task list to show all persons */
+    /** Updates the filter of the filtered task list to show all entries */
     void updateFilteredListToShowAll();
+
+    /** Updates the filter of the filtered task list to show all entries excluding completed ones */
+    void updateFilteredListToShowAllWithoutCompleted();
 
     /** Updates the filter of the filtered task list*/
     void updateFilteredEntryListPredicate(Predicate<Entry> predicate);
@@ -60,5 +64,11 @@ public interface Model {
     /** Remove tags from task
      */
     void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException;
+
+    /** Update the task's lastModifiedTime to the current time */
+    void updateLastModifiedTime(Entry entry) throws EntryNotFoundException;
+    
+    /** Update the task's lastModifiedTime to the given date time */
+    void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException;
 
 }

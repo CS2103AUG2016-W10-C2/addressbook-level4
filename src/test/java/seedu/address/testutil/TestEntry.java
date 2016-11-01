@@ -19,6 +19,7 @@ public class TestEntry extends Entry {
         tags = new SimpleObjectProperty<>(new UniqueTagList());
         description = new SimpleStringProperty("");
         isMarked = new SimpleBooleanProperty(false);
+        lastModifiedTime = new SimpleObjectProperty<>();
     }
 
     @Override
@@ -37,5 +38,10 @@ public class TestEntry extends Entry {
     @Override
     public String getDateDisplay(LocalDateTime dateTime) {
         return "";
+    }
+
+    @Override
+    public LocalDateTime getComparableTime() {
+        return lastModifiedTime.get();
     }
 }

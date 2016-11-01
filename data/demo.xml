@@ -1,323 +1,164 @@
 <?xml version="1.0" ?>
 <taskmanager>
   <persons>
-    <title>Do 12 push ups</title>
+    <title>Swim 1 laps</title>
     <description>Or just sleep...</description>
-    <end>2016-10-12T09:00</end>
+    <end>2016-11-1T09:00</end>
     <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-1T09:00</lastModified>
   </persons>
   <persons>
-    <title>Buy 12 apple</title>
+    <title>Buy 1 apple</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-1T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Work on CS2101</title>
+    <start>2016-11-1T18:00</start>
+    <end>2016-11-1T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-1T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Do 2 push ups</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-2T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-2T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Buy 2 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-2T09:00</lastModified>
   </persons>
   <persons>
     <title>Work on CS2103T</title>
-    <start>2016-10-12T18:00</start>
-    <end>2016-10-12T22:00</end>
+    <start>2016-11-2T18:00</start>
+    <end>2016-11-2T22:00</end>
     <tagged>pain</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-2T09:00</lastModified>
   </persons>
   <persons>
-    <title>Run 13 rounds</title>
+    <title>Swim 3 laps</title>
     <description>Or just sleep...</description>
-    <end>2016-10-13T09:00</end>
+    <end>2016-11-3T09:00</end>
     <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-3T09:00</lastModified>
   </persons>
   <persons>
-    <title>Buy 13 banana</title>
+    <title>Buy 3 apple</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-3T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Work on CS4224</title>
+    <start>2016-11-3T18:00</start>
+    <end>2016-11-3T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-3T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Do 4 push ups</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-4T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-4T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Buy 4 apple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-4T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Work on CS2101</title>
+    <start>2016-11-4T18:00</start>
+    <end>2016-11-4T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-4T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Run 5 rounds</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-5T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-5T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Buy 5 grapes</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-5T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Work on CS4224</title>
+    <start>2016-11-5T18:00</start>
+    <end>2016-11-5T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-5T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Run 6 rounds</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-6T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-6T09:00</lastModified>
+  </persons>
+  <persons>
+    <title>Buy 6 pineapple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-6T09:00</lastModified>
   </persons>
   <persons>
     <title>Work on CS2103T</title>
-    <start>2016-10-13T18:00</start>
-    <end>2016-10-13T22:00</end>
+    <start>2016-11-6T18:00</start>
+    <end>2016-11-6T22:00</end>
     <tagged>pain</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-6T09:00</lastModified>
   </persons>
   <persons>
-    <title>Swim 14 laps</title>
+    <title>Swim 7 laps</title>
     <description>Or just sleep...</description>
-    <end>2016-10-14T09:00</end>
+    <end>2016-11-7T09:00</end>
     <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-7T09:00</lastModified>
   </persons>
   <persons>
-    <title>Buy 14 grapes</title>
+    <title>Buy 7 banana</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2105</title>
-    <start>2016-10-14T18:00</start>
-    <end>2016-10-14T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Do 15 push ups</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-15T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 15 banana</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-7T09:00</lastModified>
   </persons>
   <persons>
     <title>Work on CS4224</title>
-    <start>2016-10-15T18:00</start>
-    <end>2016-10-15T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Run 16 rounds</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-16T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 16 pineapple</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2101</title>
-    <start>2016-10-16T18:00</start>
-    <end>2016-10-16T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Run 17 rounds</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-17T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 17 banana</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2105</title>
-    <start>2016-10-17T18:00</start>
-    <end>2016-10-17T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Swim 18 laps</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-18T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 18 pineapple</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2105</title>
-    <start>2016-10-18T18:00</start>
-    <end>2016-10-18T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Swim 19 laps</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-19T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 19 grapes</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2101</title>
-    <start>2016-10-19T18:00</start>
-    <end>2016-10-19T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Do 20 push ups</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-20T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 20 apple</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2105</title>
-    <start>2016-10-20T18:00</start>
-    <end>2016-10-20T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Run 21 rounds</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-21T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 21 banana</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2101</title>
-    <start>2016-10-21T18:00</start>
-    <end>2016-10-21T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Swim 22 laps</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-22T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 22 grapes</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS4224</title>
-    <start>2016-10-22T18:00</start>
-    <end>2016-10-22T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Run 23 rounds</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-23T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 23 pineapple</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS4224</title>
-    <start>2016-10-23T18:00</start>
-    <end>2016-10-23T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Do 24 push ups</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-24T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 24 banana</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS4224</title>
-    <start>2016-10-24T18:00</start>
-    <end>2016-10-24T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>true</isMarked>
-  </persons>
-  <persons>
-    <title>Run 25 rounds</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-25T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 25 banana</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS4224</title>
-    <start>2016-10-25T18:00</start>
-    <end>2016-10-25T22:00</end>
+    <start>2016-11-7T18:00</start>
+    <end>2016-11-7T22:00</end>
     <tagged>pain</tagged>
     <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Swim 26 laps</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-26T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 26 grapes</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS2101</title>
-    <start>2016-10-26T18:00</start>
-    <end>2016-10-26T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Run 27 rounds</title>
-    <description>Or just sleep...</description>
-    <end>2016-10-27T09:00</end>
-    <tagged>Healthy</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Buy 27 apple</title>
-    <tagged>NTUC</tagged>
-    <tagged>fresh</tagged>
-    <isMarked>false</isMarked>
-  </persons>
-  <persons>
-    <title>Work on CS4224</title>
-    <start>2016-10-27T18:00</start>
-    <end>2016-10-27T22:00</end>
-    <tagged>pain</tagged>
-    <isMarked>false</isMarked>
+    <lastModified>2016-11-7T09:00</lastModified>
   </persons>
 </taskmanager>

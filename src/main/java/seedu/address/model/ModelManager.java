@@ -1,7 +1,6 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
-
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskManagerChangedEvent;
@@ -16,6 +15,7 @@ import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -27,7 +27,7 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskManager taskManager;
-    private final FilteredList<Entry> filteredPersons;
+    private final FilteredList<Entry> filteredEntries;
 
     /**
      * Initializes a ModelManager with the given TaskManager
@@ -41,7 +41,8 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
 
         taskManager = new TaskManager(src);
-        filteredPersons = new FilteredList<>(taskManager.getEntries());
+        filteredEntries = new FilteredList<>(taskManager.getSortedEntries());
+        updateFilteredListToShowAllWithoutCompleted();
     }
 
     public ModelManager() {
@@ -50,7 +51,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
-        filteredPersons = new FilteredList<>(taskManager.getEntries());
+        filteredEntries = new FilteredList<>(taskManager.getSortedEntries());
+        updateFilteredListToShowAllWithoutCompleted();
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException {
         taskManager.addTask(entry);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
@@ -85,35 +87,35 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void editTask(Update update)
             throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
         taskManager.editTask(update);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void markTask(Entry task) throws EntryNotFoundException {
         taskManager.markTask(task);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         taskManager.unmarkTask(task);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void tagTask(Entry taskToTag, UniqueTagList tagsToAdd) {
         taskManager.tagTask(taskToTag, tagsToAdd);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
     @Override
     public void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException {
         taskManager.untagTask(taskToUntag, tagsToRemove);
-        updateFilteredListToShowAll();
+        updateFilteredListToShowAllWithoutCompleted();
         indicateAddressBookChanged();
     }
 
@@ -121,16 +123,32 @@ public class ModelManager extends ComponentManager implements Model {
     public void addTag(Tag tag) throws DuplicateTagException {
         taskManager.addTag(tag);
     }
+
+    @Override
+    public void updateLastModifiedTime(Entry entry) throws EntryNotFoundException {
+        taskManager.updateLastModifiedTime(entry);
+    }
+
+    @Override
+    public void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException {
+        taskManager.updateLastModifiedTime(entry, localDateTime);
+    }
     //=========== Filtered Person List Accessors ===============================================================
 
     @Override
     public UnmodifiableObservableList<Entry> getFilteredPersonList() {
-        return new UnmodifiableObservableList<>(filteredPersons);
+        return new UnmodifiableObservableList<>(filteredEntries);
     }
 
     @Override
     public void updateFilteredListToShowAll() {
-        filteredPersons.setPredicate(null);
+        filteredEntries.setPredicate(null);
+    }
+
+    @Override
+    public void updateFilteredListToShowAllWithoutCompleted() {
+        Predicate<Entry> predicate = e -> !e.isMarked();
+        filteredEntries.setPredicate(predicate);
     }
 
     @Override
@@ -139,6 +157,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private void updateFilteredPersonList(Predicate<Entry> predicate) {
-        filteredPersons.setPredicate(predicate);
+        filteredEntries.setPredicate(predicate);
     }
 }

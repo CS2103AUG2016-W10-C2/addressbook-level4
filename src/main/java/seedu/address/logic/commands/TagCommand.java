@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ public class TagCommand extends UndoableCommand {
 
     private final UniqueTagList tagsToAdd;
     private Entry taskToTag;
+    private LocalDateTime originalLastModifiedTime;
 
     public TagCommand(int targetIndex, Set<String> tags) throws IllegalValueException {
         this.targetIndex = targetIndex;
@@ -57,6 +59,7 @@ public class TagCommand extends UndoableCommand {
             }
             
             taskToTag = lastShownList.get(targetIndex - 1);
+            originalLastModifiedTime = taskToTag.getLastModifiedTime();
             tagsToAdd.removeFrom(taskToTag.getTags());
         }
 
@@ -84,6 +87,7 @@ public class TagCommand extends UndoableCommand {
 
         try {
             model.untagTask(taskToTag, tagsToAdd);
+            model.updateLastModifiedTime(taskToTag, originalLastModifiedTime);
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }

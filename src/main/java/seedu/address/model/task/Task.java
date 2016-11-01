@@ -25,20 +25,21 @@ public class Task extends Entry {
     protected ObjectProperty<LocalDateTime> deadline;
 
 
-    public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description) {
+    public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description, LocalDateTime lastModifiedTime) {
         assert !CollectionUtil.isAnyNull(title, tags, description);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
         this.description = new SimpleStringProperty(description);
         this.deadline = deadline == null ? new SimpleObjectProperty<>() : new SimpleObjectProperty<>(deadline);
+        this.lastModifiedTime = new SimpleObjectProperty<>(lastModifiedTime);
     }
 
     /**
      * Every field must be present and not null.
      */
     public Task(Title title, UniqueTagList tags) {
-        this(title, null, tags, false, "");
+        this(title, null, tags, false, "", LocalDateTime.MIN);
     }
 
 
@@ -46,7 +47,7 @@ public class Task extends Entry {
      * Copy constructor.
      */
     public Task(Entry source) {
-        this(source.getTitle(), null, source.getTags(), source.isMarked(), source.getDescription());
+        this(source.getTitle(), null, source.getTags(), source.isMarked(), source.getDescription(), source.getLastModifiedTime());
         if (source instanceof Task) {
             setDeadline(((Task)source).getDeadline()) ;
         }
@@ -93,6 +94,10 @@ public class Task extends Entry {
                 && other.isMarked() == this.isMarked());
     }
 
+    public boolean isFloatingTask() {
+        return deadline.get() == null;
+    }
+
     //@@author A0116603R
     @Override
     public String getAsText() {
@@ -115,4 +120,14 @@ public class Task extends Entry {
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
         return prettyTime.format(interpreted);
     }
+
+    // @@author A0121501E
+    @Override
+    public LocalDateTime getComparableTime() {
+        if (isFloatingTask()) {
+            return lastModifiedTime.get();
+        }
+        return deadline.get();
+    }
+
 }

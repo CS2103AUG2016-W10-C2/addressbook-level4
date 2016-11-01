@@ -25,25 +25,28 @@ public final class Event extends Entry{
     protected SimpleLongProperty recursion; // value is in milis
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
     private static final String INVALID_START_END_TIME = "Invalid start and end time. i.e: start time is after end time.";
-    
+
     private void convertToNextRecursion() {
         if (recursion.get() > 0  && getEndTime().compareTo(LocalDateTime.now()) < 0) {
             //get the length of event in seconds unit
             long eventLengthSeconds = getStartTime().until(getEndTime(), ChronoUnit.SECONDS);
-            
+
             LocalDateTime newStartTime = startTime.getValue();
             while (newStartTime.compareTo(LocalDateTime.now()) < 0) {
                 newStartTime = newStartTime.plusSeconds(recursion.getValue() / 1000);
             }
-            
+
             LocalDateTime newEndTime = newStartTime.plusSeconds(eventLengthSeconds);
             startTime = new SimpleObjectProperty<>(newStartTime);
             endTime = new SimpleObjectProperty<>(newEndTime);
         }
     }
-    
-    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description, long recursion) throws IllegalArgumentException {
-        assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime);
+
+    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description, long recursion,
+                 LocalDateTime lastModifiedTime) throws IllegalArgumentException {
+
+    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description) throws IllegalArgumentException{
+        assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime, lastModifiedTime);
         if(startTime.isAfter(endTime)) {
             throw new IllegalArgumentException(INVALID_START_END_TIME);
         }
@@ -54,12 +57,13 @@ public final class Event extends Entry{
         this.startTime = new SimpleObjectProperty<>(startTime);
         this.endTime = new SimpleObjectProperty<>(endTime);
         this.recursion = recursion <= 0 ? new SimpleLongProperty() : new SimpleLongProperty(recursion);
-        
+        this.lastModifiedTime = new SimpleObjectProperty<>(lastModifiedTime);
+
         convertToNextRecursion();
     }
 
     public Event(Entry entry) throws IllegalArgumentException {
-        this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription(), -1);
+        this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription(), -1, entry.getLastModifiedTime());
     }
 
     public LocalDateTime getStartTime() {
@@ -93,15 +97,15 @@ public final class Event extends Entry{
     public ObjectProperty<LocalDateTime> endTimeObjectProperty() {
         return endTime;
     }
-    
+
     public long getRecursion() {
         return recursion.get();
     }
-    
+
     public SimpleLongProperty recursionObjectProperty() {
         return recursion;
     }
-    
+
     public void setRecursion(long recursion) {
         this.recursion = new SimpleLongProperty(recursion);
     }
@@ -157,5 +161,16 @@ public final class Event extends Entry{
         }
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
         return dateTime.format(DATE_TIME_FORMATTER);
+    }
+
+    // @@author A0121501E
+    @Override
+    public LocalDateTime getComparableTime() {
+        return startTime.get();
+    }
+    //@@author
+    @Override
+    public boolean isMarked() {
+        return LocalDateTime.now().isAfter(endTime.get());
     }
 }
