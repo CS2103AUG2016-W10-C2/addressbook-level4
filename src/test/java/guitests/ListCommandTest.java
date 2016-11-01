@@ -1,7 +1,7 @@
 package guitests;
 
 import org.junit.Test;
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.testutil.TestEntry;

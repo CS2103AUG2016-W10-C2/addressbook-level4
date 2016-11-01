@@ -44,7 +44,7 @@ public class TypicalTestTasks {
         }
     }
 
-    public TestEntry[] getTypicalPersons() {
+    public TestEntry[] getTypicalSortedPersons() {
         TestEntry[] testEntry = new TestEntry[]{apple, banana, cat, doge, eggplant, study, jogging};
         Arrays.sort(testEntry);
         return testEntry;

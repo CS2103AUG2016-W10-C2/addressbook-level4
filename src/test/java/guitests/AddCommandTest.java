@@ -2,7 +2,7 @@ package guitests;
 
 import guitests.guihandles.TaskCardHandle;
 import org.junit.Test;
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.model.task.Entry;
@@ -17,7 +17,7 @@ public class AddCommandTest extends AddressBookGuiTest {
     @Test
     public void add() {
         //add one task
-        TestEntry[] currentList = td.getTypicalPersons();
+        TestEntry[] currentList = td.getTypicalSortedPersons();
         TestEntry testEntry = td.homework;
         assertAddSuccess(testEntry, currentList);
         currentList = TestUtil.addPersonsToSortedList(currentList, testEntry);
