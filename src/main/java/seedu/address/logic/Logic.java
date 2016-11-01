@@ -1,6 +1,8 @@
 package seedu.address.logic;
 
 import javafx.collections.ObservableList;
+import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.CommandHistory;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.model.task.Entry;
 
@@ -18,4 +20,6 @@ public interface Logic {
     /** Returns the filtered list of persons */
     ObservableList<Entry> getFilteredPersonList();
 
+    /** Get the command history manager associated to this Logic instance */
+    CommandHistory getCommandHistoryManager();
 }
