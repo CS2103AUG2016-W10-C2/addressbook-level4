@@ -12,30 +12,28 @@ import javafx.scene.control.ListView;
 public class HelpList extends ListView<HelpList.HelpItem> {
     private static final String FXML = "HelpList.fxml";
 
-    private static final String ADD_HELP = "ADD";
-    private static final String ADD_HELP_TEXT = "add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [r/<recurrence>] [desc/<description>]";
-    private static final String EDIT_HELP = "EDIT";
-    private static final String EDIT_HELP_TEXT = "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]\n";
-    private static final String ESCAPE_HELP = "CLOSE HELP";
-    private static final String ESCAPE_HELP_TEXT = "<ESCAPE-KEY>";
-    private static final String LIST_COMPLETED_HELP = "LIST-COMPLETED";
-    private static final String LIST_COMPLETED_HELP_TEXT = "list-completed [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]";
-    private static final String LIST_HELP = "LIST";
-    private static final String LIST_HELP_TEXT = "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]";
-    private static final String TAG_HELP = "TAG";
-    private static final String TAG_HELP_TEXT = "tag <task_id> #<tag_name> [#<tag_name> ...]";
-    private static final String UNTAG_HELP = "UNTAG";
-    private static final String UNTAG_HELP_TEXT = "untag <task_id> #<tag_name> [#<tag_name> ...]";
-    private static final String DELETE_HELP = "DELETE";
-    private static final String DELETE_HELP_TEXT = "delete <task_id>";
-    private static final String MARK_HELP = "MARK";
-    private static final String MARK_HELP_TEXT = "mark <task_id>";
-    private static final String UNMARK_HELP = "UNMARK";
-    private static final String UNMARK_HELP_TEXT = "unmark <task_id>";
-    private static final String OPTION_HELP = "OPTION";
-    private static final String OPTION_HELP_TEXT = "option [<type>/<value> ...]";
-    private static final String UNDO_HELP = "UNDO";
-    private static final String UNDO_HELP_TEXT = "undo";
+    private static final String[] COMMANDS = new String[]{
+            "CLOSE HELP",
+            "ADD", "EDIT",
+            "DELETE", "LIST",
+            "LIST-COMPLETED",
+            "TAG", "UNTAG",
+            "MARK", "UNMARK",
+            "UNDO", "OPTION"};
+    
+    private static final String[] HELP_TEXT = new String[]{
+            "<ESCAPE-KEY>",
+            "add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [r/<recurrence>] [desc/<description>]",
+            "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]",
+            "delete <task_id>",
+            "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]",
+            "list-completed [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]",
+            "tag <task_id> #<tag_name> [#<tag_name> ...]",
+            "untag <task_id> #<tag_name> [#<tag_name> ...]",
+            "mark <task_id>",
+            "unmark <task_id>",
+            "undo",
+            "option [<type>/<value> ...]"};
 
     private ObservableList<HelpItem> data;
 
@@ -55,18 +53,11 @@ public class HelpList extends ListView<HelpList.HelpItem> {
 
     private void initHelpItems() {
         data = FXCollections.observableArrayList();
-        data.add(new HelpItem(ESCAPE_HELP, ESCAPE_HELP_TEXT));
-        data.add(new HelpItem(ADD_HELP, ADD_HELP_TEXT));
-        data.add(new HelpItem(EDIT_HELP, EDIT_HELP_TEXT));
-        data.add(new HelpItem(LIST_HELP, LIST_HELP_TEXT));
-        data.add(new HelpItem(LIST_COMPLETED_HELP, LIST_COMPLETED_HELP_TEXT));
-        data.add(new HelpItem(TAG_HELP, TAG_HELP_TEXT));
-        data.add(new HelpItem(UNTAG_HELP, UNTAG_HELP_TEXT));
-        data.add(new HelpItem(DELETE_HELP, DELETE_HELP_TEXT));
-        data.add(new HelpItem(MARK_HELP, MARK_HELP_TEXT));
-        data.add(new HelpItem(UNMARK_HELP, UNMARK_HELP_TEXT));
-        data.add(new HelpItem(UNDO_HELP, UNDO_HELP_TEXT));
-        data.add(new HelpItem(OPTION_HELP, OPTION_HELP_TEXT));
+
+        assert (COMMANDS.length == HELP_TEXT.length);
+        for (int i=0; i<COMMANDS.length; i++) {
+            data.add(new HelpItem(COMMANDS[i], HELP_TEXT[i]));
+        }
     }
 
     class HelpItem {
