@@ -45,7 +45,6 @@ public class Parser {
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
-    private static final Prefix completedPrefix = new Prefix(COMPLETED_FLAG);
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -95,7 +94,10 @@ public class Parser {
             return prepareUntag(arguments);
 
         case ListCommand.COMMAND_WORD:
-            return prepareList(arguments);
+            return prepareList(arguments, false);
+
+        case ListCommand.LIST_COMPLETED_COMMAND_WORD:
+            return prepareList(arguments, true);
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
@@ -426,17 +428,16 @@ public class Parser {
      *            full command args string
      * @return the prepared command
      */
-    private Command prepareList(String args) {
+    private Command prepareList(String args, boolean includeCompleted) {
         // Guard statement
         if (args.isEmpty()) {
-            return new ListCommand(false);
+            return new ListCommand(includeCompleted);
         }
 
-        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix, completedPrefix);
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix);
         argsTokenizer.tokenize(args);
 
         try {
-            boolean includeCompleted = argsTokenizer.getValue(completedPrefix).isPresent();
             ListCommand listCommand = new ListCommand(includeCompleted);
 
             // keywords delimited by whitespace

@@ -15,6 +15,8 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
+    public static final String LIST_COMPLETED_COMMAND_WORD = "list-completed";
+
     public static final String MESSAGE_SUCCESS = "Listed all entries";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": List all entries whose titles contain any of "
@@ -29,7 +31,6 @@ public class ListCommand extends Command {
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
     public static final String ON_FLAG = "on/";
-    public static final String COMPLETED_FLAG = "completed/";
 
     private Set<String> keywords;
     private Set<String> tags;
