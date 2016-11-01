@@ -62,5 +62,39 @@ public class Update {
         }
         return null;
     }
+    //@@author A0121501E
+    /* returns a copy of the updated entry */
+    public Entry getUpdatedCopy() {
+        assert task != null;
+        Entry toEditCopy = null;
+        if (task instanceof Task) {
+            toEditCopy = new Task(task);
+            if (endTime!=null) {
+                ((Task)toEditCopy).setDeadline(endTime);
+            }
+        }
+        else if (task instanceof Event) {
+            toEditCopy = new Event(task);
+            if (startTime!=null) {
+                ((Event)toEditCopy).setStartTime(startTime);
+            }
+            if (endTime!=null) {
+                ((Event)toEditCopy).setEndTime(endTime);
+            }
+        }
+        if (newTitle!=null) {
+            toEditCopy.setTitle(newTitle);
+        }
+        if (newDescription!=null) {
+            toEditCopy.setDescription(newDescription);
+        }
+        if (newTags!=null) {
+            toEditCopy.setTags(newTags);
+        }
+        if (newDescription!=null) {
+            toEditCopy.setDescription(newDescription);
+        }
+        return toEditCopy;
+    }
     //@@author
 }

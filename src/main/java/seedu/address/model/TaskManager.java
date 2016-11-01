@@ -98,12 +98,8 @@ public class TaskManager implements ReadOnlyTaskManager {
     public void editTask(Update update)
             throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
         Entry toEdit = update.getTask();
+        entries.update(update);
         syncTagsWithMasterList(toEdit);
-        entries.updateTitle(toEdit, update.getNewTitle());
-        entries.updateStartTime(toEdit, update.getStartTime());
-        entries.updateEndTime(toEdit, update.getEndTime());
-        entries.updateTags(toEdit, update.getNewTags());
-        entries.updateDescription(toEdit, update.getNewDescription());
     }
 
     public void markTask(Entry task) throws EntryNotFoundException {
