@@ -4,7 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.Task;
+import seedu.address.model.task.Title;
 import seedu.address.testutil.EntryBuilder;
 import seedu.address.testutil.TestEntry;
 
@@ -19,11 +22,18 @@ import java.util.function.Predicate;
  */
 public class PredicateBuilderTest {
     private TestEntry testEntryWithoutDeadline;
+    private TestEntry testMarkedEntryWithoutDeadline;
+    private Entry testEntryWithDeadline;
 
     @Before
     public void setup() {
         try {
             testEntryWithoutDeadline = new EntryBuilder().withTitle("banana").withTags("groceries").build();
+
+            testMarkedEntryWithoutDeadline = new EntryBuilder().withTitle("banana").withTags("groceries").build();
+            testMarkedEntryWithoutDeadline.mark();
+
+            testEntryWithDeadline = new Task(new Title("apple"), LocalDateTime.parse("2016-10-10T10:00:00"), new UniqueTagList(), true, "");
         } catch (IllegalValueException ive) {
             System.err.println(ive);
         }
@@ -31,29 +41,41 @@ public class PredicateBuilderTest {
 
     @Test
     public void buildPredicate() throws Exception {
-        Set<String> keywords = new HashSet<>(Arrays.asList("banana"));
+        Set<String> keywords = new HashSet<>(Arrays.asList("banana", "apple"));
         Set<String> emptyKeywords = new HashSet<>(Arrays.asList(""));
         Set<String> tags = new HashSet<>(Arrays.asList("groceries"));
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime earlierDate = LocalDateTime.parse("2016-10-01T10:00:00");
+        LocalDateTime laterDate = LocalDateTime.parse("2016-10-20T10:00:00");
+        LocalDateTime sameDate = LocalDateTime.parse("2016-10-10T10:00:00");
 
-        // TODO: Add Task builder
-        assertPredicate(null, null, null, null, null, true);
-        assertPredicate(keywords, null, null, null, null, true);
-        assertPredicate(emptyKeywords, null, null, null, null, false);
+        assertPredicate(testEntryWithoutDeadline, null, null, null, null, null, true, true);
+        assertPredicate(testEntryWithoutDeadline, keywords, null, null, null, null, true, true);
+        assertPredicate(testEntryWithoutDeadline, emptyKeywords, null, null, null, null, true, false);
 
-        assertPredicate(null, tags, null, null, null, true);
-        assertPredicate(keywords, tags, null, null, null, true);
-        assertPredicate(emptyKeywords, tags, null, null, null, false);
+        assertPredicate(testEntryWithoutDeadline, null, tags, null, null, null, true, true);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, null, null, true, true);
+        assertPredicate(testEntryWithoutDeadline, emptyKeywords, tags, null, null, null, true, false);
 
-        assertPredicate(keywords, tags, date, null, null, false);
-        assertPredicate(keywords, tags, null, date, null, false);
-        assertPredicate(keywords, tags, null, null, date, false);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, earlierDate, null, null, true, false);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, earlierDate, null, true, false);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, null, earlierDate, true, false);
+
+        assertPredicate(testEntryWithDeadline, null, null, null, null, null, true, true);
+        assertPredicate(testEntryWithDeadline, keywords, null, null, earlierDate, null, true, false);
+        assertPredicate(testEntryWithDeadline, keywords, null, laterDate, null, null, true, false);
+        assertPredicate(testEntryWithDeadline, keywords, null, null, null, sameDate, true, true);
+        assertPredicate(testEntryWithDeadline, keywords, null, earlierDate, laterDate, null, true, true);
+
+        assertPredicate(testMarkedEntryWithoutDeadline, null, null, null, null, null, true, true);
+        assertPredicate(testMarkedEntryWithoutDeadline, keywords, null, null, null, null, true, true);
+        assertPredicate(testMarkedEntryWithoutDeadline, keywords, null, null, null, null, false, false);
     }
 
-    private void assertPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean expected) {
+    private void assertPredicate(Entry entry, Set<String> keywords, Set<String> tags, LocalDateTime startDate,
+                                 LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, boolean expected) {
         PredicateBuilder predicateBuilder = new PredicateBuilder();
-        Predicate<Entry> pred = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate);
-        assertEquals(pred.test(testEntryWithoutDeadline), expected);
+        Predicate<Entry> pred = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted);
+        assertEquals(expected, pred.test(entry));
     }
 
 }
