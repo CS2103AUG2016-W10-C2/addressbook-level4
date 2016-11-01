@@ -5,11 +5,11 @@ from xml.dom import minidom
 exercises = ['Run {} rounds', 'Swim {} laps', 'Do {} push ups']
 fruits = ['banana', 'apple', 'pineapple', 'grapes']
 modules = ['CS2103T', 'CS2101', 'CS4224', 'CS2105']
-date_template = "2016-10-{}T"
-start_day = 12
-end_day = 28
-yesterday = 25
 output_file = 'demo.xml'
+date_template = "2016-11-0{}T"
+start_day = 1
+end_day = 8
+yesterday = 1
 
 def prettify(rough_string):
     reparsed = minidom.parseString(rough_string)
@@ -25,6 +25,7 @@ def create_task(day, is_marked):
 	datetime = date_template.format(day) + "09:00"
 	desc = "Or just sleep..."
 	tag = "Healthy"
+	lastModifiedTime = date_template.format(day) + "09:00"
 
 	output = etree.Element('persons')
 	output.append(create_elem('title', rand_title))
@@ -32,6 +33,7 @@ def create_task(day, is_marked):
 	output.append(create_elem('end', datetime))
 	output.append(create_elem('tagged', tag))
 	output.append(create_elem('isMarked', is_marked))
+	output.append(create_elem('lastModified', lastModifiedTime))
 
 	return output
 
@@ -39,12 +41,14 @@ def create_floating_task(day, is_marked):
 	rand_title = "Buy {} {}".format(day, random.choice(fruits))
 	tag1 = "NTUC"
 	tag2 = "fresh"
+	lastModifiedTime = date_template.format(day) + "09:00"
 
 	output = etree.Element('persons')
 	output.append(create_elem('title', rand_title))
 	output.append(create_elem('tagged', tag1))
 	output.append(create_elem('tagged', tag2))
 	output.append(create_elem('isMarked', is_marked))
+	output.append(create_elem('lastModified', lastModifiedTime))
 
 	return output
 
@@ -53,6 +57,7 @@ def create_event(day, is_marked):
 	start = date_template.format(day) + "18:00"
 	end = date_template.format(day) + "22:00"
 	tag = "pain"
+	lastModifiedTime = date_template.format(day) + "09:00"
 
 	output = etree.Element('persons')
 	output.append(create_elem('title', rand_title))
@@ -60,6 +65,7 @@ def create_event(day, is_marked):
 	output.append(create_elem('end', end))
 	output.append(create_elem('tagged', tag))
 	output.append(create_elem('isMarked', is_marked))
+	output.append(create_elem('lastModified', lastModifiedTime))
 
 	return output
 

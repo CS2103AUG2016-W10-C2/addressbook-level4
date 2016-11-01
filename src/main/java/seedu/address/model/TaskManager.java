@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Event;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.EntryViewComparator;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.address.model.task.UniqueTaskList.EntryConversionException;
@@ -12,6 +13,7 @@ import seedu.address.model.task.Update;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -50,8 +52,8 @@ public class TaskManager implements ReadOnlyTaskManager {
 
 //// list overwrite operations
 
-    public ObservableList<Entry> getEntries() {
-        return entries.getInternalList();
+    public ObservableList<Entry> getSortedEntries() {
+        return entries.getInternalList().sorted(new EntryViewComparator());
     }
 
     public void setEntries(List<Entry> entries) {
@@ -104,14 +106,17 @@ public class TaskManager implements ReadOnlyTaskManager {
         entries.updateEndTime(toEdit, update.getEndTime());
         entries.updateTags(toEdit, update.getNewTags());
         entries.updateDescription(toEdit, update.getNewDescription());
+        entries.updateLastModifiedTime(toEdit);
     }
 
     public void markTask(Entry task) throws EntryNotFoundException {
         entries.mark(task);
+        entries.updateLastModifiedTime(task);
     }
 
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         entries.unmark(task);
+        entries.updateLastModifiedTime(task);
     }
 
 
@@ -146,6 +151,15 @@ public class TaskManager implements ReadOnlyTaskManager {
         }
     }
 
+
+    public void updateLastModifiedTime(Entry entry) throws EntryNotFoundException {
+        entries.updateLastModifiedTime(entry);
+    }
+
+    public void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException {
+        entries.updateLastModifiedTime(entry, localDateTime);
+    }
+
 //// tag-level operations
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
@@ -172,6 +186,11 @@ public class TaskManager implements ReadOnlyTaskManager {
 
     @Override
     public List<Entry> getTaskList() {
+        return Collections.unmodifiableList(entries.getInternalList().sorted(new EntryViewComparator()));
+    }
+
+    @Override
+    public List<Entry> getUnsortedTaskList() {
         return Collections.unmodifiableList(entries.getInternalList());
     }
 

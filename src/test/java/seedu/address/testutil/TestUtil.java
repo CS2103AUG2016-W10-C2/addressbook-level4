@@ -1,6 +1,7 @@
 package seedu.address.testutil;
 
 import com.google.common.io.Files;
+
 import guitests.guihandles.TaskCardHandle;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -317,7 +318,20 @@ public class TestUtil {
         listOfPersons.addAll(asList(personsToAdd));
         return listOfPersons.toArray(new TestEntry[listOfPersons.size()]);
     }
-
+    
+    //@@author A0121501E
+    /**
+     * Adds persons to the array of sorted persons.
+     * @param persons A array of persons.
+     * @param personsToAdd The persons that are to be added to the sorted list.
+     * @return The modified array of sorted persons.
+     */
+    public static TestEntry[] addPersonsToSortedList(final TestEntry[] persons, TestEntry... personsToAdd) {
+        TestEntry[] testEntry = addPersonsToList(persons, personsToAdd);
+        Arrays.sort(testEntry, new EntryViewComparator());
+        return testEntry;
+    }
+    //@@author
     private static <T> List<T> asList(T[] objs) {
         List<T> list = new ArrayList<>();
         for(T obj : objs) {

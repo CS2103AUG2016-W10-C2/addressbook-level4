@@ -56,11 +56,18 @@ public class UniqueTaskList implements Iterable<Entry> {
         @Override
         public Observable[] call(Entry entry) {
             if (entry instanceof Task) {
-                return new Observable[] { entry.titleObjectProperty(), ((Task)entry).deadlineObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+                return new Observable[] { entry.titleObjectProperty(), ((Task)entry).deadlineObjectProperty(),
+                                          entry.uniqueTagListObjectProperty(), entry.descriptionProperty(),
+                                          entry.isMarkedProperty(), entry.getLastModifiedTimeProperty()};
             } else if (entry instanceof Event){
-                return new Observable[] { entry.titleObjectProperty(), ((Event)entry).startTimeObjectProperty(), ((Event)entry).endTimeObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+                return new Observable[] { entry.titleObjectProperty(), ((Event)entry).startTimeObjectProperty(),
+                                          ((Event)entry).endTimeObjectProperty(), entry.uniqueTagListObjectProperty(),
+                                          entry.descriptionProperty(), entry.isMarkedProperty(),
+                                          entry.getLastModifiedTimeProperty()};
             } else {
-                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(), entry.descriptionProperty(), entry.isMarkedProperty()};
+                return new Observable[] { entry.titleObjectProperty(), entry.uniqueTagListObjectProperty(),
+                                          entry.descriptionProperty(), entry.isMarkedProperty(),
+                                          entry.getLastModifiedTimeProperty()};
             }
         }
     });
@@ -219,6 +226,19 @@ public class UniqueTaskList implements Iterable<Entry> {
         if (newDescription != null) {
             toEdit.setDescription(newDescription);
         }
+    }
+
+
+    public void updateLastModifiedTime(Entry entry) throws EntryNotFoundException {
+        updateLastModifiedTime(entry, LocalDateTime.now());
+    }
+
+    public void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException {
+        assert entry!= null;
+        if (!contains(entry)) {
+            throw new EntryNotFoundException();
+        }
+        entry.setLastModifiedTime(localDateTime);
     }
 
     /**

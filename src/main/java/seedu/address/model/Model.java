@@ -11,6 +11,7 @@ import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.task.Update;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
+import java.time.LocalDateTime;
 import java.util.function.Predicate;
 
 /**
@@ -63,5 +64,11 @@ public interface Model {
     /** Remove tags from task
      */
     void untagTask(Entry taskToUntag, UniqueTagList tagsToRemove) throws EntryNotFoundException;
+
+    /** Update the task's lastModifiedTime to the current time */
+    void updateLastModifiedTime(Entry entry) throws EntryNotFoundException;
+    
+    /** Update the task's lastModifiedTime to the given date time */
+    void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException;
 
 }
