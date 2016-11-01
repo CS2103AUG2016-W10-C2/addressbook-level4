@@ -28,6 +28,10 @@
     -fx-padding: 10;
 }
 
+.large .label {
+    -fx-font-size: 12pt;
+}
+
 .list-view {
     -fx-border-width: 0;
     -fx-background-insets: 0;
@@ -64,10 +68,18 @@
     -fx-padding: 0 0 4 4;
 }
 
+.large .taskcard #tags {
+    -fx-font-size: 11pt;
+}
+
 .taskcard #description {
     -fx-font-size: 9pt;
     -fx-text-fill: DarkGrey;
     -fx-padding: -6 0 0 26;
+}
+
+.large .taskcard #description {
+    -fx-font-size: 11pt;
 }
 
 .taskcard #description.event {
@@ -93,6 +105,10 @@
     -fx-font-family: "San Francisco Display Bold";
     -fx-font-size: 7pt;
     -fx-text-fill: DarkTurquoise;
+}
+
+.large .taskcard .date {
+    -fx-font-size: 9pt;
 }
 
 .taskcard .date.present#deadline {
