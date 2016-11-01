@@ -1,7 +1,9 @@
 package seedu.address.testutil;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.task.EntryViewComparator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +17,7 @@ public interface TestTasks {
         List<EntryBuilder> entries = new ArrayList<>();
         for (String task : tasks) {
             try {
-                entries.add(new EntryBuilder().withTitle(task));
+                entries.add(new EntryBuilder().withTitle(task).withLastModifiedDate(LocalDateTime.now()));
             } catch (IllegalValueException e) {
                 assert false : "not possible";
             }
@@ -25,7 +27,7 @@ public interface TestTasks {
 
     default List<TestEntry> build(List<EntryBuilder> entryBuilders) {
         if (entryBuilders == null) return null;
-        return entryBuilders.stream().map(EntryBuilder::build).collect(Collectors.toList());
+        return entryBuilders.stream().map(EntryBuilder::build).sorted(new EntryViewComparator()).collect(Collectors.toList());
     }
 
     /**
