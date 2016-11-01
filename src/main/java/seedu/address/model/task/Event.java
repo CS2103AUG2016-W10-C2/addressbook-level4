@@ -20,10 +20,14 @@ public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> startTime;
     protected ObjectProperty<LocalDateTime> endTime;
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
+    private static final String INVALID_START_END_TIME = "Invalid start and end time. i.e: start time is after end time.";
 
     public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description,
-                 LocalDateTime lastModifiedTime) {
+                 LocalDateTime lastModifiedTime) throws IllegalArgumentException{
         assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime, lastModifiedTime);
+        if(startTime.isAfter(endTime)) {
+            throw new IllegalArgumentException(INVALID_START_END_TIME);
+        }
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
@@ -33,7 +37,7 @@ public final class Event extends Entry{
         this.lastModifiedTime = new SimpleObjectProperty<>(lastModifiedTime);
     }
 
-    public Event(Entry entry) {
+    public Event(Entry entry) throws IllegalArgumentException{
         this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(),
              entry.getDescription(), entry.getLastModifiedTime());
     }

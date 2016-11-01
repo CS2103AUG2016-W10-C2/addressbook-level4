@@ -246,7 +246,7 @@ public class Parser {
                    getEndTimeFromArgument(argsTokenizer),
                    getTagsFromArgs(argsTokenizer),
                    getDescriptionFromArgs(argsTokenizer));
-       } catch (IllegalValueException ive) {
+       } catch (IllegalValueException|IllegalArgumentException ive) {
            return new IncorrectCommand(ive.getMessage());
        }
    }
