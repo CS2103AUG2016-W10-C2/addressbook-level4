@@ -35,18 +35,38 @@ public class PredicateBuilder {
     public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, String entryType) throws IllegalValueException {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
+        pred = addCompletedPredicateIfExist(pred, includeCompleted);
+        pred = addKeywordsPredicateIfExist(pred, keywords);
+        pred = addTagPredicateIfExist(pred, tags);
+        pred = addDatePredicateIfExist(pred, onDate, startDate, endDate);
+        pred = addTypePredicateIfExist(pred, entryType);
+
+        return pred;
+
+    }
+    
+    private Predicate<Entry> addCompletedPredicateIfExist(Predicate<Entry> pred, boolean includeCompleted) {
         if (!includeCompleted) {
             pred = pred.and(buildCompletedPredicate(includeCompleted));
         }
-
+        return pred;
+    }
+    
+    private Predicate<Entry> addKeywordsPredicateIfExist(Predicate<Entry> pred, Set<String> keywords) {
         if (keywords != null && !keywords.isEmpty()) {
             pred = pred.and(buildKeywordsPredicate(keywords));
         }
-
+        return pred;
+    }
+    
+    private Predicate<Entry> addTagPredicateIfExist(Predicate<Entry> pred, Set<String> tags) {
         if (tags != null && !tags.isEmpty()) {
             pred = pred.and(buildTagsPredicate(tags));
         }
-
+        return pred;
+    }
+    
+    private Predicate<Entry> addDatePredicateIfExist(Predicate<Entry> pred, LocalDateTime onDate, LocalDateTime startDate, LocalDateTime endDate) {
         if (onDate != null) {
             pred = pred.and(buildOnPredicate(onDate));
         } else {
@@ -57,17 +77,20 @@ public class PredicateBuilder {
                 pred = pred.and(buildBeforePredicate(endDate));
             }
         }
-        
+        return pred;
+    }
+    
+    //@@author A0126539Y
+    private Predicate<Entry> addTypePredicateIfExist(Predicate<Entry> pred, String entryType) throws IllegalValueException {
         if (entryType != null && !entryType.isEmpty()) {
             if (!entryType.equalsIgnoreCase(TypeQualifier.EVENT_TYPE_STRING) && !entryType.equalsIgnoreCase(TypeQualifier.TASK_TYPE_STRING)) {
                 throw new IllegalValueException(TypeQualifier.INVALID_TYPE_MESSAGE);
             }
             pred = pred.and(buildTypePredicate(entryType));
         }
-
         return pred;
-
     }
+    //@@author
 
     private Predicate<Entry> buildKeywordsPredicate(Set<String> keywords) {
         return new PredicateExpression(new TitleQualifier(keywords))::satisfies;
