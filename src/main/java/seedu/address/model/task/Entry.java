@@ -15,7 +15,7 @@ import static seedu.address.commons.core.Messages.SPACE;
  * Implementations should guarantee: details are present and not null, field
  * values are validated.
  */
-public abstract class Entry implements Comparable<Entry> {
+public abstract class Entry {
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
 
     protected ObjectProperty<Title> title;
@@ -25,7 +25,7 @@ public abstract class Entry implements Comparable<Entry> {
     protected ObjectProperty<LocalDateTime> lastModifiedTime;
 
     String DELIMITER = " ";
-
+    
     /**
      * Get the Title for this Entry
      */
@@ -187,17 +187,6 @@ public abstract class Entry implements Comparable<Entry> {
         } else {
             return buffer.substring(0, buffer.length() - DELIMITER.length());
         }
-    }
-    
-    //@@author A0121501E
-    public int compareTo(Entry o) {
-        LocalDateTime thisDateTime = this.getComparableTime();
-        LocalDateTime oDateTime = o.getComparableTime();
-        int compareValue = thisDateTime.compareTo(oDateTime);
-        if (compareValue==0) {
-            return this.getTitle().toString().compareTo(o.getTitle().toString());
-        }
-        return thisDateTime.compareTo(oDateTime);
     }
     
     /**

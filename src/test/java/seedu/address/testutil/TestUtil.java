@@ -1,6 +1,7 @@
 package seedu.address.testutil;
 
 import com.google.common.io.Files;
+
 import guitests.guihandles.TaskCardHandle;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -327,7 +328,7 @@ public class TestUtil {
      */
     public static TestEntry[] addPersonsToSortedList(final TestEntry[] persons, TestEntry... personsToAdd) {
         TestEntry[] testEntry = addPersonsToList(persons, personsToAdd);
-        Arrays.sort(testEntry);
+        Arrays.sort(testEntry, new EntryViewComparator());
         return testEntry;
     }
     //@@author

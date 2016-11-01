@@ -5,6 +5,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.ReadOnlyTaskManager;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.EntryViewComparator;
 import seedu.address.model.task.UniqueTaskList;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -71,7 +72,7 @@ public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
     @Override
     public List<Entry> getTaskList() {
         List<Entry> list = getUnsortedTaskList();
-        Collections.sort(list);
+        Collections.sort(list, new EntryViewComparator());
         return list;
     }
 

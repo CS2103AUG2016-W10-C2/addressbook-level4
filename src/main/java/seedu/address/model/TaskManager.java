@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.address.model.task.Task;
 import seedu.address.model.task.Event;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.EntryViewComparator;
 import seedu.address.model.task.UniqueTaskList;
 import seedu.address.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.address.model.task.UniqueTaskList.EntryConversionException;
@@ -52,7 +53,7 @@ public class TaskManager implements ReadOnlyTaskManager {
 //// list overwrite operations
 
     public ObservableList<Entry> getSortedEntries() {
-        return entries.getInternalList().sorted();
+        return entries.getInternalList().sorted(new EntryViewComparator());
     }
 
     public void setEntries(List<Entry> entries) {
@@ -185,7 +186,7 @@ public class TaskManager implements ReadOnlyTaskManager {
 
     @Override
     public List<Entry> getTaskList() {
-        return Collections.unmodifiableList(entries.getInternalList().sorted());
+        return Collections.unmodifiableList(entries.getInternalList().sorted(new EntryViewComparator()));
     }
 
     @Override

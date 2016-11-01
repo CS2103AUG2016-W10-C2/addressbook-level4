@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.EntryViewComparator;
 import seedu.address.commons.core.Messages;
 import seedu.address.testutil.TestEntry;
 import seedu.address.testutil.TestUtil;
@@ -54,7 +55,7 @@ public class AddCommandTest extends AddressBookGuiTest {
 
         //confirm the list now contains all previous persons plus the new task
         TestEntry[] expectedList = TestUtil.addPersonsToList(currentList, testEntry);
-        Arrays.sort(expectedList);
+        Arrays.sort(expectedList, new EntryViewComparator());
         assertTrue(taskList.isListMatching(expectedList));
     }
 
