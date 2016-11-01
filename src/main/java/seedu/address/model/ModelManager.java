@@ -148,7 +148,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredListToShowAllWithoutCompleted() {
         Predicate<Entry> predicate = e -> !e.isMarked();
-        filteredPersons.setPredicate(predicate);
+        filteredEntries.setPredicate(predicate);
     }
 
     @Override

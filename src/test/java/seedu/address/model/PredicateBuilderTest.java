@@ -33,7 +33,8 @@ public class PredicateBuilderTest {
             testMarkedEntryWithoutDeadline = new EntryBuilder().withTitle("banana").withTags("groceries").build();
             testMarkedEntryWithoutDeadline.mark();
 
-            testEntryWithDeadline = new Task(new Title("apple"), LocalDateTime.parse("2016-10-10T10:00:00"), new UniqueTagList(), true, "");
+            testEntryWithDeadline = new Task(new Title("apple"), LocalDateTime.parse("2016-10-10T10:00:00"), new UniqueTagList(), 
+                                             true, "", LocalDateTime.parse("2016-10-10T10:00:00") );
         } catch (IllegalValueException ive) {
             System.err.println(ive);
         }

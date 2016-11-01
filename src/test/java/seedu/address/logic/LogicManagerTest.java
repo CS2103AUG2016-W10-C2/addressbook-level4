@@ -255,7 +255,7 @@ public class LogicManagerTest {
 
         // prepare to-do list state
         TaskManager expectedAB = new TaskManager();
-        List<? extends Entry> expectedList = expectedAB.getEntries();
+        List<? extends Entry> expectedList = expectedAB.getTaskList();
 
         // Add unmarked
         model.addTask(toBeMarked);
