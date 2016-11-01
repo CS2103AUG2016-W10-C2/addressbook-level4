@@ -42,6 +42,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskManager = new TaskManager(src);
         filteredPersons = new FilteredList<>(taskManager.getEntries());
+        updateFilteredListToShowAllWithoutCompleted();
     }
 
     public ModelManager() {
@@ -51,6 +52,7 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskManager initialData, UserPrefs userPrefs) {
         taskManager = new TaskManager(initialData);
         filteredPersons = new FilteredList<>(taskManager.getEntries());
+        updateFilteredListToShowAllWithoutCompleted();
     }
 
     @Override
