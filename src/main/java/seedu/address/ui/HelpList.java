@@ -16,6 +16,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
             "CLOSE HELP",
             "ADD", "EDIT",
             "DELETE", "LIST",
+            "LIST-ALL",
             "TAG", "UNTAG",
             "MARK", "UNMARK",
             "UNDO", "OPTION"};
@@ -26,6 +27,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
             "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]",
             "delete <task_id>",
             "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]",
+            "list-all [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]",
             "tag <task_id> #<tag_name> [#<tag_name> ...]",
             "untag <task_id> #<tag_name> [#<tag_name> ...]",
             "mark <task_id>",
@@ -51,6 +53,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
 
     private void initHelpItems() {
         data = FXCollections.observableArrayList();
+
         assert (COMMANDS.length == HELP_TEXT.length);
         for (int i=0; i<COMMANDS.length; i++) {
             data.add(new HelpItem(COMMANDS[i], HELP_TEXT[i]));
