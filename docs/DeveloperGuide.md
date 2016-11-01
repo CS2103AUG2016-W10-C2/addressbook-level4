@@ -1,3 +1,4 @@
+<!-- @@author A0127828W -->
 # Developer Guide
 
 * [Setting Up](#setting-up)
@@ -112,6 +113,7 @@ The `UI` component,
 * Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
 * Responds to events raised from various parts of the App and updates the UI accordingly.
 
+<!-- @@author A0126539Y -->
 ### Logic component
 
 <img src="images/LogicClassDiagram.png" width="800"><br>
@@ -225,6 +227,7 @@ Thanks to the [TestFX](https://github.com/TestFX/TestFX) library we use,
 
 See [UsingGradle.md](UsingGradle.md) to learn how to use Gradle for build automation.
 
+<!-- @@author A0116603R -->
 ### Continuous Integration
 
 We use [Travis CI](https://travis-ci.org/) to perform _Continuous Integration_ on our projects.
@@ -289,17 +292,17 @@ MSS
 2. TodoList add that particular floating task into Storage and save it
 
   Use Case Ends
-  
+
 *Extensions*
 
 1a. Entry is entered with invalid properties e.g. title
 > 1a1. TodoList warns user that the entry is invalid and does not add it into Storage
-> 
+>
 > Use Case Ends
 
 1b. Entry already exists
 > 1b1. TodoList warns user that the entry already exists and does not add it into Storage
-> 
+>
 > Use Case Ends
 
 **Use case: Create an event**
@@ -342,6 +345,7 @@ MSS
 >
 > Use Case Ends
 
+<!-- @@author A0121501E -->
 **Use Case: List all entries**
 
 Actors: User
