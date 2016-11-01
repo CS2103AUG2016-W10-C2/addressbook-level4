@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -51,7 +52,7 @@ public class Parser {
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     private static final Prefix saveLocationPrefix = new Prefix(SAVE_LOCATION_FLAG);
     
-    private static final String RECURSION_ERROR_MESSAGE = "Recursion timing is wrong. Please make sure it's a valid format.";
+    private static final String RECURSION_ERROR_MESSAGE = "Recursion timing is wrong. Please make sure it's a valid format. i.e: 'every 3 days'";
     
     public Parser() {}
 
@@ -178,13 +179,19 @@ public class Parser {
             return 0;
         }
         
-        long recurDistance = prettyTimeParser.parseSyntax(recurTime).get(0).getRecurInterval();
-        
-        if (recurDistance == 0) {
+        List<DateGroup> possibleInterval = prettyTimeParser.parseSyntax(recurTime);
+        if (possibleInterval.size() > 0) {
+            long recurDistance = prettyTimeParser.parseSyntax(recurTime).get(0).getRecurInterval(); 
+            
+            if (recurDistance == 0) {
+                throw new IllegalValueException(RECURSION_ERROR_MESSAGE);
+            }
+            
+            return recurDistance;
+        }
+        else {
             throw new IllegalValueException(RECURSION_ERROR_MESSAGE);
         }
-        
-        return recurDistance;
     }
     //@@author
 
