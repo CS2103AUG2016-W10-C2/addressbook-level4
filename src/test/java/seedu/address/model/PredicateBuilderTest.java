@@ -50,31 +50,31 @@ public class PredicateBuilderTest {
         LocalDateTime laterDate = LocalDateTime.parse("2016-10-20T10:00:00");
         LocalDateTime sameDate = LocalDateTime.parse("2016-10-10T10:00:00");
 
-        assertPredicate(testEntryWithoutDeadline, null, null, null, null, null, true, true, "");
-        assertPredicate(testEntryWithoutDeadline, keywords, null, null, null, null, true, true, "");
-        assertPredicate(testEntryWithoutDeadline, emptyKeywords, null, null, null, null, true, false, "");
+        assertPredicate(testEntryWithoutDeadline, null, null, null, null, null, true, "", true);
+        assertPredicate(testEntryWithoutDeadline, keywords, null, null, null, null, true, "", true);
+        assertPredicate(testEntryWithoutDeadline, emptyKeywords, null, null, null, null, true, "", false);
 
-        assertPredicate(testEntryWithoutDeadline, null, tags, null, null, null, true, true, "");
-        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, null, null, true, true, "");
-        assertPredicate(testEntryWithoutDeadline, emptyKeywords, tags, null, null, null, true, false, "");
+        assertPredicate(testEntryWithoutDeadline, null, tags, null, null, null, true, "", true);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, null, null, true, "", true);
+        assertPredicate(testEntryWithoutDeadline, emptyKeywords, tags, null, null, null, true, "", false);
 
-        assertPredicate(testEntryWithoutDeadline, keywords, tags, earlierDate, null, null, true, false, "");
-        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, earlierDate, null, true, false, "");
-        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, null, earlierDate, true, false, "");
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, earlierDate, null, null, true, "", false);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, earlierDate, null, true, "", false);
+        assertPredicate(testEntryWithoutDeadline, keywords, tags, null, null, earlierDate, true, "", false);
 
-        assertPredicate(testEntryWithDeadline, null, null, null, null, null, true, true, "");
-        assertPredicate(testEntryWithDeadline, keywords, null, null, earlierDate, null, true, false, "");
-        assertPredicate(testEntryWithDeadline, keywords, null, laterDate, null, null, true, false, "");
-        assertPredicate(testEntryWithDeadline, keywords, null, null, null, sameDate, true, true, "");
-        assertPredicate(testEntryWithDeadline, keywords, null, earlierDate, laterDate, null, true, true, "");
+        assertPredicate(testEntryWithDeadline, null, null, null, null, null, true, "", true);
+        assertPredicate(testEntryWithDeadline, keywords, null, null, earlierDate, null, true, "", false);
+        assertPredicate(testEntryWithDeadline, keywords, null, laterDate, null, null, true, "", false);
+        assertPredicate(testEntryWithDeadline, keywords, null, null, null, sameDate, true, "", true);
+        assertPredicate(testEntryWithDeadline, keywords, null, earlierDate, laterDate, null, true, "", true);
 
-        assertPredicate(testMarkedEntryWithoutDeadline, null, null, null, null, null, true, true, "");
-        assertPredicate(testMarkedEntryWithoutDeadline, keywords, null, null, null, null, true, true, "");
-        assertPredicate(testMarkedEntryWithoutDeadline, keywords, null, null, null, null, false, false, "");
+        assertPredicate(testMarkedEntryWithoutDeadline, null, null, null, null, null, true, "", true);
+        assertPredicate(testMarkedEntryWithoutDeadline, keywords, null, null, null, null, true, "", true);
+        assertPredicate(testMarkedEntryWithoutDeadline, keywords, null, null, null, null, false, "", false);
     }
 
     private void assertPredicate(Entry entry, Set<String> keywords, Set<String> tags, LocalDateTime startDate,
-                                 LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, boolean expected, String entryType) {
+                                 LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, String entryType, boolean expected) {
         PredicateBuilder predicateBuilder = new PredicateBuilder();
         try {
             Predicate<Entry> pred = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted, entryType);
