@@ -89,6 +89,7 @@ public class EditCommand extends UndoableCommand {
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
         } catch (EntryConversionException e) {
+            indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(MESSAGE_ENTRY_CONVERSION);
         }
 
