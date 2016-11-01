@@ -33,12 +33,8 @@ public class EventTest {
             tags = new UniqueTagList(new Tag("tag1"));
             isMarked = false;
             description = "Description";
-<<<<<<< HEAD
-            testEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1);
-=======
             lastModifiedTime = LocalDateTime.parse("2016-10-10T10:00:00");
-            testEvent = new Event(title, startTime, endTime, tags, isMarked, description, lastModifiedTime);
->>>>>>> a0b3c293208f4681612d6665cef6644cf1f44df4
+            testEvent = new Event(title, startTime, endTime, tags, isMarked, description, -1, lastModifiedTime);
         } catch (IllegalValueException ive) {
             ive.printStackTrace();
         }

@@ -42,10 +42,7 @@ public final class Event extends Entry{
         }
     }
 
-    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description, long recursion,
-                 LocalDateTime lastModifiedTime) throws IllegalArgumentException {
-
-    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description) throws IllegalArgumentException{
+    public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description, long recursion, LocalDateTime lastModifiedTime) throws IllegalArgumentException{
         assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime, lastModifiedTime);
         if(startTime.isAfter(endTime)) {
             throw new IllegalArgumentException(INVALID_START_END_TIME);
