@@ -87,9 +87,9 @@ Examples:
 
 - `list buy banana #groceries`
 
-If you want to include completed entries in your search, replace `list` with `list-completed`
+If you want to include completed entries in your search, replace `list` with `list-all`
 
-- `list-completed buy banana`
+- `list-all buy banana`
 
 #### Tagging
 ```
