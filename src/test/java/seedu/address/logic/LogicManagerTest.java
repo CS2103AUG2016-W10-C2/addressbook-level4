@@ -245,19 +245,46 @@ public class LogicManagerTest {
 
 
     @Test
-    public void execute_list_showsAllPersons() throws Exception {
+    public void execute_list_showsAllEntriesWithCompleted() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskManager expectedAB = helper.generateAddressBook(2);
-        List<? extends Entry> expectedList = expectedAB.getTaskList();
+        Task toBeMarked = helper.taskWithTags();
+        toBeMarked.mark();
 
-        // prepare address book state
-        helper.addToModel(model, 2);
+        // prepare to-do list state
+        TaskManager expectedAB = new TaskManager();
+        List<? extends Entry> expectedList = expectedAB.getEntries();
 
-        assertCommandBehavior("list",
-                ListCommand.MESSAGE_SUCCESS,
-                expectedAB,
-                expectedList);
+        // Add unmarked
+        model.addTask(toBeMarked);
+        expectedAB.addTask(toBeMarked);
+
+        assertCommandBehavior(ListCommand.LIST_COMPLETED_COMMAND_WORD,
+            ListCommand.MESSAGE_SUCCESS,
+            expectedAB,
+            expectedList);
+    }
+
+    @Test
+    public void execute_list_showsAllEntriesWithoutCompleted() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeMarked = helper.taskWithTags();
+        toBeMarked.mark();
+
+        // prepare to-do list state
+        // Expected to show empty list
+        TaskManager expectedAB = new TaskManager();
+        List<? extends Entry> expectedList = new ArrayList<>();
+
+        // Add marked entries
+        model.addTask(toBeMarked);
+        expectedAB.addTask(toBeMarked);
+
+        assertCommandBehavior(ListCommand.COMMAND_WORD,
+            String.format(MESSAGE_ENTRY_LISTED_OVERVIEW, 0),
+            expectedAB,
+            expectedList);
     }
 
 
@@ -334,7 +361,7 @@ public class LogicManagerTest {
         List<Task> expectedList = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         helper.addToModel(model, fourPersons);
 
-        assertCommandBehavior("list",
+        assertCommandBehavior(ListCommand.LIST_COMPLETED_COMMAND_WORD,
                 ListCommand.MESSAGE_SUCCESS,
                 expectedAB,
                 expectedList);
@@ -584,7 +611,7 @@ public class LogicManagerTest {
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, toBeMarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -599,10 +626,12 @@ public class LogicManagerTest {
         expectedAB.addTask(toBeMarkedCopy);
         
         model.addTask(alreadyMarked);
+        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD);
+
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -747,12 +776,13 @@ public class LogicManagerTest {
 
         model.addTask(toBeUnmarked);
         // command to undo
+        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD);
         logic.execute("unmark 1");
         // execute command and verify result
         assertCommandBehavior("undo",
                 String.format(UnmarkCommand.MESSAGE_UNDO_SUCCESS, toBeUnmarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -834,7 +864,7 @@ public class LogicManagerTest {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task task1 = helper.generateTask(1);
-        Task task2 = helper.generateTask(2);
+        Task task2 = helper.generateTask(2); // To be marked
         Task task2Copy = helper.generateTask(2);
         Task task3 = helper.generateTask(3);
         
@@ -846,20 +876,21 @@ public class LogicManagerTest {
         expectedAB.addTask(task2);
 
         model.addTask(task1);
-        task2.mark();
         model.addTask(task2);
+
         // command to undo
         logic.execute(helper.generateAddCommand(task3));
+        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD); //non-undoable command.
         logic.execute("mark 2");
-        logic.execute("list");  //non-undoable command.
+        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD); //non-undoable command.
         logic.execute("delete 2");
 
         // Undo "delete 2"
         assertCommandBehavior("undo",
                 String.format(DeleteCommand.MESSAGE_UNDO_DELETE_PERSON_SUCCESS, task2),
                 expectedAB,
-                expectedAB.getTaskList());
-        
+                Arrays.asList(task1, task3));
+
         // Undo "mark 2"
         assertCommandBehavior("undo",
                 String.format(MarkCommand.MESSAGE_UNDO_SUCCESS, task2Copy),
@@ -975,7 +1006,7 @@ public class LogicManagerTest {
         assertCommandBehavior("redo",
                 String.format(MarkCommand.MESSAGE_SUCCESS, toBeMarked),
                 expectedAB,
-                expectedAB.getTaskList());
+                new ArrayList<>());
     }
 
     @Test
@@ -990,6 +1021,7 @@ public class LogicManagerTest {
 
         model.addTask(toBeUnmarked);
         // command to undo
+        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD);
         logic.execute("unmark 1");
         logic.execute("undo");
         // execute command and verify result
