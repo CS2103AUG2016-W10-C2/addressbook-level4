@@ -2,9 +2,14 @@ package seedu.address.ui;
 
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.FocusCommandLineEvent;
 import seedu.address.commons.events.ui.ShowHelpListEvent;
 import seedu.address.commons.events.ui.ShowTaskListEvent;
 import seedu.address.logic.Logic;
@@ -44,6 +49,7 @@ public class TaskViewController extends Controller {
         appView.setCenter(taskList);
         appView.setBottom(new CommandArea(logic));
         appView.toFront();
+        addEnterHandlerForScene();
     }
 
     // ###################
@@ -55,6 +61,25 @@ public class TaskViewController extends Controller {
         return logic.getFilteredPersonList();
     }
 
+    /**
+     * Register an event handler to enable focusing on the command
+     * line if the user presses the <ENTER> key.
+     */
+    private void addEnterHandlerForScene() {
+        assert appView != null;
+        appView.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    EventsCenter.getInstance().post(new FocusCommandLineEvent());
+                }
+            }
+        });
+    }
+
+    // ##################
+    // # EVENT HANDLERS #
+    // ##################
     @Subscribe
     private void handleShowHelpEvent(ShowHelpListEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
