@@ -172,7 +172,6 @@ public class Parser {
      */
     private static long getRecurTimeFromArgument(ArgumentTokenizer argsTokenizer) throws IllegalValueException {
         String recurTime = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(repeatPrefix));
-        System.out.println("recurTime = " + recurTime);
         
         if (recurTime.isEmpty()) {
             return 0;

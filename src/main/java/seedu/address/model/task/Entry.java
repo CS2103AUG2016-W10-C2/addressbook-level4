@@ -9,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import seedu.address.model.tag.UniqueTagList;
 import static seedu.address.commons.core.Messages.SPACE;
 
+//@@author Anthony
 /**
  * A read-only immutable interface for an Entry in the Task Manager.
  * Implementations should guarantee: details are present and not null, field

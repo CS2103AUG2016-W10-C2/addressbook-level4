@@ -53,7 +53,7 @@ public final class Event extends Entry{
         this.description = new SimpleStringProperty(description);
         this.startTime = new SimpleObjectProperty<>(startTime);
         this.endTime = new SimpleObjectProperty<>(endTime);
-        this.recursion = recursion == -1 ? null : new SimpleLongProperty(recursion);
+        this.recursion = recursion <= 0 ? new SimpleLongProperty() : new SimpleLongProperty(recursion);
         
         convertToNextRecursion();
     }
@@ -92,6 +92,18 @@ public final class Event extends Entry{
 
     public ObjectProperty<LocalDateTime> endTimeObjectProperty() {
         return endTime;
+    }
+    
+    public long getRecursion() {
+        return recursion.get();
+    }
+    
+    public SimpleLongProperty recursionObjectProperty() {
+        return recursion;
+    }
+    
+    public void setRecursion(long recursion) {
+        this.recursion = new SimpleLongProperty(recursion);
     }
 
     @Override
