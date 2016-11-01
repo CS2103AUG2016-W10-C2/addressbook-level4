@@ -2,7 +2,7 @@ User guide
 ===================
 
 ## Getting Started
-
+<!-- @@author A0116603R -->
 <img src="images/pq_start.png" width="600"><br>
 
 Our to-do application primarily takes in input using a command line interface. It supports the basic creation, reading, updating and deletion of entries. You may add entries with or without deadlines. These are known as tasks. Entries with a start and/or end time are known as events.
@@ -40,6 +40,7 @@ delete 1
 
 <img src="images/delete.png" width="600">
 
+<!-- @@author A0127828W -->
 
 ## Command Summary
 
@@ -53,9 +54,12 @@ delete 1
 |delete|`delete <task_id>`|
 |mark|`mark <task_id>`|
 |unmark|`unmark <task_id>`|
+|undo|`undo`|
+|redo|`redo`|
 |help|`help [<command>]`|
 |option|`option [<type>/<value> ...]`|
 
+<!-- @@author A0126539Y -->
 ## Commands
 
 #### Adding
@@ -72,6 +76,7 @@ Examples:
 
 - `add CS2105 Assignment 1 end/2016-10-10 10:00`
 
+<!-- @@author A0127828W -->
 #### Listing
 ```
 list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]
@@ -91,6 +96,7 @@ If you want to include completed entries in your search, replace `list` with `li
 
 - `list-all buy banana`
 
+<!-- @@author A0121501E -->
 #### Tagging
 ```
 tag <task_id> #<tag_name> [#<tag_name>...]
@@ -108,6 +114,7 @@ Delete tag(s) from a particular entry with a specified id using `untag`
 
 Duplicated tags will only be added once
 
+<!-- @@author A0126539Y -->
 #### Editing
 ```
 edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]
@@ -123,7 +130,7 @@ Examples:
 
 - `edit 13 #yearly`
 
-
+<!-- @@author A0121501E -->
 #### Deleting
 ```
 delete <entry_id>
@@ -135,6 +142,7 @@ Delete the task with a particular entry id
 Examples:
 
 - `Delete 42`
+
 
 #### Marking
 ```
@@ -151,6 +159,24 @@ Examples:
 
 - `unmark 42`
 
+<!-- @@author A0127828W -->
+#### Undo
+
+```
+undo
+```
+
+Undo the latest change to the todo list. Handles every changes, including `clear`.
+
+#### Redo
+
+```
+redo
+```
+
+Redo the latest command reverted with `undo`.
+
+<!-- @@author A0116603R -->
 #### Help
 ```
 help [<command>]
@@ -160,6 +186,7 @@ Show available commands and how to use them
 
 Help is also shown if you enter an incorrect command e.g. abcd
 
+<!-- @@author A0126539Y -->
 #### option
 ```
 option [<type>/<value> ...]
@@ -170,6 +197,7 @@ Examples:
 
 - `config save/data/MyNewLocation.xml`
 
-#### Misc
+<!-- @@author A0127828W -->
+## Misc
 
 You can use UP and DOWN keys to browse through your past commands in the session.
