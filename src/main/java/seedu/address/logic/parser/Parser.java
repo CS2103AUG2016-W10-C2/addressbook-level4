@@ -45,6 +45,7 @@ public class Parser {
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
+    private static final Prefix typePrefix = new Prefix(TYPE_FLAG);
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -431,14 +432,15 @@ public class Parser {
     private Command prepareList(String args, boolean includeCompleted) {
         // Guard statement
         if (args.isEmpty()) {
-            return new ListCommand(includeCompleted);
+            return new ListCommand(includeCompleted, "");
         }
 
-        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix);
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix, typePrefix);
         argsTokenizer.tokenize(args);
 
         try {
-            ListCommand listCommand = new ListCommand(includeCompleted);
+            String typeString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(typePrefix));
+            ListCommand listCommand = new ListCommand(includeCompleted, typeString);
 
             // keywords delimited by whitespace
             setKeywords(argsTokenizer, listCommand);
