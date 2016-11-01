@@ -169,3 +169,7 @@ Configure user settings: name, file path to data file
 Examples:
 
 - `config save/data/MyNewLocation.xml`
+
+#### Misc
+
+You can use UP and DOWN keys to browse through your past commands in the session.

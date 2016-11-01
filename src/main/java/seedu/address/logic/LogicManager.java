@@ -7,14 +7,8 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.DidMarkTaskEvent;
 import seedu.address.commons.events.ui.MarkTaskEvent;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.UndoableCommand;
+import seedu.address.logic.commands.*;
 import seedu.address.logic.commands.UndoableCommand.CommandState;
-import seedu.address.logic.commands.UndoableCommandHistory;
-import seedu.address.logic.commands.CommandResult;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.logic.commands.OptionCommand;
-import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.parser.Parser;
 import seedu.address.model.Model;
 import seedu.address.model.UserPrefs;
@@ -22,6 +16,7 @@ import seedu.address.model.task.Entry;
 import seedu.address.storage.Storage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -35,6 +30,7 @@ public class LogicManager extends ComponentManager implements Logic {
     UndoableCommandHistory undoableCommandHistory;
     private final UserPrefs userPrefs;
     private final Storage storage;
+    private final CommandHistory commandHistoryManager;
 
     public LogicManager(Model model, Storage storage, UserPrefs userPrefs) {
         this.model = model;
@@ -42,6 +38,7 @@ public class LogicManager extends ComponentManager implements Logic {
         this.undoableCommandHistory = new UndoableCommandHistory();
         this.storage = storage;
         this.userPrefs = userPrefs;
+        commandHistoryManager = new CommandHistory();
     }
 
     @Override
@@ -83,6 +80,10 @@ public class LogicManager extends ComponentManager implements Logic {
             ((UndoableCommand) command).getCommandState() == CommandState.UNDOABLE) {
             undoableCommandHistory.pushToHistory((UndoableCommand) command);
         }
+
+        commandHistoryManager.appendCommand(commandText);
+        commandHistoryManager.resetPosition();
+
         //@@author
         return commandResult;
     }
@@ -96,4 +97,10 @@ public class LogicManager extends ComponentManager implements Logic {
     private void handleMarkTaskEvent(MarkTaskEvent event) {
         EventsCenter.getInstance().post(new DidMarkTaskEvent(execute(event.getCommandString())));
     }
+
+    @Override
+    public CommandHistory getCommandHistoryManager() {
+        return this.commandHistoryManager;
+    }
+
 }
