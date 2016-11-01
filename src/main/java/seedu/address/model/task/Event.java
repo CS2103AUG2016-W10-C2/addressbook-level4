@@ -27,7 +27,7 @@ public final class Event extends Entry{
     private static final String INVALID_START_END_TIME = "Invalid start and end time. i.e: start time is after end time.";
     
     private void convertToNextRecursion() {
-        if (recursion != null && getEndTime().compareTo(LocalDateTime.now()) < 0) {
+        if (recursion.get() > 0  && getEndTime().compareTo(LocalDateTime.now()) < 0) {
             //get the length of event in seconds unit
             long eventLengthSeconds = getStartTime().until(getEndTime(), ChronoUnit.SECONDS);
             
