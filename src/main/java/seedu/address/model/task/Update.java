@@ -63,6 +63,7 @@ public class Update {
         return null;
     }
     //@@author A0121501E
+    /* returns a copy of the updated entry */
     public Entry getUpdatedCopy() {
         assert task != null;
         Entry toEditCopy = null;
@@ -95,4 +96,5 @@ public class Update {
         }
         return toEditCopy;
     }
+    //@@author
 }
