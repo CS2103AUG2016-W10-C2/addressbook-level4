@@ -1,5 +1,8 @@
 package seedu.address.testutil;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.TaskManager;
 import seedu.address.model.task.*;
@@ -36,7 +39,7 @@ public class TypicalTestTasks {
         }
 
         @Override
-        public List<EntryBuilder> getSampleEntriesWithTags(){
+        public List<EntryBuilder> getSampleEntriesWithTags() {
             return getAllEntries(SAMPLES).stream().map(entryBuilder -> {
                 try {
                     return entryBuilder.withTags(DEFAULT_TAGS);
@@ -135,6 +138,12 @@ public class TypicalTestTasks {
         nonSampleEntries.addAll(new StudyTasks().getNonSampleEntries());
         nonSampleEntries.addAll(new WatchTasks().getNonSampleEntries());
         return nonSampleEntries;
+    }
+
+    public TestEntry[] getTypicalSortedPersons() {
+        TestEntry[] testEntry = getSampleEntriesAsArray();
+        Arrays.sort(testEntry, new EntryViewComparator());
+        return testEntry;
     }
 
     public TaskManager getTypicalTaskManager(){

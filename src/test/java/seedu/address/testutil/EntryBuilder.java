@@ -1,5 +1,7 @@
 package seedu.address.testutil;
 
+import java.time.LocalDateTime;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -37,6 +39,11 @@ public class EntryBuilder {
         return this;
     }
 
+    public EntryBuilder withLastModifiedDate(LocalDateTime localDateTime) throws IllegalValueException {
+        this.entry.setLastModifiedTime(localDateTime);
+        return this;
+    }
+    
     public TestEntry build() {
         return this.entry;
     }

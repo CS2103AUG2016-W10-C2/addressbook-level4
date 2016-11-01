@@ -1,6 +1,7 @@
 package seedu.address.model.task;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -15,13 +16,16 @@ import static seedu.address.commons.core.Messages.SPACE;
  * values are validated.
  */
 public abstract class Entry {
+    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
+
     protected ObjectProperty<Title> title;
     protected ObjectProperty<UniqueTagList> tags;
     protected BooleanProperty isMarked;
     protected StringProperty description;
+    protected ObjectProperty<LocalDateTime> lastModifiedTime;
 
     String DELIMITER = " ";
-
+    
     /**
      * Get the Title for this Entry
      */
@@ -114,7 +118,7 @@ public abstract class Entry {
     /**
      * Returns true if Entry is marked as completed
      */
-    public final boolean isMarked() {
+    public boolean isMarked() {
         return isMarked.get();
     }
 
@@ -183,5 +187,30 @@ public abstract class Entry {
         } else {
             return buffer.substring(0, buffer.length() - DELIMITER.length());
         }
+    }
+
+    //@@author
+    /**
+     * returns a comparable time used to determine an entry's order
+     */
+    public abstract LocalDateTime getComparableTime();
+    
+    /**
+     *  sets the last modified time
+     */
+    public void setLastModifiedTime(LocalDateTime localDateTime) {
+        lastModifiedTime.set(localDateTime);
+    }
+    
+    public void resetLastModifiedTime() {
+        lastModifiedTime.set(LocalDateTime.now());
+    }
+    
+    public LocalDateTime getLastModifiedTime() {
+        return lastModifiedTime.get();
+    }
+
+    public ObjectProperty<LocalDateTime> getLastModifiedTimeProperty() {
+        return lastModifiedTime;
     }
 }

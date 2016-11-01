@@ -43,7 +43,7 @@ public class AddCommand extends UndoableCommand {
      * @throws IllegalValueException if any of the raw values are invalid
      */
     public AddCommand(String title, LocalDateTime startTime, LocalDateTime endTime, Set<String> tags, String description)
-            throws IllegalValueException {
+            throws IllegalValueException, IllegalArgumentException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
@@ -56,7 +56,8 @@ public class AddCommand extends UndoableCommand {
                     endTime,
                     new UniqueTagList(tagSet),
                     false,
-                    description
+                    description,
+                    LocalDateTime.now()
             );
         }
         else if (startTime == null){
@@ -65,7 +66,8 @@ public class AddCommand extends UndoableCommand {
                     endTime,
                     new UniqueTagList(tagSet),
                     false,
-                    description
+                    description,
+                    LocalDateTime.now()
             );
         }
         else if (startTime != null && endTime == null) {

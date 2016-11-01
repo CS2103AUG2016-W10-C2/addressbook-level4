@@ -46,14 +46,13 @@ delete 1
 | Command |Format |
 | --- | --- |
 |add|`add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]`|
-|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]`|
+|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]`| [type/{entry, task}]
 |tag|`tag <task_id> #<tag_name> [#<tag_name> ...]`|
 |untag|`untag <task_id> #<tag_name> [#<tag_name> ...]`|
 |edit|`edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]`|
 |delete|`delete <task_id>`|
 |mark|`mark <task_id>`|
 |unmark|`unmark <task_id>`|
-|show|`show <task_id>`|
 |help|`help [<command>]`|
 |option|`option [<type>/<value> ...]`|
 
@@ -64,113 +63,113 @@ delete 1
 add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
 ```
 
-> Add event or deadline
+Add event or deadline
 
-> Examples:
+Examples:
 
 
-> - `add CS2103T Lecture start/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly #rocks`
+- `add CS2103T Lecture start/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly #rocks`
 
-> - `add CS2105 Assignment 1 end/2016-10-10 10:00`
+- `add CS2105 Assignment 1 end/2016-10-10 10:00`
 
 #### Listing
 ```
-list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]
+list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]] [type/{entry, task}]
 ```
 
-> List all or filtered entries
+List all entries, or entries that satisfy the given search criteria. For the best user experience, completed entries are _automatically excluded_.
 
-> Examples:
+Examples:
 
-> - `list`
+- `list`
 
-> - `list after/2016-10-10`
+- `list after/2016-10-10`
 
-> - `list buy banana #groceries`
+- `list buy banana #groceries`
+
+If you want to include completed entries in your search, replace `list` with `list-all`
+
+- `list-all buy banana`
 
 #### Tagging
 ```
 tag <task_id> #<tag_name> [#<tag_name>...]
 ```
 
-> Add tag(s) to a particular entry with a specified id
+Add tag(s) to a particular entry with a specified id
 
-> Examples:
+Examples:
 
-> - `tag 123 #CS2103T #rocks`
+- `tag 123 #CS2103T #rocks`
 
-> Delete tag(s) from a particular entry with a specified id using `untag`
+Delete tag(s) from a particular entry with a specified id using `untag`
 
-> - `untag 123 #rocks`
+- `untag 123 #rocks`
 
-> Duplicated tags will only be added once
+Duplicated tags will only be added once
 
 #### Editing
 ```
 edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]
 ```
 
->  Edit the entry with the specified entry id.
+ Edit the entry with the specified entry id.
 
->  `list` should be executed before this command to obtain a entry id.
+ `list` should be executed before this command to obtain a entry id.
 
-> Examples:
+Examples:
 
-> - `edit 3 school`
+- `edit 3 school`
 
-> - `edit 13 #yearly`
+- `edit 13 #yearly`
 
 
 #### Deleting
 ```
 delete <entry_id>
 ```
-> Delete the task with a particular entry id
+Delete the task with a particular entry id
 
-> `list` should be executed before this command to obtain a entry id.
+`list` should be executed before this command to obtain a entry id.
 
-> Examples:
+Examples:
 
-> - `Delete 42`
+- `Delete 42`
 
 #### Marking
 ```
 mark <entry_id>
 ```
 
-> Check (or uncheck, for `unmark`) a entry as completed.
+Check (or uncheck, for `unmark`) a entry as completed.
 
-> `list` should be executed before this command to obtain a entry id.
+`list` should be executed before this command to obtain a entry id.
 
-> Examples:
+Examples:
 
-> - `mark 42`
+- `mark 42`
 
-> - `unmark 42`
-
-#### Showing
-```
-show <entry_id>
-```
-> Display the details of a particular entry
-
-> `list` should be executed before this command to obtain a entry id.
+- `unmark 42`
 
 #### Help
 ```
 help [<command>]
 ```
 
-> Show available commands and how to use them
+Show available commands and how to use them
 
-> Help is also shown if you enter an incorrect command e.g. abcd
+Help is also shown if you enter an incorrect command e.g. abcd
 
 #### option
 ```
 option [<type>/<value> ...]
 ```
-> Configure user settings: name, file path to data file
+Configure user settings: name, file path to data file
 
-> Examples:
+Examples:
 
-> - `config save/data/MyNewLocation.xml`
+- `config save/data/MyNewLocation.xml`
+
+#### Misc
+
+You can use UP and DOWN keys to browse through your past commands in the session.

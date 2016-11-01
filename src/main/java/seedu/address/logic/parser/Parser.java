@@ -17,11 +17,9 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.AddCommand.*;
+import static seedu.address.logic.commands.ListCommand.*;
 import static seedu.address.logic.commands.OptionCommand.SAVE_LOCATION_FLAG;
 import static seedu.address.logic.commands.EditCommand.TITLE_FLAG;
-import static seedu.address.logic.commands.ListCommand.AFTER_FLAG;
-import static seedu.address.logic.commands.ListCommand.BEFORE_FLAG;
-import static seedu.address.logic.commands.ListCommand.ON_FLAG;
 
 /**
  * Parses user input.
@@ -47,6 +45,7 @@ public class Parser {
     private static final Prefix tagPrefix = new Prefix(TAG_FLAG);
     private static final Prefix descPrefix = new Prefix(DESC_FLAG);
     private static final Prefix titlePrefix = new Prefix(TITLE_FLAG);
+    private static final Prefix typePrefix = new Prefix(TYPE_FLAG);
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -96,7 +95,10 @@ public class Parser {
             return prepareUntag(arguments);
 
         case ListCommand.COMMAND_WORD:
-            return prepareList(arguments);
+            return prepareList(arguments, false);
+
+        case LIST_ALL_COMMAND_WORD:
+            return prepareList(arguments, true);
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
@@ -246,7 +248,7 @@ public class Parser {
                    getEndTimeFromArgument(argsTokenizer),
                    getTagsFromArgs(argsTokenizer),
                    getDescriptionFromArgs(argsTokenizer));
-       } catch (IllegalValueException ive) {
+       } catch (IllegalValueException|IllegalArgumentException ive) {
            return new IncorrectCommand(ive.getMessage());
        }
    }
@@ -427,64 +429,87 @@ public class Parser {
      *            full command args string
      * @return the prepared command
      */
-    private Command prepareList(String args) {
+    private Command prepareList(String args, boolean includeCompleted) {
         // Guard statement
         if (args.isEmpty()) {
-            return new ListCommand();
+            return new ListCommand(includeCompleted, "");
         }
 
-        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix);
+        final ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(startDatePrefix, endDatePrefix, onDatePrefix, tagPrefix, typePrefix);
         argsTokenizer.tokenize(args);
 
         try {
-            ListCommand listCommand = new ListCommand();
+            String typeString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(typePrefix));
+            ListCommand listCommand = new ListCommand(includeCompleted, typeString);
 
             // keywords delimited by whitespace
-            Optional<String> keywordsString = argsTokenizer.getPreamble();
-            if (keywordsString.isPresent()) {
-                String[] keywords = keywordsString.get().split("\\s+");
-
-                Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-                keywordSet.removeIf(s -> "".equals(s));
-                listCommand.setKeywords(keywordSet);
-            }
+            setKeywords(argsTokenizer, listCommand);
 
             String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
             String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
             String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
             Set<String> tags = getTagsFromArgs(argsTokenizer);
 
-            if (!tags.isEmpty()) {
-                listCommand.setTags(tags);
-            }
+            setTags(listCommand, tags);
 
             // Ranged search and specific-day search should be mutually exclusive
-            if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
+            if (isNotMutuallyExclusiveDates(onDateString, startDateString, endDateString)) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
 
-            if (onDateString.isEmpty()) {
-                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
-                LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
-                if (endDate != null) {
-                    endDate = endDate.plusDays(1).minusSeconds(1);
-                }
-
-                if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-                    return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
-                }
-
-                listCommand.setStartDate(startDate);
-                listCommand.setEndDate(endDate);
+            if (onDateString.isEmpty() && !setValidDateRange(listCommand, startDateString, endDateString)) {
+                return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
             } else {
                 final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString);
-
                 listCommand.setOnDate(onDate);
             }
 
             return listCommand;
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
+        }
+    }
+
+    private void setKeywords(ArgumentTokenizer argsTokenizer, ListCommand listCommand) {
+        Optional<String> keywordsString = argsTokenizer.getPreamble();
+        if (keywordsString.isPresent()) {
+            String[] keywords = keywordsString.get().split("\\s+");
+
+            Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+            keywordSet.removeIf(s -> "".equals(s));
+            listCommand.setKeywords(keywordSet);
+        }
+    }
+
+    private boolean isNotMutuallyExclusiveDates(String onDateString, String startDateString, String endDateString) {
+        return !onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty());
+    }
+
+    /**
+     * Return false if the provided dates are invalid
+     * Return true and set date attributes to listCommand otherwise
+     *
+     * @throws IllegalValueException
+     */
+    private boolean setValidDateRange(ListCommand listCommand, String startDateString, String endDateString) throws IllegalValueException {
+        final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
+        LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
+        if (endDate != null) {
+            endDate = endDate.plusDays(1).minusSeconds(1);
+        }
+
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            return false;
+        }
+
+        listCommand.setStartDate(startDate);
+        listCommand.setEndDate(endDate);
+        return true;
+    }
+
+    private void setTags(ListCommand listCommand, Set<String> tags) {
+        if (!tags.isEmpty()) {
+            listCommand.setTags(tags);
         }
     }
 
