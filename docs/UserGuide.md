@@ -46,8 +46,8 @@ delete 1
 
 | Command |Format |
 | --- | --- |
-|add|`add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]`|
-|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]`| [type/{entry, task}]
+|add|`add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [repeat/<recurrence>] [desc/<description>]`|
+|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [desc=<description_value>]]`| [type/{entry, task}]
 |tag|`tag <task_id> #<tag_name> [#<tag_name> ...]`|
 |untag|`untag <task_id> #<tag_name> [#<tag_name> ...]`|
 |edit|`edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]`|
@@ -64,7 +64,7 @@ delete 1
 
 #### Adding
 ```
-add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [r/<recurrence>] [desc/<description>]
+add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [repeat/<recurrence>] [desc/<description>]
 ```
 
 Add event or deadline
@@ -79,7 +79,7 @@ Examples:
 <!-- @@author A0127828W -->
 #### Listing
 ```
-list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]] [type/{entry, task}]
+list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [desc=<description_value>]] [type/{entry, task}]
 ```
 
 List all entries, or entries that satisfy the given search criteria. For the best user experience, completed entries are _automatically excluded_.
