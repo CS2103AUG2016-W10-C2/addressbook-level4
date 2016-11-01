@@ -259,7 +259,7 @@ public class LogicManagerTest {
         model.addTask(toBeMarked);
         expectedAB.addTask(toBeMarked);
 
-        assertCommandBehavior(ListCommand.LIST_COMPLETED_COMMAND_WORD,
+        assertCommandBehavior(ListCommand.LIST_ALL_COMMAND_WORD,
             ListCommand.MESSAGE_SUCCESS,
             expectedAB,
             expectedList);
@@ -361,7 +361,7 @@ public class LogicManagerTest {
         List<Task> expectedList = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         helper.addToModel(model, fourPersons);
 
-        assertCommandBehavior(ListCommand.LIST_COMPLETED_COMMAND_WORD,
+        assertCommandBehavior(ListCommand.LIST_ALL_COMMAND_WORD,
                 ListCommand.MESSAGE_SUCCESS,
                 expectedAB,
                 expectedList);
@@ -626,7 +626,7 @@ public class LogicManagerTest {
         expectedAB.addTask(toBeMarkedCopy);
         
         model.addTask(alreadyMarked);
-        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD);
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD);
 
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
@@ -776,7 +776,7 @@ public class LogicManagerTest {
 
         model.addTask(toBeUnmarked);
         // command to undo
-        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD);
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD);
         logic.execute("unmark 1");
         // execute command and verify result
         assertCommandBehavior("undo",
@@ -880,9 +880,9 @@ public class LogicManagerTest {
 
         // command to undo
         logic.execute(helper.generateAddCommand(task3));
-        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD); //non-undoable command.
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD); //non-undoable command.
         logic.execute("mark 2");
-        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD); //non-undoable command.
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD); //non-undoable command.
         logic.execute("delete 2");
 
         // Undo "delete 2"
@@ -1021,7 +1021,7 @@ public class LogicManagerTest {
 
         model.addTask(toBeUnmarked);
         // command to undo
-        logic.execute(ListCommand.LIST_COMPLETED_COMMAND_WORD);
+        logic.execute(ListCommand.LIST_ALL_COMMAND_WORD);
         logic.execute("unmark 1");
         logic.execute("undo");
         // execute command and verify result

@@ -96,7 +96,7 @@ public class Parser {
         case ListCommand.COMMAND_WORD:
             return prepareList(arguments, false);
 
-        case LIST_COMPLETED_COMMAND_WORD:
+        case LIST_ALL_COMMAND_WORD:
             return prepareList(arguments, true);
 
         case UndoCommand.COMMAND_WORD:
