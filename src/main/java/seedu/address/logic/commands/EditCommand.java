@@ -78,7 +78,7 @@ public class EditCommand extends UndoableCommand {
             }
 
             taskToEdit = lastShownList.get(targetIndex - 1);
-            originalLastModifiedTime = taskToEdit.getLastModifiedTime().plusDays(0);
+            originalLastModifiedTime = taskToEdit.getLastModifiedTime();
             update.setTask(taskToEdit);
             reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
             reverseUpdate.setTask(taskToEdit);

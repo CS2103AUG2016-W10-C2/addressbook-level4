@@ -59,7 +59,7 @@ public class TagCommand extends UndoableCommand {
             }
             
             taskToTag = lastShownList.get(targetIndex - 1);
-            originalLastModifiedTime = taskToTag.getLastModifiedTime().plusDays(0);
+            originalLastModifiedTime = taskToTag.getLastModifiedTime();
             tagsToAdd.removeFrom(taskToTag.getTags());
         }
 

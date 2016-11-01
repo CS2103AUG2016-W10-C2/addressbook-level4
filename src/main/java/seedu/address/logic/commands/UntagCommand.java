@@ -59,7 +59,7 @@ public class UntagCommand extends UndoableCommand {
             }
             
             taskToUntag = lastShownList.get(targetIndex - 1);
-            originalLastModifiedTime = taskToUntag.getLastModifiedTime().plusDays(0);
+            originalLastModifiedTime = taskToUntag.getLastModifiedTime();
             tagsToRemove.retainAll(taskToUntag.getTags());
         }
 

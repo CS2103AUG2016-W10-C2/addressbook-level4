@@ -42,7 +42,7 @@ public class UnmarkCommand extends UndoableCommand {
             }
     
             entryToUnmark = lastShownList.get(targetIndex - 1);
-            originalLastModifiedTime = entryToUnmark.getLastModifiedTime().plusDays(0);
+            originalLastModifiedTime = entryToUnmark.getLastModifiedTime();
             originalIsMarked= entryToUnmark.isMarked();
         }
 
