@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.PredicateBuilder;
 import seedu.address.model.task.Entry;
 
@@ -31,6 +32,7 @@ public class ListCommand extends Command {
     public static final String AFTER_FLAG = "after/";
     public static final String BEFORE_FLAG = "before/";
     public static final String ON_FLAG = "on/";
+    public static final String TYPE_FLAG = "type/";
 
     private Set<String> keywords;
     private Set<String> tags;
@@ -38,10 +40,14 @@ public class ListCommand extends Command {
     private LocalDateTime endDate;
     private LocalDateTime onDate;
     private final boolean includeCompleted;
+    private final String entryType;
     
     private final PredicateBuilder predicateBuilder = new PredicateBuilder();
     
-    public ListCommand(boolean includeCompleted) { this.includeCompleted = includeCompleted; }
+    public ListCommand(boolean includeCompleted, String entryType) {
+        this.includeCompleted = includeCompleted;
+        this.entryType = entryType;
+    }
 
     public void setKeywords(Set<String> keywords) {
         this.keywords = keywords;
@@ -68,10 +74,15 @@ public class ListCommand extends Command {
         if (isListAll()) {
             return showAll();
         } else {
-            Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted);
-            model.updateFilteredEntryListPredicate(predicate);
-
-            return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
+            try {
+                Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted, entryType);
+                model.updateFilteredEntryListPredicate(predicate);
+                return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
+            } catch (IllegalValueException e) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(e.getMessage());
+            }
+            
         }
     }
     

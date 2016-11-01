@@ -24,41 +24,78 @@ public class PredicateBuilder {
     /**
      * Return a chained Predicate from all the conditions indicated in params
      * @param keywords
+     * @param tags
      * @param startDate
      * @param endDate
      * @param onDate
-     * @param tags
+     * @param entryType TODO
      * @return pred the chained Predicate
+     * @throws IllegalValueException TODO
      */
-    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted) {
+    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, String entryType) throws IllegalValueException {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
-        if (!includeCompleted) {
-            pred = pred.and(buildCompletedPredicate(includeCompleted));
-        }
-
-        if (keywords != null && !keywords.isEmpty()) {
-            pred = pred.and(buildKeywordsPredicate(keywords));
-        }
-
-        if (tags != null && !tags.isEmpty()) {
-            pred = pred.and(buildTagsPredicate(tags));
-        }
-
-        if (onDate != null) {
-            pred = pred.and(buildOnPredicate(onDate));
-        } else {
-            if (startDate != null) {
-                pred = pred.and(buildAfterPredicate(startDate));
-            }
-            if (endDate != null) {
-                pred = pred.and(buildBeforePredicate(endDate));
-            }
-        }
+        pred = addCompletedPredicateIfExist(pred, includeCompleted);
+        pred = addKeywordsPredicateIfExist(pred, keywords);
+        pred = addTagPredicateIfExist(pred, tags);
+        pred = addDatePredicateIfExist(pred, onDate, startDate, endDate);
+        pred = addTypePredicateIfExist(pred, entryType);
 
         return pred;
 
     }
+    
+    private Predicate<Entry> addCompletedPredicateIfExist(Predicate<Entry> pred, boolean includeCompleted) {
+        Predicate<Entry> result = pred;
+        if (!includeCompleted) {
+            result = result.and(buildCompletedPredicate(includeCompleted));
+        }
+        return result;
+    }
+    
+    private Predicate<Entry> addKeywordsPredicateIfExist(Predicate<Entry> pred, Set<String> keywords) {
+        Predicate<Entry> result = pred;
+        if (keywords != null && !keywords.isEmpty()) {
+            result = result.and(buildKeywordsPredicate(keywords));
+        }
+        return result;
+    }
+    
+    private Predicate<Entry> addTagPredicateIfExist(Predicate<Entry> pred, Set<String> tags) {
+        Predicate<Entry> result = pred;
+        if (tags != null && !tags.isEmpty()) {
+            result = result.and(buildTagsPredicate(tags));
+        }
+        return result;
+    }
+    
+    private Predicate<Entry> addDatePredicateIfExist(Predicate<Entry> pred, LocalDateTime onDate, LocalDateTime startDate, LocalDateTime endDate) {
+        Predicate<Entry> result = pred;
+        if (onDate != null) {
+            result = result.and(buildOnPredicate(onDate));
+        } else {
+            if (startDate != null) {
+                result = result.and(buildAfterPredicate(startDate));
+            }
+            if (endDate != null) {
+                result = result.and(buildBeforePredicate(endDate));
+            }
+        }
+        return result;
+    }
+    
+    //@@author A0126539Y
+    private Predicate<Entry> addTypePredicateIfExist(Predicate<Entry> pred, String entryType) throws IllegalValueException {
+        Predicate<Entry> result = pred;
+        if (entryType != null && !entryType.isEmpty()) {
+            if (!entryType.equalsIgnoreCase(TypeQualifier.EVENT_TYPE_STRING) && !entryType.equalsIgnoreCase(TypeQualifier.TASK_TYPE_STRING)) {
+                throw new IllegalValueException(TypeQualifier.INVALID_TYPE_MESSAGE);
+            }
+            result = result.and(buildTypePredicate(entryType));
+        }
+        return result;
+    }
+    //@@author
 
     private Predicate<Entry> buildKeywordsPredicate(Set<String> keywords) {
         return new PredicateExpression(new TitleQualifier(keywords))::satisfies;
@@ -79,6 +116,12 @@ public class PredicateBuilder {
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
+    
+    //@@author A0126539Y-reused
+    private Predicate<Entry> buildTypePredicate(String entryType) {
+        return new PredicateExpression(new TypeQualifier(entryType))::satisfies;
+    }
+    //@@author
 
     private Predicate<Entry> buildCompletedPredicate(boolean includeCompleted) {
         return new PredicateExpression(new CompletedQualifier(includeCompleted))::satisfies;
@@ -263,6 +306,35 @@ public class PredicateBuilder {
         @Override
         public String toString() {
             return "Due on: " + onDate.toString();
+        }
+    }
+    
+    //@@author A0126539Y
+    private class TypeQualifier implements Qualifier {
+        private String type;
+        private static final String TASK_TYPE_STRING = "task";
+        private static final String EVENT_TYPE_STRING = "event";
+        private static final String INVALID_TYPE_MESSAGE = "Invalid type filtering. Please use either 'task' or 'event' as value.";
+
+        TypeQualifier(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public boolean run(Entry entry) {
+            switch (type) {
+            case TASK_TYPE_STRING:
+                return entry instanceof Task;
+            case EVENT_TYPE_STRING:
+                return entry instanceof Event;
+            default:
+                return false;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Type of: " + type;
         }
     }
 

@@ -20,13 +20,13 @@ public class HelpList extends ListView<HelpList.HelpItem> {
             "TAG", "UNTAG",
             "MARK", "UNMARK",
             "UNDO", "OPTION"};
-    
+
     private static final String[] HELP_TEXT = new String[]{
             "<ESCAPE-KEY>",
             "add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [r/<recurrence>] [desc/<description>]",
             "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]",
             "delete <task_id>",
-            "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]",
+            "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>] [type/{task, event}]]",
             "list-all [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]",
             "tag <task_id> #<tag_name> [#<tag_name> ...]",
             "untag <task_id> #<tag_name> [#<tag_name> ...]",

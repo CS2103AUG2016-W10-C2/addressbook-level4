@@ -188,7 +188,8 @@ public abstract class Entry {
             return buffer.substring(0, buffer.length() - DELIMITER.length());
         }
     }
-    
+
+    //@@author
     /**
      * returns a comparable time used to determine an entry's order
      */
