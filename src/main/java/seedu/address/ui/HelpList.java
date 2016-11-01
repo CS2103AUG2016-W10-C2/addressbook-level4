@@ -18,6 +18,8 @@ public class HelpList extends ListView<HelpList.HelpItem> {
     private static final String EDIT_HELP_TEXT = "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]\n";
     private static final String ESCAPE_HELP = "CLOSE HELP";
     private static final String ESCAPE_HELP_TEXT = "<ESCAPE-KEY>";
+    private static final String LIST_COMPLETED_HELP = "LIST-COMPLETED";
+    private static final String LIST_COMPLETED_HELP_TEXT = "list-completed [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]";
     private static final String LIST_HELP = "LIST";
     private static final String LIST_HELP_TEXT = "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [recurrence=<recurrence_value>] [desc=<description_value>]]";
     private static final String TAG_HELP = "TAG";
@@ -57,6 +59,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
         data.add(new HelpItem(ADD_HELP, ADD_HELP_TEXT));
         data.add(new HelpItem(EDIT_HELP, EDIT_HELP_TEXT));
         data.add(new HelpItem(LIST_HELP, LIST_HELP_TEXT));
+        data.add(new HelpItem(LIST_COMPLETED_HELP, LIST_COMPLETED_HELP_TEXT));
         data.add(new HelpItem(TAG_HELP, TAG_HELP_TEXT));
         data.add(new HelpItem(UNTAG_HELP, UNTAG_HELP_TEXT));
         data.add(new HelpItem(DELETE_HELP, DELETE_HELP_TEXT));
