@@ -46,49 +46,54 @@ public class PredicateBuilder {
     }
     
     private Predicate<Entry> addCompletedPredicateIfExist(Predicate<Entry> pred, boolean includeCompleted) {
+        Predicate<Entry> result = pred;
         if (!includeCompleted) {
-            pred = pred.and(buildCompletedPredicate(includeCompleted));
+            result = result.and(buildCompletedPredicate(includeCompleted));
         }
-        return pred;
+        return result;
     }
     
     private Predicate<Entry> addKeywordsPredicateIfExist(Predicate<Entry> pred, Set<String> keywords) {
+        Predicate<Entry> result = pred;
         if (keywords != null && !keywords.isEmpty()) {
-            pred = pred.and(buildKeywordsPredicate(keywords));
+            result = result.and(buildKeywordsPredicate(keywords));
         }
-        return pred;
+        return result;
     }
     
     private Predicate<Entry> addTagPredicateIfExist(Predicate<Entry> pred, Set<String> tags) {
+        Predicate<Entry> result = pred;
         if (tags != null && !tags.isEmpty()) {
-            pred = pred.and(buildTagsPredicate(tags));
+            result = result.and(buildTagsPredicate(tags));
         }
-        return pred;
+        return result;
     }
     
     private Predicate<Entry> addDatePredicateIfExist(Predicate<Entry> pred, LocalDateTime onDate, LocalDateTime startDate, LocalDateTime endDate) {
+        Predicate<Entry> result = pred;
         if (onDate != null) {
-            pred = pred.and(buildOnPredicate(onDate));
+            result = result.and(buildOnPredicate(onDate));
         } else {
             if (startDate != null) {
-                pred = pred.and(buildAfterPredicate(startDate));
+                result = result.and(buildAfterPredicate(startDate));
             }
             if (endDate != null) {
-                pred = pred.and(buildBeforePredicate(endDate));
+                result = result.and(buildBeforePredicate(endDate));
             }
         }
-        return pred;
+        return result;
     }
     
     //@@author A0126539Y
     private Predicate<Entry> addTypePredicateIfExist(Predicate<Entry> pred, String entryType) throws IllegalValueException {
+        Predicate<Entry> result = pred;
         if (entryType != null && !entryType.isEmpty()) {
             if (!entryType.equalsIgnoreCase(TypeQualifier.EVENT_TYPE_STRING) && !entryType.equalsIgnoreCase(TypeQualifier.TASK_TYPE_STRING)) {
                 throw new IllegalValueException(TypeQualifier.INVALID_TYPE_MESSAGE);
             }
-            pred = pred.and(buildTypePredicate(entryType));
+            result = result.and(buildTypePredicate(entryType));
         }
-        return pred;
+        return result;
     }
     //@@author
 
