@@ -5,6 +5,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.ReadOnlyTaskManager;
 import seedu.address.model.task.Entry;
+import seedu.address.model.task.EntryViewComparator;
 import seedu.address.model.task.UniqueTaskList;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -39,7 +40,7 @@ public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
      * Conversion
      */
     public XmlSerializableTaskManager(ReadOnlyTaskManager src) {
-        persons.addAll(src.getTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        persons.addAll(src.getUnsortedTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         tags = src.getTagList();
     }
 
@@ -70,6 +71,13 @@ public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
 
     @Override
     public List<Entry> getTaskList() {
+        List<Entry> list = getUnsortedTaskList();
+        Collections.sort(list, new EntryViewComparator());
+        return list;
+    }
+
+    @Override
+    public List<Entry> getUnsortedTaskList() {
         return persons.stream().map(p -> {
             try {
                 return p.toModelType();

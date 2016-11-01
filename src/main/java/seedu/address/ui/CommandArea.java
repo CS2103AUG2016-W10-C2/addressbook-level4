@@ -12,6 +12,7 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.DidMarkTaskEvent;
+import seedu.address.commons.events.ui.FocusCommandLineEvent;
 import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandHistory;
@@ -79,6 +80,7 @@ public class CommandArea extends VBox {
         logger.info("Result: " + mostRecentResult.feedbackToUser);
     }
 
+    // @@author A0127828W
     @FXML
     private void handleKeyPressedCommandArea(KeyEvent event) {
         switch (event.getCode()) {
@@ -103,21 +105,28 @@ public class CommandArea extends VBox {
         }
         cmdLine.setText(command);
     }
+    // @@author
+
+    // ##################
+    // # EVENT HANDLERS #
+    // ##################
+    @Subscribe
+    private void handleIncorrectCommandAttempted(IncorrectCommandAttemptedEvent event){
+        logger.info(LogsCenter.getEventHandlingLogMessage(event,"Invalid command: " + previousCommand));
+        setStyleToIndicateIncorrectCommand();
+        restoreCommandText();
+    }
 
     @Subscribe
     private void handleDidMarkTaskEvent(DidMarkTaskEvent event) {
         statusLine.setText(event.getCommandResult().feedbackToUser);
     }
 
-
-    // #################
-    // # EVENT HANDLER #
-    // #################
     @Subscribe
-    private void handleIncorrectCommandAttempted(IncorrectCommandAttemptedEvent event){
-        logger.info(LogsCenter.getEventHandlingLogMessage(event,"Invalid command: " + previousCommand));
-        setStyleToIndicateIncorrectCommand();
-        restoreCommandText();
+    private void handleFocusCommandLineEvent(FocusCommandLineEvent event) {
+        if (!cmdLine.isFocused()) {
+            cmdLine.requestFocus();
+        }
     }
 
     /**

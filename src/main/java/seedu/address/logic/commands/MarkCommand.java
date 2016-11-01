@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import java.time.LocalDateTime;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.logic.commands.UndoableCommand.CommandState;
@@ -21,6 +23,7 @@ public class MarkCommand extends UndoableCommand {
 
     private final int targetIndex;
     private Entry entryToMark;
+    private LocalDateTime originalLastModifiedTime;
     private boolean originalIsMarked;
 
     public MarkCommand(int targetIndex) {
@@ -39,6 +42,7 @@ public class MarkCommand extends UndoableCommand {
             }
     
             entryToMark = lastShownList.get(targetIndex - 1);
+            originalLastModifiedTime = entryToMark.getLastModifiedTime();
             originalIsMarked = entryToMark.isMarked();
         }
         
@@ -61,11 +65,10 @@ public class MarkCommand extends UndoableCommand {
         assert entryToMark != null;
 
         try {
-            if (originalIsMarked) {
-                model.markTask(entryToMark);
-            } else {
+            if (!originalIsMarked) {
                 model.unmarkTask(entryToMark);
             }
+            model.updateLastModifiedTime(entryToMark, originalLastModifiedTime);
             setRedoable();
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";

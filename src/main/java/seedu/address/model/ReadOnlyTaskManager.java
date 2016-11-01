@@ -23,6 +23,11 @@ public interface ReadOnlyTaskManager {
     List<Entry> getTaskList();
 
     /**
+     * Returns an unsorted unmodifiable view of tasks list
+     */
+    List<Entry> getUnsortedTaskList();
+
+    /**
      * Returns an unmodifiable view of tags list
      */
     List<Tag> getTagList();

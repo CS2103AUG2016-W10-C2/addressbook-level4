@@ -33,6 +33,7 @@ abstract class Controller {
 
     void show() {
         assert appView != null;
+        appView.setVisible(true);
         appView.toFront();
         getFadeTransition(DEFAULT_FADE_DURATION, OPAQUE).play();
     }
@@ -41,6 +42,7 @@ abstract class Controller {
         assert appView != null;
         getFadeTransition(DEFAULT_FADE_DURATION, TRANSPARENT).play();
         appView.toBack();
+        appView.setVisible(false);
     }
 
     private FadeTransition getFadeTransition(double duration, double newValue) {

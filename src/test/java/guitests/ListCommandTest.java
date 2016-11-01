@@ -1,7 +1,10 @@
 package guitests;
 
 import org.junit.Test;
+import java.util.Arrays;
+
 import seedu.address.commons.core.Messages;
+import seedu.address.model.task.EntryViewComparator;
 import seedu.address.testutil.TestEntry;
 
 import static org.junit.Assert.assertTrue;
@@ -32,6 +35,7 @@ public class ListCommandTest extends AddressBookGuiTest {
     }
 
     private void assertListResult(String command, TestEntry... expectedHits ) {
+        Arrays.sort(expectedHits, new EntryViewComparator());
         commandBox.runCommand(command);
         assertListSize(expectedHits.length);
         assertResultMessage(expectedHits.length + " entries listed!");

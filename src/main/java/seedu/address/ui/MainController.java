@@ -98,7 +98,7 @@ public class MainController extends UiPart {
         URL url = this.getClass().getResource(CSS_SOURCE);
         String css = url.toExternalForm();
         scene.getStylesheets().add(css);
-        addEscapeHandlerForScene();
+        addEscapeFilterForScene();
         scene.widthProperty().addListener(getWindowResizeEventListener());
     }
 
@@ -107,7 +107,7 @@ public class MainController extends UiPart {
      * A filter is used instead of a handler since the ListView or a particular
      * JavaFX node consumes the event only in the case of an `ESCAPE` key.
      */
-    private void addEscapeHandlerForScene() {
+    private void addEscapeFilterForScene() {
         assert scene != null;
         scene.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
