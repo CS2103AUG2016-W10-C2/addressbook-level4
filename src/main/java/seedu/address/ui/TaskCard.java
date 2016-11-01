@@ -73,7 +73,6 @@ public class TaskCard extends VBox {
         this.entry = entry;
         this.index = index;
         this.listener = listener;
-        this.checkBox.selectedProperty().bindBidirectional(entry.isMarkedProperty());
         initData();
     }
 
@@ -121,8 +120,8 @@ public class TaskCard extends VBox {
     }
 
     private void initCheckbox(Task task) {
-        checkBox.selectedProperty().addListener(listener);
         checkBox.setSelected(task.isMarked());
+        checkBox.selectedProperty().addListener(listener);
     }
 
     private void styleTask(String styleClass) {
