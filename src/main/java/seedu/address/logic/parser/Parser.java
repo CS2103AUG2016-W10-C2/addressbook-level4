@@ -443,26 +443,9 @@ public class Parser {
             ListCommand listCommand = new ListCommand(includeCompleted, typeString);
 
             // keywords delimited by whitespace
-            setKeywords(argsTokenizer, listCommand);
-
-            String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
-            String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
-            String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
-            Set<String> tags = getTagsFromArgs(argsTokenizer);
-
-            setTags(listCommand, tags);
-
-            // Ranged search and specific-day search should be mutually exclusive
-            if (isNotMutuallyExclusiveDates(onDateString, startDateString, endDateString)) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
-            }
-
-            if (onDateString.isEmpty() && !setValidDateRange(listCommand, startDateString, endDateString)) {
-                return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
-            } else {
-                final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString);
-                listCommand.setOnDate(onDate);
-            }
+            setKeywords(listCommand, argsTokenizer);
+            setValidDate(listCommand, argsTokenizer);
+            setTags(listCommand, argsTokenizer);
 
             return listCommand;
         } catch (IllegalValueException ive) {
@@ -470,7 +453,10 @@ public class Parser {
         }
     }
 
-    private void setKeywords(ArgumentTokenizer argsTokenizer, ListCommand listCommand) {
+    /**
+     * Set keywords conditions to list commands if input is valid
+     */
+    private void setKeywords(ListCommand listCommand, ArgumentTokenizer argsTokenizer) {
         Optional<String> keywordsString = argsTokenizer.getPreamble();
         if (keywordsString.isPresent()) {
             String[] keywords = keywordsString.get().split("\\s+");
@@ -486,33 +472,60 @@ public class Parser {
     }
 
     /**
-     * Return false if the provided dates are invalid
-     * Return true and set date attributes to listCommand otherwise
+     * Set date conditions to list commands if input is valid
      *
      * @throws IllegalValueException
      */
-    private boolean setValidDateRange(ListCommand listCommand, String startDateString, String endDateString) throws IllegalValueException {
-        final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
-        LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
-        if (endDate != null) {
-            endDate = endDate.plusDays(1).minusSeconds(1);
+    private void setValidDate(ListCommand listCommand, ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
+        String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
+        String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
+
+        // Ranged search and specific-day search should be mutually exclusive
+        if (isNotMutuallyExclusiveDates(onDateString, startDateString, endDateString)) {
+            throw new IllegalValueException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
         }
 
-        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-            return false;
+        if (onDateString.isEmpty()) {
+            final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
+            LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
+
+            if (endDate != null) {
+                endDate = endDate.plusDays(1).minusSeconds(1);
+            }
+
+            if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+                throw new IllegalValueException(ListCommand.MESSAGE_INVALID_DATE);
+            }
+
+            listCommand.setStartDate(startDate);
+            listCommand.setEndDate(endDate);
+        } else {
+            final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString);
+            listCommand.setOnDate(onDate);
         }
 
-        listCommand.setStartDate(startDate);
-        listCommand.setEndDate(endDate);
-        return true;
+
     }
 
-    private void setTags(ListCommand listCommand, Set<String> tags) {
+    /**
+     * Set tag conditions to list commands if input is valid
+     *
+     * @throws IllegalValueException
+     */
+    private void setTags(ListCommand listCommand, ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        Set<String> tags = getTagsFromArgs(argsTokenizer);
         if (!tags.isEmpty()) {
             listCommand.setTags(tags);
         }
     }
 
+    /**
+     * Return a string from an optional
+     * Return an empty string if there is no value present
+     * @param optional
+     * @return
+     */
     private static String unwrapOptionalStringOrEmpty(Optional<String> optional) {
         if (optional.isPresent()) {
             return optional.get();
@@ -521,6 +534,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Return a set of string from an optional
+     * Return an empty set if there is no value present
+     * @param optional
+     * @return
+     */
     private static Set<String> unwrapOptionalStringCollectionOrEmpty(Optional<List<String>> optional) {
         if (optional.isPresent()) {
             return new HashSet<String>(optional.get());
