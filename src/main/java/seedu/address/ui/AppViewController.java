@@ -70,6 +70,11 @@ public class AppViewController {
     // ##################
     // # HELPER METHODS #
     // ##################
+
+    /**
+     * Adds the LARGE_STYLE_CLASS to the root layout if the style class is not
+     * already added
+     */
     private void removeLargeStyleClass() {
         if (rootLayout.getStyleClass().contains(LARGE_STYLE_CLASS)) {
             Platform.runLater(() -> rootLayout.getStyleClass().remove(LARGE_STYLE_CLASS));
@@ -77,6 +82,10 @@ public class AppViewController {
         }
     }
 
+    /**
+     * Removes the LARGE_STYLE_CLASS from the root layout if the style class is
+     * present
+     */
     private void addLargeStyleClass() {
         if (!rootLayout.getStyleClass().contains(LARGE_STYLE_CLASS)) {
             Platform.runLater(() -> rootLayout.getStyleClass().add(LARGE_STYLE_CLASS));
