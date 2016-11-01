@@ -18,7 +18,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="28.0" prefWidth="500.0">
          <children>
-            <TextField fx:id="cmdLine" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleCommandInputChanged" prefHeight="27.0" prefWidth="500.0" promptText="A command prompt" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="cmdLine" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressedCommandArea" onAction="#handleCommandInputChanged" prefHeight="27.0" prefWidth="500.0" promptText="A command prompt" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>

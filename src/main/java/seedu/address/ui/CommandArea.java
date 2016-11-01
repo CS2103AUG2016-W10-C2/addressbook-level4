@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
@@ -12,8 +14,8 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.DidMarkTaskEvent;
 import seedu.address.commons.events.ui.FocusCommandLineEvent;
 import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
-import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.Logic;
+import seedu.address.logic.commands.CommandHistory;
 import seedu.address.logic.commands.CommandResult;
 
 import java.util.logging.Logger;
@@ -40,6 +42,8 @@ public class CommandArea extends VBox {
 
     private CommandResult mostRecentResult;
 
+    private CommandHistory commandHistoryManager;
+
     // ########
     // # FXML #
     // ########
@@ -57,6 +61,7 @@ public class CommandArea extends VBox {
 
         this.logic = logic;
         EventsCenter.getInstance().registerHandler(this);
+        commandHistoryManager = this.logic.getCommandHistoryManager();
     }
 
     @FXML
@@ -75,6 +80,33 @@ public class CommandArea extends VBox {
         logger.info("Result: " + mostRecentResult.feedbackToUser);
     }
 
+    // @@author A0127828W
+    @FXML
+    private void handleKeyPressedCommandArea(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP:
+                fillUpCommandLine(commandHistoryManager.getPreviousCommand());
+                logger.info("UP key entered");
+                break;
+            case DOWN:
+                fillUpCommandLine(commandHistoryManager.getNextCommand());
+                logger.info("DOWN key entered");
+                break;
+        }
+    }
+
+    /**
+     * Fill the command line with an input string
+     */
+    private void fillUpCommandLine(String command) {
+        if (command == null) {
+            logger.info("Reached command history limit.");
+            return;
+        }
+        cmdLine.setText(command);
+    }
+    // @@author
+
     // ##################
     // # EVENT HANDLERS #
     // ##################
@@ -85,6 +117,7 @@ public class CommandArea extends VBox {
         restoreCommandText();
     }
 
+    // @@author A0116603R
     @Subscribe
     private void handleDidMarkTaskEvent(DidMarkTaskEvent event) {
         statusLine.setText(event.getCommandResult().feedbackToUser);
