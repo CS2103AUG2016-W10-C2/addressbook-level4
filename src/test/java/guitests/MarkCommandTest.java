@@ -7,6 +7,7 @@ import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.commands.MarkCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.UnmarkCommand;
+import seedu.address.model.task.Entry;
 import seedu.address.testutil.EventsCollector;
 
 import static junit.framework.TestCase.assertFalse;
@@ -19,8 +20,10 @@ public class MarkCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void markFloatingTask_viaCommandBox() {
+        Entry entry = taskList.getEntry(testIndex);
+        boolean isMarked = entry.isMarked();
         markTask(testIndex+1);
-        assertResultMessage(String.format(MarkCommand.MESSAGE_SUCCESS, taskList.getEntry(testIndex)));
+        assertTrue(isMarked != entry.isMarked());
 
         markTask(Integer.MAX_VALUE);
         assertResultMessage(MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
@@ -28,23 +31,23 @@ public class MarkCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void markFloatingTask_viaGuiClick() {
+        Entry entry = taskList.getEntry(testIndex);
         TaskCardHandle tch = taskList.getTaskCardHandle(testIndex);
 
-        EventsCollector collector = new EventsCollector();
         String expectedMsg = tch.getIsMarked() ? UnmarkCommand.MESSAGE_SUCCESS : MarkCommand.MESSAGE_SUCCESS;
         tch.toggleCheckBox();
-        assertTrue(collector.get(0) instanceof MarkTaskEvent);
-        assertResultMessage(String.format(expectedMsg, taskList.getEntry(testIndex)));
+        assertResultMessage(String.format(expectedMsg, entry));
     }
 
     @Test
     public void markFloatingTaskAndUndo() {
+        Entry entry = taskList.getEntry(testIndex);
         TaskCardHandle tch = taskList.getTaskCardHandle(testIndex);
         boolean currState = tch.getIsMarked();
         markTask(testIndex+1);
-        assertTrue(currState != tch.getIsMarked());
+        assertTrue(currState != entry.isMarked());
         commandBox.runCommand(UndoCommand.COMMAND_WORD);
-        assertTrue(currState == tch.getIsMarked());
+        assertTrue(currState == entry.isMarked());
     }
 
     // Run the mark command in the command box. Note that the gui uses 1-based indexing.
