@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * The main LogicManager of the app.
  */
-public class LogicManager extends ComponentManager implements Logic {
+public class LogicManager extends ComponentManager implements Logic, CommandHistory {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final Model model;
@@ -96,4 +96,29 @@ public class LogicManager extends ComponentManager implements Logic {
     private void handleMarkTaskEvent(MarkTaskEvent event) {
         EventsCenter.getInstance().post(new DidMarkTaskEvent(execute(event.getCommandString())));
     }
+
+    // ###################
+    // # COMMAND HISTORY #
+    // ###################
+
+    @Override
+    public void appendCommand(String string) {
+
+    }
+
+    @Override
+    public String getPreviousCommand() {
+        return null;
+    }
+
+    @Override
+    public String getNextCommand() {
+        return null;
+    }
+
+    @Override
+    public void resetPosition() {
+
+    }
+
 }
