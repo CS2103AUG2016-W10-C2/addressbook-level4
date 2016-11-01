@@ -3,10 +3,10 @@ package seedu.address.logic.commands;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+//@@author A0121501E
 /**
  * Stack of successfully executed undoable commands.
  */
-//@@author A0121501E
 public class UndoableCommandHistory {
     Deque<UndoableCommand> commandInternalUndoQueue = new ArrayDeque<UndoableCommand>();
     Deque<UndoableCommand> commandInternalRedoQueue = new ArrayDeque<UndoableCommand>();

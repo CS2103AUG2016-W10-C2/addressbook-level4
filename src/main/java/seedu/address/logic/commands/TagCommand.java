@@ -13,10 +13,10 @@ import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
-/*
- * Add tags to an entry.
- */
 //@@author A0121501E
+/*
+ * Add tags to an entry. Does not overwrite existing tags.
+ */
 public class TagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "tag";

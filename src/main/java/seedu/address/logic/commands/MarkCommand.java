@@ -9,6 +9,9 @@ import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 //@@author A0121501E
+/**
+ * Marks an entry as completed.
+ */
 public class MarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "mark";
 

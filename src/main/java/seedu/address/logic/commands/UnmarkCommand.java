@@ -9,11 +9,14 @@ import seedu.address.model.task.Entry;
 import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 
 //@@author A0121501E
+/**
+ * Unmarks an entry.
+ */
 public class UnmarkCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "unmark";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Unmarks the entry as completed. "
+            + ": Unmarks the entry. "
             + "Identified by the index number used in the last entry listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";

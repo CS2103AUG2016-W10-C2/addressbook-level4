@@ -1,10 +1,10 @@
 package seedu.address.logic.commands;
 
+//@@author A0121501E
 /**
  * Represents a command which changes to the model can be undone using the undo command
  * and redone using the redo command
  */
-//@@author A0121501E
 public abstract class UndoableCommand extends Command {
 
     public enum CommandState {UNDOABLE, REDOABLE, PRE_EXECUTION};
@@ -14,6 +14,9 @@ public abstract class UndoableCommand extends Command {
     public CommandState commandState = CommandState.PRE_EXECUTION;
     public abstract CommandResult unexecute();
 
+    /**
+     * Re-executes the command which was previously undone.
+     */
     public CommandResult reExecute() {
         if (getCommandState()!=CommandState.REDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
