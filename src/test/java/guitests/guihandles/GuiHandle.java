@@ -2,6 +2,7 @@ package guitests.guihandles;
 
 import guitests.GuiRobot;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -31,7 +32,7 @@ public class GuiHandle {
         focusOnSelf();
     }
 
-    public void focusOnWindow(String stageTitle) {
+    private void focusOnWindow(String stageTitle) {
         logger.info("Focusing " + stageTitle);
         java.util.Optional<Window> window = guiRobot.listTargetWindows()
                 .stream()
@@ -47,33 +48,7 @@ public class GuiHandle {
         logger.info("Finishing focus " + stageTitle);
     }
 
-    protected Node getNode(String query) {
-        return guiRobot.lookup(query).tryQuery().get();
-    }
-
-    protected String getTextFieldText(String field) {
-        return ((TextField) getNode(field)).getText();
-    }
-
-    protected void setTextField(String textFieldId, String newText) {
-        guiRobot.clickOn(textFieldId);
-        ((TextField)primaryStage.getScene().lookup(textFieldId)).setText(newText);
-        guiRobot.sleep(500); // so that the texts stays visible on the GUI for a short period
-    }
-
-    public void pressEnter() {
-        guiRobot.type(KeyCode.ENTER).sleep(500);
-    }
-
-    public void pressEscape() {
-        guiRobot.type(KeyCode.ESCAPE).sleep(500);
-    }
-
-    protected String getTextFromLabel(String fieldId, Node parentNode) {
-        return ((Label) guiRobot.from(parentNode).lookup(fieldId).tryQuery().get()).getText();
-    }
-
-    public void focusOnSelf() {
+    private void focusOnSelf() {
         if (stageTitle != null) {
             focusOnWindow(stageTitle);
         }
@@ -95,5 +70,34 @@ public class GuiHandle {
         guiRobot.targetWindow(window.get());
         guiRobot.interact(() -> ((Stage)window.get()).close());
         focusOnMainApp();
+    }
+
+    protected Node getNode(String query) {
+        return guiRobot.lookup(query).tryQuery().get();
+    }
+
+    protected String getTextFieldText(String field) {
+        return ((TextField) getNode(field)).getText();
+    }
+
+    protected void setTextField(String textFieldId, String newText) {
+        guiRobot.clickOn(textFieldId);
+        ((TextField)primaryStage.getScene().lookup(textFieldId)).setText(newText);
+    }
+
+    protected String getTextFromLabel(String fieldId, Node parentNode) {
+        return ((Label) guiRobot.from(parentNode).lookup(fieldId).tryQuery().get()).getText();
+    }
+
+    protected boolean getMarkedStatusFromCheckbox(String fieldId, Node parentNode) {
+        return ((CheckBox)guiRobot.from(parentNode).lookup(fieldId).tryQuery().get()).isSelected();
+    }
+
+    public void pressEnter() {
+        guiRobot.type(KeyCode.ENTER).sleep(50);
+    }
+
+    public void pressEscape() {
+        guiRobot.type(KeyCode.ESCAPE).sleep(200);
     }
 }

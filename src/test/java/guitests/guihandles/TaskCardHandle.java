@@ -2,6 +2,7 @@ package guitests.guihandles;
 
 import guitests.GuiRobot;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import seedu.address.model.task.Entry;
 
@@ -13,16 +14,21 @@ public class TaskCardHandle extends GuiHandle {
     private static final String DESCRIPTION_FIELD_ID = "#description";
     private static final String TAGS_FIELD_ID = "#tags";
     private static final String DEADLINE_FIELD_ID = "#deadline";
+    private static final String CHECKBOX_FIELD_ID = "#checkBox";
 
     private Node node;
 
-    public TaskCardHandle(GuiRobot guiRobot, Stage primaryStage, Node node){
+    TaskCardHandle(GuiRobot guiRobot, Stage primaryStage, Node node){
         super(guiRobot, primaryStage, null);
         this.node = node;
     }
 
-    protected String getTextFromLabel(String fieldId) {
+    private String getTextFromLabel(String fieldId) {
         return getTextFromLabel(fieldId, node);
+    }
+
+    private boolean getMarkedStatusFromCheckbox(String fieldId) {
+        return getMarkedStatusFromCheckbox(fieldId, node);
     }
 
     public String getTitle() {
@@ -39,6 +45,19 @@ public class TaskCardHandle extends GuiHandle {
 
     public String getDeadline() {
         return getTextFromLabel(DEADLINE_FIELD_ID);
+    }
+
+    public boolean getIsMarked() {
+        return getMarkedStatusFromCheckbox(CHECKBOX_FIELD_ID);
+    }
+
+    private CheckBox getCheckBox() {
+        return (CheckBox) guiRobot.from(node).lookup(CHECKBOX_FIELD_ID).tryQuery().get();
+    }
+
+    public void toggleCheckBox() {
+        CheckBox checkBox = getCheckBox();
+        guiRobot.clickOn(checkBox);
     }
 
     public boolean isSameEntry(Entry entry){

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * A GUI Test class for TaskManager.
  */
-public abstract class AddressBookGuiTest {
+public abstract class TaskManagerGuiTest {
 
     /* The TestName Rule makes the current test name available inside test methods */
     @Rule
@@ -57,7 +57,7 @@ public abstract class AddressBookGuiTest {
     public void setup() throws Exception {
         FxToolkit.setupStage((stage) -> {
             mainGui = new MainGuiHandle(new GuiRobot(), stage);
-            taskList = mainGui.getPersonListPanel();
+            taskList = mainGui.getTaskListPanel();
             resultDisplay = mainGui.getResultDisplay();
             commandBox = mainGui.getCommandBox();
             this.stage = stage;
@@ -75,7 +75,8 @@ public abstract class AddressBookGuiTest {
      */
     protected TaskManager getInitialData() {
         TaskManager ab = TestUtil.generateEmptyAddressBook();
-        TypicalTestTasks.loadAddressBookWithSampleData(ab);
+        TypicalTestTasks typicalTestTasks = new TypicalTestTasks();
+        typicalTestTasks.loadAddressBookWithSampleData(ab);
         return ab;
     }
 

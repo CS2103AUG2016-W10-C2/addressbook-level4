@@ -34,6 +34,11 @@ public class EntryBuilder {
         return this;
     }
 
+    public EntryBuilder withDescription(String description) {
+        entry.setDescription(description);
+        return this;
+    }
+
     public EntryBuilder withLastModifiedDate(LocalDateTime localDateTime) throws IllegalValueException {
         this.entry.setLastModifiedTime(localDateTime);
         return this;

@@ -10,12 +10,17 @@ import seedu.address.commons.util.FileUtil;
 import seedu.address.model.TaskManager;
 import seedu.address.model.ReadOnlyTaskManager;
 import seedu.address.model.task.Task;
+import seedu.address.testutil.TestEntry;
 import seedu.address.testutil.TypicalTestTasks;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class XmlAddressBookStorageTest {
     private static String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/XmlAddressBookStorageTest/");
@@ -62,7 +67,7 @@ public class XmlAddressBookStorageTest {
     public void readAndSaveAddressBook_allInOrder_success() throws Exception {
         String filePath = testFolder.getRoot().getPath() + "TempAddressBook.xml";
         TypicalTestTasks td = new TypicalTestTasks();
-        TaskManager original = td.getTypicalAddressBook();
+        TaskManager original = td.getTypicalTaskManager();
         XmlTaskManagerStorage xmlTaskManagerStorage = new XmlTaskManagerStorage(filePath);
 
         //Save in new file and read back
@@ -71,14 +76,21 @@ public class XmlAddressBookStorageTest {
         assertEquals(original, new TaskManager(readBack));
 
         //Modify data, overwrite exiting file, and read back
-        original.addTask(new Task(TypicalTestTasks.homework));
-        original.removeEntry(new Task(TypicalTestTasks.apple));
+        List<TestEntry> typicalEntries = td.getNonSampleEntries();
+        assertTrue(typicalEntries.size() >= 3);
+        Iterator<TestEntry> testEntries = typicalEntries.iterator();
+
+        if (testEntries.hasNext()) {
+            original.addTask(new Task(testEntries.next()));
+        }
         xmlTaskManagerStorage.saveTaskManager(original, filePath);
         readBack = xmlTaskManagerStorage.readTaskManager(filePath).get();
         assertEquals(original, new TaskManager(readBack));
 
         //Save and read without specifying file path
-        original.addTask(new Task(TypicalTestTasks.movie));
+        if (testEntries.hasNext()) {
+            original.addTask(new Task(testEntries.next()));
+        }
         xmlTaskManagerStorage.saveTaskManager(original); //file path not specified
         readBack = xmlTaskManagerStorage.readTaskManager().get(); //file path not specified
         assertEquals(original, new TaskManager(readBack));

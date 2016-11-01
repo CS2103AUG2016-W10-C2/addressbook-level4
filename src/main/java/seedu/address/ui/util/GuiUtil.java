@@ -1,5 +1,6 @@
 package seedu.address.ui.util;
 
+import com.google.common.annotations.VisibleForTesting;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import seedu.address.commons.core.EventsCenter;
@@ -29,9 +30,10 @@ public class GuiUtil {
 
     public static final String EVENT_DESCRIPTION_STYLE_CLASS = "event";
 
-    private static String PAST_STYLE_CLASS = "past";
-    private static String ACTIVE_STYLE_CLASS = "present";
-    private static String OVERDUE_STYLE_CLASS = "overdue";
+    @VisibleForTesting
+    public static String PAST_STYLE_CLASS = "past";
+    public static String ACTIVE_STYLE_CLASS = "present";
+    public static String OVERDUE_STYLE_CLASS = "overdue";
 
     public static ChangeListener<Boolean> getCheckBoxEventListener(int idx) {
         return (ov, old_val, new_val) -> EventsCenter.getInstance().post(new MarkTaskEvent(idx, new_val));

@@ -1,22 +1,26 @@
 package guitests;
 
 import org.junit.Test;
+import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.testutil.TestEntry;
+import seedu.address.testutil.TypicalTestTasks;
 
 import static org.junit.Assert.assertTrue;
 
-public class ClearCommandTest extends AddressBookGuiTest {
+public class ClearCommandTest extends TaskManagerGuiTest {
 
     @Test
     public void clear() {
-
         //verify a non-empty list can be cleared
         assertTrue(taskList.isListMatching(td.getTypicalSortedPersons()));
         assertClearCommandSuccess();
 
         //verify other commands can work after a clear command
-        commandBox.runCommand(td.homework.getAddCommand());
-        assertTrue(taskList.isListMatching(td.homework));
-        commandBox.runCommand("delete 1");
+        TestEntry testEntry = td.getTestEntry(TypicalTestTasks.BuyTasks.TASK_1);
+        commandBox.runCommand(testEntry.getAddCommand());
+        assertTrue(taskList.isListMatching(testEntry));
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 1");
         assertListSize(0);
 
         //verify clear command works when the list is empty
@@ -24,8 +28,8 @@ public class ClearCommandTest extends AddressBookGuiTest {
     }
 
     private void assertClearCommandSuccess() {
-        commandBox.runCommand("clear");
+        commandBox.runCommand(ClearCommand.COMMAND_WORD);
         assertListSize(0);
-        assertResultMessage("Todo list has been cleared!");
+        assertResultMessage(ClearCommand.MESSAGE_SUCCESS);
     }
 }

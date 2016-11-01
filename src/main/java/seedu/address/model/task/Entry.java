@@ -157,7 +157,7 @@ public abstract class Entry {
 
     //@@author A0116603R
     /**
-     * Formats the Entry as text, showing all contact details.
+     * Formats the Entry as text, showing all task details.
      */
     public String getAsText() {
         final StringBuilder builder = new StringBuilder();
