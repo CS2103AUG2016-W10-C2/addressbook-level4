@@ -4,10 +4,10 @@ import seedu.address.logic.commands.UndoableCommand.CommandState;
 import seedu.address.logic.commands.UndoableCommandHistory.UndoableCommandNotFoundException;
 import seedu.address.model.Model;
 
+//@@author A0121501E
 /**
  * Undo the previous undoable command.
  */
-//@@author A0121501E
 public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";

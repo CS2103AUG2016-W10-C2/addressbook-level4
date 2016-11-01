@@ -13,10 +13,10 @@ import seedu.address.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
+//@@author A0121501E
 /*
  * Remove tags from an entry.
  */
-//@@author A0121501E
 public class UntagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "untag";
