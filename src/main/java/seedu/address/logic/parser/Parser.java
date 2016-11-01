@@ -96,7 +96,7 @@ public class Parser {
         case ListCommand.COMMAND_WORD:
             return prepareList(arguments, false);
 
-        case ListCommand.LIST_COMPLETED_COMMAND_WORD:
+        case LIST_COMPLETED_COMMAND_WORD:
             return prepareList(arguments, true);
 
         case UndoCommand.COMMAND_WORD:
@@ -441,51 +441,73 @@ public class Parser {
             ListCommand listCommand = new ListCommand(includeCompleted);
 
             // keywords delimited by whitespace
-            Optional<String> keywordsString = argsTokenizer.getPreamble();
-            if (keywordsString.isPresent()) {
-                String[] keywords = keywordsString.get().split("\\s+");
-
-                Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-                keywordSet.removeIf(s -> "".equals(s));
-                listCommand.setKeywords(keywordSet);
-            }
+            setKeywords(argsTokenizer, listCommand);
 
             String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
             String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
             String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
             Set<String> tags = getTagsFromArgs(argsTokenizer);
 
-            if (!tags.isEmpty()) {
-                listCommand.setTags(tags);
-            }
+            setTags(listCommand, tags);
 
             // Ranged search and specific-day search should be mutually exclusive
-            if (!onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty())) {
+            if (isNotMutuallyExclusiveDates(onDateString, startDateString, endDateString)) {
                 return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_MUTUALLY_EXCLUSIVE_OPTIONS));
             }
 
-            if (onDateString.isEmpty()) {
-                final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
-                LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
-                if (endDate != null) {
-                    endDate = endDate.plusDays(1).minusSeconds(1);
-                }
-
-                if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-                    return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
-                }
-
-                listCommand.setStartDate(startDate);
-                listCommand.setEndDate(endDate);
+            if (onDateString.isEmpty() && !setValidDateRange(listCommand, startDateString, endDateString)) {
+                return new IncorrectCommand(ListCommand.MESSAGE_INVALID_DATE);
             } else {
                 final LocalDateTime onDate = getLocalDateTimeFromArgument(onDateString);
-
                 listCommand.setOnDate(onDate);
             }
 
             return listCommand;
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
+        }
+    }
+
+    private void setKeywords(ArgumentTokenizer argsTokenizer, ListCommand listCommand) {
+        Optional<String> keywordsString = argsTokenizer.getPreamble();
+        if (keywordsString.isPresent()) {
+            String[] keywords = keywordsString.get().split("\\s+");
+
+            Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+            keywordSet.removeIf(s -> "".equals(s));
+            listCommand.setKeywords(keywordSet);
+        }
+    }
+
+    private boolean isNotMutuallyExclusiveDates(String onDateString, String startDateString, String endDateString) {
+        return !onDateString.isEmpty() && (!startDateString.isEmpty() || !endDateString.isEmpty());
+    }
+
+    /**
+     * Return false if the provided dates are invalid
+     * Return true and set date attributes to listCommand otherwise
+     *
+     * @throws IllegalValueException
+     */
+    private boolean setValidDateRange(ListCommand listCommand, String startDateString, String endDateString) throws IllegalValueException {
+        final LocalDateTime startDate = getLocalDateTimeFromArgument(startDateString);
+        LocalDateTime endDate = getLocalDateTimeFromArgument(endDateString);
+        if (endDate != null) {
+            endDate = endDate.plusDays(1).minusSeconds(1);
+        }
+
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            return false;
+        }
+
+        listCommand.setStartDate(startDate);
+        listCommand.setEndDate(endDate);
+        return true;
+    }
+
+    private void setTags(ListCommand listCommand, Set<String> tags) {
+        if (!tags.isEmpty()) {
+            listCommand.setTags(tags);
         }
     }
 
