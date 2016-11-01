@@ -6,6 +6,7 @@ import seedu.address.model.task.Entry;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 
+//@@author A0116603R
 public class UnmarkCommandTest extends TaskManagerGuiTest{
     @Test
     public void unmarkFloatingTask() {

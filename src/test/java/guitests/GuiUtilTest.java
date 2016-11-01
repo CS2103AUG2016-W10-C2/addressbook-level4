@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import static org.junit.Assert.assertEquals;
 import static seedu.address.ui.util.GuiUtil.*;
 
+//@@author A0116603R
 public class GuiUtilTest {
 
     private LocalDateTime now = LocalDateTime.now();

@@ -14,6 +14,7 @@ import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 
+//@@author A0116603R
 public class MarkCommandTest extends TaskManagerGuiTest {
 
     private int testIndex = 0;

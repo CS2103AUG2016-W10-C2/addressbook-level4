@@ -22,6 +22,7 @@ public class CommandBoxTest extends TaskManagerGuiTest {
         assertEquals(commandBox.getCommandInput(), "invalid command text remains");
     }
 
+    //@@author A0116603R
     @Test
     public void commandBox_commandFails_redBorder() {
         commandBox.runCommand("invalid command produces error styling");
