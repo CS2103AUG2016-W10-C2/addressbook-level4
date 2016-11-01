@@ -117,6 +117,7 @@ public class CommandArea extends VBox {
         restoreCommandText();
     }
 
+    // @@author A0116603R
     @Subscribe
     private void handleDidMarkTaskEvent(DidMarkTaskEvent event) {
         statusLine.setText(event.getCommandResult().feedbackToUser);
