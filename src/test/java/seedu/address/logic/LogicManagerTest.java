@@ -282,7 +282,7 @@ public class LogicManagerTest {
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
-        List<Task> entryList = helper.generateEntreList(2);
+        List<Task> entryList = helper.generateEntryList(2);
 
         // set AB state to 2 entries
         model.resetData(new TaskManager());
@@ -307,7 +307,7 @@ public class LogicManagerTest {
     @Test
     public void execute_delete_removesCorrectPerson() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> threePersons = helper.generateEntreList(3);
+        List<Task> threePersons = helper.generateEntryList(3);
 
         TaskManager expectedAB = helper.generateTodoList(threePersons);
         expectedAB.removeEntry(threePersons.get(1));
@@ -1195,7 +1195,7 @@ public class LogicManagerTest {
          * @param taskManager The TaskManager to which the Persons will be added
          */
         void addToAddressBook(TaskManager taskManager, int numGenerated) throws Exception{
-            addToAddressBook(taskManager, generateEntreList(numGenerated));
+            addToAddressBook(taskManager, generateEntryList(numGenerated));
         }
 
         /**
@@ -1221,7 +1221,7 @@ public class LogicManagerTest {
          * @param model The model to which the Persons will be added
          */
         void addToModel(Model model, int numGenerated) throws Exception{
-            addToModel(model, generateEntreList(numGenerated));
+            addToModel(model, generateEntryList(numGenerated));
         }
 
         /**
@@ -1245,7 +1245,7 @@ public class LogicManagerTest {
         /**
          * Generates a list of Persons based on the flags.
          */
-        List<Task> generateEntreList(int numGenerated) throws Exception{
+        List<Task> generateEntryList(int numGenerated) throws Exception{
             List<Task> entries = new ArrayList<>();
             for(int i = 1; i <= numGenerated; i++){
                 entries.add(generateTask(i));
