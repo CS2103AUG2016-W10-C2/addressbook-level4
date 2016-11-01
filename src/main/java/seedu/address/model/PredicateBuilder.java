@@ -24,13 +24,15 @@ public class PredicateBuilder {
     /**
      * Return a chained Predicate from all the conditions indicated in params
      * @param keywords
+     * @param tags
      * @param startDate
      * @param endDate
      * @param onDate
-     * @param tags
+     * @param entryType TODO
      * @return pred the chained Predicate
+     * @throws IllegalValueException TODO
      */
-    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted) {
+    public Predicate<Entry> buildPredicate(Set<String> keywords, Set<String> tags, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, String entryType) throws IllegalValueException {
         // Initial predicate
         Predicate<Entry> pred = e -> true;
         if (!includeCompleted) {
@@ -54,6 +56,13 @@ public class PredicateBuilder {
             if (endDate != null) {
                 pred = pred.and(buildBeforePredicate(endDate));
             }
+        }
+        
+        if (entryType != null && !entryType.isEmpty()) {
+            if (!entryType.equalsIgnoreCase(TypeQualifier.EVENT_TYPE_STRING) && !entryType.equalsIgnoreCase(TypeQualifier.TASK_TYPE_STRING)) {
+                throw new IllegalValueException(TypeQualifier.INVALID_TYPE_MESSAGE);
+            }
+            pred = pred.and(buildTypePredicate(entryType));
         }
 
         return pred;
@@ -79,6 +88,12 @@ public class PredicateBuilder {
     private Predicate<Entry> buildOnPredicate(LocalDateTime onDate) {
         return new PredicateExpression(new DateOnQualifier(onDate))::satisfies;
     }
+    
+    //@@author A0126539Y-reused
+    private Predicate<Entry> buildTypePredicate(String entryType) {
+        return new PredicateExpression(new TypeQualifier(entryType))::satisfies;
+    }
+    //@@author
 
     private Predicate<Entry> buildCompletedPredicate(boolean includeCompleted) {
         return new PredicateExpression(new CompletedQualifier(includeCompleted))::satisfies;
@@ -263,6 +278,35 @@ public class PredicateBuilder {
         @Override
         public String toString() {
             return "Due on: " + onDate.toString();
+        }
+    }
+    
+    //@@author A0126539Y
+    private class TypeQualifier implements Qualifier {
+        private String type;
+        private static final String TASK_TYPE_STRING = "task";
+        private static final String EVENT_TYPE_STRING = "event";
+        private static final String INVALID_TYPE_MESSAGE = "Invalid type filtering. Please use either 'task' or 'event' as value.";
+
+        TypeQualifier(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public boolean run(Entry entry) {
+            switch (type) {
+            case TASK_TYPE_STRING:
+                return entry instanceof Task;
+            case EVENT_TYPE_STRING:
+                return entry instanceof Event;
+            default:
+                return false;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Type of: " + type;
         }
     }
 
