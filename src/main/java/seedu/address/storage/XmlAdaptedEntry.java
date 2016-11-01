@@ -27,7 +27,7 @@ public class XmlAdaptedEntry {
 
     @XmlElement
     private String end;
-    
+
     @XmlElement
     private String lastModified;
 
@@ -36,6 +36,9 @@ public class XmlAdaptedEntry {
 
     @XmlElement
     private boolean isMarked;
+
+    @XmlElement
+    private long recursion;
 
     /**
      * No-arg constructor for JAXB use.
@@ -67,6 +70,7 @@ public class XmlAdaptedEntry {
             Event event = (Event)source;
             start = event.getStartTime().toString();
             end=  event.getEndTime().toString();
+            recursion = event.getRecursion();
         }
     }
 
@@ -88,7 +92,7 @@ public class XmlAdaptedEntry {
         LocalDateTime lastModifiedTime = LocalDateTime.parse(lastModified);
 
         if (startTime != null) {
-            return new Event(title, startTime, endTime, tags, isMarked, description, lastModifiedTime);
+            return new Event(title, startTime, endTime, tags, isMarked, description, recursion, lastModifiedTime);
         }
         return new Task(title, endTime, tags, isMarked, description, lastModifiedTime);
     }

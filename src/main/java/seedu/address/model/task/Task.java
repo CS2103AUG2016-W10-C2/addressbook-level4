@@ -31,11 +31,7 @@ public class Task extends Entry {
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
         this.description = new SimpleStringProperty(description);
-        if (deadline != null) {
-            this.deadline = new SimpleObjectProperty<>(deadline);
-        } else {
-            this.deadline = new SimpleObjectProperty<>();
-        }
+        this.deadline = deadline == null ? new SimpleObjectProperty<>() : new SimpleObjectProperty<>(deadline);
         this.lastModifiedTime = new SimpleObjectProperty<>(lastModifiedTime);
     }
 
@@ -97,7 +93,7 @@ public class Task extends Entry {
                 && other.getAsText().equals(this.getAsText())
                 && other.isMarked() == this.isMarked());
     }
-    
+
     public boolean isFloatingTask() {
         return deadline.get() == null;
     }
