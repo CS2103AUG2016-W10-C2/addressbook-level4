@@ -54,6 +54,9 @@ public class AppViewController {
         this.logic = logic;
     }
 
+    // #################
+    // # EVENT HANDLER #
+    // #################
     @Subscribe
     private void handleWindowResizeEvent(WindowResizeEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -64,6 +67,9 @@ public class AppViewController {
         }
     }
 
+    // ##################
+    // # HELPER METHODS #
+    // ##################
     private void removeLargeStyleClass() {
         if (rootLayout.getStyleClass().contains(LARGE_STYLE_CLASS)) {
             Platform.runLater(() -> rootLayout.getStyleClass().remove(LARGE_STYLE_CLASS));
