@@ -94,7 +94,7 @@ public class GuiHandle {
     }
 
     public void pressEnter() {
-        guiRobot.type(KeyCode.ENTER).sleep(50);
+        guiRobot.type(KeyCode.ENTER).sleep(100);
     }
 
     public void pressEscape() {
