@@ -77,7 +77,7 @@ public class ListCommand extends Command {
             try {
                 Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted, entryType);
                 model.updateFilteredEntryListPredicate(predicate);
-                return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
+                return new CommandResult(getMessageForEntryListShownSummary(model.getFilteredPersonList().size()));
             } catch (IllegalValueException e) {
                 indicateAttemptToExecuteIncorrectCommand();
                 return new CommandResult(e.getMessage());
