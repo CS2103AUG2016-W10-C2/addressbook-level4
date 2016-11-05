@@ -6,7 +6,7 @@ import seedu.todolist.testutil.TestEntry;
 import seedu.todolist.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.todolist.logic.commands.DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
+import static seedu.todolist.logic.commands.DeleteCommand.MESSAGE_DELETE_ENTRY_SUCCESS;
 
 public class DeleteCommandTest extends TaskManagerGuiTest {
 
@@ -49,7 +49,7 @@ public class DeleteCommandTest extends TaskManagerGuiTest {
         assertTrue(taskList.isListMatching(expectedRemainder));
 
         //confirm the result message is correct
-        assertResultMessage(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+        assertResultMessage(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, personToDelete));
     }
 
 }

@@ -18,8 +18,8 @@ public class DeleteCommand extends UndoableCommand {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Entry: %1$s";
-    public static final String MESSAGE_UNDO_DELETE_PERSON_SUCCESS = "Undo delete Entry: %1$s";
+    public static final String MESSAGE_DELETE_ENTRY_SUCCESS = "Deleted Entry: %1$s";
+    public static final String MESSAGE_UNDO_DELETE_ENTRY_SUCCESS = "Undo delete Entry: %1$s";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
 
     public final int targetIndex;
@@ -50,7 +50,7 @@ public class DeleteCommand extends UndoableCommand {
         }
 
         setUndoable();
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, entryToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DeleteCommand extends UndoableCommand {
         try {
             model.addTask(entryToDelete);
             setRedoable();
-            return new CommandResult(String.format(MESSAGE_UNDO_DELETE_PERSON_SUCCESS, entryToDelete));
+            return new CommandResult(String.format(MESSAGE_UNDO_DELETE_ENTRY_SUCCESS, entryToDelete));
         } catch (DuplicateTaskException e) {
             return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
         }
