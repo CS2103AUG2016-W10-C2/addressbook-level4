@@ -3,7 +3,7 @@ package seedu.priorityq.model.task;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 
 /**
- * Represents a Person's name in the task manager.
+ * Represents a Entry's name in the task manager.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Title {

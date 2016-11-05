@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JAXB-friendly version of the Person.
+ * JAXB-friendly version of the Entry.
  */
 public class XmlAdaptedEntry {
 
@@ -47,7 +47,7 @@ public class XmlAdaptedEntry {
 
 
     /**
-     * Converts a given Person into this class for JAXB use.
+     * Converts a given Entry into this class for JAXB use.
      *
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
@@ -75,7 +75,7 @@ public class XmlAdaptedEntry {
     }
 
     /**
-     * Converts this jaxb-friendly adapted task object into the model's Person object.
+     * Converts this jaxb-friendly adapted task object into the model's Entry object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted task
      */

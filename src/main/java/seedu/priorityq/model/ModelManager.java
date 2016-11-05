@@ -133,7 +133,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateLastModifiedTime(Entry entry, LocalDateTime localDateTime) throws EntryNotFoundException {
         taskManager.updateLastModifiedTime(entry, localDateTime);
     }
-    //=========== Filtered Person List Accessors ===============================================================
+    //=========== Filtered Entry List Accessors ===============================================================
 
     @Override
     public UnmodifiableObservableList<Entry> getFilteredEntryList() {
