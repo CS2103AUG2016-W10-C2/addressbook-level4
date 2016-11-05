@@ -13,8 +13,6 @@ import seedu.address.commons.core.LogsCenter;
 
 import java.util.logging.Logger;
 
-import static seedu.address.ui.util.GuiUtil.DEFAULT_FADE_DURATION;
-
 /**
  * Base class for all GUI Handles used in testing.
  */

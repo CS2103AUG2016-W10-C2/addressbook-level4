@@ -1,6 +1,5 @@
 package seedu.address.testutil;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -8,7 +7,6 @@ import seedu.address.model.TaskManager;
 import seedu.address.model.task.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 //@@author A0116603R

@@ -1,14 +1,10 @@
 package seedu.address.ui;
 
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.BaseEvent;
-import seedu.address.commons.util.AppUtil;
 
 /**
  * Base class for UI parts.

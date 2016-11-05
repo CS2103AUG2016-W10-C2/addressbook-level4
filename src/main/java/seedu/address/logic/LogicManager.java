@@ -16,7 +16,6 @@ import seedu.address.model.task.Entry;
 import seedu.address.storage.Storage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**

@@ -2,15 +2,11 @@ package guitests;
 
 import guitests.guihandles.TaskCardHandle;
 import org.junit.Test;
-import seedu.address.commons.events.ui.DidMarkTaskEvent;
-import seedu.address.commons.events.ui.MarkTaskEvent;
 import seedu.address.logic.commands.MarkCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.UnmarkCommand;
 import seedu.address.model.task.Entry;
-import seedu.address.testutil.EventsCollector;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 
