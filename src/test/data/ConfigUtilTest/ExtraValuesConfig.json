@@ -2,7 +2,7 @@
   "appTitle" : "Typical App Title",
   "logLevel" : "INFO",
   "userPrefsFilePath" : "C:\\preferences.json",
-  "taskManagerFilePath" : "todolist.xml",
+  "taskManagerFilePath" : "priorityq.xml",
   "taskManagerName" : "TypicalTaskManagerName",
   "extra" : "extra value"
 }
