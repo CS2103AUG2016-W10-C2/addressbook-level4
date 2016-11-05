@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;
-import static seedu.todolist.ui.util.GuiUtil.*;
+import static seedu.priorityq.ui.util.GuiUtil.*;
 
 //@@author A0116603R
 public class GuiUtilTest {

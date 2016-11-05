@@ -1,10 +1,10 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.todolist.logic.commands.ClearCommand;
-import seedu.todolist.logic.commands.DeleteCommand;
-import seedu.todolist.testutil.TestEntry;
-import seedu.todolist.testutil.TypicalTestTasks;
+import seedu.priorityq.logic.commands.ClearCommand;
+import seedu.priorityq.logic.commands.DeleteCommand;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TypicalTestTasks;
 
 import static org.junit.Assert.assertTrue;
 

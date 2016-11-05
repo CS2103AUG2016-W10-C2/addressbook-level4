@@ -3,7 +3,7 @@ package guitests.guihandles;
 import guitests.GuiRobot;
 import javafx.stage.Stage;
 
-import static seedu.todolist.ui.util.GuiUtil.OPAQUE;
+import static seedu.priorityq.ui.util.GuiUtil.OPAQUE;
 
 /**
  * Provides a handle to the help window of the app.

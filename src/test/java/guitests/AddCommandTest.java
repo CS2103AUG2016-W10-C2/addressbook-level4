@@ -4,13 +4,13 @@ import guitests.guihandles.TaskCardHandle;
 import org.junit.Test;
 import java.util.Arrays;
 
-import seedu.todolist.logic.commands.AddCommand;
-import seedu.todolist.model.task.Entry;
-import seedu.todolist.model.task.EntryViewComparator;
-import seedu.todolist.commons.core.Messages;
-import seedu.todolist.logic.commands.ClearCommand;
-import seedu.todolist.testutil.TestEntry;
-import seedu.todolist.testutil.TestUtil;
+import seedu.priorityq.logic.commands.AddCommand;
+import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.task.EntryViewComparator;
+import seedu.priorityq.commons.core.Messages;
+import seedu.priorityq.logic.commands.ClearCommand;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
 

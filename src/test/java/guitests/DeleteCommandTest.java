@@ -1,12 +1,12 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.todolist.commons.core.Messages;
-import seedu.todolist.testutil.TestEntry;
-import seedu.todolist.testutil.TestUtil;
+import seedu.priorityq.commons.core.Messages;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.todolist.logic.commands.DeleteCommand.MESSAGE_DELETE_ENTRY_SUCCESS;
+import static seedu.priorityq.logic.commands.DeleteCommand.MESSAGE_DELETE_ENTRY_SUCCESS;
 
 public class DeleteCommandTest extends TaskManagerGuiTest {
 

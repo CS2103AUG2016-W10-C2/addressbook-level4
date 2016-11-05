@@ -1,10 +1,10 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.todolist.logic.commands.UnmarkCommand;
-import seedu.todolist.model.task.Entry;
+import seedu.priorityq.logic.commands.UnmarkCommand;
+import seedu.priorityq.model.task.Entry;
 
-import static seedu.todolist.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
+import static seedu.priorityq.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 
 //@@author A0116603R
 public class UnmarkCommandTest extends TaskManagerGuiTest{

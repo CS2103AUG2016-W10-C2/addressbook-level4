@@ -1,8 +1,8 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.todolist.testutil.TestEntry;
-import seedu.todolist.testutil.TypicalTestTasks;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TypicalTestTasks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

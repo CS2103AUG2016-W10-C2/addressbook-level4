@@ -8,8 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import seedu.todolist.TestApp;
-import seedu.todolist.commons.core.LogsCenter;
+import seedu.priorityq.TestApp;
+import seedu.priorityq.commons.core.LogsCenter;
 
 import java.util.logging.Logger;
 

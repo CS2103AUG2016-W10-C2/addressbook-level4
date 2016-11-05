@@ -5,17 +5,17 @@ import guitests.GuiRobot;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import seedu.todolist.TestApp;
-import seedu.todolist.model.task.Task;
-import seedu.todolist.model.task.Entry;
-import seedu.todolist.testutil.TestUtil;
+import seedu.priorityq.TestApp;
+import seedu.priorityq.model.task.Task;
+import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.testutil.TestUtil;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.todolist.ui.util.GuiUtil.OPAQUE;
+import static seedu.priorityq.ui.util.GuiUtil.OPAQUE;
 
 /**
  * Provides a handle for the panel containing the task list.

@@ -78,10 +78,10 @@ allprojects {
     }
     
     shadowJar {
-        archiveName = "todolist.jar"
+        archiveName = "priorityq.jar"
 
         manifest {
-            attributes "Main-Class": "seedu.todolist.MainApp"
+            attributes "Main-Class": "seedu.priorityq.MainApp"
         }
 
         destinationDir = file("${buildDir}/jar/")
@@ -142,7 +142,7 @@ task guiTests(type: AddressBookTest) {
 
 
 task nonGuiTests(type: AddressBookTest) {
-    include 'seedu/todolist/**'
+    include 'seedu/priorityq/**'
 
     jacoco {
         destinationFile = new File("${buildDir}/jacoco/test.exec")
