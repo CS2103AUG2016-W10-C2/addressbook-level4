@@ -14,9 +14,6 @@ public class ClearCommand extends UndoableCommand {
     
     private ReadOnlyTaskManager originalTaskManager;
 
-    public ClearCommand() {}
-
-
     @Override
     public CommandResult execute() {
         assert model != null;

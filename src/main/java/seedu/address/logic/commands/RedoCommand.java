@@ -14,8 +14,6 @@ public class RedoCommand extends Command {
     public static final String MESSAGE_FAILURE = "No redoable commands found!";
     private UndoableCommandHistory undoableCommandHistory;
 
-    public RedoCommand() {}
-    
     public void setData(Model model, UndoableCommandHistory undoableCommandQueue) {
         this.model = model;
         this.undoableCommandHistory = undoableCommandQueue;
