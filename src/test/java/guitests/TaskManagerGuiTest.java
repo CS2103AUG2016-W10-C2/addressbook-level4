@@ -8,12 +8,12 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.testfx.api.FxToolkit;
-import seedu.address.TestApp;
-import seedu.address.commons.core.EventsCenter;
-import seedu.address.model.TaskManager;
-import seedu.address.model.task.Entry;
-import seedu.address.testutil.TestUtil;
-import seedu.address.testutil.TypicalTestTasks;
+import seedu.priorityq.TestApp;
+import seedu.priorityq.commons.core.EventsCenter;
+import seedu.priorityq.model.TaskManager;
+import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.testutil.TestUtil;
+import seedu.priorityq.testutil.TypicalTestTasks;
 
 import java.util.concurrent.TimeoutException;
 
@@ -74,9 +74,9 @@ public abstract class TaskManagerGuiTest {
      * Return null to use the data in the file specified in {@link #getDataFileLocation()}
      */
     protected TaskManager getInitialData() {
-        TaskManager ab = TestUtil.generateEmptyAddressBook();
+        TaskManager ab = TestUtil.generateEmptyTaskManager();
         TypicalTestTasks typicalTestTasks = new TypicalTestTasks();
-        typicalTestTasks.loadAddressBookWithSampleData(ab);
+        typicalTestTasks.loadTaskManagerWithSampleData(ab);
         return ab;
     }
 

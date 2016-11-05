@@ -3,7 +3,7 @@ package guitests.guihandles;
 import guitests.GuiRobot;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import seedu.address.TestApp;
+import seedu.priorityq.TestApp;
 
 /**
  * A handler for the ResultDisplay of the UI

@@ -3,14 +3,14 @@ package guitests;
 import org.junit.Test;
 import java.util.Arrays;
 
-import seedu.address.commons.core.Messages;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.model.task.EntryViewComparator;
-import seedu.address.testutil.TestEntry;
-import seedu.address.testutil.TestTasks;
-import seedu.address.testutil.TypicalTestTasks;
+import seedu.priorityq.commons.core.Messages;
+import seedu.priorityq.logic.commands.ClearCommand;
+import seedu.priorityq.logic.commands.DeleteCommand;
+import seedu.priorityq.logic.commands.ListCommand;
+import seedu.priorityq.model.task.EntryViewComparator;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TestTasks;
+import seedu.priorityq.testutil.TypicalTestTasks;
 
 import java.util.List;
 

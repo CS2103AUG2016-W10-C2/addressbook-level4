@@ -5,17 +5,17 @@ import guitests.GuiRobot;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import seedu.address.TestApp;
-import seedu.address.model.task.Task;
-import seedu.address.model.task.Entry;
-import seedu.address.testutil.TestUtil;
+import seedu.priorityq.TestApp;
+import seedu.priorityq.model.task.Task;
+import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.testutil.TestUtil;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.address.ui.util.GuiUtil.OPAQUE;
+import static seedu.priorityq.ui.util.GuiUtil.OPAQUE;
 
 /**
  * Provides a handle for the panel containing the task list.
@@ -142,10 +142,10 @@ public class TaskListHandle extends GuiHandle {
         return getTaskCardHandle(new Task(getEntry(index)));
     }
 
-    public TaskCardHandle getTaskCardHandle(Entry person) {
+    public TaskCardHandle getTaskCardHandle(Entry entry) {
         Set<Node> nodes = getAllCardNodes();
         Optional<Node> taskCardNode = nodes.stream()
-                .filter(n -> new TaskCardHandle(guiRobot, primaryStage, n).isSameEntry(person))
+                .filter(n -> new TaskCardHandle(guiRobot, primaryStage, n).isSameEntry(entry))
                 .findFirst();
         if (taskCardNode.isPresent()) {
             return new TaskCardHandle(guiRobot, primaryStage, taskCardNode.get());

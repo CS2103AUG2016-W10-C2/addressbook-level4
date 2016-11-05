@@ -1,10 +1,10 @@
 package guitests;
 
 import org.junit.Test;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.testutil.TestEntry;
-import seedu.address.testutil.TypicalTestTasks;
+import seedu.priorityq.logic.commands.ClearCommand;
+import seedu.priorityq.logic.commands.DeleteCommand;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TypicalTestTasks;
 
 import static org.junit.Assert.assertTrue;
 
@@ -13,7 +13,7 @@ public class ClearCommandTest extends TaskManagerGuiTest {
     @Test
     public void clear() {
         //verify a non-empty list can be cleared
-        assertTrue(taskList.isListMatching(td.getTypicalSortedPersons()));
+        assertTrue(taskList.isListMatching(td.getTypicalSortedEntries()));
         assertClearCommandSuccess();
 
         //verify other commands can work after a clear command

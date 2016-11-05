@@ -4,13 +4,13 @@ import guitests.guihandles.TaskCardHandle;
 import org.junit.Test;
 import java.util.Arrays;
 
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.model.task.Entry;
-import seedu.address.model.task.EntryViewComparator;
-import seedu.address.commons.core.Messages;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.testutil.TestEntry;
-import seedu.address.testutil.TestUtil;
+import seedu.priorityq.logic.commands.AddCommand;
+import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.task.EntryViewComparator;
+import seedu.priorityq.commons.core.Messages;
+import seedu.priorityq.logic.commands.ClearCommand;
+import seedu.priorityq.testutil.TestEntry;
+import seedu.priorityq.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
 
@@ -19,14 +19,14 @@ public class AddCommandTest extends TaskManagerGuiTest {
     //@@author A0116603R-reused
     @Test
     public void add() {
-        TestEntry[] currentList = td.getTypicalSortedPersons(); // sample entries already present
+        TestEntry[] currentList = td.getTypicalSortedEntries(); // sample entries already present
         TestEntry testEntry;
 
         //add new entries
         for (TestEntry entry : td.getNonSampleEntries()) {
             testEntry = entry;
             assertAddSuccess(testEntry, currentList);
-            currentList = TestUtil.addPersonsToList(currentList, testEntry);
+            currentList = TestUtil.addEntriesToList(currentList, testEntry);
         }
 
         assertTrue(currentList.length > 0);
@@ -57,8 +57,8 @@ public class AddCommandTest extends TaskManagerGuiTest {
         Entry entry = taskList.getEntry(taskList.getTaskIndex(testEntry));
         testEntry.setLastModifiedTime(entry.getLastModifiedTime());
 
-        //confirm the list now contains all previous persons plus the new task
-        TestEntry[] expectedList = TestUtil.addPersonsToList(currentList, testEntry);
+        //confirm the list now contains all previous entries plus the new task
+        TestEntry[] expectedList = TestUtil.addEntriesToList(currentList, testEntry);
         Arrays.sort(expectedList, new EntryViewComparator());
         assertTrue(taskList.isListMatching(expectedList));
     }
