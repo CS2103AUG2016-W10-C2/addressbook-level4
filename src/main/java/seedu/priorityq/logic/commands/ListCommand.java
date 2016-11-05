@@ -9,7 +9,7 @@ import seedu.priorityq.model.PredicateBuilder;
 import seedu.priorityq.model.task.Entry;
 
 /**
- * Lists all persons in the task manager to the user.
+ * Lists all entries in the task manager to the user.
  * @@author A0127828W
  */
 public class ListCommand extends Command {
@@ -77,7 +77,7 @@ public class ListCommand extends Command {
             try {
                 Predicate<Entry> predicate = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted, entryType);
                 model.updateFilteredEntryListPredicate(predicate);
-                return new CommandResult(getMessageForEntryListShownSummary(model.getFilteredPersonList().size()));
+                return new CommandResult(getMessageForEntryListShownSummary(model.getFilteredEntryList().size()));
             } catch (IllegalValueException e) {
                 indicateAttemptToExecuteIncorrectCommand();
                 return new CommandResult(e.getMessage());

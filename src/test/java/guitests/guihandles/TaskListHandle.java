@@ -142,10 +142,10 @@ public class TaskListHandle extends GuiHandle {
         return getTaskCardHandle(new Task(getEntry(index)));
     }
 
-    public TaskCardHandle getTaskCardHandle(Entry person) {
+    public TaskCardHandle getTaskCardHandle(Entry entry) {
         Set<Node> nodes = getAllCardNodes();
         Optional<Node> taskCardNode = nodes.stream()
-                .filter(n -> new TaskCardHandle(guiRobot, primaryStage, n).isSameEntry(person))
+                .filter(n -> new TaskCardHandle(guiRobot, primaryStage, n).isSameEntry(entry))
                 .findFirst();
         if (taskCardNode.isPresent()) {
             return new TaskCardHandle(guiRobot, primaryStage, taskCardNode.get());

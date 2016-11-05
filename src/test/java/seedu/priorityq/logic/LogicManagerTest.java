@@ -107,8 +107,8 @@ public class LogicManagerTest {
         CommandResult result = logic.execute(inputCommand);
         //Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
-        UnmodifiableObservableList<Entry> ee = model.getFilteredPersonList();
-        assertEquals(expectedShownList, model.getFilteredPersonList());
+        UnmodifiableObservableList<Entry> ee = model.getFilteredEntryList();
+        assertEquals(expectedShownList, model.getFilteredEntryList());
         //Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedTaskManager, model.getTaskManager());
         assertEquals(expectedTaskManager, latestSavedTaskManager);

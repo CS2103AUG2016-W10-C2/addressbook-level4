@@ -33,17 +33,17 @@ public class TaskManager implements ReadOnlyTaskManager {
     public TaskManager() {}
 
     /**
-     * Persons and Tags are copied into this TaskManager
+     * Entries and Tags are copied into this TaskManager
      */
     public TaskManager(ReadOnlyTaskManager toBeCopied) {
         this(toBeCopied.getUniqueTaskList(), toBeCopied.getUniqueTagList());
     }
 
     /**
-     * Persons and Tags are copied into this TaskManager
+     * Entries and Tags are copied into this TaskManager
      */
-    public TaskManager(UniqueTaskList persons, UniqueTagList tags) {
-        resetData(persons.getInternalList(), tags.getInternalList());
+    public TaskManager(UniqueTaskList entries, UniqueTagList tags) {
+        resetData(entries.getInternalList(), tags.getInternalList());
     }
 
     public static ReadOnlyTaskManager getEmptyTaskManager() {
@@ -126,8 +126,8 @@ public class TaskManager implements ReadOnlyTaskManager {
      *  - points to a Tag object in the master list
      */
     private void syncTagsWithMasterList(Entry entry) {
-        final UniqueTagList personTags = entry.getTags();
-        tags.mergeFrom(personTags);
+        final UniqueTagList entryTags = entry.getTags();
+        tags.mergeFrom(entryTags);
 
         // Create map with values = tag object references in the master list
         final Map<Tag, Tag> masterTagObjects = new HashMap<>();
@@ -137,7 +137,7 @@ public class TaskManager implements ReadOnlyTaskManager {
 
         // Rebuild the list of task tags using references from the master list
         final Set<Tag> commonTagReferences = new HashSet<>();
-        for (Tag tag : personTags) {
+        for (Tag tag : entryTags) {
             commonTagReferences.add(masterTagObjects.get(tag));
         }
         entry.setTags(new UniqueTagList(commonTagReferences));

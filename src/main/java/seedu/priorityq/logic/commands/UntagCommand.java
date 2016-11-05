@@ -50,7 +50,7 @@ public class UntagCommand extends UndoableCommand {
         assert model != null;
         assert !tagsToRemove.isEmpty(); //should be handled in the parser
         if (getCommandState()==CommandState.PRE_EXECUTION) {
-            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredEntryList();
             
             if (lastShownList.size() < targetIndex) {
                 indicateAttemptToExecuteIncorrectCommand();

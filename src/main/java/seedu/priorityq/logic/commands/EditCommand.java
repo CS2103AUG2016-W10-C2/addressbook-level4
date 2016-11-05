@@ -69,7 +69,7 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     public CommandResult execute() {
-        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+        UnmodifiableObservableList<Entry> lastShownList = model.getFilteredEntryList();
         if (getCommandState()==CommandState.PRE_EXECUTION) {
             if (lastShownList.size() < targetIndex) {
                 indicateAttemptToExecuteIncorrectCommand();

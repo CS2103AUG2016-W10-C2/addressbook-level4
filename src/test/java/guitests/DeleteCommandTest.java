@@ -14,17 +14,17 @@ public class DeleteCommandTest extends TaskManagerGuiTest {
     public void delete() {
 
         //delete the first in the list
-        TestEntry[] currentList = td.getTypicalSortedPersons();
+        TestEntry[] currentList = td.getTypicalSortedEntries();
         int targetIndex = 1;
         assertDeleteSuccess(targetIndex, currentList);
 
         //delete the last in the list
-        currentList = TestUtil.removePersonFromList(currentList, targetIndex);
+        currentList = TestUtil.removeEntryFromList(currentList, targetIndex);
         targetIndex = currentList.length;
         assertDeleteSuccess(targetIndex, currentList);
 
         //delete from the middle of the list
-        currentList = TestUtil.removePersonFromList(currentList, targetIndex);
+        currentList = TestUtil.removeEntryFromList(currentList, targetIndex);
         targetIndex = currentList.length/2;
         assertDeleteSuccess(targetIndex, currentList);
 
@@ -37,19 +37,19 @@ public class DeleteCommandTest extends TaskManagerGuiTest {
     /**
      * Runs the delete command to delete the task at specified index and confirms the result is correct.
      * @param targetIndexOneIndexed e.g. to delete the first task in the list, 1 should be given as the target index.
-     * @param currentList A copy of the current list of persons (before deletion).
+     * @param currentList A copy of the current list of entries (before deletion).
      */
     private void assertDeleteSuccess(int targetIndexOneIndexed, final TestEntry[] currentList) {
-        TestEntry personToDelete = currentList[targetIndexOneIndexed-1]; //-1 because array uses zero indexing
-        TestEntry[] expectedRemainder = TestUtil.removePersonFromList(currentList, targetIndexOneIndexed);
+        TestEntry entryToDelete = currentList[targetIndexOneIndexed-1]; //-1 because array uses zero indexing
+        TestEntry[] expectedRemainder = TestUtil.removeEntryFromList(currentList, targetIndexOneIndexed);
 
         commandBox.runCommand("delete " + targetIndexOneIndexed);
 
-        //confirm the list now contains all previous persons except the deleted task
+        //confirm the list now contains all previous entries except the deleted task
         assertTrue(taskList.isListMatching(expectedRemainder));
 
         //confirm the result message is correct
-        assertResultMessage(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, personToDelete));
+        assertResultMessage(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
     }
 
 }

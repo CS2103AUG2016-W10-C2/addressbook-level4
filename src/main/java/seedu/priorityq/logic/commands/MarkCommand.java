@@ -36,7 +36,7 @@ public class MarkCommand extends UndoableCommand {
     public CommandResult execute() {
         assert model != null;
         if (getCommandState()==CommandState.PRE_EXECUTION) {
-            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredEntryList();
     
             if (lastShownList.size() < targetIndex) {
                 indicateAttemptToExecuteIncorrectCommand();

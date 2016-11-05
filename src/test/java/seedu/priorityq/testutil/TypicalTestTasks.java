@@ -138,7 +138,7 @@ public class TypicalTestTasks {
         return nonSampleEntries;
     }
 
-    public TestEntry[] getTypicalSortedPersons() {
+    public TestEntry[] getTypicalSortedEntries() {
         TestEntry[] testEntry = getSampleEntriesAsArray();
         Arrays.sort(testEntry, new EntryViewComparator());
         return testEntry;

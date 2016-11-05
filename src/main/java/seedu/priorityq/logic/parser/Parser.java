@@ -32,7 +32,7 @@ public class Parser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
+    private static final Pattern ENTRY_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final Pattern MONTH_DATE = Pattern.compile("(?<month>\\d\\d)(?<separator>/|-)(?<day>\\d\\d)(?<theRest>.*)");
@@ -441,7 +441,7 @@ public class Parser {
      * otherwise.
      */
     private Optional<Integer> parseIndex(String command) {
-        final Matcher matcher = PERSON_INDEX_ARGS_FORMAT.matcher(command.trim());
+        final Matcher matcher = ENTRY_INDEX_ARGS_FORMAT.matcher(command.trim());
         if (!matcher.matches()) {
             return Optional.empty();
         }

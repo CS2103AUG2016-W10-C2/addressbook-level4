@@ -40,7 +40,7 @@ public interface Model {
     void addTag(Tag tag) throws DuplicateTagException;
 
     /** Returns the filtered task list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
-    UnmodifiableObservableList<Entry> getFilteredPersonList();
+    UnmodifiableObservableList<Entry> getFilteredEntryList();
 
     /** Updates the filter of the filtered task list to show all entries */
     void updateFilteredListToShowAll();

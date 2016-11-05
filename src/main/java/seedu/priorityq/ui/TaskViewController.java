@@ -58,7 +58,7 @@ public class TaskViewController extends Controller {
 
     private ObservableList<Entry> getDefaultTasks() {
         assert logic != null;
-        return logic.getFilteredPersonList();
+        return logic.getFilteredEntryList();
     }
 
     /**

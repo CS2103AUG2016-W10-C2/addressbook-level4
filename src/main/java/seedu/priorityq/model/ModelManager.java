@@ -136,7 +136,7 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== Filtered Person List Accessors ===============================================================
 
     @Override
-    public UnmodifiableObservableList<Entry> getFilteredPersonList() {
+    public UnmodifiableObservableList<Entry> getFilteredEntryList() {
         return new UnmodifiableObservableList<>(filteredEntries);
     }
 
@@ -153,10 +153,10 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateFilteredEntryListPredicate(Predicate<Entry> predicate) {
-        updateFilteredPersonList(predicate);
+        updateFilteredEntryList(predicate);
     }
 
-    private void updateFilteredPersonList(Predicate<Entry> predicate) {
+    private void updateFilteredEntryList(Predicate<Entry> predicate) {
         filteredEntries.setPredicate(predicate);
     }
 }

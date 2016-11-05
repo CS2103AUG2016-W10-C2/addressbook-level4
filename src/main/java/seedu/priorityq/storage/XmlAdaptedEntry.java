@@ -80,12 +80,12 @@ public class XmlAdaptedEntry {
      * @throws IllegalValueException if there were any data constraints violated in the adapted task
      */
     public Entry toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> entryTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
-            personTags.add(tag.toModelType());
+            entryTags.add(tag.toModelType());
         }
         final Title title = new Title(this.title);
-        final UniqueTagList tags = new UniqueTagList(personTags);
+        final UniqueTagList tags = new UniqueTagList(entryTags);
 
         LocalDateTime startTime = start == null || start.isEmpty() ? null : LocalDateTime.parse(start);
         LocalDateTime endTime = end == null || end.isEmpty() ? null : LocalDateTime.parse(end);

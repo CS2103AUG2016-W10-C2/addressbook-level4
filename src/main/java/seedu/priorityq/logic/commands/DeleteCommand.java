@@ -33,7 +33,7 @@ public class DeleteCommand extends UndoableCommand {
     @Override
     public CommandResult execute() {
         if (getCommandState()==CommandState.PRE_EXECUTION){
-            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredPersonList();
+            UnmodifiableObservableList<Entry> lastShownList = model.getFilteredEntryList();
 
             if (lastShownList.size() < targetIndex) {
                 indicateAttemptToExecuteIncorrectCommand();

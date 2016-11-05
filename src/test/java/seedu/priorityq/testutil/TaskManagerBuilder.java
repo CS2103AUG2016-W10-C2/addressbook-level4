@@ -9,7 +9,7 @@ import seedu.priorityq.model.task.UniqueTaskList;
 /**
  * A utility class to help with building TaskManager objects.
  * Example usage: <br>
- *     {@code TaskManager ab = new TaskManagerBuilder().withPerson("John", "Doe").withTag("Friend").build();}
+ *     {@code TaskManager ab = new TaskManagerBuilder().withEntry("John", "Doe").withTag("Friend").build();}
  */
 public class TaskManagerBuilder {
 
@@ -19,8 +19,8 @@ public class TaskManagerBuilder {
         this.taskManager = taskManager;
     }
 
-    public TaskManagerBuilder withPerson(Task person) throws UniqueTaskList.DuplicateTaskException {
-        taskManager.addTask(person);
+    public TaskManagerBuilder withEntry(Task entry) throws UniqueTaskList.DuplicateTaskException {
+        taskManager.addTask(entry);
         return this;
     }
 

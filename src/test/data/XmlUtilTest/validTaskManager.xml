@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <taskmanager>
-    <persons>
+    <entries>
         <title>Hans Muster</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Ruth Mueller</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Heinz Kurz</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Cornelia Meier</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Werner Meyer</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Lydia Kunz</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Anna Best</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Stefan Meier</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
-    <persons>
+    </entries>
+    <entries>
         <title>Martin Mueller</title>
         <lastModified>2016-10-10T00:00:00.000</lastModified>
-    </persons>
+    </entries>
 </taskmanager>

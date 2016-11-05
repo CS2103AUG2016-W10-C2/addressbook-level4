@@ -16,8 +16,8 @@ public interface Logic {
      */
     CommandResult execute(String commandText);
 
-    /** Returns the filtered list of persons */
-    ObservableList<Entry> getFilteredPersonList();
+    /** Returns the filtered list of entries */
+    ObservableList<Entry> getFilteredEntryList();
 
     /** Get the command history manager associated to this Logic instance */
     CommandHistory getCommandHistoryManager();

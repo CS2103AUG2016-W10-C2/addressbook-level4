@@ -48,9 +48,9 @@ public class TestUtil {
      */
     public static String SANDBOX_FOLDER = FileUtil.getPath("./src/test/data/sandbox/");
 
-    public static final Task[] samplePersonData = getSamplePersonData();
+    public static final Task[] sampleEntryData = getSampleEntryData();
 
-    private static Task[] getSamplePersonData() {
+    private static Task[] getSampleEntryData() {
         try {
             return new Task[]{
                     new Task(new Title("Ali Muster"), new UniqueTagList()),
@@ -85,8 +85,8 @@ public class TestUtil {
         }
     }
 
-    public static List<Task> generateSamplePersonData() {
-        return Arrays.asList(samplePersonData);
+    public static List<Task> generateSampleEntryData() {
+        return Arrays.asList(sampleEntryData);
     }
 
     /**
@@ -153,13 +153,13 @@ public class TestUtil {
     }
 
     /**
-     * Removes a subset from the list of persons.
-     * @param persons The list of persons
-     * @param personsToRemove The subset of persons.
-     * @return The modified persons after removal of the subset from persons.
+     * Removes a subset from the list of entries.
+     * @param entries The list of entries
+     * @param personsToRemove The subset of entries.
+     * @return The modified entries after removal of the subset from entries.
      */
-    public static TestEntry[] removePersonsFromList(final TestEntry[] persons, TestEntry... personsToRemove) {
-        List<TestEntry> listOfPersons = asList(persons);
+    public static TestEntry[] removeEntriesFromList(final TestEntry[] entries, TestEntry... personsToRemove) {
+        List<TestEntry> listOfPersons = asList(entries);
         listOfPersons.removeAll(asList(personsToRemove));
         return listOfPersons.toArray(new TestEntry[listOfPersons.size()]);
     }
@@ -169,31 +169,31 @@ public class TestUtil {
      * @param list original list to copy from
      * @param targetIndexInOneIndexedFormat e.g. if the first element to be removed, 1 should be given as index.
      */
-    public static TestEntry[] removePersonFromList(final TestEntry[] list, int targetIndexInOneIndexedFormat) {
-        return removePersonsFromList(list, list[targetIndexInOneIndexedFormat-1]);
+    public static TestEntry[] removeEntryFromList(final TestEntry[] list, int targetIndexInOneIndexedFormat) {
+        return removeEntriesFromList(list, list[targetIndexInOneIndexedFormat-1]);
     }
 
     /**
-     * Appends persons to the array of persons.
-     * @param persons A array of persons.
-     * @param personsToAdd The persons that are to be appended behind the original array.
-     * @return The modified array of persons.
+     * Appends entries to the array of entries.
+     * @param entries A array of entries.
+     * @param entriesToAdd The entries that are to be appended behind the original array.
+     * @return The modified array of entries.
      */
-    public static TestEntry[] addPersonsToList(final TestEntry[] persons, TestEntry... personsToAdd) {
-        List<TestEntry> listOfPersons = asList(persons);
-        listOfPersons.addAll(asList(personsToAdd));
-        return listOfPersons.toArray(new TestEntry[listOfPersons.size()]);
+    public static TestEntry[] addEntriesToList(final TestEntry[] entries, TestEntry... entriesToAdd) {
+        List<TestEntry> listOfEntries = asList(entries);
+        listOfEntries.addAll(asList(entriesToAdd));
+        return listOfEntries.toArray(new TestEntry[listOfEntries.size()]);
     }
     
     //@@author A0121501E
     /**
-     * Adds persons to the array of sorted persons.
-     * @param persons A array of persons.
-     * @param personsToAdd The persons that are to be added to the sorted list.
-     * @return The modified array of sorted persons.
+     * Adds entries to the array of sorted entries.
+     * @param entries A array of entries.
+     * @param entriesToAdd The entries that are to be added to the sorted list.
+     * @return The modified array of sorted entries.
      */
-    public static TestEntry[] addPersonsToSortedList(final TestEntry[] persons, TestEntry... personsToAdd) {
-        TestEntry[] testEntry = addPersonsToList(persons, personsToAdd);
+    public static TestEntry[] addEntriesToSortedList(final TestEntry[] entries, TestEntry... entriesToAdd) {
+        TestEntry[] testEntry = addEntriesToList(entries, entriesToAdd);
         Arrays.sort(testEntry, new EntryViewComparator());
         return testEntry;
     }
@@ -206,8 +206,8 @@ public class TestUtil {
         return list;
     }
 
-    public static boolean compareCardAndEntry(TaskCardHandle card, Entry person) {
-        return card.isSameEntry(person);
+    public static boolean compareCardAndEntry(TaskCardHandle card, Entry entry) {
+        return card.isSameEntry(entry);
     }
 
     public static Tag[] getTagList(String tags) {

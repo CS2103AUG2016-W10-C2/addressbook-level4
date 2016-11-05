@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
 
     @XmlElement
-    private List<XmlAdaptedEntry> persons;
+    private List<XmlAdaptedEntry> entries;
     @XmlElement
     private List<Tag> tags;
 
     {
-        persons = new ArrayList<>();
+        entries = new ArrayList<>();
         tags = new ArrayList<>();
     }
 
@@ -40,7 +40,7 @@ public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
      * Conversion
      */
     public XmlSerializableTaskManager(ReadOnlyTaskManager src) {
-        persons.addAll(src.getUnsortedTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        entries.addAll(src.getUnsortedTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         tags = src.getTagList();
     }
 
@@ -58,7 +58,7 @@ public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
     @Override
     public UniqueTaskList getUniqueTaskList() {
         UniqueTaskList lists = new UniqueTaskList();
-        for (XmlAdaptedEntry p : persons) {
+        for (XmlAdaptedEntry p : entries) {
             try {
                 lists.add(p.toModelType());
             } catch (IllegalValueException e) {
@@ -78,7 +78,7 @@ public class XmlSerializableTaskManager implements ReadOnlyTaskManager {
 
     @Override
     public List<Entry> getUnsortedTaskList() {
-        return persons.stream().map(p -> {
+        return entries.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (IllegalValueException e) {

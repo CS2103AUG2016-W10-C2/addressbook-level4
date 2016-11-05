@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 
 /**
- * A list of persons that enforces uniqueness between its elements and does not allow nulls.
+ * A list of entries that enforces uniqueness between its elements and does not allow nulls.
  *
  * Supports a minimal set of list operations.
  *
@@ -274,11 +274,11 @@ public class UniqueTaskList implements Iterable<Entry> {
      */
     public boolean remove(Entry toRemove) throws EntryNotFoundException {
         assert toRemove != null;
-        final boolean personFoundAndDeleted = internalList.remove(toRemove);
-        if (!personFoundAndDeleted) {
+        final boolean entryFoundAndDeleted = internalList.remove(toRemove);
+        if (!entryFoundAndDeleted) {
             throw new EntryNotFoundException();
         }
-        return personFoundAndDeleted;
+        return entryFoundAndDeleted;
     }
 
     public ObservableList<Entry> getInternalList() {
