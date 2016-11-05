@@ -113,7 +113,7 @@ public class Task extends Entry {
 
     @Override
     // @@author A0127828W
-    public String getDateDisplay(LocalDateTime dateTime){
+    protected String getDateDisplay(LocalDateTime dateTime){
         if (dateTime == null) {
             return "";
         }

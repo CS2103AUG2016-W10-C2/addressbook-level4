@@ -152,7 +152,7 @@ public final class Event extends Entry{
 
     // @@author A0127828W
     @Override
-    public String getDateDisplay(LocalDateTime dateTime) {
+    protected String getDateDisplay(LocalDateTime dateTime) {
         if (dateTime == null) {
             return "";
         }

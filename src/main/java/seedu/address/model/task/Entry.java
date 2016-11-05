@@ -153,7 +153,7 @@ public abstract class Entry {
     /**
      * Get the date for display to the user
      */
-    public abstract String getDateDisplay(LocalDateTime dateTime);
+    protected abstract String getDateDisplay(LocalDateTime dateTime);
 
     //@@author A0116603R
     /**
