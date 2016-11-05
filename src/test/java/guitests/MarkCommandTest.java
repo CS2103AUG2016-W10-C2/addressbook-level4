@@ -2,13 +2,13 @@ package guitests;
 
 import guitests.guihandles.TaskCardHandle;
 import org.junit.Test;
-import seedu.address.logic.commands.MarkCommand;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.logic.commands.UnmarkCommand;
-import seedu.address.model.task.Entry;
+import seedu.todolist.logic.commands.MarkCommand;
+import seedu.todolist.logic.commands.UndoCommand;
+import seedu.todolist.logic.commands.UnmarkCommand;
+import seedu.todolist.model.task.Entry;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
+import static seedu.todolist.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 
 //@@author A0116603R
 public class MarkCommandTest extends TaskManagerGuiTest {
