@@ -345,8 +345,6 @@ public class LogicManagerTest {
 
     @Test
     public void execute_list_showAllEntries() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE);
-        
         TestDataHelper helper = new TestDataHelper();
         Task pTarget1 = helper.generateEntryWithTitle("bla bla KEY bla");
         Task pTarget2 = helper.generateEntryWithTitle("bla KEY bla bceofeia");
