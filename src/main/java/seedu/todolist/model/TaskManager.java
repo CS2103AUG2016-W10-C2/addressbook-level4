@@ -33,20 +33,20 @@ public class TaskManager implements ReadOnlyTaskManager {
     public TaskManager() {}
 
     /**
-     * Persons and Tags are copied into this addressbook
+     * Persons and Tags are copied into this TaskManager
      */
     public TaskManager(ReadOnlyTaskManager toBeCopied) {
         this(toBeCopied.getUniqueTaskList(), toBeCopied.getUniqueTagList());
     }
 
     /**
-     * Persons and Tags are copied into this addressbook
+     * Persons and Tags are copied into this TaskManager
      */
     public TaskManager(UniqueTaskList persons, UniqueTagList tags) {
         resetData(persons.getInternalList(), tags.getInternalList());
     }
 
-    public static ReadOnlyTaskManager getEmptyAddressBook() {
+    public static ReadOnlyTaskManager getEmptyTaskManager() {
         return new TaskManager();
     }
 
