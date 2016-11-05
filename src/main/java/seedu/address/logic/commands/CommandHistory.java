@@ -7,6 +7,11 @@ import java.util.ArrayList;
  *
  * Maintains an internal data structure to keep track of input commands
  * Use a pointer to indicate which command should be returned when getter methods are called
+ *
+ * commandHistory: the internal structure to store commands
+ * commandHistoryIndex: the index of last retrieved command.
+ *      equals to 0 when the last retrieved command was the oldest
+ *      equals to commandHistory.size() - 1 when the last retrieved command was the latest
  */
 public class CommandHistory {
     private ArrayList<String> commandHistory;
@@ -70,11 +75,11 @@ public class CommandHistory {
 
     private boolean isAtOldestCommand() {
         return commandHistory.isEmpty()
-            || commandHistoryIndex == 0;
+            || commandHistoryIndex <= 0;
     }
 
     private boolean isAtNewestCommand() {
         return commandHistory.isEmpty()
-            || commandHistoryIndex == commandHistory.size() - 1;
+            || commandHistoryIndex >= commandHistory.size() - 1;
     }
 }
