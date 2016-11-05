@@ -20,7 +20,7 @@ public abstract class UndoableCommand extends Command {
     public CommandResult reExecute() {
         if (getCommandState()!=CommandState.REDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
-        };
+        }
         return execute();
     }
     

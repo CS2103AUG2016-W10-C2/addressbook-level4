@@ -92,6 +92,8 @@ public class CommandArea extends VBox {
                 fillUpCommandLine(commandHistoryManager.getNextCommand());
                 logger.info("DOWN key entered");
                 break;
+            default:
+                break;
         }
     }
 

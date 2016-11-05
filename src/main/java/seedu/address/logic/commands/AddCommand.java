@@ -98,7 +98,7 @@ public class AddCommand extends UndoableCommand {
     public CommandResult unexecute() {
         if (getCommandState()!=CommandState.UNDOABLE){
             return new CommandResult(MESSAGE_UNDO_FAIL);
-        };
+        }
         assert toAdd != null;
         try {
             model.deleteTask(toAdd);
