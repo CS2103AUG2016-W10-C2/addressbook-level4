@@ -11,7 +11,7 @@ public class CommandBoxTest extends TaskManagerGuiTest {
 
     @Test
     public void commandBox_commandSucceeds_textCleared() {
-        TestEntry testEntry = td.getTestEntry(TypicalTestTasks.BuyTasks.TASK_1);
+        TestEntry testEntry = td.getTestEntry(new TypicalTestTasks.BuyTasks().getSampleEntryString());
         commandBox.runCommand(testEntry.getAddCommand());
         assertEquals(commandBox.getCommandInput(), "");
     }
