@@ -49,7 +49,7 @@ public interface TestTasks {
      * a test task manager instance.
      * This is an OPTIONAL method.
      */
-    List<TestEntry> getNonSampleEntries() throws UnsupportedOperationException;
+    List<TestEntry> getNonSampleEntries();
 
     /**
      * Returns the entries used as sample data, with tags.
@@ -61,17 +61,13 @@ public interface TestTasks {
      * Returns the entries used as sample data, with descriptions.
      * This is an OPTIONAL method.
      */
-    List<EntryBuilder> getSampleEntriesWithDescription() throws UnsupportedOperationException;
+    List<EntryBuilder> getSampleEntriesWithDescription();
 
     /**
      * Returns the TestEntries built from the sample entries which have descriptions.
      */
     default List<TestEntry> getBuiltSampleEntriesWithDescription() {
-        try {
-            return build(getSampleEntriesWithDescription());
-        } catch (UnsupportedOperationException uoe) {
-            return null;
-        }
+        return build(getSampleEntriesWithDescription());
     }
 
     /**
