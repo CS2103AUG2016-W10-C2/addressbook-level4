@@ -30,10 +30,11 @@ public interface Model {
     /** Edit the given task 
      * @throws EntryConversionException */
     void editTask(Update update)
-            throws EntryNotFoundException, DuplicateTaskException, EntryConversionException;
+            throws EntryNotFoundException, EntryConversionException;
 
-    /** Adds the given task */
-    void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException;
+    /** Adds the given task 
+     * @throws DuplicateTaskException */
+    void addTask(Entry entry) throws DuplicateTaskException;
     
     /** Adds the given tag 
      * @throws DuplicateTagException */

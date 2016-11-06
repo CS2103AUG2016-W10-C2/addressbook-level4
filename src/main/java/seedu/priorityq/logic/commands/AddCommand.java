@@ -24,7 +24,6 @@ public class AddCommand extends UndoableCommand {
 
     public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo add new entry: %1$s";
-    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the todo list";
     public static final String MESSAGE_START_END_ERROR = "The start/ flag must be used in conjunction with the end/ flag";
     public static final String START_FLAG = "start/";
     public static final String END_FLAG = "end/";
@@ -86,11 +85,11 @@ public class AddCommand extends UndoableCommand {
         assert model != null;
         try {
             model.addTask(toAdd);
-            setUndoable();
-            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueTaskList.DuplicateTaskException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_ENTRY);
+            assert false : "The target entry cannot already be in the list";
         }
+        setUndoable();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
 
     }
     //@@author A0121501E

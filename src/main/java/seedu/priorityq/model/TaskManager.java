@@ -92,13 +92,13 @@ public class TaskManager implements ReadOnlyTaskManager {
      *
      * @throws UniqueTaskList.DuplicateTaskException if an equivalent task already exists.
      */
-    public void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException {
+    public void addTask(Entry entry) throws DuplicateTaskException {
         syncTagsWithMasterList(entry);
         entries.add(entry);
     }
 
     public void editTask(Update update)
-            throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
+            throws EntryNotFoundException, EntryConversionException {
         Entry toEdit = update.getTask();
         syncTagsWithMasterList(toEdit);
         entries.updateTitle(toEdit, update.getNewTitle());
