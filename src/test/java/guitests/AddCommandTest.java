@@ -2,6 +2,7 @@ package guitests;
 
 import guitests.guihandles.TaskCardHandle;
 import org.junit.Test;
+
 import java.util.Arrays;
 
 import seedu.priorityq.logic.commands.AddCommand;
@@ -20,11 +21,9 @@ public class AddCommandTest extends TaskManagerGuiTest {
     @Test
     public void add() {
         TestEntry[] currentList = td.getTypicalSortedEntries(); // sample entries already present
-        TestEntry testEntry;
 
         //add new entries
-        for (TestEntry entry : td.getNonSampleEntries()) {
-            testEntry = entry;
+        for (TestEntry testEntry : td.getNonSampleEntries()) {
             assertAddSuccess(testEntry, currentList);
             currentList = TestUtil.addEntriesToList(currentList, testEntry);
         }
@@ -47,6 +46,13 @@ public class AddCommandTest extends TaskManagerGuiTest {
     }
 
     //@@author
+    @Test
+    public void add_Deadline() {
+        commandBox.runCommand("add Deadline end/today");
+        assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS, "Deadline Due: moments ago"));
+    }
+
+
     private void assertAddSuccess(TestEntry testEntry, TestEntry... currentList) {
         commandBox.runCommand(testEntry.getAddCommand());
 

@@ -3,6 +3,7 @@ package seedu.priorityq.testutil;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import seedu.priorityq.logic.commands.AddCommand;
 import seedu.priorityq.model.tag.UniqueTagList;
 import seedu.priorityq.model.task.*;
 
@@ -32,6 +33,11 @@ public class TestEntry extends Entry {
         sb.append("add " + this.getTitle().fullTitle + " ");
         if (!this.getTags().isEmpty()) {
             this.getTags().getInternalList().forEach(s -> sb.append(" " + TAG_FLAG).append(s.tagName));
+        }
+        if (!description.getValue().isEmpty()) {
+            sb.append(" ");
+            sb.append(AddCommand.DESC_FLAG);
+            sb.append(description.getValue());
         }
         return sb.toString();
     }
