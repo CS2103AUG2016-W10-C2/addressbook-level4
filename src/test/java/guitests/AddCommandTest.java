@@ -52,6 +52,12 @@ public class AddCommandTest extends TaskManagerGuiTest {
         assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS, "Deadline Due: moments ago"));
     }
 
+    @Test
+    public void add_Event() {
+        commandBox.runCommand("add Event start/6 Nov 2pm end/6 Nov 5pm");
+        assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS, "Event from: Sun, Nov 6 at 14:00 to: Sun, Nov 6 at 17:00"));
+    }
+
 
     private void assertAddSuccess(TestEntry testEntry, TestEntry... currentList) {
         commandBox.runCommand(testEntry.getAddCommand());
