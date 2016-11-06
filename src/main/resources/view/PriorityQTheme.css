@@ -166,6 +166,10 @@
     -fx-text-fill: DarkTurquoise;
 }
 
+.commandarea .label#statusLine {
+    -fx-font-family: "San Francisco Display Bold";
+}
+
 .commandarea .text-field {
     -fx-background-color: LightGrey, white;
     -fx-background-insets: 0 0 -1 0, 0;
