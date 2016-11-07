@@ -83,13 +83,13 @@ Last but not least, to add an event, specify both the start and end time.
 Examples:
 
 
-- `add CS2103T Lecture start/2016-10-10 10:00 end/2016-10-10 12:00 r/weekly #rocks`
+- `add CS2103T Lecture start/2016-10-10 10:00 end/2016-10-10 12:00 repeat/weekly #rocks`
 
 
 <!-- @@author A0127828W -->
 #### Listing and searching for entries
 ```
-list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...]] [type/{entry, task}]
+list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [type/{entry, task}]
 ```
 
 List all entries, or entries that satisfy the given search criteria. You may search for entries by title, date, tags or even entries For the best user experience, completed entries and past events are _automatically excluded_.
@@ -234,14 +234,14 @@ Here is format for the command summary:
 | Command |Format |
 | --- | --- |
 |add|`add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [repeat/<recurrence>] [desc/<description>]`|
-|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [desc=<description_value>]]`| [type/{entry, task}]
+|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...]] [type/{entry, task}]`|
 |tag|`tag <entry_id> #<tag_name> [#<tag_name> ...]`|
 |untag|`untag <entry_id> #<tag_name> [#<tag_name> ...]`|
-|edit|`edit <entry_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]`|
+|edit|`edit <entry_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [desc/<description>]`|
 |delete|`delete <entry_id>`|
 |mark|`mark <entry_id>`|
 |unmark|`unmark <entry_id>`|
 |undo|`undo`|
 |redo|`redo`|
-|help|`help [<command>]`|
+|help|`help`|
 |option|`option [<type>/<value> ...]`|
