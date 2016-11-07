@@ -9,6 +9,7 @@ import seedu.priorityq.commons.util.CollectionUtil;
 import seedu.priorityq.model.tag.UniqueTagList;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
@@ -116,6 +117,12 @@ public class Task extends Entry {
     protected String getDateDisplay(LocalDateTime dateTime){
         if (dateTime == null) {
             return "";
+        }
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime midnightYesterday = LocalDateTime.of(now.toLocalDate(), LocalTime.MIDNIGHT);
+        LocalDateTime midnightTomorrow = LocalDateTime.of(now.toLocalDate().plusDays(1), LocalTime.MIDNIGHT);
+        if (!(dateTime.isAfter(midnightYesterday) && dateTime.isBefore(midnightTomorrow))) {
+            return super.getDateDisplay(dateTime);
         }
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
         return prettyTime.format(interpreted);

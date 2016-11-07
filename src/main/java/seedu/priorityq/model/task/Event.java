@@ -153,16 +153,6 @@ public final class Event extends Entry{
         return builder.toString();
     }
 
-    // @@author A0127828W
-    @Override
-    protected String getDateDisplay(LocalDateTime dateTime) {
-        if (dateTime == null) {
-            return "";
-        }
-        Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-        return dateTime.format(DATE_TIME_FORMATTER);
-    }
-
     // @@author A0121501E
     @Override
     public LocalDateTime getComparableTime() {
