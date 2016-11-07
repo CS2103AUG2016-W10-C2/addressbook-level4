@@ -139,6 +139,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public UnmodifiableObservableList<Entry> getAllEntryList() {
+        return new UnmodifiableObservableList<>(taskManager.getSortedEntries());
+    }
+
+    @Override
     public void updateFilteredListToShowAll() {
         filteredEntries.setPredicate(null);
     }

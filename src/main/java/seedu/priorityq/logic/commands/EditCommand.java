@@ -8,6 +8,7 @@ import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Task;
 import seedu.priorityq.model.entry.Title;
 import seedu.priorityq.model.entry.Update;
 import seedu.priorityq.model.entry.UniqueTaskList.EntryConversionException;
