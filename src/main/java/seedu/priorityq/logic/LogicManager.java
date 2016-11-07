@@ -46,8 +46,8 @@ public class LogicManager extends ComponentManager implements Logic {
         Command command = parser.parseCommand(commandText);
 
         //@@author A0126539Y
-        if (command instanceof OptionCommand) {
-            OptionCommand optionCommand = (OptionCommand)command;
+        if (command instanceof SaveCommand) {
+            SaveCommand optionCommand = (SaveCommand)command;
             optionCommand.setUserPrefs(userPrefs);
             try {
                 CommandResult result = optionCommand.execute();
