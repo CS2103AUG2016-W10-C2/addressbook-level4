@@ -77,7 +77,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addTask(Entry entry) throws UniqueTaskList.DuplicateTaskException {
+    public synchronized void addTask(Entry entry) throws DuplicateTaskException {
         taskManager.addTask(entry);
         updateFilteredListToShowAllWithoutCompleted();
         indicateTaskManagerChanged();
@@ -85,7 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void editTask(Update update)
-            throws EntryNotFoundException, DuplicateTaskException, EntryConversionException {
+            throws EntryNotFoundException, EntryConversionException {
         taskManager.editTask(update);
         updateFilteredListToShowAllWithoutCompleted();
         indicateTaskManagerChanged();
@@ -94,14 +94,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void markTask(Entry task) throws EntryNotFoundException {
         taskManager.markTask(task);
-        updateFilteredListToShowAllWithoutCompleted();
         indicateTaskManagerChanged();
     }
 
     @Override
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         taskManager.unmarkTask(task);
-        updateFilteredListToShowAllWithoutCompleted();
         indicateTaskManagerChanged();
     }
 

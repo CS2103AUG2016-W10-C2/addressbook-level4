@@ -9,7 +9,6 @@ import seedu.priorityq.commons.core.UnmodifiableObservableList;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.task.Entry;
 import seedu.priorityq.model.task.Title;
-import seedu.priorityq.model.task.UniqueTaskList.DuplicateTaskException;
 import seedu.priorityq.model.task.UniqueTaskList.EntryConversionException;
 import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
 import seedu.priorityq.model.tag.Tag;
@@ -87,8 +86,6 @@ public class EditCommand extends UndoableCommand {
             model.editTask(update);
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
-        } catch (DuplicateTaskException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_TASK);
         } catch (EntryConversionException e) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(MESSAGE_ENTRY_CONVERSION);
@@ -111,8 +108,6 @@ public class EditCommand extends UndoableCommand {
             model.updateLastModifiedTime(taskToEdit, originalLastModifiedTime);
         } catch (EntryNotFoundException e) {
             assert false : "The target entry cannot be missing";
-        } catch (DuplicateTaskException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_TASK);
         } catch (EntryConversionException e) {
             assert false: "Undo shouldn't convert Task to Event and vice versa";
         }

@@ -221,12 +221,14 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_addDuplicate_notAllowed() throws Exception {
+    public void execute_addDuplicate_allowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.taskWithTags();
+        Task toBeAddedCopy = helper.taskWithTags();
         TaskManager expectedTM = new TaskManager();
         expectedTM.addTask(toBeAdded);
+        expectedTM.addTask(toBeAddedCopy);
 
         // setup starting state
         model.addTask(toBeAdded); // task already in internal task manager
@@ -234,7 +236,7 @@ public class LogicManagerTest {
         // execute command and verify result
         assertCommandBehavior(
                 helper.generateAddCommand(toBeAdded),
-                AddCommand.MESSAGE_DUPLICATE_ENTRY,
+                String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedTM,
                 expectedTM.getTaskList());
 
@@ -626,7 +628,7 @@ public class LogicManagerTest {
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
                 expectedTM,
-                new ArrayList<>());
+                expectedTM.getTaskList());
     }
 
     @Test
@@ -777,7 +779,7 @@ public class LogicManagerTest {
         assertCommandBehavior("undo",
                 String.format(UnmarkCommand.MESSAGE_UNDO_SUCCESS, toBeUnmarked),
                 expectedTM,
-                new ArrayList<>());
+                expectedTM.getTaskList());
     }
 
     @Test
