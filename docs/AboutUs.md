@@ -24,11 +24,11 @@
 * Aspects/tools in charge of: Testing, [Project](https://github.com/CS2103AUG2016-W10-C2/main/projects/1)
 * Features implemented:
     * GUI ([#86](https://github.com/CS2103AUG2016-W10-C2/main/pull/86), [#98](https://github.com/CS2103AUG2016-W10-C2/main/pull/98))
-    * GUI Tests ([#86](https://github.com/CS2103AUG2016-W10-C2/main/pull/86), [#137](https://github.com/CS2103AUG2016-W10-C2/main/pull/137))
     * Responsive GUI ([#131](https://github.com/CS2103AUG2016-W10-C2/main/pull/131))
     * [Initial edit command](https://github.com/CS2103AUG2016-W10-C2/main/pull/23)
 * Code written: [[functional code](../collated/main/A0116603R.md)][[test code](../collated/test/A0116603R.md)][[docs](../collated/docs/A0116603R.md)]
 * Other major contributions:
+    * GUI Tests ([#86](https://github.com/CS2103AUG2016-W10-C2/main/pull/86), [#137](https://github.com/CS2103AUG2016-W10-C2/main/pull/137))
     * Add and edit task description ([#42](https://github.com/CS2103AUG2016-W10-C2/main/pull/42), [#43](https://github.com/CS2103AUG2016-W10-C2/main/pull/43))
     * Refactoring from AddressBook to PriorityQ ([#36](https://github.com/CS2103AUG2016-W10-C2/main/pull/36), [#64](https://github.com/CS2103AUG2016-W10-C2/main/pull/64))
     * Mockups, design of app
