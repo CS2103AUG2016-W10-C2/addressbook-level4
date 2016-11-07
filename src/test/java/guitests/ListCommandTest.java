@@ -30,8 +30,8 @@ public class ListCommandTest extends TaskManagerGuiTest {
 
         // search after deleting one result
         commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 1");
-        generator = new TypicalTestTasks.WatchTasks();
-        assertListResult(ListCommand.COMMAND_WORD + " " + TypicalTestTasks.WatchTasks.VERB, generator.getSampleEntries());
+        generator = new TypicalTestTasks.StudyTasks();
+        assertListResult(ListCommand.COMMAND_WORD + " " + TypicalTestTasks.StudyTasks.VERB, generator.getSampleEntries());
     }
 
     @Test

@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
  * An interface representing a category of typical test tasks.
  */
 public interface TestTasks {
+
+    /**
+     * Returns a list of EntryBuilders generated from the list of Strings passed in.
+     * @param tasks The title of the entries to be created
+     * @return a list of EntryBuilders created from the specified titles
+     */
     default List<EntryBuilder> getAllEntries(String... tasks) {
         List<EntryBuilder> entries = new ArrayList<>();
         for (String task : tasks) {
@@ -25,30 +31,53 @@ public interface TestTasks {
         return entries;
     }
 
+    /**
+     * Builds all of the EntryBuilders passed in.
+     */
     default List<TestEntry> build(List<EntryBuilder> entryBuilders) {
         if (entryBuilders == null) return null;
         return entryBuilders.stream().map(EntryBuilder::build).sorted(new EntryViewComparator()).collect(Collectors.toList());
     }
 
     /**
-     * Returns the entries used as sample data for this category of tasks
+     * Returns the entries used as sample data for this category of tasks.
      */
     List<TestEntry> getSampleEntries();
 
     /**
      * Returns the entries used as new data that can be arbitrarily added to
-     * a test task manager instance
+     * a test task manager instance.
+     * This is an OPTIONAL method.
      */
     List<TestEntry> getNonSampleEntries();
 
-    List<EntryBuilder> getSampleEntriesWithTags();
+    /**
+     * Returns the entries used as sample data, with tags.
+     * This is an OPTIONAL method.
+     */
+    List<EntryBuilder> getSampleEntriesWithTags() throws UnsupportedOperationException;
+
+    /**
+     * Returns the entries used as sample data, with descriptions.
+     * This is an OPTIONAL method.
+     */
     List<EntryBuilder> getSampleEntriesWithDescription();
 
+    /**
+     * Returns the TestEntries built from the sample entries which have descriptions.
+     */
     default List<TestEntry> getBuiltSampleEntriesWithDescription() {
         return build(getSampleEntriesWithDescription());
     }
 
+    /**
+     * Returns the TestEntries built from the sample entries which have tags.
+     */
     default List<TestEntry> getBuiltSampleEntriesWithTags() {
-        return build(getSampleEntriesWithTags());
+        try {
+            return build(getSampleEntriesWithTags());
+        } catch (UnsupportedOperationException uoe) {
+            return null;
+        }
     }
 }

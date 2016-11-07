@@ -16,9 +16,7 @@ import java.util.stream.Collectors;
 public class TypicalTestTasks {
 
     public static class BuyTasks implements TestTasks {
-        // Leave one task publicly accessible in case one needs direct access
-        public static final String TASK_1 = "Buy apples";
-        static final String[] SAMPLES = new String[]{TASK_1, "Buy bananas", "Buy bananas"};
+        static final String[] SAMPLES = new String[]{"Buy apples", "Buy bananas"};
         static final String[] NON_SAMPLES = new String[]{"Buy cookies", "Buy some time"};
 
         public static final String VERB = "Buy";
@@ -52,11 +50,17 @@ public class TypicalTestTasks {
         public List<EntryBuilder> getSampleEntriesWithDescription() {
             return getAllEntries(SAMPLES).stream().map(entryBuilder -> entryBuilder.withDescription(DEFAULT_DESCRIPTION)).collect(Collectors.toList());
         }
+
+        public String getSampleEntryString() {
+            return SAMPLES[0];
+        }
     }
 
-    private static class StudyTasks implements TestTasks {
-        static final String[] SAMPLES = new String[]{"Study for finals", "Do assignment 1"};
+    public static class StudyTasks implements TestTasks {
+        static final String[] SAMPLES = new String[]{"Study for finals", "Study for midterm"};
         static final String[] NON_SAMPLES = new String[]{"Read up on unit testing", "Code for project"};
+
+        public static final String VERB = "Study";
 
         static final String DEFAULT_DESCRIPTION = "A short little description which grew longer";
 
@@ -71,8 +75,8 @@ public class TypicalTestTasks {
         }
 
         @Override
-        public List<EntryBuilder> getSampleEntriesWithTags() {
-            return null;
+        public List<EntryBuilder> getSampleEntriesWithTags() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException("No StudyTasks with tags");
         }
 
         @Override
@@ -81,31 +85,10 @@ public class TypicalTestTasks {
         }
     }
 
-    public static class WatchTasks implements TestTasks {
-        static final String[] SAMPLES = new String[]{"Watch movie", "Watch Black Mirror"};
-        static final String[] NON_SAMPLES = new String[]{"Watch Doctor Who", "Watch Big Hero 6"};
-
-        public static final String VERB = "Watch";
-
-        @Override
-        public List<TestEntry> getSampleEntries() {
-            return build(getAllEntries(SAMPLES));
-        }
-
-        @Override
-        public List<TestEntry> getNonSampleEntries() {
-            return build(getAllEntries(NON_SAMPLES));
-        }
-
-        @Override
-        public List<EntryBuilder> getSampleEntriesWithTags() {
-            return null;
-        }
-
-        @Override
-        public List<EntryBuilder> getSampleEntriesWithDescription() {
-            return null;
-        }
+    public TaskManager getTypicalTaskManager(){
+        TaskManager tm = new TaskManager();
+        loadTaskManagerWithSampleData(tm);
+        return tm;
     }
 
     public void loadTaskManagerWithSampleData(TaskManager taskManager) {
@@ -121,21 +104,7 @@ public class TypicalTestTasks {
     private List<TestEntry> getSampleEntries() {
         List<TestEntry> allTestEntries = new BuyTasks().getBuiltSampleEntriesWithTags();
         allTestEntries.addAll(new StudyTasks().getBuiltSampleEntriesWithDescription());
-        allTestEntries.addAll(new WatchTasks().getSampleEntries());
         return allTestEntries;
-    }
-
-    public TestEntry[] getSampleEntriesAsArray() {
-        List<TestEntry> allTestEntries = getSampleEntries();
-        TestEntry[] result = new TestEntry[allTestEntries.size()];
-        return allTestEntries.toArray(result);
-    }
-
-    public List<TestEntry> getNonSampleEntries() {
-        List<TestEntry> nonSampleEntries = new BuyTasks().getNonSampleEntries();
-        nonSampleEntries.addAll(new StudyTasks().getNonSampleEntries());
-        nonSampleEntries.addAll(new WatchTasks().getNonSampleEntries());
-        return nonSampleEntries;
     }
 
     public TestEntry[] getTypicalSortedEntries() {
@@ -144,10 +113,16 @@ public class TypicalTestTasks {
         return testEntry;
     }
 
-    public TaskManager getTypicalTaskManager(){
-        TaskManager tm = new TaskManager();
-        loadTaskManagerWithSampleData(tm);
-        return tm;
+    private TestEntry[] getSampleEntriesAsArray() {
+        List<TestEntry> allTestEntries = getSampleEntries();
+        TestEntry[] result = new TestEntry[allTestEntries.size()];
+        return allTestEntries.toArray(result);
+    }
+
+    public List<TestEntry> getNonSampleEntries() {
+        List<TestEntry> nonSampleEntries = new BuyTasks().getNonSampleEntries();
+        nonSampleEntries.addAll(new StudyTasks().getNonSampleEntries());
+        return nonSampleEntries;
     }
 
     public TestEntry getTestEntry(String title) {
@@ -159,6 +134,4 @@ public class TypicalTestTasks {
         }
         return entry;
     }
-
-
 }
