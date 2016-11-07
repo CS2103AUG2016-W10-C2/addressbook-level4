@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
 import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.task.Event;
 import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
+import seedu.priorityq.logic.commands.MarkCommand;
 
 //@@author A0121501E
 /**
@@ -42,8 +44,14 @@ public class UnmarkCommand extends UndoableCommand {
                 indicateAttemptToExecuteIncorrectCommand();
                 return new CommandResult(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
             }
-    
+
             entryToUnmark = lastShownList.get(targetIndex - 1);
+
+            if (entryToUnmark instanceof Event) {
+                indicateAttemptToExecuteIncorrectCommand();
+                return new CommandResult(String.format(MarkCommand.MESSAGE_ENTRY_TYPE_EVENT_FAIL, entryToUnmark));
+            }
+            
             originalLastModifiedTime = entryToUnmark.getLastModifiedTime();
             originalIsMarked= entryToUnmark.isMarked();
         }
