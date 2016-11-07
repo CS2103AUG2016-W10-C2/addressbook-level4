@@ -3,22 +3,15 @@
 ``` java
     @Test
     public void add() {
-        TestEntry[] currentList = td.getTypicalSortedPersons(); // sample entries already present
-        TestEntry testEntry;
+        TestEntry[] currentList = td.getTypicalSortedEntries(); // sample entries already present
 
         //add new entries
-        for (TestEntry entry : td.getNonSampleEntries()) {
-            testEntry = entry;
+        for (TestEntry testEntry : td.getNonSampleEntries()) {
             assertAddSuccess(testEntry, currentList);
-            currentList = TestUtil.addPersonsToList(currentList, testEntry);
+            currentList = TestUtil.addEntriesToList(currentList, testEntry);
         }
 
         assertTrue(currentList.length > 0);
-
-        //add duplicate task
-        commandBox.runCommand(currentList[0].getAddCommand());
-        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_ENTRY);
-        assertTrue(taskList.isListMatching(currentList));
 
         //add to empty list
         commandBox.runCommand(ClearCommand.COMMAND_WORD);
@@ -44,8 +37,8 @@
 
         // search after deleting one result
         commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 1");
-        generator = new TypicalTestTasks.WatchTasks();
-        assertListResult(ListCommand.COMMAND_WORD + " " + TypicalTestTasks.WatchTasks.VERB, generator.getSampleEntries());
+        generator = new TypicalTestTasks.StudyTasks();
+        assertListResult(ListCommand.COMMAND_WORD + " " + TypicalTestTasks.StudyTasks.VERB, generator.getSampleEntries());
     }
 
     @Test
