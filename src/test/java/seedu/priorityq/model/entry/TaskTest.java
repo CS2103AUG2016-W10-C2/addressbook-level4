@@ -70,11 +70,19 @@ public class TaskTest {
     
     @Test
     public void hashCodeTests() {
+        Task copy = new Task(floating);
+        assertEquals(floating.hashCode(), copy.hashCode());
+        Task deadlineCopy = new Task(withDeadline);
+        assertEquals(withDeadline.hashCode(), deadlineCopy.hashCode());
+        
         assertNotEquals(floating.hashCode(), withDeadline.hashCode());
         
         // test consistency
         assertEquals(floating.hashCode(), floating.hashCode());
         assertEquals(floating.hashCode(), floating.hashCode());
+        
+        copy.setDescription("new description");
+        assertNotEquals(floating.hashCode(), copy.hashCode());
     }
     
     @Test
@@ -93,24 +101,24 @@ public class TaskTest {
         
         
         // test symmetricity
-        Task alt = new Task(floating);
-        assertTrue(floating.equals(alt));
-        assertTrue(alt.equals(floating));
+        Task copy = new Task(floating);
+        assertTrue(floating.equals(copy));
+        assertTrue(copy.equals(floating));
         
-        Task altDeadline = new Task(withDeadline);
-        assertTrue(withDeadline.equals(altDeadline));
-        assertTrue(altDeadline.equals(withDeadline));
+        Task copyDeadline = new Task(withDeadline);
+        assertTrue(withDeadline.equals(copyDeadline));
+        assertTrue(copyDeadline.equals(withDeadline));
         
         // test transitivity
-        Task alt2 = new Task(title, null, uniqueTagList, false, description, lastModifiedTime);
-        assertTrue(alt.equals(alt2));
-        assertTrue(floating.equals(alt2));
+        Task copy2 = new Task(title, null, uniqueTagList, false, description, lastModifiedTime);
+        assertTrue(copy.equals(copy2));
+        assertTrue(floating.equals(copy2));
         
 
-        alt.setTitle(new Title("some other title"));
-        assertFalse(withDeadline.equals(alt));
-        alt2.mark();
-        assertFalse(withDeadline.equals(alt2));
+        copy.setTitle(new Title("some other title"));
+        assertFalse(withDeadline.equals(copy));
+        copy2.mark();
+        assertFalse(withDeadline.equals(copy2));
     }
     //@@author
 
