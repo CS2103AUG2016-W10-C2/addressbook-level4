@@ -178,9 +178,23 @@ Command Sequence: `delete 1`, `undo`
 
 Result: The task at index 1 is added back into the task list.
 
-#### 8.2 Redo a command
+#### 8.2 Undo multiple commands
+Format: `undo`
+
+Command Sequence: `delete 1`, `add buy blankets`, `undo`, `undo`
+
+Result: The task at index 1 is added back into the task list after the first undo. The new task "buy blankets" is removed from the list.
+
+#### 8.3 Redo a command
 Format: `redo`
 
 Command Sequence: `delete 1`, `undo`, `redo`
 
 Result: The task at index 1 is deleted first and disappears. With the undo command, the task is added back into the list. Finally, the redo command causes the deletion of the task again.
+
+
+#### 8.4 Redo multiple command
+
+Command Sequence: `delete 1`, `edit 1 #sleepy`, `undo`, `undo`, `redo`, `redo`
+
+Result: The task at index 1 is deleted first and disappears. The tag #sleepy is added to the task at index 1. With the first undo command, #sleepy is removed from the task at index 1. With the second undo command, the task is added back into the list. The redo command causes the deletion of the task again. The second redo command adds back the tag #sleepy to the task at index 1.
