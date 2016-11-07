@@ -71,7 +71,11 @@ public class TaskTest {
     }
     
     @Test
-    public void hashCodeConsistent() {
+    public void hashCodeTests() {
+        assertNotEquals(floating.hashCode(), withDeadline.hashCode());
+        
+        // test consistency
+        assertEquals(floating.hashCode(), floating.hashCode());
         assertEquals(floating.hashCode(), floating.hashCode());
     }
     
