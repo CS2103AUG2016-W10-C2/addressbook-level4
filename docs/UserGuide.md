@@ -3,7 +3,7 @@ User guide
 
 <!-- @@author A0116603R -->
 ## Introduction
-PriorityQ is a task manager for the modern power user who enjoys working primarily without a mouse. You care about productivity and your workflow might be primarily keyboard-based.
+PriorityQ is a task manager for the modern power user who enjoys working primarily without a mouse. You care about productivity and your workflow is largely keyboard-based.
 
 In fact, you could subscribe to the ‘Inbox Zero’ philosophy. Consequently, it is important that you can quickly keep track of tasks that come in. Because of the variety of such tasks and events, you want a manager that is flexible. From creating tasks without a specific deadline to blocking out specific times on your calendar, PriorityQ does it all, in a clean and easy-to-use interface. Use PriorityQ to capture your ideas, goals, wish lists, trip plans and daily tasks.
 
@@ -11,7 +11,7 @@ This user guide aims to provide you with a brief overview of PriorityQ and how t
 
 ## Getting Started
 
-Java 8(Version 1.8) JVM(Java Virtual Machine) is required to run the program. To start, simply download the .jar file from our release page and run it by double clicking on the icon.
+Java 8(Version 1.8) JVM(Java Virtual Machine) is required to run the program. To start, simply download the .jar file from our [release page](https://github.com/CS2103AUG2016-W10-C2/main/releases) and run it by double clicking on the icon.
 
 At the launch of PriorityQ, you should see the following screen:
 
@@ -31,7 +31,7 @@ add Buy groceries
 The task can be edited with the following command:
 
 ```
-edit 0 end/tomorrow 5pm
+edit 1 end/tomorrow 5pm
 ```
 Yep, natural language is parsed as well!
 
@@ -217,6 +217,11 @@ Examples:
 ## Misc
 
 You can use UP and DOWN keys to browse through your past commands in the session.
+
+<!-- @@author A0116603R -->
+To quickly jump to the command line, simply press the ENTER key and you can start typing your command.
+
+When the app is maximised beyond a particular width, the text automatically becomes larger.
 
 <!-- @@author A0127828W -->
 
