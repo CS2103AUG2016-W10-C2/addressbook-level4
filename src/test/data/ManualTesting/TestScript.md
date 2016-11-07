@@ -205,3 +205,9 @@ Result: The task at index 1 is deleted first and disappears. With the undo comma
 Command Sequence: `delete 1`, `edit 1 #sleepy`, `undo`, `undo`, `redo`, `redo`
 
 Result: The task at index 1 is deleted first and disappears. The tag #sleepy is added to the task at index 1. With the first undo command, #sleepy is removed from the task at index 1. With the second undo command, the task is added back into the list. The redo command causes the deletion of the task again. The second redo command adds back the tag #sleepy to the task at index 1.
+
+#### 9.1 Save data in another loaction
+
+Command Sequence: `save data/NewLocation.xml`
+
+Result: You will see a new file will be created in data/NewLocation.xml containing whatever entries you have right now
