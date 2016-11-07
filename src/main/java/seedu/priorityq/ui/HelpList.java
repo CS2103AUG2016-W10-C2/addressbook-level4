@@ -19,7 +19,7 @@ public class HelpList extends ListView<HelpList.HelpItem> {
             "LIST-ALL",
             "TAG", "UNTAG",
             "MARK", "UNMARK",
-            "UNDO", "OPTION"};
+            "UNDO", "SAVE", "LOAD"};
 
     private static final String[] HELP_TEXT = new String[]{
             "<ESCAPE-KEY>",
@@ -33,7 +33,8 @@ public class HelpList extends ListView<HelpList.HelpItem> {
             "mark <task_id>",
             "unmark <task_id>",
             "undo",
-            "option [<type>/<value> ...]"};
+            "save <file_location>",
+            "load <file_location>"};
 
     private ObservableList<HelpItem> data;
 

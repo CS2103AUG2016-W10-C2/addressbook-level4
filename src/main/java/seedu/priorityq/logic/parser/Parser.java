@@ -19,7 +19,6 @@ import static seedu.priorityq.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORM
 import static seedu.priorityq.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.priorityq.logic.commands.AddCommand.*;
 import static seedu.priorityq.logic.commands.ListCommand.*;
-import static seedu.priorityq.logic.commands.OptionCommand.SAVE_LOCATION_FLAG;
 import static seedu.priorityq.logic.commands.EditCommand.TITLE_FLAG;
 
 /**
@@ -51,7 +50,6 @@ public class Parser {
     private static final PrettyTimeParser prettyTimeParser = new PrettyTimeParser();
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-    private static final Prefix saveLocationPrefix = new Prefix(SAVE_LOCATION_FLAG);
     
     private static final String RECURSION_ERROR_MESSAGE = "Recursion timing is wrong. Please make sure it's a valid format. i.e: 'every 3 days'";
     
@@ -115,8 +113,10 @@ public class Parser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
-        case OptionCommand.COMMAND_WORD:
-            return prepareOption(arguments);
+        case SaveCommand.COMMAND_WORD:
+            return prepareSave(arguments);
+        case LoadCommand.COMMAND_WORD:
+            return prepareLoad(arguments);
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -245,17 +245,6 @@ public class Parser {
         String formatted = dateFormat.format(parsed);
         formatted = formatted + "T00:00";
         return LocalDateTime.parse(formatted);
-    }
-    //@@author
-
-    /**
-     *
-     * @param argsTokenizer
-     * @return new save location for PriorityQ
-     */
-    //@@author A0126539Y
-    private static String getSaveLocationFromArgs(ArgumentTokenizer argsTokenizer) {
-        return argsTokenizer.getValue(saveLocationPrefix).orElse(null);
     }
     //@@author
 
@@ -416,25 +405,33 @@ public class Parser {
         }
     }
     
+    //@@author A0126539Y
     /**
      *
      * @param args
      *          full command args string
      * @return the prepared command
      */
-    private Command prepareOption(String args) {
-        ArgumentTokenizer argsTokenizer = new ArgumentTokenizer(saveLocationPrefix);
-        argsTokenizer.tokenize(args.trim());
-
+    private Command prepareSave(String saveLocation) {
         try {
-            return new OptionCommand(getSaveLocationFromArgs(argsTokenizer));
+            return new SaveCommand(saveLocation.trim());
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         } catch (InvalidPathException ipe) {
             return new IncorrectCommand(ipe.getMessage());
         }
     }
-
+    
+    private Command prepareLoad(String loadLocation) {
+        try {
+            return new LoadCommand(loadLocation.trim());
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        } catch (InvalidPathException ipe) {
+            return new IncorrectCommand(ipe.getMessage());
+        }
+    }
+    //@@author
     /**
      * Returns the specified index in the {@code command} IF a positive unsigned
      * integer is given as the index. Returns an {@code Optional.empty()}

@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
-import seedu.priorityq.commons.util.CollectionUtil;
 import seedu.priorityq.model.Model;
 import seedu.priorityq.model.UserPrefs;
 
@@ -15,17 +14,15 @@ import seedu.priorityq.model.UserPrefs;
  *
  */
 //@@author A0126539Y
-public class OptionCommand extends Command{
-    public static final String COMMAND_WORD = "option";
+public class SaveCommand extends Command{
+    public static final String COMMAND_WORD = "save";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Change user preference. "
-            + "Parameters: [save/Save Location]\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Change data save location. "
+            + "Parameters: SAVE_LOCATION\n"
             + "Example: " + COMMAND_WORD
-            + " save/myFileName.xml";
+            + " folder/myFileName.xml";
 
-    public static final String MESSAGE_SUCCESS_PREFIX = "Preference saved: ";
-    public static final String MESSAGE_SAVE_LOCATION_SUCCESS = "Save Location";
-    public static final String SAVE_LOCATION_FLAG = "save/";
+    public static final String MESSAGE_SUCCESS_PREFIX = "Save location updated to: ";
     private static final String EXTENSION_FINDER_REGEX = "\\.(?=[^\\.]+$)";
 
     private UserPrefs toChange;
@@ -35,11 +32,8 @@ public class OptionCommand extends Command{
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public OptionCommand(String saveLocation)
+    public SaveCommand(String saveLocation)
             throws IllegalValueException, InvalidPathException {
-        if (!CollectionUtil.isAnyNotNull(saveLocation)) {
-            throw new IllegalValueException(MESSAGE_USAGE);
-        }
         if (saveLocation != null && !saveLocation.isEmpty()) {
             //verify saveLocation has path format
             Path path = Paths.get(saveLocation);
@@ -47,6 +41,8 @@ public class OptionCommand extends Command{
             if (pathToken.length <= 1 || !pathToken[pathToken.length - 1].equals("xml")) {
                 throw new InvalidPathException(saveLocation, "Filepath should has xml extension");
             }
+        } else {
+            throw new IllegalValueException(MESSAGE_USAGE);
         }
         this.saveTargetLocation = saveLocation;
     }
@@ -63,11 +59,8 @@ public class OptionCommand extends Command{
 
     @Override
     public CommandResult execute() {
-        StringBuilder messageBuilder = new StringBuilder().append(MESSAGE_SUCCESS_PREFIX);
-        if (saveTargetLocation != null && !saveTargetLocation.isEmpty()) {
-            toChange.setSaveLocation(saveTargetLocation);
-            messageBuilder.append(MESSAGE_SAVE_LOCATION_SUCCESS);
-        }
+        toChange.setSaveLocation(saveTargetLocation);
+        StringBuilder messageBuilder = new StringBuilder().append(MESSAGE_SUCCESS_PREFIX).append(saveTargetLocation);
         return new CommandResult(messageBuilder.toString());
     }
 
