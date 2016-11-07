@@ -4,14 +4,16 @@
 <img src="./images/joeleba.jpg" width="150"><br>
 
 * Components in charge of: [Listing](https://github.com/se-edu/addressbook-level4/blob/master/docs/DeveloperGuide.md#storage-component)
-* Aspects/tools in charge of: Travis, Coveralls, Udacity
+* Aspects/tools in charge of: Travis, Coveralls, Codacy
 * Features implemented:
    * [Listing](https://github.com/CS2103AUG2016-W10-C2/main/blob/master/docs/UserGuide.md#listing)
    * [Input Date NLP](https://github.com/CS2103AUG2016-W10-C2/main/pull/67)
-* Code written: [[functional code](../collate/main/A127828W.md)][[test code](../collate/test/A127828W.md)][[docs](../collate/docs/A127828W.md)]
+   * [Command History](https://github.com/CS2103AUG2016-W10-C2/main/issues/133)
+   * [Hiding/Listing Completed Tasks](https://github.com/CS2103AUG2016-W10-C2/main/issues/115)
+* Code written: [[functional code](../collated/main/A127828W.md)][[test code](../collated/test/A127828W.md)][[docs](../collated/docs/A127828W.md)]
 * Other major contributions:
-  * Did the initial refactoring from AddressBook to PriorityQ ([#2](https://github.com/CS2103AUG2016-W10-C2/main/pull/2))
-  * Set up Travis, Coveralls and Udacity
+  * Did the refactoring from AddressBook to PriorityQ ([#2](https://github.com/CS2103AUG2016-W10-C2/main/pull/2), [#142](https://github.com/CS2103AUG2016-W10-C2/main/pull/142))
+  * Set up Travis, Coveralls and Codacy
   * Integration of Tokenizer ([#61](https://github.com/CS2103AUG2016-W10-C2/main/pull/61))
   * Implemented [Predicate Chaining](https://github.com/CS2103AUG2016-W10-C2/main/blob/master/src/main/java/seedu/address/model/PredicateBuilder.java) to allow better filtering with `list` command
 
