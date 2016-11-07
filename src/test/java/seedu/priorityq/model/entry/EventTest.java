@@ -107,8 +107,6 @@ public class EventTest {
         
         copy.setTitle(new Title("some other title"));
         assertFalse(testEvent.equals(copy));
-        copy2.setLastModifiedTime(LocalDateTime.now());;
-        assertFalse(testEvent.equals(copy2));
     }
     
     @Test

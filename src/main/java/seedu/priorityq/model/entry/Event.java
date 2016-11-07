@@ -125,8 +125,7 @@ public final class Event extends Entry{
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
                 && other.getAsText().equals(this.getAsText())
-                && other.recursion.get() == this.recursion.get()
-                && other.getLastModifiedTime().equals(this.getLastModifiedTime()));
+                && other.recursion.get() == this.recursion.get());
     }
 
     @Override

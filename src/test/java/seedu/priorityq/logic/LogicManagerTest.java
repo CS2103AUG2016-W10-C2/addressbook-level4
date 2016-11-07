@@ -108,7 +108,6 @@ public class LogicManagerTest {
         CommandResult result = logic.execute(inputCommand);
         //Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
-        UnmodifiableObservableList<Entry> ee = model.getFilteredEntryList();
         assertEquals(expectedShownList, model.getFilteredEntryList());
         //Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedTaskManager, model.getTaskManager());
@@ -656,6 +655,7 @@ public class LogicManagerTest {
         expectedTM.addTask(toBeUnmarkedCopy);
         
         model.addTask(toBeUnmarked);
+        logic.execute("list-all");
         assertCommandBehavior("unmark 1",
                 String.format(UnmarkCommand.MESSAGE_SUCCESS, toBeUnmarked),
                 expectedTM,
