@@ -1,4 +1,4 @@
-package seedu.priorityq.model.task;
+package seedu.priorityq.model.entry;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,12 +22,12 @@ import static seedu.priorityq.commons.core.Messages.SPACE;
  */
 //@@author A0126539Y
 public class Task extends Entry {
-    static final PrettyTime prettyTime = new PrettyTime();
+    private static final PrettyTime dateFormatter = new PrettyTime();
     protected ObjectProperty<LocalDateTime> deadline;
 
 
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description, LocalDateTime lastModifiedTime) {
-        assert !CollectionUtil.isAnyNull(title, tags, description);
+        assert !CollectionUtil.isAnyNull(title, tags, description, lastModifiedTime);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
@@ -80,7 +80,7 @@ public class Task extends Entry {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(title, tags);
+        return Objects.hash(title, tags, deadline, isMarked, description, lastModifiedTime);
     }
 
     @Override
@@ -99,6 +99,11 @@ public class Task extends Entry {
         return deadline.get() == null;
     }
 
+    public PrettyTime getDateFormatter() {
+        return dateFormatter;
+    }
+      
+    
     //@@author A0116603R
     @Override
     public String getAsText() {
@@ -125,7 +130,7 @@ public class Task extends Entry {
             return super.getDateDisplay(dateTime);
         }
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-        return prettyTime.format(interpreted);
+        return dateFormatter.format(interpreted);
     }
 
     // @@author A0121501E

@@ -7,8 +7,8 @@ import java.util.Set;
 import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryNotFoundException;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

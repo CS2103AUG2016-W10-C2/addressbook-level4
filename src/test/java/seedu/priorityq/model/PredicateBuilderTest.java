@@ -5,10 +5,10 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Task;
+import seedu.priorityq.model.entry.Title;
 import seedu.priorityq.model.tag.UniqueTagList;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.Task;
-import seedu.priorityq.model.task.Title;
 import seedu.priorityq.testutil.EntryBuilder;
 import seedu.priorityq.testutil.TestEntry;
 

@@ -1,8 +1,8 @@
 package seedu.priorityq.logic.commands;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
-import seedu.priorityq.model.task.*;
-import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
+import seedu.priorityq.model.entry.*;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryNotFoundException;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

@@ -13,7 +13,7 @@ import seedu.priorityq.commons.events.ui.FocusCommandLineEvent;
 import seedu.priorityq.commons.events.ui.ShowHelpListEvent;
 import seedu.priorityq.commons.events.ui.ShowTaskListEvent;
 import seedu.priorityq.logic.Logic;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 
 import java.util.logging.Logger;
 

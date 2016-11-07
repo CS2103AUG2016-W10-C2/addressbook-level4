@@ -1,7 +1,7 @@
 package seedu.priorityq.testutil;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
-import seedu.priorityq.model.task.EntryViewComparator;
+import seedu.priorityq.model.entry.EntryViewComparator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

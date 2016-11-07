@@ -4,9 +4,9 @@ import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 import seedu.priorityq.model.ReadOnlyTaskManager;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.EntryViewComparator;
-import seedu.priorityq.model.task.UniqueTaskList;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.EntryViewComparator;
+import seedu.priorityq.model.entry.UniqueTaskList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

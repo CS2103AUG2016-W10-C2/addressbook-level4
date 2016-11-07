@@ -3,9 +3,9 @@ package seedu.priorityq.testutil;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import seedu.priorityq.model.entry.Entry;
 import seedu.priorityq.logic.commands.AddCommand;
 import seedu.priorityq.model.tag.UniqueTagList;
-import seedu.priorityq.model.task.*;
 
 import java.time.LocalDateTime;
 

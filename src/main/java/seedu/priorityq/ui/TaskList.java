@@ -3,7 +3,7 @@ package seedu.priorityq.ui;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 
 // @@author A0116603R
 /**

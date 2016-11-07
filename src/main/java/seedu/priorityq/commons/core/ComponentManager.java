@@ -1,6 +1,7 @@
 package seedu.priorityq.commons.core;
 
 import seedu.priorityq.commons.events.BaseEvent;
+import seedu.priorityq.model.entry.Entry;
 
 /**
  * Base class for *Manager classes

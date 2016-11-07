@@ -1,4 +1,4 @@
-package seedu.priorityq.model.task;
+package seedu.priorityq.model.entry;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,11 +22,11 @@ public final class Event extends Entry{
     protected ObjectProperty<LocalDateTime> startTime;
     protected ObjectProperty<LocalDateTime> endTime;
     protected SimpleLongProperty recursion; // value is in milis
-    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEE, MMM d 'at' HH:mm");
     private static final String INVALID_START_END_TIME = "Invalid start and end time. i.e: start time is after end time.";
 
     private void convertToNextRecursion() {
-        if (recursion.get() > 0  && getEndTime().compareTo(LocalDateTime.now()) < 0) {
+        if (recursion.get() > 0  && getEndTime().isBefore(LocalDateTime.now())) {
             //get the length of event in seconds unit
             long eventLengthSeconds = getStartTime().until(getEndTime(), ChronoUnit.SECONDS);
 
@@ -43,7 +43,7 @@ public final class Event extends Entry{
 
     public Event(Title title, LocalDateTime startTime, LocalDateTime endTime, UniqueTagList tags, boolean isMarked, String description, long recursion, LocalDateTime lastModifiedTime) throws IllegalArgumentException{
         assert !CollectionUtil.isAnyNull(title, tags, description, startTime, endTime, lastModifiedTime);
-        if(startTime.isAfter(endTime)) {
+        if (startTime.isAfter(endTime)) {
             throw new IllegalArgumentException(INVALID_START_END_TIME);
         }
         this.title = new SimpleObjectProperty<>(Title.copy(title));
@@ -63,7 +63,7 @@ public final class Event extends Entry{
     }
     
     public Event(Entry entry) throws IllegalArgumentException {
-        this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription(), -1, entry.getLastModifiedTime());
+        this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription(), ((Event)entry).getRecursion(), entry.getLastModifiedTime());
     }
 
     public LocalDateTime getStartTime() {
@@ -113,7 +113,7 @@ public final class Event extends Entry{
     @Override
     public int hashCode() {
       // use this method for custom fields hashing instead of implementing your own
-      return Objects.hash(title, tags, startTime, endTime);
+      return Objects.hash(title, tags, startTime, endTime, recursion, lastModifiedTime);
     }
 
     @Override
@@ -125,7 +125,7 @@ public final class Event extends Entry{
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
                 && other.getAsText().equals(this.getAsText())
-                && other.isMarked() == this.isMarked());
+                && other.recursion.get() == this.recursion.get());
     }
 
     @Override
@@ -141,8 +141,6 @@ public final class Event extends Entry{
         final StringBuilder builder = new StringBuilder();
         builder.append(super.getAsText());
 
-        assert (getStartTime() != null && getEndTime() != null);
-
         builder.append(SPACE);
         builder.append("from: ");
         builder.append(getStartTimeDisplay());
@@ -152,6 +150,10 @@ public final class Event extends Entry{
         builder.append(getEndTimeDisplay());
         return builder.toString();
     }
+    
+    public DateTimeFormatter getDateFormatter() {
+        return DATE_TIME_FORMATTER;
+    }
 
     // @@author A0121501E
     @Override
@@ -159,6 +161,7 @@ public final class Event extends Entry{
         return startTime.get();
     }
     //@@author
+    
     @Override
     public boolean isMarked() {
         return LocalDateTime.now().isAfter(endTime.get());

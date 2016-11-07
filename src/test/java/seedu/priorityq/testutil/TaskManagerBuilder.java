@@ -2,9 +2,9 @@ package seedu.priorityq.testutil;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.TaskManager;
+import seedu.priorityq.model.entry.Task;
+import seedu.priorityq.model.entry.UniqueTaskList;
 import seedu.priorityq.model.tag.Tag;
-import seedu.priorityq.model.task.Task;
-import seedu.priorityq.model.task.UniqueTaskList;
 
 /**
  * A utility class to help with building TaskManager objects.

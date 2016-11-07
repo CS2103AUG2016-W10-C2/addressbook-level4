@@ -8,10 +8,10 @@ import java.util.function.Predicate;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.commons.util.StringUtil;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Event;
+import seedu.priorityq.model.entry.Task;
 import seedu.priorityq.model.tag.Tag;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.Event;
-import seedu.priorityq.model.task.Task;
 
 import static seedu.priorityq.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
 

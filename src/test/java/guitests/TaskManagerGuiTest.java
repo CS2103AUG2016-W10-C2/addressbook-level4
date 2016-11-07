@@ -11,7 +11,7 @@ import org.testfx.api.FxToolkit;
 import seedu.priorityq.TestApp;
 import seedu.priorityq.commons.core.EventsCenter;
 import seedu.priorityq.model.TaskManager;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 import seedu.priorityq.testutil.TestUtil;
 import seedu.priorityq.testutil.TypicalTestTasks;
 

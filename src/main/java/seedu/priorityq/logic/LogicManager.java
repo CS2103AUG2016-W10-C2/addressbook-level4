@@ -13,7 +13,7 @@ import seedu.priorityq.logic.commands.UndoableCommand.CommandState;
 import seedu.priorityq.logic.parser.Parser;
 import seedu.priorityq.model.Model;
 import seedu.priorityq.model.UserPrefs;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 import seedu.priorityq.storage.Storage;
 
 import java.io.IOException;

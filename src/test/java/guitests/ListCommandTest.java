@@ -7,7 +7,7 @@ import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.logic.commands.ClearCommand;
 import seedu.priorityq.logic.commands.DeleteCommand;
 import seedu.priorityq.logic.commands.ListCommand;
-import seedu.priorityq.model.task.EntryViewComparator;
+import seedu.priorityq.model.entry.EntryViewComparator;
 import seedu.priorityq.testutil.TestEntry;
 import seedu.priorityq.testutil.TestTasks;
 import seedu.priorityq.testutil.TypicalTestTasks;
