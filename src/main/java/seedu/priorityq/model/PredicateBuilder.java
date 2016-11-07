@@ -15,12 +15,29 @@ import seedu.priorityq.model.task.Task;
 
 import static seedu.priorityq.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
 
+// @@author A0127828W
 /**
  * Supports chaining of predicates for the `list` command
- * @@author A0127828W
- *
+ * Singleton
  */
 public class PredicateBuilder {
+    private static PredicateBuilder instance;
+
+    /**
+     * Private constructor
+     */
+    private PredicateBuilder() {}
+
+    /**
+     * Public getter method to get the single instance
+     */
+    public static PredicateBuilder getInstance() {
+        if (instance == null) {
+            instance = new PredicateBuilder();
+        }
+        return instance;
+    }
+
     /**
      * Return a chained Predicate from all the conditions indicated in params
      * @param keywords
