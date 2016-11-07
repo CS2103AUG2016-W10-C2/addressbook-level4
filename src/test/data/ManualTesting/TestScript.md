@@ -1,7 +1,10 @@
 # Test Script
 
 ## Loading the Sample Data
+1. Run PriorityQ from `main/`
+2. Enter command: `load src/test/data/ManualTesting/SampleData.xml`
 
+## Test Cases 
 ### [1] Help
 
 #### 1.1 Display Help Screen
@@ -25,6 +28,20 @@ Result: `Do Assignment 3` is added to the task list and displayed. The deadline 
 Command Sequence: `add Dinner with the gang start/tomorrow 7pm end/tomorrow 8pm`
 
 Result: `Dinner with the gang` is added to the task list and displayed. The event's start and end time is shown on the right.
+
+#### 2.4 Add tasks, deadlines or events with tags
+Format: `add <title> #tag1 #tag2...`
+
+Command Sequence: `add Buy apples #groceries`
+
+Result: `Buy apples` is added to the task list and displayed. The task has a turquoise-coloured tag to the right of the title.
+
+#### 2.5 Add tasks, deadlines or events with descriptions
+Format: `add <title> desc/<description>`
+
+Command Sequence: `add Write up project report desc/Max 6 pages`
+
+Result: `Write up project report` is added to the task list and displayed. The task has a gray-coloured description below the title.
 
 ### [3] Edit
 
