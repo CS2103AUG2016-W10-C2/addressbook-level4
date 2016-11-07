@@ -75,7 +75,7 @@ public class PredicateBuilderTest {
 
     private void assertPredicate(Entry entry, Set<String> keywords, Set<String> tags, LocalDateTime startDate,
                                  LocalDateTime endDate, LocalDateTime onDate, boolean includeCompleted, String entryType, boolean expected) {
-        PredicateBuilder predicateBuilder = new PredicateBuilder();
+        PredicateBuilder predicateBuilder = PredicateBuilder.getInstance();
         try {
             Predicate<Entry> pred = predicateBuilder.buildPredicate(keywords, tags, startDate, endDate, onDate, includeCompleted, entryType);
             assertEquals(expected, pred.test(entry));

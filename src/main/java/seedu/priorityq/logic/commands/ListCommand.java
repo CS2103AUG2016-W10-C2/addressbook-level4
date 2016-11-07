@@ -42,7 +42,7 @@ public class ListCommand extends Command {
     private final boolean includeCompleted;
     private final String entryType;
     
-    private final PredicateBuilder predicateBuilder = new PredicateBuilder();
+    private final PredicateBuilder predicateBuilder = PredicateBuilder.getInstance();
     
     public ListCommand(boolean includeCompleted, String entryType) {
         this.includeCompleted = includeCompleted;
