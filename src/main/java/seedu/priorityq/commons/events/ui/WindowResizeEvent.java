@@ -14,6 +14,9 @@ public class WindowResizeEvent extends BaseEvent {
         this.newWidth = (Double)newWidth;
     }
 
+    /**
+     * Returns the new width that the application window was resized to.
+     */
     public Double getNewWidth() {
         return newWidth;
     }

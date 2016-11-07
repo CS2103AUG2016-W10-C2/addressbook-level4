@@ -35,11 +35,25 @@ public class GuiUtil {
     public static String ACTIVE_STYLE_CLASS = "present";
     public static String OVERDUE_STYLE_CLASS = "overdue";
 
+    public static final String ERROR_STYLE_CLASS = "error";
+
+    /**
+     * Returns a change listener that posts a MarkTaskEvent for the task
+     * whose checkbox was checked/unchecked on the GUI by the user.
+     *
+     * @param idx  an integer specifying the task's index in the TaskList
+     * @return     a change listener that posts a MarkTaskEvent
+     */
     public static ChangeListener<Boolean> getCheckBoxEventListener(int idx) {
         return (ov, old_val, new_val) -> EventsCenter.getInstance().post(new MarkTaskEvent(idx, new_val));
     }
 
     //@@author A0116603R-reused
+
+    /**
+     * Returns a change listener that posts a WindowResizeEvent after the user
+     * has finished resizing the application window.
+     */
     public static ChangeListener<Number> getWindowResizeEventListener() {
         return new ChangeListener<Number>() {
             final Timer timer = new Timer();
@@ -60,11 +74,13 @@ public class GuiUtil {
         };
     }
 
+    //@@author A0116603R
     /**
      * Get the style class for floating task elements such as id, title and
      * description.
-     * @param isMarked true, if the current task is marked as done
-     * @return a string, the style class for the floating task
+     *
+     * @param isMarked a boolean, true, if the current task is marked as done
+     * @return         a string, the style class for the floating task
      */
     public static  String getTaskStyling(boolean isMarked) {
         return getDeadlineStyling(isMarked, null);
@@ -75,10 +91,11 @@ public class GuiUtil {
      * task is marked as done. If it is not done, it differs depending on whether it
      * is overdue. If it is not overdue, it differs depending on whether the deadline
      * is due by the end of the current day.
-     * @param isMarked true, if the current task is marked as done
+     *
+     * @param isMarked a boolean, true, if the current task is marked as done
      * @param deadline a datetime which will be compared to the current time to
      *                 determine the style class
-     * @return a string, the style class for the deadline
+     * @return         a string, the style class for the deadline
      */
     public static String getDeadlineStyling(boolean isMarked, LocalDateTime deadline) {
         if (isMarked) {
@@ -106,9 +123,10 @@ public class GuiUtil {
      * Get the style class for events. The style differs depending on whether the
      * event is over. If it is not over, but currently ongoing, a different style
      * class is also applied.
+     *
      * @param startTime a datetime, the start of the event
-     * @param endTime a datetime, the end of the event
-     * @return a string, the style class for the event
+     * @param endTime   a datetime, the end of the event
+     * @return          a string, the style class for the event
      */
     public static String getEventStyling(LocalDateTime startTime, LocalDateTime endTime) {
         assert (startTime != null && endTime != null);
