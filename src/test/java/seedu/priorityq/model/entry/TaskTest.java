@@ -71,9 +71,9 @@ public class TaskTest {
     @Test
     public void hashCodeTests() {
         Task copy = new Task(floating);
-        assertEquals(floating.hashCode(), copy.hashCode());
+        assertNotEquals(floating.hashCode(), copy.hashCode());
         Task deadlineCopy = new Task(withDeadline);
-        assertEquals(withDeadline.hashCode(), deadlineCopy.hashCode());
+        assertNotEquals(withDeadline.hashCode(), deadlineCopy.hashCode());
         
         assertNotEquals(floating.hashCode(), withDeadline.hashCode());
         
@@ -187,7 +187,6 @@ public class TaskTest {
         Date interpreted = Date.from(deadline.atZone(ZoneId.systemDefault()).toInstant());
         String expected = withDeadline.getDateFormatter().format(interpreted);
         
-        System.out.println(expected);
         assertEquals(expected, withDeadline.getDateDisplay(deadline));
     }
 

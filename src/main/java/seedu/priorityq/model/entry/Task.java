@@ -91,7 +91,8 @@ public class Task extends Entry {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
                 && other.getAsText().equals(this.getAsText())
-                && other.isMarked() == this.isMarked());
+                && other.isMarked() == this.isMarked()
+                && other.getLastModifiedTime().equals(this.getLastModifiedTime()));
     }
 
     public boolean isFloatingTask() {
