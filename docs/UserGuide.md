@@ -234,7 +234,7 @@ Here is format for the command summary:
 | Command |Format |
 | --- | --- |
 |add|`add <task_name> [start/<start> end/<end>] [#<tag_name> ...]  [repeat/<recurrence>] [desc/<description>]`|
-|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...]] [type/{entry, task}]`|
+|list|`list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...]] [type/{event|task}]`|
 |tag|`tag <entry_id> #<tag_name> [#<tag_name> ...]`|
 |untag|`untag <entry_id> #<tag_name> [#<tag_name> ...]`|
 |edit|`edit <entry_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [desc/<description>]`|

@@ -94,11 +94,13 @@ Result: The task at index 1 is now deleted.
 ### [5] List
 
 #### 5.1 Search for tasks using keywords
-Format:
+Format: `list <keyword>`
 
-Command Sequence: ``
+Precondition: There exists some task with the keyword 'Buy'.
 
-Result:
+Command Sequence: `list Buy`
+
+Result: All tasks which contain the keyword 'Buy' are displayed.
 
 #### 5.2 Search for tasks by their dates
 Format:
@@ -115,18 +117,18 @@ Command Sequence: ``
 Result:
 
 #### 5.4 Search for tasks by their tags
-Format:
+Format: `list #tag`
 
-Command Sequence: ``
+Command Sequence: `list #shopping`
 
-Result:
+Result: All entries which contain the tag #shopping are displayed.
 
-#### 5.5 Search for tasks by their description
-Format:
+#### 5.5 Search for entries by type
+Format: `list type/<task|event>`
 
-Command Sequence: ``
+Command Sequence: `list type/task`
 
-Result:
+Result: Displays all entries of the type task (i.e. floating tasks and deadlines) only.
 
 #### 5.6 List all tasks, regardless of completion state
 Command Sequence: `list-all`
