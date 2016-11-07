@@ -91,6 +91,10 @@ public class TaskCard extends VBox {
         }
     }
 
+    /**
+     * Initialises UI elements which are common to floating tasks, deadlines, and
+     * events. This includes the title, id, tags and description.
+     */
     private void initCommonElements() {
         title.setText(entry.getTitle().fullTitle);
         id.setText(Integer.toString(index));
@@ -106,6 +110,10 @@ public class TaskCard extends VBox {
         }
     }
 
+    /**
+     * Initialises UI elements which are task-specific. This refers to the checkbox and
+     * the deadline.
+     */
     private void initTaskSpecificElements(Task task) {
         initCheckbox(task);
 
@@ -152,6 +160,10 @@ public class TaskCard extends VBox {
         hide(startTime, separator, endTime);
     }
 
+    /**
+     * Initialises UI elements which are event-specific. This refers to the start time,
+     * end time and date separator.
+     */
     private void initEventSpecificElements(Event event) {
         startTime.setText(event.getStartTimeDisplay().toUpperCase());
         separator.setText(EVENT_DATE_SEPARATOR);

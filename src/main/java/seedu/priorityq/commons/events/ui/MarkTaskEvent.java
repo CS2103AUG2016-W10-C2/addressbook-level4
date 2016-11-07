@@ -25,6 +25,10 @@ public class MarkTaskEvent extends BaseEvent {
         shouldMark = newValue;
     }
 
+    /**
+     * Returns the command string that should be executed. This corresponds to a MarkCommand
+     * if the user checked the checkbox, and a UnmarkCommand if the user unchecked the checkbox.
+     */
     public String getCommandString() {
         String command = shouldMark ? MarkCommand.COMMAND_WORD : UnmarkCommand.COMMAND_WORD;
         return command + " " + targetTaskIndex;

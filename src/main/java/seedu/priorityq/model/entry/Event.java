@@ -58,6 +58,10 @@ public final class Event extends Entry{
         convertToNextRecursion();
     }
 
+    public Event(Title title, UniqueTagList tags, LocalDateTime startTime, LocalDateTime endTime) throws IllegalArgumentException{
+        this(title,startTime,endTime,tags,false, "", -1, LocalDateTime.MIN);
+    }
+    
     public Event(Entry entry) throws IllegalArgumentException {
         this(entry.getTitle(), ((Event)entry).getStartTime(), ((Event)entry).getEndTime(), entry.getTags(), entry.isMarked(), entry.getDescription(), ((Event)entry).getRecursion(), entry.getLastModifiedTime());
     }

@@ -8,7 +8,8 @@ import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 
 /**
- *
+ * A class which enables one to build up TestEntries for
+ * testing purposes.
  */
 public class EntryBuilder {
 

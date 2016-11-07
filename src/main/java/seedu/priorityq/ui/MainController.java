@@ -170,6 +170,7 @@ public class MainController extends UiPart {
         primaryStage.hide();
     }
 
+    // @@author
     /**
      * Returns the current size and the position of the main Window.
      */

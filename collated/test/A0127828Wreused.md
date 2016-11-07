@@ -1,5 +1,5 @@
 # A0127828Wreused
-###### /java/seedu/address/logic/parser/ArgumentTokenizerTest.java
+###### /java/seedu/priorityq/logic/parser/ArgumentTokenizerTest.java
 ``` java
  */
 public class ArgumentTokenizerTest {

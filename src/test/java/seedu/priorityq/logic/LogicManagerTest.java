@@ -20,6 +20,7 @@ import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 import seedu.priorityq.storage.StorageManager;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -612,7 +613,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_mark_alreadyMarked() throws Exception {
+    public void execute_markAlreadyMarked_successful() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task alreadyMarked = helper.generateTask(1);
         alreadyMarked.mark();
@@ -627,6 +628,20 @@ public class LogicManagerTest {
 
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
+                expectedTM,
+                expectedTM.getTaskList());
+    }
+
+    @Test
+    public void execute_markEvent_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Event event = helper.EventWithTags();
+        TaskManager expectedTM = new TaskManager();
+        expectedTM.addTask(event);
+        
+        model.addTask(event);
+        assertCommandBehavior("mark 1",
+                MarkCommand.MESSAGE_ENTRY_TYPE_EVENT_FAIL,
                 expectedTM,
                 expectedTM.getTaskList());
     }
@@ -648,7 +663,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_unmark_alreadyUnmarked() throws Exception {
+    public void execute_unmarkAlreadyUnmarked_successful() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task alreadyUnmarked = helper.generateTask(1);
         Task alreadyUnmarkedCopy = helper.generateTask(1);
@@ -662,6 +677,21 @@ public class LogicManagerTest {
                 expectedTM,
                 expectedTM.getTaskList());
     }
+    
+    @Test
+    public void execute_unmarkEvent_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Event event = helper.EventWithTags();
+        TaskManager expectedTM = new TaskManager();
+        expectedTM.addTask(event);
+        
+        model.addTask(event);
+        assertCommandBehavior("unmark 1",
+                MarkCommand.MESSAGE_ENTRY_TYPE_EVENT_FAIL,
+                expectedTM,
+                expectedTM.getTaskList());
+    }
+
     //###################
     //# Undo test cases #
     //###################
@@ -1113,6 +1143,17 @@ public class LogicManagerTest {
             Tag tag2 = new Tag("tag2");
             UniqueTagList tags = new UniqueTagList(tag1, tag2);
             return new Task(name, tags);
+        }
+        
+        Event EventWithTags() throws Exception {
+            Title name = new Title("Adam Brown");
+            Tag tag1 = new Tag("tag1");
+            Tag tag2 = new Tag("tag2");
+            UniqueTagList tags = new UniqueTagList(tag1, tag2);
+            LocalDateTime start = LocalDateTime.now();
+            LocalDateTime end = start.plusHours(1);
+            
+            return new Event(name, tags, start, end);
         }
 
         /**

@@ -93,25 +93,33 @@ being saved to the hard disk and the status bar of the UI being updated to refle
 
 The sections below give more details of each component.
 
+<!-- @@author A0116603R -->
 ### UI component
 
 <img src="images/UiClassDiagram.png" width="800"><br>
 
-**API** : [`Ui.java`](../src/main/java/seedu/address/ui/Ui.java)
+**API** : [`Ui.java`](../src/main/java/seedu/priorityq/ui/Ui.java)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`,
-`StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class
-and they can be loaded using the `UiPartLoader`.
+The `view` component is the part of the application that directly interacts with the user. The `view` is created using information supplied from the controller. Thus, a major purpose of view objects is to display data from the application’s model objects and to enable the editing of that data.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files
- that are in the `src/main/resources/view` folder.<br>
- For example, the layout of the [`MainWindow`](../src/main/java/seedu/address/ui/MainWindow.java) is specified in
- [`MainWindow.fxml`](../src/main/resources/view/MainWindow.fxml)
+To accomplish this, the `view` component communicates all user interactions through the `controller` component to the application’s `model` objects. In turn, any changes in `model` data are propagated through the application’s `controller` objects.
 
-The `UI` component,
-* Executes user commands using the `Logic` component.
-* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
-* Responds to events raised from various parts of the App and updates the UI accordingly.
+The diagram above gives an overview of the architecture of the `UI` component of PriorityQ. The `UI` consists of a `MainController` which encapsulates the root layout of the GUI. The `MainController` inherits from the abstract `UiPart` class and it can be loaded using the `UiPartLoader`. On start-up, the `MainController` initialises an `AppViewController`.
+
+Subsequently, the `AppViewController` initialises the `TaskViewController` and the `HelpViewController`. The former is made up of a `TaskList` which displays `TaskCard`s, while the latter is made up of a `HelpList` which displays `HelpCard`s. Both of them implement the abstract `Controller` class which enforces the implementation of certain methods for initialisation and also provides common and useful controller methods needed by all such view controllers.
+
+To display custom layouts to the user, the `UI` component uses JavaFx `UI` framework. The root layout is a `StackPane` from JavaFX.
+
+`UI` parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the root layout is specified in [`RootLayout.fxml`](../src/main/resources/view/RootLayout.fxml), and the `TaskList` is specified in [`TaskList.fxml`](../src/main/resources/view/TaskList.fxml).
+
+PriorityQ has its own custom stylesheet which makes the GUI clean and simple. You can find the [css stylesheet](../src/main/resources/view/PriorityQTheme.css) in the same folder as the `.fxml` files.
+
+In summary, the UI component:
+
+- Executes user commands using the Logic component.
+- Binds itself to data in the Model so that the UI can auto-update when data in the Model changes.
+- Responds to events raised from various parts of the App and updates the UI accordingly.
+- Raises events for certain user-initiated interactions so that other UI components can respond accordingly.
 
 <!-- @@author A0126539Y -->
 ### Logic component

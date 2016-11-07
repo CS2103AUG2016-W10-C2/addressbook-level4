@@ -25,6 +25,9 @@ public class GuiUtilTest {
         String styleClass = getDeadlineStyling(true, now.minusWeeks(1));
         assertEquals(PAST_STYLE_CLASS, styleClass);
 
+        styleClass = getDeadlineStyling(true, now);
+        assertEquals(PAST_STYLE_CLASS, styleClass);
+
         styleClass = getDeadlineStyling(true, now.plusWeeks(1));
         assertEquals(PAST_STYLE_CLASS, styleClass);
     }

@@ -19,6 +19,8 @@ import seedu.priorityq.logic.commands.CommandResult;
 
 import java.util.logging.Logger;
 
+import static seedu.priorityq.ui.util.GuiUtil.ERROR_STYLE_CLASS;
+
 // @@author A0116603R
 /**
  * Represents the Command Area
@@ -135,7 +137,7 @@ public class CommandArea extends VBox {
      * Sets the command box style to indicate a correct command.
      */
     private void setStyleToIndicateCorrectCommand() {
-        cmdLine.getStyleClass().remove("error");
+        cmdLine.getStyleClass().remove(ERROR_STYLE_CLASS);
         cmdLine.setText("");
     }
 
@@ -143,7 +145,7 @@ public class CommandArea extends VBox {
      * Sets the command box style to indicate an error
      */
     private void setStyleToIndicateIncorrectCommand() {
-        cmdLine.getStyleClass().add("error");
+        cmdLine.getStyleClass().add(ERROR_STYLE_CLASS);
     }
 
     /**

@@ -51,6 +51,10 @@ public class Update {
     public String getNewDescription() {
         return newDescription;
     }
+    
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 
     //@@author A0126539Y
     public static Update generateUpdateFromEntry(Entry entry) {

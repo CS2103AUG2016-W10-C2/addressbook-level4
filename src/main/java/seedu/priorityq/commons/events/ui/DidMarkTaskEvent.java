@@ -18,6 +18,9 @@ public class DidMarkTaskEvent extends BaseEvent{
         this.cmdResult = cmdResult;
     }
 
+    /**
+     * Returns the CommandResult obtained after executing the MarkCommand.
+     */
     public CommandResult getCommandResult() {
         return cmdResult;
     }

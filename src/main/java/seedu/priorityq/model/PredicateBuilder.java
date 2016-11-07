@@ -15,12 +15,29 @@ import seedu.priorityq.model.tag.Tag;
 
 import static seedu.priorityq.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
 
+// @@author A0127828W
 /**
  * Supports chaining of predicates for the `list` command
- * @@author A0127828W
- *
+ * Singleton
  */
 public class PredicateBuilder {
+    private static PredicateBuilder instance;
+
+    /**
+     * Private constructor
+     */
+    private PredicateBuilder() {}
+
+    /**
+     * Public getter method to get the single instance
+     */
+    public static PredicateBuilder getInstance() {
+        if (instance == null) {
+            instance = new PredicateBuilder();
+        }
+        return instance;
+    }
+
     /**
      * Return a chained Predicate from all the conditions indicated in params
      * @param keywords
@@ -42,9 +59,8 @@ public class PredicateBuilder {
         pred = addTypePredicateIfExist(pred, entryType);
 
         return pred;
-
     }
-    
+
     private Predicate<Entry> addCompletedPredicateIfExist(Predicate<Entry> pred, boolean includeCompleted) {
         Predicate<Entry> result = pred;
         if (!includeCompleted) {
@@ -160,6 +176,10 @@ public class PredicateBuilder {
     }
 
     //@author A0127828W
+
+    /**
+     * Qualifier class to filter entries against a set of keywords (Set<String>)
+     */
     private class TitleQualifier implements Qualifier {
         private Set<String> titleKeyWords;
 
@@ -181,6 +201,9 @@ public class PredicateBuilder {
         }
     }
 
+    /**
+     * Qualifier class to filter entries against a set of tags (Set<String>)
+     */
     private class TagsQualifier implements Qualifier {
         private Set<String> tags;
 
@@ -214,6 +237,9 @@ public class PredicateBuilder {
     //@@author
 
     //@@author A0126539Y
+    /**
+     * Qualifier class to filter entries against a LocalDateTime (whether entries are due on or after a date)
+     */
     private class DateAfterQualifier implements Qualifier {
         private LocalDateTime startDate;
 
@@ -244,6 +270,9 @@ public class PredicateBuilder {
         }
     }
 
+    /**
+     * Qualifier class to filter entries against a LocalDateTime (whether entries are due on or before a date)
+     */
     private class DateBeforeQualifier implements Qualifier {
         private LocalDateTime endDate;
 
@@ -275,6 +304,9 @@ public class PredicateBuilder {
     }
 
     //@@author A0127828W
+    /**
+     * Qualifier class to filter entries against a LocalDateTime (whether entries are due on a date)
+     */
     private class DateOnQualifier implements Qualifier {
         private LocalDateTime onDate;
 
@@ -310,6 +342,9 @@ public class PredicateBuilder {
     }
     
     //@@author A0126539Y
+    /**
+     * Qualifier class to filter entries against a String type (whether entries belong to a specific type)
+     */
     private class TypeQualifier implements Qualifier {
         private String type;
         private static final String TASK_TYPE_STRING = "task";
@@ -339,6 +374,9 @@ public class PredicateBuilder {
     }
 
     //@@author A0127828W
+    /**
+     * Qualifier class to filter entries against a boolean (whether completed entries should be included)
+     */
     private class CompletedQualifier implements Qualifier {
         private boolean includeCompleted;
 

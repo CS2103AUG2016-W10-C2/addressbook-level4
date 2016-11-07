@@ -6,8 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import seedu.priorityq.TestApp;
-import seedu.priorityq.model.entry.Entry;
 import seedu.priorityq.model.entry.Task;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.testutil.TestEntry;
 import seedu.priorityq.testutil.TestUtil;
 
 import java.util.List;
@@ -22,15 +23,15 @@ import static seedu.priorityq.ui.util.GuiUtil.OPAQUE;
  */
 public class TaskListHandle extends GuiHandle {
 
-    public static final int NOT_FOUND = -1;
+    private static final int NOT_FOUND = -1;
     private static final String CARD_PANE_ID = "#cardPane";
     private static final String TASK_LIST_ID = "#taskListView";
 
-    public TaskListHandle(GuiRobot guiRobot, Stage primaryStage) {
+    TaskListHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
     }
 
-    public ListView<Entry> getListView() {
+    private ListView<Entry> getListView() {
         return (ListView<Entry>) getNode(TASK_LIST_ID);
     }
 
@@ -38,36 +39,8 @@ public class TaskListHandle extends GuiHandle {
      * Returns true if the list is showing the task details correctly and in correct order.
      * @param entries A list of task in the correct order.
      */
-    public boolean isListMatching(Entry... entries) {
+    public boolean isListMatching(TestEntry... entries) {
         return this.isListMatching(0, entries);
-    }
-
-    /**
-     * Returns true if the task list is currently visible
-     */
-    public boolean isVisible() {
-        return getNode(TASK_LIST_ID).getOpacity() == OPAQUE;
-    }
-
-    /**
-     * Returns true if the {@code entries} appear as the sub list (in that order) at position {@code startPosition}.
-     */
-    public boolean containsInOrder(int startPosition, Entry... entries) {
-        List<Entry> entryList = getListView().getItems();
-
-        // Return false if the list in panel is too short to contain the given list
-        if (startPosition + entries.length > entryList.size()){
-            return false;
-        }
-
-        // Return false if any of the entries doesn't match
-        for (int i = 0; i < entries.length; i++) {
-            if (!entryList.get(startPosition + i).getTitle().fullTitle.equals(entries[i].getTitle().fullTitle)){
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -75,7 +48,7 @@ public class TaskListHandle extends GuiHandle {
      * @param startPosition The starting position of the sub list.
      * @param entries A list of task in the correct order.
      */
-    public boolean isListMatching(int startPosition, Entry... entries) throws IllegalArgumentException {
+    private boolean isListMatching(int startPosition, TestEntry... entries) throws IllegalArgumentException {
         if (entries.length + startPosition != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n" +
                     "Got " + (entries.length) + " entries" +
@@ -93,6 +66,34 @@ public class TaskListHandle extends GuiHandle {
         return true;
     }
 
+    /**
+     * Returns true if the {@code entries} appear as the sub list (in that order) at position {@code startPosition}.
+     */
+    private boolean containsInOrder(int startPosition, TestEntry... entries) {
+        List<Entry> entryList = getListView().getItems();
+
+        // Return false if the list in panel is too short to contain the given list
+        if (startPosition + entries.length > entryList.size()){
+            return false;
+        }
+
+        // Return false if any of the entries doesn't match
+        for (int i = 0; i < entries.length; i++) {
+            Entry entry = entryList.get(startPosition + i);
+            TestEntry other = entries[i];
+            if (!(entry.getTitle().fullTitle.equals(other.getTitle().fullTitle))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if the task list is currently visible
+     */
+    public boolean isVisible() {
+        return getNode(TASK_LIST_ID).getOpacity() == OPAQUE;
+    }
 
     public TaskCardHandle navigateToEntry(String title) {
         final Optional<Entry> entry = getListView().getItems().stream().filter(p -> p.getTitle().fullTitle.equals(title)).findAny();
@@ -106,7 +107,7 @@ public class TaskListHandle extends GuiHandle {
     /**
      * Navigates the listview to display and select the task.
      */
-    public TaskCardHandle navigateToEntry(Entry entry) {
+    private TaskCardHandle navigateToEntry(Entry entry) {
         int index = getTaskIndex(entry);
 
         guiRobot.interact(() -> {
@@ -142,7 +143,7 @@ public class TaskListHandle extends GuiHandle {
         return getTaskCardHandle(new Task(getEntry(index)));
     }
 
-    public TaskCardHandle getTaskCardHandle(Entry entry) {
+    private TaskCardHandle getTaskCardHandle(Entry entry) {
         Set<Node> nodes = getAllCardNodes();
         Optional<Node> taskCardNode = nodes.stream()
                 .filter(n -> new TaskCardHandle(guiRobot, primaryStage, n).isSameEntry(entry))
@@ -154,7 +155,7 @@ public class TaskListHandle extends GuiHandle {
         }
     }
 
-    protected Set<Node> getAllCardNodes() {
+    private Set<Node> getAllCardNodes() {
         return guiRobot.lookup(CARD_PANE_ID).queryAll();
     }
 

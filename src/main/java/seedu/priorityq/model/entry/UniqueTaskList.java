@@ -176,11 +176,11 @@ public class UniqueTaskList implements Iterable<Entry> {
             throw new EntryNotFoundException();
         }
 
-        if (newEndTime != null) {
-            if (toEdit instanceof Task) {
-                ((Task)toEdit).setDeadline(newEndTime);
-            }
+        if (toEdit instanceof Task) {
+            ((Task)toEdit).setDeadline(newEndTime);
+        }
 
+        if (newEndTime != null) {
             if (toEdit instanceof Event) {
                 ((Event)toEdit).setEndTime(newEndTime);
             }
