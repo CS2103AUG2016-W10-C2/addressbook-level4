@@ -75,9 +75,10 @@ public class ArgumentTokenizer {
         }
     }
 
+    // @@author A0127828W
     /**
      * Returns true if the prefix appeared more than once in the arguments
-     * @@author A0127828W
+     *
      */
     public boolean hasMultiple(Prefix prefix) {
         Optional<List<String>> allOccurences = getAllValues(prefix);

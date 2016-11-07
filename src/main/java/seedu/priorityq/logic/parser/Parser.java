@@ -454,10 +454,10 @@ public class Parser {
 
     }
 
+     // @@author A0127828W
+
     /**
      * Parses arguments in the context of the list task command.
-     *
-     * @@author A0127828W
      *
      * @param args
      *            full command args string
@@ -491,6 +491,8 @@ public class Parser {
      * Set keywords conditions to list commands if input is valid
      */
     private void setKeywords(ListCommand listCommand, ArgumentTokenizer argsTokenizer) {
+        assert listCommand != null;
+
         Optional<String> keywordsString = argsTokenizer.getPreamble();
         if (keywordsString.isPresent()) {
             String[] keywords = keywordsString.get().split("\\s+");
@@ -511,6 +513,8 @@ public class Parser {
      * @throws IllegalValueException
      */
     private void setValidDate(ListCommand listCommand, ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        assert listCommand != null;
+
         String onDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(onDatePrefix));
         String startDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(startDatePrefix));
         String endDateString = unwrapOptionalStringOrEmpty(argsTokenizer.getValue(endDatePrefix));
@@ -548,6 +552,8 @@ public class Parser {
      * @throws IllegalValueException
      */
     private void setTags(ListCommand listCommand, ArgumentTokenizer argsTokenizer) throws IllegalValueException {
+        assert listCommand != null;
+
         Set<String> tags = getTagsFromArgs(argsTokenizer);
         if (!tags.isEmpty()) {
             listCommand.setTags(tags);
