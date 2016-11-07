@@ -73,7 +73,7 @@ public class LogicManager extends ComponentManager implements Logic {
                 storage.saveUserPrefs(userPrefs);
                 if (userPrefs.getSaveLocation() != null && !userPrefs.getSaveLocation().isEmpty()){
                     storage.setTaskManagerFilepath(userPrefs.getSaveLocation());
-                    storage.saveTaskManager(storage.readTaskManager().get());
+                    model.resetData(storage.readTaskManager().get());
                 }
                 return result;
             } catch (IOException | DataConversionException e) {
