@@ -115,6 +115,8 @@ public class Parser {
             return new HelpCommand();
         case SaveCommand.COMMAND_WORD:
             return prepareSave(arguments);
+        case LoadCommand.COMMAND_WORD:
+            return prepareLoad(arguments);
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -403,6 +405,7 @@ public class Parser {
         }
     }
     
+    //@@author A0126539Y
     /**
      *
      * @param args
@@ -411,14 +414,24 @@ public class Parser {
      */
     private Command prepareSave(String saveLocation) {
         try {
-            return new SaveCommand(saveLocation);
+            return new SaveCommand(saveLocation.trim());
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         } catch (InvalidPathException ipe) {
             return new IncorrectCommand(ipe.getMessage());
         }
     }
-
+    
+    private Command prepareLoad(String loadLocation) {
+        try {
+            return new LoadCommand(loadLocation.trim());
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        } catch (InvalidPathException ipe) {
+            return new IncorrectCommand(ipe.getMessage());
+        }
+    }
+    //@@author
     /**
      * Returns the specified index in the {@code command} IF a positive unsigned
      * integer is given as the index. Returns an {@code Optional.empty()}

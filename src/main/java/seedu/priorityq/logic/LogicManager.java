@@ -7,6 +7,7 @@ import seedu.priorityq.commons.core.EventsCenter;
 import seedu.priorityq.commons.core.LogsCenter;
 import seedu.priorityq.commons.events.ui.DidMarkTaskEvent;
 import seedu.priorityq.commons.events.ui.MarkTaskEvent;
+import seedu.priorityq.commons.exceptions.DataConversionException;
 import seedu.priorityq.logic.commands.*;
 import seedu.priorityq.logic.commands.UndoableCommand.CommandState;
 import seedu.priorityq.logic.parser.Parser;
@@ -47,10 +48,10 @@ public class LogicManager extends ComponentManager implements Logic {
 
         //@@author A0126539Y
         if (command instanceof SaveCommand) {
-            SaveCommand optionCommand = (SaveCommand)command;
-            optionCommand.setUserPrefs(userPrefs);
+            SaveCommand saveCommand = (SaveCommand)command;
+            saveCommand.setUserPrefs(userPrefs);
             try {
-                CommandResult result = optionCommand.execute();
+                CommandResult result = saveCommand.execute();
                 storage.saveUserPrefs(userPrefs);
                 if (userPrefs.getSaveLocation() != null && !userPrefs.getSaveLocation().isEmpty()){
                     storage.setTaskManagerFilepath(userPrefs.getSaveLocation());
@@ -60,7 +61,25 @@ public class LogicManager extends ComponentManager implements Logic {
             } catch (IOException e) {
                 return new CommandResult("Failed saving user preference");
             } finally {
-                optionCommand.setUserPrefs(null); // to prevent userPrefs from changing again
+                saveCommand.setUserPrefs(null); // to prevent userPrefs from changing again
+            }
+        }
+        
+        else if (command instanceof LoadCommand) {
+            LoadCommand loadCommand = (LoadCommand)command;
+            loadCommand.setUserPrefs(userPrefs);
+            try {
+                CommandResult result = loadCommand.execute();
+                storage.saveUserPrefs(userPrefs);
+                if (userPrefs.getSaveLocation() != null && !userPrefs.getSaveLocation().isEmpty()){
+                    storage.setTaskManagerFilepath(userPrefs.getSaveLocation());
+                    storage.saveTaskManager(storage.readTaskManager().get());
+                }
+                return result;
+            } catch (IOException | DataConversionException e) {
+                return new CommandResult("Failed saving user preference");
+            } finally {
+                loadCommand.setUserPrefs(null); // to prevent userPrefs from changing again
             }
         }
         //@@author A0121501E
