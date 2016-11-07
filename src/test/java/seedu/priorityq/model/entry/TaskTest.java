@@ -1,7 +1,8 @@
-package seedu.priorityq.model.task;
+package seedu.priorityq.model.entry;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import seedu.priorityq.model.entry.Task;
 import seedu.priorityq.model.entry.Title;
@@ -38,6 +39,78 @@ public class TaskTest {
         floating = new Task(title, null, uniqueTagList, isMarked, description, lastModifiedTime);
         withDeadline = new Task(title, deadline, uniqueTagList, isMarked, description, lastModifiedTime);
     }
+    
+    //@@author A0126539Y
+    @Test
+    public void inheritanceTest() {
+        assertTrue(floating instanceof Entry);
+    }
+    
+    @Test
+    public void simpleConstructor() {
+        new Task(title, uniqueTagList);
+    }
+    
+    @Test
+    public void constructor_nullDeadline() {
+        new Task(title, null, uniqueTagList, false, description, lastModifiedTime);
+    }
+    
+    @Test
+    public void entryConstructor() {
+        assertTrue(floating.equals(new Task(floating)));
+        assertTrue(withDeadline.equals(new Task(withDeadline)));
+        
+        Event event = new Event(title, LocalDateTime.MIN, LocalDateTime.MAX, uniqueTagList, false, description, 0, lastModifiedTime);
+        assertFalse(new Task(event).equals(event));
+    }
+    
+    @Test
+    public void getAsTextEqualToString() {
+        assertEquals(floating.getAsText(), floating.toString());
+    }
+    
+    @Test
+    public void hashCodeConsistent() {
+        assertEquals(floating.hashCode(), floating.hashCode());
+    }
+    
+    @Test
+    public void equals() throws Exception {
+        // test null
+        assertFalse(floating.equals(null));
+        assertFalse(withDeadline.equals(null));
+        
+        // test other instance
+        assertFalse(floating.equals(new Object()));
+        assertFalse(withDeadline.equals(new Object()));
+        
+        // test reflexivity
+        assertTrue(withDeadline.equals(withDeadline));
+        assertTrue(floating.equals(floating));
+        
+        
+        // test symmetricity
+        Task alt = new Task(floating);
+        assertTrue(floating.equals(alt));
+        assertTrue(alt.equals(floating));
+        
+        Task altDeadline = new Task(withDeadline);
+        assertTrue(withDeadline.equals(altDeadline));
+        assertTrue(altDeadline.equals(withDeadline));
+        
+        // test transitivity
+        Task alt2 = new Task(title, null, uniqueTagList, false, description, lastModifiedTime);
+        assertTrue(alt.equals(alt2));
+        assertTrue(floating.equals(alt2));
+        
+
+        alt.setTitle(new Title("some other title"));
+        assertFalse(withDeadline.equals(alt));
+        alt2.mark();
+        assertFalse(withDeadline.equals(alt2));
+    }
+    //@@author
 
     @Test
     public void getDeadline_Present_Success() {
@@ -57,7 +130,7 @@ public class TaskTest {
     @Test
     public void getDeadlineDisplay_deadline_success() {
         Date interpreted = Date.from(deadline.atZone(ZoneId.systemDefault()).toInstant());
-        String expected = Task.prettyTime.format(interpreted);
+        String expected = withDeadline.getDateFormatter().format(interpreted);
 
         assertEquals(expected, withDeadline.getDeadlineDisplay());
     }
@@ -68,15 +141,6 @@ public class TaskTest {
         assertEquals(null, withDeadline.getDeadline());
         withDeadline.setDeadline(deadline);
         assertEquals(deadline, withDeadline.getDeadline());
-    }
-
-    @Test
-    public void equals() throws Exception {
-        Task alt = new Task(title, deadline, uniqueTagList, false, description, lastModifiedTime);
-        assertEquals(true, withDeadline.equals(alt));
-
-        alt.setTitle(new Title("some other title"));
-        assertEquals(false, withDeadline.equals(alt));
     }
 
     @Test
@@ -111,8 +175,9 @@ public class TaskTest {
     @Test
     public void getDateDisplay_deadline_success() {
         Date interpreted = Date.from(deadline.atZone(ZoneId.systemDefault()).toInstant());
-        String expected = Task.prettyTime.format(interpreted);
-
+        String expected = withDeadline.getDateFormatter().format(interpreted);
+        
+        System.out.println(expected);
         assertEquals(expected, withDeadline.getDateDisplay(deadline));
     }
 
@@ -130,5 +195,4 @@ public class TaskTest {
     public void getComparableTime_withDeadline() {
         assertEquals(deadline, withDeadline.getComparableTime());
     }
-
 }

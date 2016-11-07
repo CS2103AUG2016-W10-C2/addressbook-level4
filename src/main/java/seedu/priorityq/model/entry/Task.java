@@ -21,12 +21,12 @@ import static seedu.priorityq.commons.core.Messages.SPACE;
  */
 //@@author A0126539Y
 public class Task extends Entry {
-    static final PrettyTime prettyTime = new PrettyTime();
+    private static final PrettyTime dateFormatter = new PrettyTime();
     protected ObjectProperty<LocalDateTime> deadline;
 
 
     public Task(Title title, LocalDateTime deadline, UniqueTagList tags, boolean isMarked, String description, LocalDateTime lastModifiedTime) {
-        assert !CollectionUtil.isAnyNull(title, tags, description);
+        assert !CollectionUtil.isAnyNull(title, tags, description, lastModifiedTime);
         this.title = new SimpleObjectProperty<>(Title.copy(title));
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.isMarked = new SimpleBooleanProperty(Boolean.valueOf(isMarked));
@@ -98,6 +98,11 @@ public class Task extends Entry {
         return deadline.get() == null;
     }
 
+    public PrettyTime getDateFormatter() {
+        return dateFormatter;
+    }
+      
+    
     //@@author A0116603R
     @Override
     public String getAsText() {
@@ -118,7 +123,7 @@ public class Task extends Entry {
             return "";
         }
         Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-        return prettyTime.format(interpreted);
+        return dateFormatter.format(interpreted);
     }
 
     // @@author A0121501E
