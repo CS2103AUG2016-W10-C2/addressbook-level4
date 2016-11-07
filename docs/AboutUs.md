@@ -32,6 +32,7 @@
     * Add and edit task description ([#42](https://github.com/CS2103AUG2016-W10-C2/main/pull/42), [#43](https://github.com/CS2103AUG2016-W10-C2/main/pull/43))
     * Refactoring from AddressBook to PriorityQ ([#36](https://github.com/CS2103AUG2016-W10-C2/main/pull/36), [#64](https://github.com/CS2103AUG2016-W10-C2/main/pull/64))
     * Mockups, design of app
+    * Copyediting of documentation
 
 #### Vincent Seng [@bertoia](https://github.com/bertoia)
 <img src="images/VincentSeng.jpg" width="175"><br>

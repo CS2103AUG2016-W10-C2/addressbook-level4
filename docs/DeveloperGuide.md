@@ -12,6 +12,11 @@
 * [Appendix D: Glossary](#appendix-d--glossary)
 * [Appendix E : Product Survey](#appendix-e-product-survey)
 
+## Introduction
+
+Welcome to PriorityQ’s developer guide! PriorityQ is a task manager for the modern power user who enjoys working primarily with the keyboard.
+
+This guide aims to help you get familiarised with PriorityQ’s design so that you can extend or contribute to it. We also provide specifications on the development environment and testing.
 
 ## Setting up
 
@@ -48,12 +53,14 @@
 ### Architecture
 
 <img src="images/Architecture.png" width="600"><br>
-The **_Architecture Diagram_** given above explains the high-level design of the App.
-Given below is a quick overview of each component.
 
-`Main` has only one class called [`MainApp`](../src/main/java/seedu/address/MainApp.java). It is responsible for,
-* At app launch: Initializes the components in the correct sequence, and connect them up with each other.
-* At shut down: Shuts down the components and invoke cleanup method where necessary.
+The architecture diagram given above explains the high-level design of PriorityQ. Given below is a quick overview of each component.
+
+
+`Main` has only one class called [`MainApp`](../src/main/java/seedu/priorityq/MainApp.java).
+
+* At app launch: It is responsible for initialising the components in the correct sequence, as well as linking them up.
+* At app exit: It is responsible for shutting down each component and invoking any clean-up methods.
 
 [**`Commons`**](#common-classes) represents a collection of classes used by multiple other components.
 Two of those classes play important roles at the architecture level.
@@ -61,40 +68,19 @@ Two of those classes play important roles at the architecture level.
   is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
 * `LogsCenter` : Used by many classes to write log messages to the App's log file.
 
-The rest of the App consists four components.
-* [**`UI`**](#ui-component) : The UI of tha App.
+The rest of PriorityQ consists four components.
+* [**`UI`**](#ui-component) :  Displays GUI(Graphical User Interface) to user.
 * [**`Logic`**](#logic-component) : The command executor.
-* [**`Model`**](#model-component) : Holds the data of the App in-memory.
+* [**`Model`**](#model-component) : Represents actual data in the program.
+* [**`EventsCenter`**]() : Handles callbacks for event that’s happening from the model changing.
 * [**`Storage`**](#storage-component) : Reads data from, and writes data to, the hard disk.
 
-Each of the four components
-* Defines its _API_ in an `interface` with the same name as the Component.
-* Exposes its functionality using a `{Component Name}Manager` class.
+Our architecture follows the _MVC Pattern_: UI displays data and interacts with the user; Logic listens to events from UI, and acts as the bridge between UI and Model; Model & Storage stores and maintain the data.
 
-For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java`
-interface and exposes its functionality using the `LogicManager.java` class.<br>
-<img src="images/LogicClassDiagram.png" width="800"><br>
-
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the
-command `delete 3`.
-
-<img src="images\SDforDeletePerson.png" width="800">
-
->Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed,
- instead of asking the `Storage` to save the updates to the hard disk.
-
-The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates
-being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time. <br>
-<img src="images\SDforDeletePersonEventHandling.png" width="800">
-
-> Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having
-  to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct
-  coupling between components.
-
-The sections below give more details of each component.
+### Components
 
 <!-- @@author A0116603R -->
-### UI component
+#### User Interface (UI)
 
 <img src="images/UiClassDiagram.png" width="800"><br>
 
@@ -121,48 +107,90 @@ In summary, the UI component:
 - Responds to events raised from various parts of the App and updates the UI accordingly.
 - Raises events for certain user-initiated interactions so that other UI components can respond accordingly.
 
-<!-- @@author A0126539Y -->
-### Logic component
+<!-- @@author A0127828W -->
+#### Logic
 
 <img src="images/LogicClassDiagram.png" width="800"><br>
 
 **API** : [`Logic.java`](../src/main/java/seedu/address/logic/Logic.java)
 
-1. `Logic` uses the `Parser` class to parse the user command.
-2. This results in a `Command` object which is executed by the `LogicManager`.
-3. The command execution can affect the `Model` (e.g. adding an entry) and/or raise events.
-4. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
+The `Logic` component acts as an intermediary between the view and any model/storage objects. `Logic` objects are thus a channel through which view components learn about changes in model objects and vice versa. Logic objects also handle the coordination of tasks in the system.
+
+
+In PriorityQ, a logic object interprets user actions made in view objects, such as entering a command, and communicates these information to the model layer. When model objects change, a controller object relays these changes to the view objects so that they can display it to the users.
+
+
+All valid user input are parsed into `Command` objects. Each command has a separate class (e.g. `AddCommand`, `ListCommand`, …), and all of them implement the `Command` interface. The interface acts as an abstraction layer so that Logic does not need to know the implementation details of each `Command` class, and makes sure that every command class follows the same architecture. The individual details of each command (command keywords, valid format, …) are defined in each `Command` class.
+
+
+The parsing of user commands is done by `Parser`. `Parser` is invoked every time a command is entered. It first confirms that the given command is of the correct format. The command string is then passed to the individual parser of each command to return the appropriate Command object.
+
+
+After that, the `Command` objects are executed by `LogicManager`. `LogicManager` implements the `Logic` interface, which also acts as an abstraction layer to other components of PriorityQ. `LogicManager` will call the execute method to execute the `Commands` objects. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the UI. This follows the _Command Pattern_: `LogicManager` executes commands without having to know the specific command type.
+
+
+`Command` execution can affect the `Model` and `Storage` (e.g. adding an entry) and/or raise events.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")`
  API call.<br>
+
 <img src="images/DeletePersonSdForLogic.png" width="800"><br>
 
-### Model component
+`ArgumentTokenizer` is a utility class which is used by Parser when parsing the user input. It allows more flexibility by tokenizing command parameters, so that no specific order has to be pre-defined.
+
+<!-- @@author A0121501E -->
+
+##### Undoable Command History
+
+The command history component facilitates the use of the undo and redo commands. It consists of two stacks, namely the `UndoableHistoryStack` and `RedoableHistoryStack`. Whenever an undoable command is successfully executed, the command is added to the `UndoableHistoryStack`. Every one of these undoable commands contains states and instructions that allows the changes made by the command to be undone.
+
+
+When the user uses the undo command, the most recent undoable command is popped from the `UndoableHistoryStack` and the command’s `unexecute()` method is called, which reverses the changes made by the command. If the undo command is successful, the command’s state is now redoable and will be added into the `RedoableHistoryStack`.
+
+
+Similarly, when the redo command is executed, the most recently added redoable command is popped from the `RedoableHistoryStack` and the `reExecute()` method is called. if the redo command is successful, the command is now undoable and it will be added back into the `UndoableHistoryStack`.
+
+
+Whenever the user executes a new undoable command, the `RedoableHistoryStack` is refreshed which removes all redoable commands. This is to keep the history consistent which is similar to  how page navigation works in web browsers.  The `UndoableHistoryStack` holds a maximum of 20 undoable commands to guard against memory leak.
+
+<!-- @@author A0126539Y -->
+#### Model and Event
 
 <img src="images/ModelClassDiagram.png" width="800"><br>
 
 **API** : [`Model.java`](../src/main/java/seedu/address/model/Model.java)
 
-The `Model`,
-* stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
-* exposes a `UnmodifiableObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list
-  so that the UI automatically updates when the data in the list change.
-* does not depend on any of the other three components.
+A model object encapsulates data that pertains to a particular application. For example, we have model objects which will represent tasks and events in the context of a to-do manager. In PriorityQ, a `TaskList` has many `Entries` which can be either a `Task` or `Event`. In addition, PriorityQ also keeps a list of Tags that are used to tag entries. These objects temporarily keep track of data which will ultimately be persisted through the `Storage` class. PriorityQ makes use of a text file in .xml format to persist user data. This data will then be loaded into the application when PriorityQ is first launched. Conversely, when any changes are made to the model object, the xml file will be updated to reflect these changes.
 
-### Storage component
+
+Since PriorityQ follows an MVC framework, user actions in the view layer are propagated to the model via the `Logic` component, which acts as a controller object. When a user creates a new task in PriorityQ, a `Task` model object is created. In PriorityQ, event-based programming is made use of via the `EventsCenter`. For example, model changes which might involve updating of other objects will be transmitted by informing the EventsCenter of a new event.
+
+<img src="images/SDforDeletePerson.png" width="800"><br>
+
+Certain GUI interactions are propagated to the logic component using the `EventsCenter`:
+
+<img src="images/SDforDeletePersonEventHandling.png" width="800"><br>
+
+The `list` command supports filtering entries by multiple conditions (e.g. title, tags, due date). `PredicateBuilder` is a class in `Model` that chains these predicates to allow the combination of multiple search conditions. It follows the _Singleton Pattern_: `PredicateBuilder` has a private constructor, a static instance and a public `getInstance` method to access this only instance.
+
+#### Storage
 
 <img src="images/StorageClassDiagram.png" width="800"><br>
 
 **API** : [`Storage.java`](../src/main/java/seedu/address/storage/Storage.java)
 
-The `Storage` component,
-* can save `UserPref` objects in json format and read it back.
-* can save the Address Book data in xml format and read it back.
+The storage component encapsulate the need of handling data read and write by any other component. The storage component also provide a facade that covers several storage such as the user preference storage and the task manager storage itself. By doing so, other component just need to interact with the facade storage and not the user preference storage or the task manager storage directly which may add complexity. The storage class itself is flexible as we can change our type of storage, such as Xml to Json easily without changing the whole component.
 
-### Common classes
+
+#### Common classes
 
 Classes used by multiple components are in the `seedu.addressbook.commons` package.
+ju
+#### Program workflow
+
+This section gives an overview of PriorityQ’s program flow. PriorityQ uses the Model View Controller paradigm. It is a simple, yet reliable and commonly used method for structuring applications. It also suits the design need of our system. The flow of the program would look like this:
+
+<img src="images/workflowDiagram.png" width = "800"><br>
 
 ## Implementation
 
@@ -189,7 +217,6 @@ and logging destinations.
 
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file
 (default: `config.json`):
-
 
 ## Testing
 
@@ -258,6 +285,29 @@ can be automated using Gradle. For example, Gradle can download the dependencies
 is better than these alternatives.<br>
 a. Include those libraries in the repo (this bloats the repo size)<br>
 b. Require developers to download those libraries manually (this creates extra work for developers)<br>
+
+## Known Issues
+
+### Natural language processing for recurring events
+The natural language processing for recurring events has a few bugs. Currently, the recurrence feature can only handle user input with the format: “every X <unit of time>”, i.e: “every 1 day”. This restricts the user’s freedom in typing in a command to create a recurring event.
+
+### Performance
+
+The program will take longer to respond if a large number (e.g. a few thousand) of tasks are present in PriorityQ. A workaround is to regularly clear your completed tasks by using either the delete  or  clear  command.
+
+
+## Future work
+
+### Google Calendar integration
+
+Google Calendar offers a comprehensive user experience when it comes to organizing tasks on a calendar. Other features like email reminders, invitations and especially cross-platform synchronization can greatly benefit our users.
+
+### Personalization
+
+We want users to have their own personal touch in the app. Hence we’re looking forward to implement some features that users can customise such as changing theme color to suit user’s style. We will provide 10+ themes for use to select and modify to help make PriorityQ their own.
+
+### Email notification
+Although this is not a main feature since we designed PriorityQ to be able to work 100% offline, it would be a nice-to-have.
 
 ## Appendix A : User Stories
 
@@ -461,3 +511,452 @@ Weakness:
 - No options for viewing the list of tasks in different orders (most recent, deadline etc)
 - No calendar view.
 
+
+## Appendix F: Data Storage XML Example
+```xml
+<?xml version="1.0" ?>
+<taskmanager>
+  <entries>
+    <title>Swim 1 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-01T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-01T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 1 apple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-01T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS4224</title>
+    <start>2016-11-01T18:00</start>
+    <end>2016-11-01T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-01T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 2 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-02T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-02T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 2 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-02T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2103T</title>
+    <start>2016-11-02T18:00</start>
+    <end>2016-11-02T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-02T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Run 3 rounds</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-03T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-03T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 3 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-03T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS4224</title>
+    <start>2016-11-03T18:00</start>
+    <end>2016-11-03T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-03T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Run 4 rounds</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-04T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-04T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 4 pineapple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-04T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2103T</title>
+    <start>2016-11-04T18:00</start>
+    <end>2016-11-04T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-04T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 5 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-05T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-05T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 5 grapes</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-05T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2105</title>
+    <start>2016-11-05T18:00</start>
+    <end>2016-11-05T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>true</isMarked>
+    <lastModified>2016-11-05T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 6 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-06T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-06T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 6 apple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-06T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2101</title>
+    <start>2016-11-06T18:00</start>
+    <end>2016-11-06T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-06T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 7 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-07T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-07T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 7 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-07T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2101</title>
+    <start>2016-11-07T18:00</start>
+    <end>2016-11-07T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-07T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Do 8 push ups</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-08T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-08T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 8 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-08T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS4224</title>
+    <start>2016-11-08T18:00</start>
+    <end>2016-11-08T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-08T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 9 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-09T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-09T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 9 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-09T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2101</title>
+    <start>2016-11-09T18:00</start>
+    <end>2016-11-09T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-09T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Do 10 push ups</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-10T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-10T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 10 apple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-10T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS4224</title>
+    <start>2016-11-10T18:00</start>
+    <end>2016-11-10T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-10T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Do 11 push ups</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-11T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-11T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 11 grapes</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-11T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2103T</title>
+    <start>2016-11-11T18:00</start>
+    <end>2016-11-11T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-11T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Do 12 push ups</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-12T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-12T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 12 grapes</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-12T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2105</title>
+    <start>2016-11-12T18:00</start>
+    <end>2016-11-12T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-12T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 13 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-13T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-13T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 13 grapes</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-13T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2101</title>
+    <start>2016-11-13T18:00</start>
+    <end>2016-11-13T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-13T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Run 14 rounds</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-14T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-14T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 14 pineapple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-14T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2105</title>
+    <start>2016-11-14T18:00</start>
+    <end>2016-11-14T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-14T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 15 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-15T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-15T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 15 pineapple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-15T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2101</title>
+    <start>2016-11-15T18:00</start>
+    <end>2016-11-15T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-15T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Swim 16 laps</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-16T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-16T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 16 apple</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-16T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2105</title>
+    <start>2016-11-16T18:00</start>
+    <end>2016-11-16T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-16T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Run 17 rounds</title>
+    <description>Or just sleep...</description>
+    <end>2016-11-17T09:00</end>
+    <tagged>Healthy</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-17T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Buy 17 banana</title>
+    <tagged>NTUC</tagged>
+    <tagged>fresh</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-17T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+  <entries>
+    <title>Work on CS2103T</title>
+    <start>2016-11-17T18:00</start>
+    <end>2016-11-17T22:00</end>
+    <tagged>pain</tagged>
+    <isMarked>false</isMarked>
+    <lastModified>2016-11-17T09:00</lastModified>
+    <recursion>0</recursion>
+  </entries>
+</taskmanager>
+```
