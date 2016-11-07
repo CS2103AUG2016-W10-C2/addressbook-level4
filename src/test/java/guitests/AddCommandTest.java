@@ -31,11 +31,6 @@ public class AddCommandTest extends TaskManagerGuiTest {
 
         assertTrue(currentList.length > 0);
 
-        //add duplicate task
-        commandBox.runCommand(currentList[0].getAddCommand());
-        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_ENTRY);
-        assertTrue(taskList.isListMatching(currentList));
-
         //add to empty list
         commandBox.runCommand(ClearCommand.COMMAND_WORD);
         assertAddSuccess(currentList[0]);

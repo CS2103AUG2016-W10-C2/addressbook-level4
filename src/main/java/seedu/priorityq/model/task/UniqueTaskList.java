@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 
 /**
- * A list of entries that enforces uniqueness between its elements and does not allow nulls.
+ * A list of entries that enforces no two elements in the list are the same object and does not allow nulls.
  *
  * Supports a minimal set of list operations.
  *
@@ -78,11 +78,16 @@ public class UniqueTaskList implements Iterable<Entry> {
     public UniqueTaskList() {}
 
     /**
-     * Returns true if the list contains an equivalent task as the given argument.
+     * Returns true if the list contains the same task as the given argument.
      */
     public boolean contains(Entry toCheck) {
         assert toCheck != null;
-        return internalList.contains(toCheck);
+        for (Entry entry : internalList) {
+            if (toCheck==entry) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -106,12 +111,10 @@ public class UniqueTaskList implements Iterable<Entry> {
      *          the Task to be edited
      * @param newTitle
      *          the new Title for the Task
-     * @throws DuplicateTaskException
-     *          if an existing Task already has the same Title as the one specified
      * @throws EntryNotFoundException
      *          if the Task to be edited cannot be found
      */
-    public void updateTitle(Entry toEdit, Title newTitle) throws DuplicateTaskException, EntryNotFoundException {
+    public void updateTitle(Entry toEdit, Title newTitle) throws EntryNotFoundException {
         assert toEdit != null;
         Entry copy;
         if (toEdit instanceof Task) {
@@ -120,10 +123,6 @@ public class UniqueTaskList implements Iterable<Entry> {
             copy = new Event(toEdit);
         }
         copy.setTitle(newTitle);
-
-        if (contains(copy)) {
-            throw new DuplicateTaskException();
-        }
 
         if (!contains(toEdit)) {
             throw new EntryNotFoundException();

@@ -18,7 +18,7 @@ public class TypicalTestTasks {
     public static class BuyTasks implements TestTasks {
         // Leave one task publicly accessible in case one needs direct access
         public static final String TASK_1 = "Buy apples";
-        static final String[] SAMPLES = new String[]{TASK_1, "Buy bananas"};
+        static final String[] SAMPLES = new String[]{TASK_1, "Buy bananas", "Buy bananas"};
         static final String[] NON_SAMPLES = new String[]{"Buy cookies", "Buy some time"};
 
         public static final String VERB = "Buy";
