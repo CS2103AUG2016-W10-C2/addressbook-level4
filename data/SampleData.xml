@@ -18,7 +18,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2105</title>
+    <title>Work on CS4224</title>
     <start>2016-11-01T18:00</start>
     <end>2016-11-01T22:00</end>
     <tagged>pain</tagged>
@@ -27,7 +27,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Run 2 rounds</title>
+    <title>Swim 2 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-02T09:00</end>
     <tagged>Healthy</tagged>
@@ -36,7 +36,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 2 grapes</title>
+    <title>Buy 2 banana</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>true</isMarked>
@@ -44,7 +44,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2101</title>
+    <title>Work on CS2103T</title>
     <start>2016-11-02T18:00</start>
     <end>2016-11-02T22:00</end>
     <tagged>pain</tagged>
@@ -53,7 +53,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Do 3 push ups</title>
+    <title>Run 3 rounds</title>
     <description>Or just sleep...</description>
     <end>2016-11-03T09:00</end>
     <tagged>Healthy</tagged>
@@ -70,7 +70,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2103T</title>
+    <title>Work on CS4224</title>
     <start>2016-11-03T18:00</start>
     <end>2016-11-03T22:00</end>
     <tagged>pain</tagged>
@@ -79,7 +79,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Do 4 push ups</title>
+    <title>Run 4 rounds</title>
     <description>Or just sleep...</description>
     <end>2016-11-04T09:00</end>
     <tagged>Healthy</tagged>
@@ -88,7 +88,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 4 grapes</title>
+    <title>Buy 4 pineapple</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>true</isMarked>
@@ -96,7 +96,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2101</title>
+    <title>Work on CS2103T</title>
     <start>2016-11-04T18:00</start>
     <end>2016-11-04T22:00</end>
     <tagged>pain</tagged>
@@ -131,7 +131,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Do 6 push ups</title>
+    <title>Swim 6 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-06T09:00</end>
     <tagged>Healthy</tagged>
@@ -148,7 +148,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2105</title>
+    <title>Work on CS2101</title>
     <start>2016-11-06T18:00</start>
     <end>2016-11-06T22:00</end>
     <tagged>pain</tagged>
@@ -157,7 +157,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Do 7 push ups</title>
+    <title>Swim 7 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-07T09:00</end>
     <tagged>Healthy</tagged>
@@ -166,7 +166,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 7 pineapple</title>
+    <title>Buy 7 banana</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -174,7 +174,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2103T</title>
+    <title>Work on CS2101</title>
     <start>2016-11-07T18:00</start>
     <end>2016-11-07T22:00</end>
     <tagged>pain</tagged>
@@ -192,7 +192,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 8 apple</title>
+    <title>Buy 8 banana</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -200,7 +200,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2105</title>
+    <title>Work on CS4224</title>
     <start>2016-11-08T18:00</start>
     <end>2016-11-08T22:00</end>
     <tagged>pain</tagged>
@@ -209,7 +209,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Run 9 rounds</title>
+    <title>Swim 9 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-09T09:00</end>
     <tagged>Healthy</tagged>
@@ -218,7 +218,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 9 apple</title>
+    <title>Buy 9 banana</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -226,7 +226,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS4224</title>
+    <title>Work on CS2101</title>
     <start>2016-11-09T18:00</start>
     <end>2016-11-09T22:00</end>
     <tagged>pain</tagged>
@@ -235,7 +235,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Swim 10 laps</title>
+    <title>Do 10 push ups</title>
     <description>Or just sleep...</description>
     <end>2016-11-10T09:00</end>
     <tagged>Healthy</tagged>
@@ -252,7 +252,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2103T</title>
+    <title>Work on CS4224</title>
     <start>2016-11-10T18:00</start>
     <end>2016-11-10T22:00</end>
     <tagged>pain</tagged>
@@ -261,7 +261,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Run 11 rounds</title>
+    <title>Do 11 push ups</title>
     <description>Or just sleep...</description>
     <end>2016-11-11T09:00</end>
     <tagged>Healthy</tagged>
@@ -270,7 +270,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 11 banana</title>
+    <title>Buy 11 grapes</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -278,7 +278,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS4224</title>
+    <title>Work on CS2103T</title>
     <start>2016-11-11T18:00</start>
     <end>2016-11-11T22:00</end>
     <tagged>pain</tagged>
@@ -287,7 +287,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Swim 12 laps</title>
+    <title>Do 12 push ups</title>
     <description>Or just sleep...</description>
     <end>2016-11-12T09:00</end>
     <tagged>Healthy</tagged>
@@ -296,7 +296,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 12 pineapple</title>
+    <title>Buy 12 grapes</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -304,7 +304,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS4224</title>
+    <title>Work on CS2105</title>
     <start>2016-11-12T18:00</start>
     <end>2016-11-12T22:00</end>
     <tagged>pain</tagged>
@@ -313,7 +313,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Run 13 rounds</title>
+    <title>Swim 13 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-13T09:00</end>
     <tagged>Healthy</tagged>
@@ -322,7 +322,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 13 banana</title>
+    <title>Buy 13 grapes</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -330,7 +330,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2105</title>
+    <title>Work on CS2101</title>
     <start>2016-11-13T18:00</start>
     <end>2016-11-13T22:00</end>
     <tagged>pain</tagged>
@@ -348,7 +348,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 14 banana</title>
+    <title>Buy 14 pineapple</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -356,7 +356,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS4224</title>
+    <title>Work on CS2105</title>
     <start>2016-11-14T18:00</start>
     <end>2016-11-14T22:00</end>
     <tagged>pain</tagged>
@@ -365,7 +365,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Do 15 push ups</title>
+    <title>Swim 15 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-15T09:00</end>
     <tagged>Healthy</tagged>
@@ -374,7 +374,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 15 apple</title>
+    <title>Buy 15 pineapple</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -382,7 +382,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2105</title>
+    <title>Work on CS2101</title>
     <start>2016-11-15T18:00</start>
     <end>2016-11-15T22:00</end>
     <tagged>pain</tagged>
@@ -391,7 +391,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Run 16 rounds</title>
+    <title>Swim 16 laps</title>
     <description>Or just sleep...</description>
     <end>2016-11-16T09:00</end>
     <tagged>Healthy</tagged>
@@ -400,7 +400,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 16 banana</title>
+    <title>Buy 16 apple</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -408,7 +408,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2103T</title>
+    <title>Work on CS2105</title>
     <start>2016-11-16T18:00</start>
     <end>2016-11-16T22:00</end>
     <tagged>pain</tagged>
@@ -417,7 +417,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Do 17 push ups</title>
+    <title>Run 17 rounds</title>
     <description>Or just sleep...</description>
     <end>2016-11-17T09:00</end>
     <tagged>Healthy</tagged>
@@ -426,7 +426,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Buy 17 grapes</title>
+    <title>Buy 17 banana</title>
     <tagged>NTUC</tagged>
     <tagged>fresh</tagged>
     <isMarked>false</isMarked>
@@ -434,7 +434,7 @@
     <recursion>0</recursion>
   </entries>
   <entries>
-    <title>Work on CS2101</title>
+    <title>Work on CS2103T</title>
     <start>2016-11-17T18:00</start>
     <end>2016-11-17T22:00</end>
     <tagged>pain</tagged>

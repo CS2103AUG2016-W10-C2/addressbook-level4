@@ -23,11 +23,11 @@ public class HelpList extends ListView<HelpList.HelpItem> {
 
     private static final String[] HELP_TEXT = new String[]{
             "<ESCAPE-KEY>",
-            "add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [r/<recurrence>] [desc/<description>]",
-            "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [r/ <recurrence>] [desc/<description>]",
+            "add <task_name> [start/<start> end/<end>] [#<tag_name> ...] [repeat/<recurrence>] [desc/<description>]",
+            "edit <task_id> [title/new title] [start/<start> end/<end>] [#<tags>...] [desc/<description>]",
             "delete <task_id>",
-            "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [desc=<description_value>] [type/{task, event}]]",
-            "list-all [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [desc=<description_value>]]",
+            "list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [type/{task, event}]]",
+            "list-all [[keywords] [[after/<date>] [before/<date>] | [on/<date>]][#<tag_name> ...] [type/{task, event}]]",
             "tag <task_id> #<tag_name> [#<tag_name> ...]",
             "untag <task_id> #<tag_name> [#<tag_name> ...]",
             "mark <task_id>",

@@ -5,7 +5,9 @@ import org.junit.Test;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -52,11 +54,23 @@ public class TaskTest {
     }
 
     @Test
-    public void getDeadlineDisplay_deadline_success() {
-        Date interpreted = Date.from(deadline.atZone(ZoneId.systemDefault()).toInstant());
+    public void getDeadlineDisplay_notToday_success() {
+        String expected = "Mon, Oct 10 at 10:00";
+
+        assertEquals(expected, withDeadline.getDeadlineDisplay());
+    }
+
+    @Test
+    public void getDeadlineDisplay_today_success() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime someTimeToday = LocalDateTime.of(now.toLocalDate(), LocalTime.NOON);
+        withDeadline.setDeadline(someTimeToday);
+
+        Date interpreted = Date.from(someTimeToday.atZone(ZoneId.systemDefault()).toInstant());
         String expected = Task.prettyTime.format(interpreted);
 
         assertEquals(expected, withDeadline.getDeadlineDisplay());
+        withDeadline.setDeadline(deadline);
     }
 
     @Test
@@ -106,9 +120,18 @@ public class TaskTest {
     }
 
     @Test
-    public void getDateDisplay_deadline_success() {
-        Date interpreted = Date.from(deadline.atZone(ZoneId.systemDefault()).toInstant());
+    public void getDateDisplay_today_success() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime someTimeToday = LocalDateTime.of(now.toLocalDate(), LocalTime.NOON);
+        Date interpreted = Date.from(someTimeToday.atZone(ZoneId.systemDefault()).toInstant());
         String expected = Task.prettyTime.format(interpreted);
+
+        assertEquals(expected, withDeadline.getDateDisplay(someTimeToday));
+    }
+
+    @Test
+    public void getDateDisplay_notToday_success() {
+        String expected = "Mon, Oct 10 at 10:00";
 
         assertEquals(expected, withDeadline.getDateDisplay(deadline));
     }
