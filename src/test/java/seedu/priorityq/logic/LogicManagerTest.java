@@ -628,7 +628,7 @@ public class LogicManagerTest {
         assertCommandBehavior("mark 1",
                 String.format(MarkCommand.MESSAGE_SUCCESS, alreadyMarked),
                 expectedTM,
-                new ArrayList<>());
+                expectedTM.getTaskList());
     }
 
     @Test
@@ -779,7 +779,7 @@ public class LogicManagerTest {
         assertCommandBehavior("undo",
                 String.format(UnmarkCommand.MESSAGE_UNDO_SUCCESS, toBeUnmarked),
                 expectedTM,
-                new ArrayList<>());
+                expectedTM.getTaskList());
     }
 
     @Test

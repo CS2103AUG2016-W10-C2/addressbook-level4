@@ -94,14 +94,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void markTask(Entry task) throws EntryNotFoundException {
         taskManager.markTask(task);
-        updateFilteredListToShowAllWithoutCompleted();
         indicateTaskManagerChanged();
     }
 
     @Override
     public void unmarkTask(Entry task) throws EntryNotFoundException {
         taskManager.unmarkTask(task);
-        updateFilteredListToShowAllWithoutCompleted();
         indicateTaskManagerChanged();
     }
 
