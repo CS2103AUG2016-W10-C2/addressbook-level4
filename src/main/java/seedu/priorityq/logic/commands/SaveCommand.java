@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
-import seedu.priorityq.commons.util.CollectionUtil;
 import seedu.priorityq.model.Model;
 import seedu.priorityq.model.UserPrefs;
 
