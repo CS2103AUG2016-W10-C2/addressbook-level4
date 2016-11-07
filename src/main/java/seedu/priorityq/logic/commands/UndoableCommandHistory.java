@@ -11,12 +11,16 @@ public class UndoableCommandHistory {
     Deque<UndoableCommand> commandInternalUndoQueue = new ArrayDeque<UndoableCommand>();
     Deque<UndoableCommand> commandInternalRedoQueue = new ArrayDeque<UndoableCommand>();
     public static class UndoableCommandNotFoundException extends Exception {};
+    private final int MAX_UNDO_QUEUE_SIZE = 20;
     
     /** Push a new Undoable command to history.
      *  Resets the redo queue since the redo commands are no longer in sync.
      */
     public void pushToHistory(UndoableCommand undoableCommand) {
         commandInternalRedoQueue = new ArrayDeque<UndoableCommand>();
+        if (commandInternalUndoQueue.size() >= MAX_UNDO_QUEUE_SIZE) {
+            commandInternalUndoQueue.pollLast();
+        }
         commandInternalUndoQueue.addFirst(undoableCommand);
     }
 
