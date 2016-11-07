@@ -161,19 +161,20 @@ list
 >>> [1] Buy groceries
 ```
 
-#### Configuring the storage location
-If there is a need, you can also change where PriorityQ stores your data. 
-```
-save new_location/PriorityQ.xml
-```
-
-#### Configuring the storage location
-If there is a need, you can also change where PriorityQ stores your data. 
-```
-save new_location/PriorityQ.xml
-```
-
 <!-- @@author A0121501E -->
+
+#### Configuring the storage location
+If there is a need, you can also change where PriorityQ stores your data.
+```
+save new_location/PriorityQ.xml
+```
+
+#### Loading from external storage location
+After saving your data in another location, you can also load the data.
+```
+load new_location/PriorityQ.xml
+```
+
 #### Tagging an entry
 ```
 tag <entry_id> #<tag_name> [#<tag_name>...]
@@ -207,7 +208,7 @@ To leave the help screen, simply hit the `ESC` key.
 ```
 option [<type>/<value> ...]
 ```
-If there is a need, you can also change where PriorityQ stores your data. 
+If there is a need, you can also change where PriorityQ stores your data.
 
 Examples:
 
