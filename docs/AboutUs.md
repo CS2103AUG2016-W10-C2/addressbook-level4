@@ -10,7 +10,7 @@
    * [Input Date NLP](https://github.com/CS2103AUG2016-W10-C2/main/pull/67)
    * [Command History](https://github.com/CS2103AUG2016-W10-C2/main/issues/133)
    * [Hiding/Listing Completed Tasks](https://github.com/CS2103AUG2016-W10-C2/main/issues/115)
-* Code written: [[functional code](../collated/main/A127828W.md)][[test code](../collated/test/A127828W.md)][[docs](../collated/docs/A127828W.md)]
+* Code written: [[functional code](../collated/main/A0127828W.md)][[test code](../collated/test/A0127828W.md)][[docs](../collated/docs/A0127828W.md)]
 * Other major contributions:
   * Did the refactoring from AddressBook to PriorityQ ([#2](https://github.com/CS2103AUG2016-W10-C2/main/pull/2), [#142](https://github.com/CS2103AUG2016-W10-C2/main/pull/142))
   * Set up Travis, Coveralls and Codacy
