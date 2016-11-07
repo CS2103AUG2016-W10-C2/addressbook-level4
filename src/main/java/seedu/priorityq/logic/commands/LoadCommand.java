@@ -42,7 +42,7 @@ public class LoadCommand extends Command{
             if (pathToken.length <= 1 || !pathToken[pathToken.length - 1].equals("xml")) {
                 throw new InvalidPathException(loadLocation, "Filepath should has xml extension");
             }
-            File file = new File("./" + loadLocation);
+            File file = new File(loadLocation);
             if (file.isDirectory()) {
                 throw new InvalidPathException(loadLocation, "Filepath is a directory");
             }
