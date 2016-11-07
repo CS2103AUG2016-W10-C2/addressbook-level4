@@ -2,8 +2,6 @@ package seedu.priorityq.model.entry;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.PrettyTime;
-
 import seedu.priorityq.model.entry.Task;
 import seedu.priorityq.model.entry.Title;
 import seedu.priorityq.model.tag.Tag;
