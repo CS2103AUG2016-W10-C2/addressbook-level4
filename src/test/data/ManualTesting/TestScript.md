@@ -4,6 +4,8 @@
 1. Run PriorityQ from `main/`
 2. Enter command: `load src/test/data/ManualTesting/SampleData.xml`
 
+### Note: In the following test cases, `idx` refers to the index of the entry in the list.
+
 ## Test Cases 
 ### [1] Help
 
@@ -46,44 +48,48 @@ Result: `Write up project report` is added to the task list and displayed. The t
 ### [3] Edit
 
 #### 3.1 Edit the title of a task
-Format: `edit x title/<new title>`
+Format: `edit idx title/<new title>`
 
-Command Sequence: `edit 1 title/`
+Command Sequence: `edit 1 title/Do Assignment 4`
+
+Result: The task at index 1 now has the title `Do Assignment 4`.
 
 #### 3.2 Edit the deadline of a task
-Format:
+Format: `edit idx end/<date>`
 
-Command Sequence: ``
+Command Sequence: `edit 1 end/tomorrow 10pm`
 
-Result:
+Result: The task at index 1 now has the deadline of tomorrow at 10pm.
 
 #### 3.3 Edit the start and end time of an event
-Format:
+Format: `edit idx start/<date> end/<date>`
 
-Command Sequence: ``
+Precondition: The entry at index 1 is an event, not a task.
 
-Result:
+Command Sequence: `edit 1 start/5pm end/7pm`
+
+Result: The event at the specified index now has a start time of 5pm today, and an end time of 7pm today.
 
 #### 3.4 Edit the tags of a task
-Format:
+Format: `edit idx #<tag>`
 
-Command Sequence: ``
+Command Sequence: `edit 1 #tag1`
 
-Result:
+Result: The task at index 1 now has the tag #tag1, any existing previous tags are removed.
 
 #### 3.5 Edit the description of a task
-Format:
+Format: `edit idx desc/<new description>`
 
-Command Sequence: ``
+Command Sequence: `edit 1 desc/Hello world`
 
-Result:
+Result: The task at index 1 now has the description `Hello world`.
 
 ### [4] Delete
 
 #### 4.1 Delete a task
 Command Sequence: `delete 1`
 
-Result:
+Result: The task at index 1 is now deleted.
 
 ### [5] List
 
@@ -122,51 +128,57 @@ Command Sequence: ``
 
 Result:
 
+#### 5.6 List all tasks, regardless of completion state
+Command Sequence: `list-all`
+
+Result: All tasks, including those that were preivously marked completed are shown.
 
 ### [6] Tag, Untag
 
 #### 6.1 Tag a task
-Format:
+Format: `tag idx #<tag>`
 
-Command Sequence: ``
+Command Sequence: `tag 1 #shopping`
 
-Result:
+Result: The task at index 1 now has a new tag, `#shopping`.
 
 #### 6.2 Untag a task
-Format:
+Format: `untag idx #<tag>`
 
-Command Sequence: ``
+Command Sequence: `untag 1 #shopping`
 
-Result:
+Result: The tag `#shopping` is removed from the task at index 1.
 
 ### [7] Mark, Unmark
 
 #### 7.1 Mark a task as completed
-Format:
+Format: `mark idx`
 
-Command Sequence: ``
+Precondition: The entry at index 1 is a task, not an event.
 
-Result:
+Command Sequence: `mark 1`
+
+Result: The task at index 1 is marked done and removed from view. It can be shown again using the `list-all` command (see below).
 
 #### 7.2 Unmark a task
-Format:
+Format: `unmark idx`
 
-Command Sequence: ``
+Command Sequence: `list-all`, `unmark 1`
 
-Result:
+Result: The task at index 1 is unmarked and is no longer in the completed state.
 
 ### [8] Undo, Redo
 
 #### 8.1 Undo a command
-Format:
+Format: `undo`
 
-Command Sequence: ``
+Command Sequence: `delete 1`, `undo`
 
-Result:
+Result: The task at index 1 is added back into the task list.
 
 #### 8.2 Redo a command
-Format:
+Format: `redo`
 
-Command Sequence: ``
+Command Sequence: `delete 1`, `undo`, `redo`
 
-Result:
+Result: The task at index 1 is deleted first and disappears. With the undo command, the task is added back into the list. Finally, the redo command causes the deletion of the task again.
