@@ -58,10 +58,10 @@ public class TaskTest {
     
     @Test
     public void entryConstructor() {
-        assertTrue(floating.equals(new Task(floating)));
-        assertTrue(withDeadline.equals(new Task(withDeadline)));
+        assertTrue(floating.equals(new Task((Entry)floating)));
+        assertTrue(withDeadline.equals(new Task((Entry)withDeadline)));
         
-        Event event = new Event(title, LocalDateTime.MIN, LocalDateTime.MAX, uniqueTagList, false, description, 0, lastModifiedTime);
+        Entry event = new Event(title, LocalDateTime.MIN, LocalDateTime.MAX, uniqueTagList, false, description, 0, lastModifiedTime);
         assertFalse(new Task(event).equals(event));
     }
     
