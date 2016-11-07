@@ -1,5 +1,6 @@
 package seedu.priorityq.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.nio.file.InvalidPathException;
@@ -10,27 +11,27 @@ import seedu.priorityq.commons.exceptions.IllegalValueException;
 
 
 //@@author A0126539Y
-public class SaveCommandTest {
+public class LoadCommandTest {
 
     @Test(expected = IllegalValueException.class)
     public void nullLocation() throws Exception {
-        new SaveCommand(null);
+        new LoadCommand(null);
     }
     
     @Test(expected = IllegalValueException.class)
     public void emptyStringLocation() throws Exception {
-        new SaveCommand("");
+        new LoadCommand("");
     }
     
     @Test(expected = InvalidPathException.class)
     public void invalidLocation() throws Exception{
-        new SaveCommand("invalid.json");
+        new LoadCommand("invalid.json");
     }
     
     @Test
-    public void saveCommand() {
+    public void loadCommand() {
         try {
-            new SaveCommand("data/newLocation.xml");
+            new LoadCommand("data/PriorityQ.xml");
         } catch (Exception e) {
             fail();
         }
