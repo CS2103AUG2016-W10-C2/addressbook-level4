@@ -1,8 +1,8 @@
 package seedu.priorityq.model;
 
 
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.UniqueTaskList;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.UniqueTaskList;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

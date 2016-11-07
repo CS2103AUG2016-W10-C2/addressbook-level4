@@ -1,15 +1,15 @@
 package seedu.priorityq.model;
 
 import javafx.collections.ObservableList;
-import seedu.priorityq.model.task.Task;
-import seedu.priorityq.model.task.Event;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.EntryViewComparator;
-import seedu.priorityq.model.task.UniqueTaskList;
-import seedu.priorityq.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.priorityq.model.task.UniqueTaskList.EntryConversionException;
-import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
-import seedu.priorityq.model.task.Update;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.EntryViewComparator;
+import seedu.priorityq.model.entry.Event;
+import seedu.priorityq.model.entry.Task;
+import seedu.priorityq.model.entry.UniqueTaskList;
+import seedu.priorityq.model.entry.Update;
+import seedu.priorityq.model.entry.UniqueTaskList.DuplicateTaskException;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryConversionException;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryNotFoundException;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

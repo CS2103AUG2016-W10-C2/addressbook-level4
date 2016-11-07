@@ -8,8 +8,8 @@ import org.junit.rules.TemporaryFolder;
 import seedu.priorityq.commons.exceptions.DataConversionException;
 import seedu.priorityq.commons.util.FileUtil;
 import seedu.priorityq.model.TaskManager;
+import seedu.priorityq.model.entry.Task;
 import seedu.priorityq.model.ReadOnlyTaskManager;
-import seedu.priorityq.model.task.Task;
 import seedu.priorityq.testutil.TestEntry;
 import seedu.priorityq.testutil.TypicalTestTasks;
 

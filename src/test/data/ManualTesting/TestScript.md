@@ -6,7 +6,7 @@
 
 ### Note: In the following test cases, `idx` refers to the index of the entry in the list.
 
-## Test Cases 
+## Test Cases
 ### [1] Help
 
 #### 1.1 Display Help Screen
@@ -102,35 +102,42 @@ Command Sequence: `list Buy`
 
 Result: All tasks which contain the keyword 'Buy' are displayed.
 
-#### 5.2 Search for tasks by their dates
-Format:
+#### 5.2 Search for entries by a range of dates
+Format: `list [after/<date>] [before/<date>]`
 
-Command Sequence: ``
+Command Sequence: `list after/tomorrow`
 
-Result:
+Result: Entries that are due on and after tomorrow are listed
 
-#### 5.3 Search for events by their dates
-Format:
+#### 5.3 Search for entries on a specific day
+Format: `list on/<date>`
 
-Command Sequence: ``
+Command Sequence: `list on/tomorrow`
 
-Result:
+Result: Entries that are due tomorrow are listed
 
-#### 5.4 Search for tasks by their tags
-Format: `list #tag`
-
-Command Sequence: `list #shopping`
-
-Result: All entries which contain the tag #shopping are displayed.
-
-#### 5.5 Search for entries by type
+#### 5.4 Search for entries by their types
 Format: `list type/<task|event>`
 
 Command Sequence: `list type/task`
 
 Result: Displays all entries of the type task (i.e. floating tasks and deadlines) only.
 
-#### 5.6 List all tasks, regardless of completion state
+#### 5.5 Search for entries by their tags
+Format: `list [#<tag_name> ...]`
+
+Command Sequence: `list #Healthy`
+
+Result: Tasks with tag #Healthy is listed
+
+#### 5.6 Search for entries by multiple conditions
+Format: `list [[keywords] [[after/<date>] [before/<date>] | [on/<date>]] [#<tag_name> ...] [type/<event|task>]`
+
+Command Sequence: `list push ups on/8 Nov #Healthy type/task`
+
+Result: 1 Entry listed which satisfies all the conditions
+
+#### 5.7 List all tasks, regardless of completion state
 Command Sequence: `list-all`
 
 Result: All tasks, including those that were preivously marked completed are shown.

@@ -51,7 +51,7 @@ public class Parser {
     private static final DateFormat dateTimeFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     
-    private static final String RECURSION_ERROR_MESSAGE = "Recursion timing is wrong. Please make sure it's a valid format. i.e: 'every 3 days'";
+    private static final String RECURSION_ERROR_MESSAGE = "Recurrence timing is wrong. Please make sure it's a valid format. i.e: 'every 3 days'";
     
     public Parser() {}
 

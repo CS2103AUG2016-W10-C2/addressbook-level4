@@ -12,10 +12,10 @@ import seedu.priorityq.logic.commands.*;
 import seedu.priorityq.commons.events.ui.ShowHelpListEvent;
 import seedu.priorityq.commons.events.model.TaskManagerChangedEvent;
 import seedu.priorityq.model.TaskManager;
+import seedu.priorityq.model.entry.*;
 import seedu.priorityq.model.Model;
 import seedu.priorityq.model.ModelManager;
 import seedu.priorityq.model.ReadOnlyTaskManager;
-import seedu.priorityq.model.task.*;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 import seedu.priorityq.storage.StorageManager;
@@ -108,7 +108,6 @@ public class LogicManagerTest {
         CommandResult result = logic.execute(inputCommand);
         //Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
-        UnmodifiableObservableList<Entry> ee = model.getFilteredEntryList();
         assertEquals(expectedShownList, model.getFilteredEntryList());
         //Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedTaskManager, model.getTaskManager());
@@ -656,6 +655,7 @@ public class LogicManagerTest {
         expectedTM.addTask(toBeUnmarkedCopy);
         
         model.addTask(toBeUnmarked);
+        logic.execute("list-all");
         assertCommandBehavior("unmark 1",
                 String.format(UnmarkCommand.MESSAGE_SUCCESS, toBeUnmarked),
                 expectedTM,

@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.Event;
-import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Event;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryNotFoundException;
 import seedu.priorityq.logic.commands.MarkCommand;
 
 //@@author A0121501E

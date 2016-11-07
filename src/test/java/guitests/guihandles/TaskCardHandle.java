@@ -4,7 +4,7 @@ import guitests.GuiRobot;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 
 /**
  * Provides a handle to a task card in the task list panel.
