@@ -1,4 +1,4 @@
-package seedu.priorityq.model.task;
+package seedu.priorityq.model.entry;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;

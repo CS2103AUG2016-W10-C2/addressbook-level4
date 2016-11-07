@@ -2,6 +2,9 @@ package seedu.priorityq.model.task;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import seedu.priorityq.model.entry.Task;
+import seedu.priorityq.model.entry.Title;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

@@ -10,7 +10,7 @@ import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.commons.util.FileUtil;
 import seedu.priorityq.commons.util.XmlUtil;
 import seedu.priorityq.model.TaskManager;
-import seedu.priorityq.model.task.*;
+import seedu.priorityq.model.entry.*;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 import seedu.priorityq.storage.XmlSerializableTaskManager;

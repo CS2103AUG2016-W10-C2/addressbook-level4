@@ -1,14 +1,14 @@
 package seedu.priorityq.model;
 
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.UniqueTaskList;
-import seedu.priorityq.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.priorityq.model.task.UniqueTaskList.EntryConversionException;
-import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.UniqueTaskList;
+import seedu.priorityq.model.entry.Update;
+import seedu.priorityq.model.entry.UniqueTaskList.DuplicateTaskException;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryConversionException;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryNotFoundException;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
-import seedu.priorityq.model.task.Update;
 import seedu.priorityq.model.tag.UniqueTagList.DuplicateTagException;
 
 import java.time.LocalDateTime;

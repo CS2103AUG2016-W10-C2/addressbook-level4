@@ -3,7 +3,7 @@ package seedu.priorityq.logic;
 import javafx.collections.ObservableList;
 import seedu.priorityq.logic.commands.CommandHistory;
 import seedu.priorityq.logic.commands.CommandResult;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 
 /**
  * API of the Logic component

@@ -3,6 +3,10 @@ package seedu.priorityq.model.task;
 import org.junit.Before;
 import org.junit.Test;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Event;
+import seedu.priorityq.model.entry.Task;
+import seedu.priorityq.model.entry.Title;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

@@ -2,9 +2,9 @@ package seedu.priorityq.logic.commands;
 
 import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.UniqueTaskList.DuplicateTaskException;
-import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.UniqueTaskList.DuplicateTaskException;
+import seedu.priorityq.model.entry.UniqueTaskList.EntryNotFoundException;
 
 /**
  * Deletes a task identified using it's last displayed index from the task manager.

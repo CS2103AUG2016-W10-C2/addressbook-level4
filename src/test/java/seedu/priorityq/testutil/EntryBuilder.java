@@ -3,9 +3,9 @@ package seedu.priorityq.testutil;
 import java.time.LocalDateTime;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
+import seedu.priorityq.model.entry.*;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
-import seedu.priorityq.model.task.*;
 
 /**
  *

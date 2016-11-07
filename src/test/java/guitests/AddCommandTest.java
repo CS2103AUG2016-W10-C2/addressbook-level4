@@ -5,10 +5,10 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import seedu.priorityq.logic.commands.AddCommand;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.EntryViewComparator;
 import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.logic.commands.ClearCommand;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.EntryViewComparator;
 import seedu.priorityq.testutil.TestEntry;
 import seedu.priorityq.testutil.TestUtil;
 

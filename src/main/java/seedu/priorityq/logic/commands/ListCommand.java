@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.PredicateBuilder;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 
 /**
  * Lists all entries in the task manager to the user.

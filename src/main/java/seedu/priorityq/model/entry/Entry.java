@@ -1,4 +1,4 @@
-package seedu.priorityq.model.task;
+package seedu.priorityq.model.entry;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

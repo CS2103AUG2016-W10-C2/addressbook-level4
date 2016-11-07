@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.TaskManager;
-import seedu.priorityq.model.task.*;
+import seedu.priorityq.model.entry.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

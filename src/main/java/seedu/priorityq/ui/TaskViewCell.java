@@ -3,7 +3,7 @@ package seedu.priorityq.ui;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 import seedu.priorityq.ui.util.GuiUtil;
 
 // @@author A0116603R

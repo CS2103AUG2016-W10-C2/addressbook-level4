@@ -1,7 +1,7 @@
 package seedu.priorityq.storage;
 
 import seedu.priorityq.commons.exceptions.IllegalValueException;
-import seedu.priorityq.model.task.*;
+import seedu.priorityq.model.entry.*;
 import seedu.priorityq.model.tag.Tag;
 import seedu.priorityq.model.tag.UniqueTagList;
 

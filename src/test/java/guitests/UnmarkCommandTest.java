@@ -2,7 +2,7 @@ package guitests;
 
 import org.junit.Test;
 import seedu.priorityq.logic.commands.UnmarkCommand;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
 
 import static seedu.priorityq.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 

@@ -6,8 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import seedu.priorityq.TestApp;
-import seedu.priorityq.model.task.Task;
-import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Task;
 import seedu.priorityq.testutil.TestUtil;
 
 import java.util.List;

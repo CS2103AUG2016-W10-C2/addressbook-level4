@@ -9,9 +9,9 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import seedu.priorityq.model.task.Task;
-import seedu.priorityq.model.task.Entry;
-import seedu.priorityq.model.task.Event;
+import seedu.priorityq.model.entry.Entry;
+import seedu.priorityq.model.entry.Event;
+import seedu.priorityq.model.entry.Task;
 
 import static seedu.priorityq.ui.util.GuiUtil.*;
 
