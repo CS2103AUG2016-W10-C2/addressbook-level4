@@ -167,10 +167,12 @@ Since PriorityQ follows an MVC framework, user actions in the view layer are pro
 
 <img src="images/SDforDeletePerson.png" width="800"><br>
 
+<!-- @@author A0116603R -->
 Certain GUI interactions are propagated to the logic component using the `EventsCenter`:
 
-<img src="images/SDforDeletePersonEventHandling.png" width="800"><br>
+<img src="images/SDMarkTask.png" width="800"><br>
 
+<!-- @@author A0126539Y -->
 The `list` command supports filtering entries by multiple conditions (e.g. title, tags, due date). `PredicateBuilder` is a class in `Model` that chains these predicates to allow the combination of multiple search conditions. It follows the _Singleton Pattern_: `PredicateBuilder` has a private constructor, a static instance and a public `getInstance` method to access this only instance.
 
 #### Storage
