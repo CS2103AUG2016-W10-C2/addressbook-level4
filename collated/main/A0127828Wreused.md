@@ -69,6 +69,4 @@ public class ArgumentTokenizer {
         }
     }
 
-    /**
-     * Returns true if the prefix appeared more than once in the arguments
 ```

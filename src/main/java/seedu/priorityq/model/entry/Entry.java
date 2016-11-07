@@ -1,7 +1,9 @@
 package seedu.priorityq.model.entry;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -150,10 +152,17 @@ public abstract class Entry {
         return isMarked() ? "[X] " : "[ ] ";
     }
 
+    // @@author A0127828W
     /**
      * Get the date for display to the user
      */
-    protected abstract String getDateDisplay(LocalDateTime dateTime);
+    protected String getDateDisplay(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return "";
+        }
+        Date interpreted = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        return dateTime.format(DATE_TIME_FORMATTER);
+    }
 
     //@@author A0116603R
     /**
