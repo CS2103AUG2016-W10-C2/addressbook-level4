@@ -8,10 +8,10 @@ import java.util.Deque;
  * Stack of successfully executed undoable commands.
  */
 public class UndoableCommandHistory {
+    private final int MAX_UNDO_QUEUE_SIZE = 20;
     Deque<UndoableCommand> commandInternalUndoQueue = new ArrayDeque<UndoableCommand>();
     Deque<UndoableCommand> commandInternalRedoQueue = new ArrayDeque<UndoableCommand>();
     public static class UndoableCommandNotFoundException extends Exception {};
-    private final int MAX_UNDO_QUEUE_SIZE = 20;
     
     /** Push a new Undoable command to history.
      *  Resets the redo queue since the redo commands are no longer in sync.
