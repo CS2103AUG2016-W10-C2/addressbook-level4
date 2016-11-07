@@ -18,7 +18,7 @@ public class SaveCommand extends Command{
     public static final String COMMAND_WORD = "save";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Change data save location. "
-            + "Parameters: SAVE LOCATION\n"
+            + "Parameters: SAVE_LOCATION\n"
             + "Example: " + COMMAND_WORD
             + " folder/myFileName.xml";
 
