@@ -8,6 +8,7 @@ import seedu.priorityq.commons.core.Messages;
 import seedu.priorityq.commons.core.UnmodifiableObservableList;
 import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.task.Entry;
+import seedu.priorityq.model.task.Task;
 import seedu.priorityq.model.task.Title;
 import seedu.priorityq.model.task.UniqueTaskList.EntryConversionException;
 import seedu.priorityq.model.task.UniqueTaskList.EntryNotFoundException;
@@ -37,6 +38,7 @@ public class EditCommand extends UndoableCommand {
     private Entry taskToEdit;
     private LocalDateTime originalLastModifiedTime;
     private Update reverseUpdate;
+    private LocalDateTime newEndTime;
 
     public EditCommand(int targetIndex, String title, LocalDateTime startTime, LocalDateTime endTime, Set<String> tags, String description) throws IllegalValueException {
         this.targetIndex = targetIndex;
@@ -62,7 +64,7 @@ public class EditCommand extends UndoableCommand {
 
         //make copy of time
         LocalDateTime newStartTime = startTime == null ? null : startTime.plusDays(0);
-        LocalDateTime newEndTime = endTime == null ? null : endTime.plusDays(0);
+        newEndTime = endTime == null ? null : endTime.plusDays(0);
         this.update = new Update(newTitle, newStartTime, newEndTime, newTags, newDescription);
     }
 
@@ -78,6 +80,9 @@ public class EditCommand extends UndoableCommand {
             taskToEdit = lastShownList.get(targetIndex - 1);
             originalLastModifiedTime = taskToEdit.getLastModifiedTime();
             update.setTask(taskToEdit);
+            if (newEndTime==null && taskToEdit instanceof Task) {
+                update.setEndTime(((Task)taskToEdit).getDeadline());
+            }
             reverseUpdate = Update.generateUpdateFromEntry(taskToEdit);
             reverseUpdate.setTask(taskToEdit);
         }
