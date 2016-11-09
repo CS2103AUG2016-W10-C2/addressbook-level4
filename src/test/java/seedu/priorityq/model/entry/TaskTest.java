@@ -39,90 +39,90 @@ public class TaskTest {
         floating = new Task(title, null, uniqueTagList, isMarked, description, lastModifiedTime);
         withDeadline = new Task(title, deadline, uniqueTagList, isMarked, description, lastModifiedTime);
     }
-    
+
     //@@author A0126539Y
     @Test
     public void inheritanceTest() {
         assertTrue(floating instanceof Entry);
     }
-    
+
     @Test
     public void simpleConstructor() {
         new Task(title, uniqueTagList);
     }
-    
+
     @Test
     public void constructor_nullDeadline() {
         new Task(title, null, uniqueTagList, false, description, lastModifiedTime);
     }
-    
+
     @Test
     public void entryConstructor() {
         assertTrue(floating.equals(new Task((Entry)floating)));
         assertTrue(withDeadline.equals(new Task((Entry)withDeadline)));
-        
+
         Entry event = new Event(title, LocalDateTime.MIN, LocalDateTime.MAX, uniqueTagList, false, description, 0, lastModifiedTime);
         assertFalse(new Task(event).equals(event));
     }
-    
+
     @Test
     public void getAsTextEqualToString() {
         assertEquals(floating.getAsText(), floating.toString());
     }
-    
+
     @Test
     public void hashCodeTests() {
         Task copy = new Task(floating);
         assertNotEquals(floating.hashCode(), copy.hashCode());
         Task deadlineCopy = new Task(withDeadline);
         assertNotEquals(withDeadline.hashCode(), deadlineCopy.hashCode());
-        
+
         assertNotEquals(floating.hashCode(), withDeadline.hashCode());
-        
+
         // test consistency
         assertEquals(floating.hashCode(), floating.hashCode());
         assertEquals(floating.hashCode(), floating.hashCode());
-        
+
         copy.setDescription("new description");
         assertNotEquals(floating.hashCode(), copy.hashCode());
     }
-    
+
     @Test
     public void equals() throws Exception {
         // test null
         assertFalse(floating.equals(null));
         assertFalse(withDeadline.equals(null));
-        
+
         // test other instance
         assertFalse(floating.equals(new Object()));
         assertFalse(withDeadline.equals(new Object()));
-        
+
         // test reflexivity
         assertTrue(withDeadline.equals(withDeadline));
         assertTrue(floating.equals(floating));
-        
-        
+
+
         // test symmetricity
         Task copy = new Task(floating);
         assertTrue(floating.equals(copy));
         assertTrue(copy.equals(floating));
-        
+
         Task copyDeadline = new Task(withDeadline);
         assertTrue(withDeadline.equals(copyDeadline));
         assertTrue(copyDeadline.equals(withDeadline));
-        
+
         // test transitivity
         Task copy2 = new Task(title, null, uniqueTagList, false, description, lastModifiedTime);
         assertTrue(copy.equals(copy2));
         assertTrue(floating.equals(copy2));
-        
+
 
         copy.setTitle(new Title("some other title"));
         assertFalse(withDeadline.equals(copy));
         copy2.mark();
         assertFalse(withDeadline.equals(copy2));
     }
-    //@@author
+    //@@author A0127828W
 
     @Test
     public void getDeadline_Present_Success() {
