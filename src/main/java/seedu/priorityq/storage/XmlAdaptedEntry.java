@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+//@@author A0126539Y
 /**
  * JAXB-friendly version of the Entry.
  */

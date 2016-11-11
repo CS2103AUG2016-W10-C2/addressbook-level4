@@ -8,12 +8,12 @@ import seedu.priorityq.commons.exceptions.IllegalValueException;
 import seedu.priorityq.model.Model;
 import seedu.priorityq.model.UserPrefs;
 
+//@@author A0126539Y
 /**
  *
  * Command to change user preference.
  *
  */
-//@@author A0126539Y
 public class SaveCommand extends Command{
     public static final String COMMAND_WORD = "save";
 

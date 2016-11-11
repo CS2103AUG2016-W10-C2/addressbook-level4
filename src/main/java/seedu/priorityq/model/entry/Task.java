@@ -16,11 +16,11 @@ import java.util.Objects;
 
 import static seedu.priorityq.commons.core.Messages.SPACE;
 
+//@@author A0126539Y
 /**
  * Represents a Floating Task in the Task Manager. Guarantees: details are
  * present and not null, field values are validated.
  */
-//@@author A0126539Y
 public class Task extends Entry {
     private static final PrettyTime dateFormatter = new PrettyTime();
     protected ObjectProperty<LocalDateTime> deadline;
@@ -102,8 +102,8 @@ public class Task extends Entry {
     public PrettyTime getDateFormatter() {
         return dateFormatter;
     }
-      
-    
+
+
     //@@author A0116603R
     @Override
     public String getAsText() {
